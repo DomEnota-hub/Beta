@@ -9,6 +9,7 @@ on:
       - 'qa/apply_recovery_patch*.py'
       - 'recovery6/**'
       - 'recovery7/**'
+      - 'recovery8/**'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +30,7 @@ jobs:
           repository: DomEnota-hub/Test-
           ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
           path: source
-      - name: Prepare project and apply recovery 1-7
+      - name: Prepare project and apply recovery 1-8
         shell: bash
         run: |
           set -euo pipefail
@@ -47,6 +48,7 @@ jobs:
           python3 beta/qa/apply_recovery_patch5.py "$ROOT"
           python3 beta/recovery6/apply_recovery_patch6.py "$ROOT"
           python3 beta/recovery7/apply_recovery_patch7.py "$ROOT"
+          python3 beta/recovery8/apply_recovery_patch8.py "$ROOT"
       - name: Audit canonical JSON field coverage
         shell: bash
         run: python3 beta/qa/canonical_field_audit.py source/buildsrc/RailBrakeCalculator
