@@ -45,11 +45,19 @@ def tap(text):
     adb('shell', 'input', 'tap', str(x), str(y))
 
 def expect(text):
+    started = time.monotonic()
     for attempt in range(8):
         root = tree()
         labels = [label(n) for n in root.iter('node') if label(n)]
         print(f'EXPECT {text} attempt={attempt}: {labels[:14]}', flush=True)
-        if any(text in s for s in labels):
+        if text in labels and not (text == 'Диагностика ВЛ80С' and 'Техническая база Ермак' in labels):
+            parents = {c: p for p in root.iter() for c in p}
+            selected = 'Ермак' if text == 'Техническая база Ермак' else 'ВЛ80С'
+            n = next(n for n in root.iter('node') if label(n) == selected)
+            while n.get('checkable') != 'true' and n in parents:
+                n = parents[n]
+            assert n.get('checked') == 'true', f'Wrong selected series: {selected}'
+            print(f'CONFIRMED {selected}, wait={time.monotonic() - started:.2f}s', flush=True)
             return
         time.sleep(1)
     capture('failed')
