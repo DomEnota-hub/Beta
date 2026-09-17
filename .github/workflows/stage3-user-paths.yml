@@ -6,6 +6,7 @@ on:
       - '.github/workflows/stage3-user-paths.yml'
       - 'qa/stage3_user_paths.py'
       - 'stage1/**'
+      - 'stage3/**'
   workflow_dispatch:
 permissions:
   contents: read
@@ -27,7 +28,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
-      - name: Prepare Recovery8 plus stage 1
+      - name: Prepare Recovery8 plus stage 1 and stage 3 performance fix
         run: |
           set -euo pipefail
           mkdir buildsrc
@@ -44,6 +45,8 @@ jobs:
           python3 recovery7/apply_recovery_patch7.py "$ROOT"
           python3 recovery8/apply_recovery_patch8.py "$ROOT"
           python3 stage1/apply_series_fix.py "$ROOT"
+          python3 stage3/apply_scenario_fix.py "$ROOT"
+          python3 stage2/runtime_contract_audit.py "$ROOT"
           "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
       - name: Build stage 3 APK
         working-directory: buildsrc/RailBrakeCalculator
