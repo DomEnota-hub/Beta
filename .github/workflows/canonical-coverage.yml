@@ -1,0 +1,60 @@
+name: Canonical field coverage
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/canonical-coverage.yml'
+      - 'qa/canonical_field_audit.py'
+      - 'qa/apply_recovery_patch*.py'
+      - 'recovery6/**'
+      - 'recovery7/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Beta recovery files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+      - name: Checkout dev18 source snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
+          path: source
+      - name: Prepare project and apply recovery 1-7
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd source
+          rm -rf buildsrc && mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+          cd "$GITHUB_WORKSPACE"
+          ROOT=source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch2.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch3.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch4.py "$ROOT"
+          python3 beta/.github/scripts/apply_startup_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch5.py "$ROOT"
+          python3 beta/recovery6/apply_recovery_patch6.py "$ROOT"
+          python3 beta/recovery7/apply_recovery_patch7.py "$ROOT"
+      - name: Audit canonical JSON field coverage
+        shell: bash
+        run: python3 beta/qa/canonical_field_audit.py source/buildsrc/RailBrakeCalculator
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-field-audit
+          path: source/buildsrc/RailBrakeCalculator/canonical-field-audit.txt
+          if-no-files-found: warn
+          retention-days: 14
