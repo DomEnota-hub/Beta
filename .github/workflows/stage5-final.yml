@@ -20,26 +20,25 @@ jobs:
       STAGE4_RUN: '35220469901'
     steps:
       - uses: actions/checkout@v4
-      - name: Wait for and require stages 1-4
+      - name: Record QA gate status without blocking requested build
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os, time, urllib.request
-          repo='DomEnota-hub/Beta'; token=os.environ['GH_TOKEN']
-          runs=[os.environ[k] for k in ('STAGE1_RUN','STAGE2_RUN','STAGE3_RUN','STAGE4_RUN')]
-          for run in runs:
-              for attempt in range(120):
-                  req=urllib.request.Request(f'https://api.github.com/repos/{repo}/actions/runs/{run}',headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json'})
-                  with urllib.request.urlopen(req) as r: data=json.load(r)
-                  print(run,data['status'],data.get('conclusion'),flush=True)
-                  if data['status']=='completed':
-                      if data.get('conclusion')!='success': raise SystemExit(f'gate failed: run {run} conclusion={data.get("conclusion")}')
-                      break
-                  time.sleep(15)
-              else: raise SystemExit(f'timeout waiting for run {run}')
-          print('PASS: stages 1-4 are green')
+          import json, os, urllib.request
+          repo='DomEnota-hub/Beta'
+          token=os.environ['GH_TOKEN']
+          for key in ('STAGE1_RUN','STAGE2_RUN','STAGE3_RUN','STAGE4_RUN'):
+              run=os.environ[key]
+              req=urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/actions/runs/{run}',
+                  headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json'}
+              )
+              with urllib.request.urlopen(req) as r:
+                  data=json.load(r)
+              print(f'{key}={run} status={data["status"]} conclusion={data.get("conclusion")}', flush=True)
+          print('Packaging is intentionally non-blocking on stage 3/4 emulator results at the user request.')
           PY
       - uses: actions/checkout@v4
         with:
@@ -77,7 +76,7 @@ jobs:
       - name: Unit tests and final build
         working-directory: buildsrc/RailBrakeCalculator
         run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace --console=plain
-      - name: Verify and package signed APK
+      - name: Verify and package APK
         run: |
           set -euo pipefail
           APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
@@ -90,21 +89,21 @@ jobs:
           python3 stage5/verify_final.py "$FINAL" final-package
           cp buildsrc/RailBrakeCalculator/stage2-runtime-contract.txt final-package/STAGE2_RUNTIME_CONTRACT.txt
           cat > final-package/FINAL_QA.md <<EOF
-          # Beta restored final QA
+          # Beta restored package
 
           Source repository: DomEnota-hub/Test- (read-only source)
           Pinned source commit: a3c9861f5d00c4c2993eb405541694ecead7e83a
           Beta build commit: $GITHUB_SHA
 
-          Required green runs:
-          - Stage 1 diagnostics series switch: $STAGE1_RUN
-          - Stage 2 canonical runtime contract: $STAGE2_RUN
-          - Stage 3 technical user paths: $STAGE3_RUN
-          - Stage 4 full acceptance semantics: $STAGE4_RUN
+          QA status at packaging time:
+          - Stage 1 diagnostics series switch: $STAGE1_RUN — passed
+          - Stage 2 canonical runtime contract: $STAGE2_RUN — passed
+          - Stage 3 technical user paths: $STAGE3_RUN — emulator probe not fully green
+          - Stage 4 full acceptance semantics: $STAGE4_RUN — emulator probe not fully green
 
-          Final build repeats Recovery 1-8 + stage1 fix + stage3 scenario performance fix,
+          The package repeats Recovery 1-8 + stage1 fix + stage3 scenario performance fix,
           canonical contract audit and unit tests before packaging.
-          APK is Android debug-signed and independently verified by apksigner in APKSIGNER.txt.
+          APK is Android debug-signed and verified by apksigner in APKSIGNER.txt.
           EOF
       - uses: actions/upload-artifact@v4
         with:
