@@ -1,4 +1,4 @@
-name: Android black-box baseline
+name: Android black-box recovery
 
 on:
   push:
@@ -16,6 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
+      - name: Checkout Beta QA files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+
       - name: Checkout dev18 source snapshot
         uses: actions/checkout@v4
         with:
@@ -51,12 +56,21 @@ jobs:
           cp -a patch/. buildsrc/RailBrakeCalculator/
           test -f buildsrc/RailBrakeCalculator/settings.gradle.kts
 
-      - name: Build baseline debug APK
+      - name: Apply Beta recovery patch
+        shell: bash
+        run: python3 beta/qa/apply_recovery_patch.py source/buildsrc/RailBrakeCalculator
+
+      - name: Run unit tests
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Build recovery debug APK
         working-directory: source/buildsrc/RailBrakeCalculator
         shell: bash
         run: gradle :app:assembleDebug --stacktrace --console=plain
 
-      - name: Drive dev18 in emulator and capture evidence
+      - name: Drive recovery build in emulator and capture evidence
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -129,6 +143,10 @@ jobs:
             open_drawer
             tap_text 'Приёмка'
             capture acceptance_root
+            tap_text 'Все пункты'
+            capture acceptance_all
+            tap_text 'Маршруты'
+            capture acceptance_routes
             open_drawer
             tap_text 'Справочник'
             capture knowledge_root
@@ -147,11 +165,20 @@ jobs:
 
             adb logcat -d > "$OUT/logcat.txt"
 
+      - name: Upload recovery APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery1-debug
+          path: source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Upload black-box evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dev18-blackbox-baseline
+          name: beta-recovery1-blackbox-evidence
           path: qa-output/
           if-no-files-found: warn
           retention-days: 14
