@@ -49,8 +49,25 @@ def bounds(n):
     if len(nums)!=4: raise AssertionError(f'Bad bounds {n.get("bounds")}')
     return nums
 
+def tap_node(root,node):
+    n=clickable_for(root,node); b=bounds(n); x=(b[0]+b[2])//2; y=(b[1]+b[3])//2
+    adb('shell','input','tap',str(x),str(y)); time.sleep(1)
+
+def dismiss_emulator_system_anr(root):
+    nodes=[n for n in root.iter('node') if label(n)]
+    if not any("system ui isn't responding" in label(n).casefold() for n in nodes): return False
+    waits=[n for n in nodes if label(n)=='Wait']
+    if waits:
+        tap_node(root,waits[0])
+        (OUT/'system-ui-anr-handled.txt').write_text(
+            'Observed emulator System UI ANR dialog; chose Wait and continued.\n',encoding='utf-8')
+        time.sleep(3)
+        return True
+    return False
+
 def tap_visible(text,contains=False):
     root=fresh_tree('tap')
+    if dismiss_emulator_system_anr(root): return False
     nodes=[n for n in root.iter('node') if label(n)]
     matches=[n for n in nodes if (text.casefold() in label(n).casefold() if contains else label(n)==text)]
     if not matches: return False
@@ -68,16 +85,20 @@ def tap_scroll(text,max_swipes=20):
     screenshot('missing-'+re.sub(r'[^A-Za-zА-Яа-я0-9]+','-',text)[:40])
     raise AssertionError(f'Missing scroll target: {text}')
 
-def expect(text,timeout=120,contains=False):
+def expect(text,timeout=180,contains=False):
     end=time.monotonic()+timeout
     while time.monotonic()<end:
         root=fresh_tree('expect')
+        if dismiss_emulator_system_anr(root):
+            adb('shell','am','start','-n','ru.railbrake.calculator/.MainActivity',check=False)
+            continue
         vals=[label(n) for n in root.iter('node') if label(n)]
         ok=any((text.casefold() in v.casefold() if contains else v==text) for v in vals)
         if ok:
             print('EXPECT PASS',text,flush=True); return
         time.sleep(1)
     screenshot('expect-fail-'+re.sub(r'[^A-Za-zА-Яа-я0-9]+','-',text)[:40])
+    (OUT/'expect-fail-activity.txt').write_bytes(adb('shell','dumpsys','activity','activities',check=False))
     raise AssertionError(f'Expected text absent: {text}')
 
 def open_drawer():
@@ -87,7 +108,7 @@ try:
     (OUT/'install.txt').write_bytes(adb('install','-r',str(APK)))
     adb('logcat','-c'); adb('shell','am','force-stop','ru.railbrake.calculator',check=False)
     (OUT/'start.txt').write_bytes(adb('shell','am','start','-n','ru.railbrake.calculator/.MainActivity',check=False))
-    expect('Железнодорожный помощник',timeout=90); screenshot('01-home')
+    expect('Железнодорожный помощник',timeout=180); screenshot('01-home')
 
     open_drawer(); tap_visible('Диагностика') or (_ for _ in ()).throw(AssertionError('Диагностика menu missing'))
     expect('Диагностика ВЛ80С',timeout=45)
