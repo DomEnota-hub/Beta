@@ -1,0 +1,193 @@
+name: Android recovery 5 functional smoke
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/android-recovery5.yml'
+      - 'qa/apply_recovery_patch5.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recovery5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout Beta recovery files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+
+      - name: Checkout dev18 source snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
+          path: source
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Install Android SDK build tools
+        shell: bash
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Prepare canonical dev18 project
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd source
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+          test -f buildsrc/RailBrakeCalculator/settings.gradle.kts
+
+      - name: Apply recovery passes 1-5
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 beta/qa/apply_recovery_patch.py source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch2.py source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch3.py source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch4.py source/buildsrc/RailBrakeCalculator
+          python3 beta/.github/scripts/apply_startup_patch.py source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch5.py source/buildsrc/RailBrakeCalculator
+
+      - name: Verify recovery5 acceptance invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=source/buildsrc/RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          REPO=source/buildsrc/RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -F 'val stateSelected = state != "NOT_CHECKED"' "$FILE"
+          grep -F 'val stateKey = "item:$currentId:state"' "$FILE"
+          grep -F 'val stateKey = "item:${item.id}:state"' "$FILE"
+          grep -F 'prefs.getBoolean("gate:$gate", false)' "$FILE"
+          grep -F 'route.optString("notes")' "$REPO"
+
+      - name: Run unit tests
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Build recovery5 debug APK
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:assembleDebug --stacktrace --console=plain
+
+      - name: Prepare startup and acceptance smoke script
+        shell: bash
+        run: |
+          cat > "$GITHUB_WORKSPACE/recovery5-smoke.sh" <<'BASH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          APK="$GITHUB_WORKSPACE/source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk"
+          OUT="$GITHUB_WORKSPACE/recovery5-evidence"
+          mkdir -p "$OUT"
+          adb install -r "$APK" > "$OUT/install.txt" 2>&1 || exit 21
+          adb logcat -c
+          adb shell am force-stop ru.railbrake.calculator || true
+          adb shell am start -n ru.railbrake.calculator/.MainActivity > "$OUT/start.txt" 2>&1 || true
+
+          dump_ui() {
+            adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true
+            adb pull /sdcard/window.xml "$1" >/dev/null 2>&1 || true
+          }
+          capture() {
+            name="$1"
+            adb exec-out screencap -p > "$OUT/${name}.png" 2>/dev/null || true
+            dump_ui "$OUT/${name}.xml"
+          }
+          tap_text() {
+            target="$1"
+            dump_ui /tmp/window.xml
+            coords=$(TARGET="$target" python3 - <<'PY'
+          import os,re,xml.etree.ElementTree as ET
+          target=os.environ['TARGET']
+          try: root=ET.parse('/tmp/window.xml').getroot()
+          except Exception: raise SystemExit(2)
+          nodes=list(root.iter('node'))
+          def label(n): return (n.attrib.get('text') or n.attrib.get('content-desc') or '').strip()
+          matches=[n for n in nodes if label(n)==target] or [n for n in nodes if target in label(n)]
+          if not matches: raise SystemExit(3)
+          m=re.match(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',matches[0].attrib.get('bounds',''))
+          if not m: raise SystemExit(4)
+          x1,y1,x2,y2=map(int,m.groups()); print((x1+x2)//2,(y1+y2)//2)
+          PY
+            ) || return 1
+            read -r x y <<< "$coords"
+            adb shell input tap "$x" "$y"
+            sleep 2
+          }
+
+          ready=0
+          for i in $(seq 1 18); do
+            capture "startup-$(printf '%02d' "$i")"
+            if grep -qE 'ВЛ80С|Железнодорожный помощник|Диагностические сценарии' "$OUT/startup-$(printf '%02d' "$i").xml" 2>/dev/null; then
+              ready=1; echo "$i" > "$OUT/first-ui-sample.txt"; break
+            fi
+            sleep 3
+          done
+          [ "$ready" -eq 1 ] || { echo startup_failed > "$OUT/result.txt"; adb logcat -d > "$OUT/logcat.txt"; exit 31; }
+
+          capture home
+          if tap_text '☰' && tap_text 'Приёмка'; then
+            capture acceptance-root
+            if grep -qE 'Полная приёмка|Список по зонам|Начать из кабины' "$OUT/acceptance-root.xml"; then
+              echo acceptance_root_visible > "$OUT/result.txt"
+            else
+              echo acceptance_root_missing_routes > "$OUT/result.txt"
+              adb logcat -d > "$OUT/logcat.txt"; exit 32
+            fi
+          else
+            echo acceptance_navigation_failed > "$OUT/result.txt"
+            adb logcat -d > "$OUT/logcat.txt"; exit 33
+          fi
+          adb shell dumpsys meminfo ru.railbrake.calculator > "$OUT/meminfo.txt" 2>&1 || true
+          adb shell dumpsys activity activities > "$OUT/activity.txt" 2>&1 || true
+          adb logcat -d > "$OUT/logcat.txt" 2>&1 || true
+          BASH
+          chmod +x "$GITHUB_WORKSPACE/recovery5-smoke.sh"
+
+      - name: Smoke-test recovery5 on lighter emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: bash "$GITHUB_WORKSPACE/recovery5-smoke.sh"
+
+      - name: Upload recovery5 APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery5-debug
+          path: source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload recovery5 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: beta-recovery5-evidence
+          path: recovery5-evidence/
+          if-no-files-found: warn
+          retention-days: 14
