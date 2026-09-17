@@ -1,0 +1,70 @@
+name: Stage 4 full acceptance semantics
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stage4-acceptance-full.yml'
+      - 'qa/stage4_acceptance_full.py'
+      - 'stage1/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
+          path: source
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Prepare Recovery8 plus stage 1
+        run: |
+          set -euo pipefail
+          mkdir buildsrc
+          unzip -q source/RailBrakeCalculator.zip -d buildsrc
+          cp -a source/patch/. buildsrc/RailBrakeCalculator/
+          ROOT=buildsrc/RailBrakeCalculator
+          python3 qa/apply_recovery_patch.py "$ROOT"
+          python3 qa/apply_recovery_patch2.py "$ROOT"
+          python3 qa/apply_recovery_patch3.py "$ROOT"
+          python3 qa/apply_recovery_patch4.py "$ROOT"
+          python3 .github/scripts/apply_startup_patch.py "$ROOT"
+          python3 qa/apply_recovery_patch5.py "$ROOT"
+          python3 recovery6/apply_recovery_patch6.py "$ROOT"
+          python3 recovery7/apply_recovery_patch7.py "$ROOT"
+          python3 recovery8/apply_recovery_patch8.py "$ROOT"
+          python3 stage1/apply_series_fix.py "$ROOT"
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+      - name: Build acceptance APK
+        working-directory: buildsrc/RailBrakeCalculator
+        run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace --console=plain
+      - name: Exercise acceptance semantics on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          APK: ${{ github.workspace }}/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          OUT: ${{ github.workspace }}/stage4-evidence
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: python3 qa/stage4_acceptance_full.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stage4-acceptance-evidence
+          path: stage4-evidence/
+          if-no-files-found: error
+          retention-days: 14
