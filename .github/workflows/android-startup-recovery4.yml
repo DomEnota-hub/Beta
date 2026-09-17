@@ -55,13 +55,14 @@ jobs:
           cp -a patch/. buildsrc/RailBrakeCalculator/
           test -f buildsrc/RailBrakeCalculator/settings.gradle.kts
 
-      - name: Apply recovery passes 1-3
+      - name: Apply recovery passes 1-4
         shell: bash
         run: |
           set -euo pipefail
           python3 beta/qa/apply_recovery_patch.py source/buildsrc/RailBrakeCalculator
           python3 beta/qa/apply_recovery_patch2.py source/buildsrc/RailBrakeCalculator
           python3 beta/qa/apply_recovery_patch3.py source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch4.py source/buildsrc/RailBrakeCalculator
 
       - name: Remove heavy diagnostic catalog initialization from first frame
         shell: bash
