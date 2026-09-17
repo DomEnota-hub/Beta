@@ -7,7 +7,7 @@ sha=hashlib.sha256(apk.read_bytes()).hexdigest()
 assets_expected={
 'vl80s_acceptance':('items',66),'vl80s_diagnostics':('scenarios',93),'vl80s_electrical':('baseSchemes',8),
 'vl80s_equipment':('records',89),'vl80s_pneumatic':('views',8),
-'ermak_diagnostics':('scenarios',135),'ermak_equipment':('equipment',111),'ermak_knowledge':('articles',138),'ermak_schemes':('schemes',22)
+'ermak_diagnostics':('scenarios',135),'ermak_equipment':('records',111),'ermak_knowledge':('articles',138),'ermak_schemes':('schemes',22)
 }
 manifest={'apk':apk.name,'sha256':sha,'github_sha':os.environ.get('GITHUB_SHA',''),'assets':{}}
 with zipfile.ZipFile(apk) as z:
