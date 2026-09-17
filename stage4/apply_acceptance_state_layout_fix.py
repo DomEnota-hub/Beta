@@ -33,5 +33,12 @@ new = '''Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(state == "NOT_APPLICABLE", { persistState("NOT_APPLICABLE") }, label = { Text("Не применяется") })
                 }
             }'''
-path.write_text(text[:start] + new + text[end:], encoding="utf-8")
+updated = text[:start] + new + text[end:]
+
+old_reason = 'label = { Text(if (state == "NOT_APPLICABLE") "Причина" else "Комментарий и локализация") },'
+new_reason = 'label = { Text(if (state == "NOT_APPLICABLE") "Причина неприменимости / вариант" else "Комментарий и локализация") },'
+if updated.count(old_reason) != 1:
+    raise SystemExit(f"not-applicable reason label: expected one match, got {updated.count(old_reason)}")
+updated = updated.replace(old_reason, new_reason, 1)
+path.write_text(updated, encoding="utf-8")
 print("Stage 4 acceptance state layout fix applied")
