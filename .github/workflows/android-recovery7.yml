@@ -1,0 +1,88 @@
+name: Android recovery 7 Ermak scheme selector
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/android-recovery7.yml'
+      - 'recovery7/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recovery7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout Beta recovery files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+      - name: Checkout dev18 source snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
+          path: source
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Install Android SDK build tools
+        shell: bash
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+      - name: Prepare project and apply recovery 1-7
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd source
+          rm -rf buildsrc && mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+          cd "$GITHUB_WORKSPACE"
+          ROOT=source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch2.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch3.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch4.py "$ROOT"
+          python3 beta/.github/scripts/apply_startup_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch5.py "$ROOT"
+          python3 beta/recovery6/apply_recovery_patch6.py "$ROOT"
+          python3 beta/recovery7/apply_recovery_patch7.py "$ROOT"
+      - name: Verify selector contract is represented
+        shell: bash
+        run: |
+          set -euo pipefail
+          CORE=source/buildsrc/RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/core/CanonicalSchemeRepository.kt
+          UI=source/buildsrc/RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/ui/CanonicalSchemeRuntime.kt
+          grep -F 'selectorDimensions' "$CORE"
+          grep -F 'hardRules' "$CORE"
+          grep -F 'BLOK_2ES5K' "$CORE"
+          grep -F '130-2_BTO-010-3' "$CORE"
+          grep -F '3es5k_434_experimental' "$CORE"
+          grep -F 'ermak_scheme_variant' "$UI"
+          grep -F 'Выбранное исполнение несовместимо' "$UI"
+      - name: Run unit tests
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:testDebugUnitTest --stacktrace --console=plain
+      - name: Build recovery7 debug APK
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:assembleDebug --stacktrace --console=plain
+      - name: Upload recovery7 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery7-debug
+          path: source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
