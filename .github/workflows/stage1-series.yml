@@ -1,0 +1,53 @@
+name: Stage 1 diagnostics series switch
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stage1-series.yml'
+      - 'qa/stage1_series_probe.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  series:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery8-debug
+          path: apk
+          github-token: ${{ github.token }}
+          repository: DomEnota-hub/Beta
+          run-id: 35213411275
+      - name: Prepare focused reproduction
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          source = Path('qa/final_blackbox_v3.sh').read_text()
+          marker = "tap_text 'Ермак' || exit 43"
+          assert source.count(marker) == 1
+          Path('/tmp/stage1-setup.sh').write_text(source.split(marker)[0])
+          PY
+      - name: Verify series on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          APK: ${{ github.workspace }}/apk/app-debug.apk
+          OUT: ${{ github.workspace }}/stage1-evidence
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: bash /tmp/stage1-setup.sh && python3 qa/stage1_series_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stage1-series-evidence
+          path: stage1-evidence/
+          if-no-files-found: error
+          retention-days: 14
