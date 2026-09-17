@@ -1,0 +1,197 @@
+name: Android recovery 6 Ermak diagnostics
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/android-recovery6.yml'
+      - 'recovery6/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recovery6:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout Beta recovery files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+
+      - name: Checkout dev18 source snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: a3c9861f5d00c4c2993eb405541694ecead7e83a
+          path: source
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Install Android SDK build tools
+        shell: bash
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Prepare canonical dev18 project
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd source
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Apply recovery passes 1-6
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=source/buildsrc/RailBrakeCalculator
+          python3 beta/qa/apply_recovery_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch2.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch3.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch4.py "$ROOT"
+          python3 beta/.github/scripts/apply_startup_patch.py "$ROOT"
+          python3 beta/qa/apply_recovery_patch5.py "$ROOT"
+          python3 beta/recovery6/apply_recovery_patch6.py "$ROOT"
+
+      - name: Verify Ermak runtime source contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=source/buildsrc/RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticRuntime.kt
+          test -s "$FILE"
+          grep -F 'ermak_diagnostics.json' "$FILE"
+          grep -F 'SAFETY_GATE_REQUIRED' "$FILE"
+          grep -F 'SOURCE_AND_PROFILE_REQUIRED' "$FILE"
+          grep -F 'nextScenarioId' "$FILE"
+          grep -F 'Интерактивный маршрут диагностики' "$FILE"
+
+      - name: Run unit tests
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Build recovery6 debug APK
+        working-directory: source/buildsrc/RailBrakeCalculator
+        shell: bash
+        run: gradle :app:assembleDebug --stacktrace --console=plain
+
+      - name: Prepare Ermak diagnostic smoke script
+        shell: bash
+        run: |
+          cat > "$GITHUB_WORKSPACE/ermak-smoke.sh" <<'BASH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          APK="$GITHUB_WORKSPACE/source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk"
+          OUT="$GITHUB_WORKSPACE/recovery6-evidence"
+          mkdir -p "$OUT"
+          adb install -r "$APK" > "$OUT/install.txt" 2>&1 || exit 21
+          adb logcat -c
+          adb shell am force-stop ru.railbrake.calculator || true
+          adb shell am start -n ru.railbrake.calculator/.MainActivity > "$OUT/start.txt" 2>&1 || true
+
+          dump_ui() {
+            adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true
+            adb pull /sdcard/window.xml "$1" >/dev/null 2>&1 || true
+          }
+          capture() {
+            name="$1"
+            dump_ui "$OUT/${name}.xml"
+            sleep 1
+            adb exec-out screencap -p > "$OUT/${name}.png" 2>/dev/null || true
+          }
+          tap_text() {
+            target="$1"
+            dump_ui /tmp/window.xml
+            coords=$(TARGET="$target" python3 - <<'PY'
+          import os,re,xml.etree.ElementTree as ET
+          target=os.environ['TARGET']
+          root=ET.parse('/tmp/window.xml').getroot()
+          nodes=list(root.iter('node'))
+          def label(n): return (n.attrib.get('text') or n.attrib.get('content-desc') or '').strip()
+          matches=[n for n in nodes if label(n)==target] or [n for n in nodes if target in label(n)]
+          if not matches: raise SystemExit(3)
+          m=re.match(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',matches[0].attrib.get('bounds',''))
+          if not m: raise SystemExit(4)
+          x1,y1,x2,y2=map(int,m.groups()); print((x1+x2)//2,(y1+y2)//2)
+          PY
+            ) || return 1
+            read -r x y <<< "$coords"
+            adb shell input tap "$x" "$y"
+            sleep 2
+          }
+
+          ready=0
+          for i in $(seq 1 18); do
+            dump_ui "$OUT/startup-$i.xml"
+            if grep -q 'Железнодорожный помощник' "$OUT/startup-$i.xml" 2>/dev/null; then ready=1; break; fi
+            sleep 3
+          done
+          [ "$ready" -eq 1 ] || exit 31
+          capture home
+
+          tap_text '☰' || exit 32
+          tap_text 'Диагностика' || exit 33
+          tap_text 'Ермак' || exit 34
+          capture ermak-diagnostics
+          tap_text 'Нет напряжения в цепях управления' || exit 35
+          capture ermak-scenario
+          grep -q 'Интерактивный маршрут диагностики' "$OUT/ermak-scenario.xml" || exit 36
+
+          tap_text '2ЭС5К' || exit 37
+          tap_text 'Базовое раннее' || exit 38
+          tap_text 'Да' || exit 39
+          capture ermak-profile-question
+          grep -q 'Выбранное исполнение входит в применимость этого сценария' "$OUT/ermak-profile-question.xml" || exit 40
+          tap_text 'Да' || exit 41
+          capture ermak-cause-question
+          grep -q 'Какой из документированных признаков' "$OUT/ermak-cause-question.xml" || exit 42
+
+          adb shell dumpsys meminfo ru.railbrake.calculator > "$OUT/meminfo.txt" 2>&1 || true
+          adb logcat -d > "$OUT/logcat.txt" 2>&1 || true
+          echo 'Ermak interactive diagnostic route observable' > "$OUT/result.txt"
+          BASH
+          chmod +x "$GITHUB_WORKSPACE/ermak-smoke.sh"
+
+      - name: Exercise Ermak diagnostics on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: bash "$GITHUB_WORKSPACE/ermak-smoke.sh"
+
+      - name: Upload recovery6 APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery6-debug
+          path: source/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload recovery6 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: beta-recovery6-evidence
+          path: recovery6-evidence/
+          if-no-files-found: warn
+          retention-days: 14
