@@ -170,7 +170,7 @@ try:
     # NOT_APPLICABLE requires a reason and then allows progression.
     select_state('Не применяется'); expect_scroll('Для этого состояния требуется комментарий.')
     if clickable('Далее'): raise AssertionError('Next is enabled before NOT_APPLICABLE reason')
-    type_field('Причина применимости / варианта','notapplicable')
+    type_field('Причина неприменимости / вариант','notapplicable')
     tap_scroll('Далее'); expect_step(4); shot('04-not-applicable-resolved')
 
     # Alternate canonical start: locate first gated item from the APK data itself.
