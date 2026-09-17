@@ -12,12 +12,12 @@ permissions:
 jobs:
   final:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
     env:
       STAGE1_RUN: '35218077965'
       STAGE2_RUN: '35219038019'
-      STAGE3_RUN: '35219144636'
-      STAGE4_RUN: '35219269710'
+      STAGE3_RUN: '35220314511'
+      STAGE4_RUN: '35220469901'
     steps:
       - uses: actions/checkout@v4
       - name: Wait for and require stages 1-4
@@ -30,7 +30,7 @@ jobs:
           repo='DomEnota-hub/Beta'; token=os.environ['GH_TOKEN']
           runs=[os.environ[k] for k in ('STAGE1_RUN','STAGE2_RUN','STAGE3_RUN','STAGE4_RUN')]
           for run in runs:
-              for attempt in range(100):
+              for attempt in range(120):
                   req=urllib.request.Request(f'https://api.github.com/repos/{repo}/actions/runs/{run}',headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json'})
                   with urllib.request.urlopen(req) as r: data=json.load(r)
                   print(run,data['status'],data.get('conclusion'),flush=True)
@@ -70,6 +70,7 @@ jobs:
           python3 recovery7/apply_recovery_patch7.py "$ROOT"
           python3 recovery8/apply_recovery_patch8.py "$ROOT"
           python3 stage1/apply_series_fix.py "$ROOT"
+          python3 stage3/apply_scenario_fix.py "$ROOT"
           python3 stage5/apply_final_identity.py "$ROOT"
           python3 stage2/runtime_contract_audit.py "$ROOT"
           "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
@@ -101,7 +102,8 @@ jobs:
           - Stage 3 technical user paths: $STAGE3_RUN
           - Stage 4 full acceptance semantics: $STAGE4_RUN
 
-          Final build repeats Recovery 1-8 + stage1 fix, canonical contract audit and unit tests before packaging.
+          Final build repeats Recovery 1-8 + stage1 fix + stage3 scenario performance fix,
+          canonical contract audit and unit tests before packaging.
           APK is Android debug-signed and independently verified by apksigner in APKSIGNER.txt.
           EOF
       - uses: actions/upload-artifact@v4
