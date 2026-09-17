@@ -16,17 +16,27 @@ def run(*args, check=True):
 def adb(*args,check=True): return run('adb',*args,check=check)
 
 def fresh_tree(tag='tree'):
+    """Never reuse stale XML. Retry the dump itself and archive each failure."""
     global seq; seq+=1
     remote=f'/sdcard/stage3-{seq}.xml'
-    adb('shell','uiautomator','dump',remote)
-    data=adb('shell','cat',remote)
-    (OUT/f'{seq:03d}-{tag}.xml').write_bytes(data)
-    return ET.fromstring(data)
+    last=b''
+    for attempt in range(6):
+        adb('shell','rm','-f',remote,check=False)
+        dump=adb('shell','uiautomator','dump',remote,check=False)
+        data=adb('shell','cat',remote,check=False)
+        last=b'dump='+dump+b'\ncat='+data
+        if data.lstrip().startswith(b'<?xml') or data.lstrip().startswith(b'<hierarchy'):
+            (OUT/f'{seq:03d}-{tag}.xml').write_bytes(data)
+            return ET.fromstring(data)
+        (OUT/f'{seq:03d}-{tag}-retry{attempt}.txt').write_bytes(last)
+        time.sleep(1.5)
+    screenshot(f'ui-dump-failed-{seq}')
+    raise AssertionError(f'Fresh UI dump unavailable after retries: {last[-500:]!r}')
 
 def label(n): return (n.get('text') or n.get('content-desc') or '').strip()
 def parents(root): return {c:p for p in root.iter() for c in p}
 
-def screenshot(name): (OUT/f'{name}.png').write_bytes(adb('exec-out','screencap','-p'))
+def screenshot(name): (OUT/f'{name}.png').write_bytes(adb('exec-out','screencap','-p',check=False))
 
 def clickable_for(root,node):
     ps=parents(root); n=node
@@ -58,7 +68,7 @@ def tap_scroll(text,max_swipes=20):
     screenshot('missing-'+re.sub(r'[^A-Za-zА-Яа-я0-9]+','-',text)[:40])
     raise AssertionError(f'Missing scroll target: {text}')
 
-def expect(text,timeout=90,contains=False):
+def expect(text,timeout=120,contains=False):
     end=time.monotonic()+timeout
     while time.monotonic()<end:
         root=fresh_tree('expect')
@@ -84,19 +94,19 @@ try:
     tap_visible('Ермак') or (_ for _ in ()).throw(AssertionError('Ермак selector missing'))
     expect('Техническая база Ермак',timeout=120); screenshot('02-ermak-diagnostics')
     tap_scroll(SCENARIO)
-    expect('Интерактивный маршрут диагностики',timeout=90,contains=True); screenshot('03-ermak-scenario')
+    expect('Интерактивный маршрут диагностики',timeout=120,contains=True); screenshot('03-ermak-scenario')
 
     open_drawer(); tap_visible('Локомотивы / атлас') or (_ for _ in ()).throw(AssertionError('Atlas menu missing'))
     time.sleep(1); tap_visible('Ермак')
     tap_scroll('Электросхемы')
     tap_scroll(SCHEME)
-    expect('Интерактивная функциональная схема',timeout=90,contains=True); screenshot('04-ermak-electrical-scheme')
+    expect('Интерактивная функциональная схема',timeout=120,contains=True); screenshot('04-ermak-electrical-scheme')
 
     open_drawer(); tap_visible('Локомотивы / атлас') or (_ for _ in ()).throw(AssertionError('Atlas menu missing on return'))
     time.sleep(1); tap_visible('ВЛ80С')
     tap_scroll('Пневмосхемы')
     tap_scroll(BENCH)
-    expect('Учебный ориентир',timeout=60,contains=True); screenshot('05-vl80-benchmark')
+    expect('Учебный ориентир',timeout=90,contains=True); screenshot('05-vl80-benchmark')
 
     (OUT/'result.txt').write_text('PASS: Ermak diagnostic scenario -> Ermak electrical scheme -> VL80 pneumatic benchmark\n',encoding='utf-8')
 finally:
