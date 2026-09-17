@@ -1,0 +1,151 @@
+name: Final black-box recovery8 v2
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/final-blackbox-recovery8-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  blackbox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Download recovery8 APK
+        uses: actions/download-artifact@v4
+        with:
+          name: RailBrakeCalculator-beta-recovery8-debug
+          path: apk
+          github-token: ${{ github.token }}
+          repository: DomEnota-hub/Beta
+          run-id: 35213411275
+
+      - name: Derive real UI targets from APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(find apk -name '*.apk' | head -1)
+          python3 - "$APK" <<'PY'
+          import gzip,json,shlex,sys,zipfile
+          apk=sys.argv[1]
+          with zipfile.ZipFile(apk) as z:
+              def load(name):
+                  for c in (f'assets/technical/{name}.json',f'assets/technical/{name}.json.gz'):
+                      try: raw=z.read(c)
+                      except KeyError: continue
+                      if c.endswith('.gz'): raw=gzip.decompress(raw)
+                      return json.loads(raw.decode('utf-8'))
+                  raise SystemExit('missing '+name)
+              d=load('ermak_diagnostics'); s=load('ermak_schemes'); p=load('vl80s_pneumatic')
+              scenario=next((x.get('title') or x.get('symptom')) for x in d['scenarios'] if (x.get('title') or x.get('symptom')))
+              scheme=next(x['title'] for x in s['schemes'] if str(x.get('schemeType','')).startswith('electrical') and x.get('title'))
+              benchmark=next(x['label'] for x in p['referenceBenchmarks'] if x.get('label'))
+          with open('qa-targets.env','w',encoding='utf-8') as f:
+              f.write('ERMAK_SCENARIO='+shlex.quote(scenario)+'\n')
+              f.write('ERMAK_SCHEME='+shlex.quote(scheme)+'\n')
+              f.write('VL80_BENCHMARK='+shlex.quote(benchmark)+'\n')
+          print(scenario); print(scheme); print(benchmark)
+          PY
+
+      - name: Write black-box driver
+        shell: bash
+        run: |
+          cat > "$GITHUB_WORKSPACE/final-blackbox.sh" <<'BASH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          source "$GITHUB_WORKSPACE/qa-targets.env"
+          APK=$(find "$GITHUB_WORKSPACE/apk" -name '*.apk' | head -1)
+          OUT="$GITHUB_WORKSPACE/final-evidence"
+          mkdir -p "$OUT"
+          printf 'scenario=%s\nscheme=%s\nbenchmark=%s\n' "$ERMAK_SCENARIO" "$ERMAK_SCHEME" "$VL80_BENCHMARK" > "$OUT/targets.txt"
+          adb install -r "$APK" > "$OUT/install.txt" 2>&1 || exit 21
+          adb logcat -c
+          adb shell am force-stop ru.railbrake.calculator || true
+          adb shell am start -n ru.railbrake.calculator/.MainActivity > "$OUT/start.txt" 2>&1 || true
+
+          dump_ui(){ adb shell uiautomator dump /sdcard/window.xml >/dev/null 2>&1 || true; adb pull /sdcard/window.xml "$1" >/dev/null 2>&1 || true; }
+          capture(){ dump_ui "$OUT/$1.xml"; sleep 1; adb exec-out screencap -p > "$OUT/$1.png" 2>/dev/null || true; }
+          has_text(){ local target="$1"; dump_ui /tmp/window.xml; TARGET="$target" python3 - <<'PY'
+          import os,xml.etree.ElementTree as ET
+          q=os.environ['TARGET'].casefold(); root=ET.parse('/tmp/window.xml').getroot()
+          vals=[(n.attrib.get('text') or n.attrib.get('content-desc') or '').strip().casefold() for n in root.iter('node')]
+          raise SystemExit(0 if any(q in x for x in vals) else 1)
+          PY
+          }
+          tap_text(){ local target="$1"; dump_ui /tmp/window.xml; coords=$(TARGET="$target" python3 - <<'PY'
+          import os,re,xml.etree.ElementTree as ET
+          q=os.environ['TARGET'].casefold(); root=ET.parse('/tmp/window.xml').getroot(); nodes=list(root.iter('node'))
+          def label(n): return (n.attrib.get('text') or n.attrib.get('content-desc') or '').strip()
+          def bnd(n):
+              m=re.match(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',n.attrib.get('bounds',''))
+              return tuple(map(int,m.groups())) if m else None
+          ms=[n for n in nodes if label(n).casefold()==q] or [n for n in nodes if q in label(n).casefold()]
+          if not ms: raise SystemExit(3)
+          b=bnd(ms[0]);
+          if not b: raise SystemExit(4)
+          x=(b[0]+b[2])//2; y=(b[1]+b[3])//2
+          cs=[]
+          for n in nodes:
+              if n.attrib.get('clickable')!='true': continue
+              c=bnd(n)
+              if c and c[0]<=x<=c[2] and c[1]<=y<=c[3]: cs.append(((c[2]-c[0])*(c[3]-c[1]),c))
+          if cs:
+              c=min(cs,key=lambda z:z[0])[1]; x=(c[0]+c[2])//2; y=(c[1]+c[3])//2
+          print(x,y)
+          PY
+          ) || return 1; read -r x y <<< "$coords"; adb shell input tap "$x" "$y"; sleep 2; }
+          tap_scroll(){ local target="$1"; for _ in $(seq 1 14); do tap_text "$target" && return 0; adb shell input swipe 540 1650 540 650 350 >/dev/null 2>&1 || true; sleep 1; done; return 1; }
+          open_drawer(){ tap_text '☰'; }
+
+          ready=0
+          for i in $(seq 1 24); do dump_ui "$OUT/startup-$i.xml"; if grep -q 'Железнодорожный помощник' "$OUT/startup-$i.xml" 2>/dev/null; then ready=1; break; fi; sleep 3; done
+          [ "$ready" -eq 1 ] || exit 31
+          capture 01-home
+
+          open_drawer || exit 32; tap_text 'Приёмка' || exit 33; capture 02-acceptance-root
+          has_text 'Полная приёмка' || exit 34; has_text 'Список по зонам' || exit 35
+          tap_scroll 'Полная приёмка' || exit 36; capture 03-acceptance-step
+          has_text 'Пошаговая приёмка' || exit 37; has_text 'Перед переходом выберите результат проверки этого пункта' || exit 38
+          tap_scroll 'Проверено' || exit 39; capture 04-acceptance-checked; has_text 'Состояние: Проверено' || exit 40
+
+          open_drawer || exit 41; tap_text 'Диагностика' || exit 42; tap_text 'Ермак' || exit 43; sleep 2; capture 05-ermak-diagnostics
+          has_text 'Техническая база Ермак' || exit 44
+          tap_scroll "$ERMAK_SCENARIO" || exit 45; capture 06-ermak-scenario; has_text 'Интерактивный маршрут диагностики' || exit 46
+
+          open_drawer || exit 47; tap_text 'Локомотивы / атлас' || exit 48; tap_text 'Ермак' || true; tap_scroll 'Электросхемы' || exit 49
+          capture 07-ermak-electrical; tap_scroll "$ERMAK_SCHEME" || exit 50; capture 08-ermak-scheme; has_text 'Интерактивная функциональная схема' || exit 51
+
+          open_drawer || exit 52; tap_text 'Локомотивы / атлас' || exit 53; tap_text 'ВЛ80С' || true; tap_scroll 'Пневмосхемы' || exit 54
+          tap_scroll "$VL80_BENCHMARK" || exit 55; capture 09-vl80-benchmark; has_text 'Учебный ориентир' || exit 56
+
+          adb shell dumpsys meminfo ru.railbrake.calculator > "$OUT/meminfo.txt" 2>&1 || true
+          adb logcat -d > "$OUT/logcat.txt" 2>&1 || true
+          grep -E 'FATAL EXCEPTION|AndroidRuntime.*ru\.railbrake\.calculator' "$OUT/logcat.txt" && exit 57
+          echo 'PASS: acceptance + Ermak diagnostics + Ermak scheme + VL80 benchmark observed' > "$OUT/result.txt"
+          BASH
+          chmod +x "$GITHUB_WORKSPACE/final-blackbox.sh"
+
+      - name: Exercise recovery8 on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: bash "$GITHUB_WORKSPACE/final-blackbox.sh"
+
+      - name: Upload final evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery8-final-blackbox-evidence-v2
+          path: final-evidence/
+          if-no-files-found: warn
+          retention-days: 14
