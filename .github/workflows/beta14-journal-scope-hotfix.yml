@@ -1,0 +1,32 @@
+name: Beta14 journal scope hotfix
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/fix_beta14_ermak_journal_scope.py
+      - .github/workflows/beta14-journal-scope-hotfix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Fix Ermak journal scope
+        run: python3 .github/scripts/fix_beta14_ermak_journal_scope.py
+      - name: Verify mirrors
+        run: cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+      - name: Commit hotfix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Beta14: keep Ermak journal view scoped to journal'
+          git push origin HEAD:dev14-integration
