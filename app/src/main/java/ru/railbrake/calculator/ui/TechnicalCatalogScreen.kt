@@ -285,7 +285,8 @@ private fun TechnicalEntryDetail(
                     references.forEach { target ->
                         OutlinedButton(
                             onClick = { onOpen(target) },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            border = BorderStroke(1.dp, Color.Black)
                         ) { Text("${technicalEntryTitle(target)} →") }
                     }
                 }
@@ -299,7 +300,8 @@ private fun TechnicalEntryDetail(
             items(relatedEntries, key = { "related-${it.id}" }) { target ->
                 OutlinedButton(
                     onClick = { onOpen(target) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    border = BorderStroke(1.dp, Color.Black)
                 ) {
                     Text("${technicalEntryTitle(target)} →")
                 }
@@ -336,7 +338,11 @@ private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalD
             Text(current.second, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
             current.third?.let { target ->
                 technicalEntrySubtitle(target)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                OutlinedButton(onClick = { onOpen(target) }, modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(
+                    onClick = { onOpen(target) },
+                    modifier = Modifier.fillMaxWidth(),
+                    border = BorderStroke(1.dp, Color.Black)
+                ) {
                     Text("Открыть карточку оборудования")
                 }
             } ?: Text(
@@ -361,7 +367,8 @@ private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalD
                         step = steps.indexOfFirst { it.first == id }.coerceAtLeast(0)
                         query = ""
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    border = BorderStroke(1.dp, Color.Black)
                 ) {
                     Text(if (target == null) label else "$label →")
                 }
@@ -417,32 +424,15 @@ private fun technicalBlockContainer(section: TechnicalSection,title:String):Colo
 }
 
 @Composable
-private fun technicalSectionContainer(section:TechnicalSection):Color=when(section){
-    TechnicalSection.PROFILES->MaterialTheme.colorScheme.tertiaryContainer
-    TechnicalSection.SYSTEMS->MaterialTheme.colorScheme.secondaryContainer
-    TechnicalSection.EQUIPMENT->MaterialTheme.colorScheme.primaryContainer
-    TechnicalSection.KNOWLEDGE->MaterialTheme.colorScheme.tertiaryContainer
-    TechnicalSection.DIAGNOSTICS->MaterialTheme.colorScheme.secondaryContainer
-    TechnicalSection.ELECTRICAL->MaterialTheme.colorScheme.tertiaryContainer
-    TechnicalSection.PNEUMATIC->MaterialTheme.colorScheme.primaryContainer
-    TechnicalSection.ACCEPTANCE->MaterialTheme.colorScheme.secondaryContainer
-}
+private fun technicalSectionContainer(section:TechnicalSection):Color =
+    MaterialTheme.colorScheme.primaryContainer
 
 @Composable
 private fun technicalSectionAccent(section: TechnicalSection, status: String): Color {
     if (status.equals("STOP_AND_REPORT", true) || status.equals("RESTRICT_OPERATION", true)) {
         return MaterialTheme.colorScheme.error
     }
-    return when (section) {
-        TechnicalSection.PROFILES -> MaterialTheme.colorScheme.tertiary
-        TechnicalSection.SYSTEMS -> MaterialTheme.colorScheme.secondary
-        TechnicalSection.EQUIPMENT -> MaterialTheme.colorScheme.primary
-        TechnicalSection.KNOWLEDGE -> MaterialTheme.colorScheme.tertiary
-        TechnicalSection.DIAGNOSTICS -> MaterialTheme.colorScheme.secondary
-        TechnicalSection.ELECTRICAL -> MaterialTheme.colorScheme.tertiary
-        TechnicalSection.PNEUMATIC -> MaterialTheme.colorScheme.primary
-        TechnicalSection.ACCEPTANCE -> MaterialTheme.colorScheme.primary
-    }
+    return MaterialTheme.colorScheme.primary
 }
 
 internal fun technicalStatusLabel(status: String): String? = technicalStatusPresentation(status)
