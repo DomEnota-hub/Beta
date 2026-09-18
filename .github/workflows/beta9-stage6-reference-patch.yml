@@ -1,0 +1,31 @@
+name: Beta9 stage6 Ermak reference deepening
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/beta9-stage6-reference-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Deepen Ermak reference presentation
+        run: python3 qa/beta9_stage6_reference_patch.py
+      - name: Commit Beta9 reference package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app patch/app
+          git diff --cached --check
+          git commit -m "Beta9: deepen Ermak systems and equipment reference"
+          git push origin HEAD:dev14-integration
