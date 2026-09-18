@@ -1,0 +1,34 @@
+name: Beta11 Ermak adaptive choice layout
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/apply_beta11_ermak_choice_layout.py
+      - .github/workflows/beta11-ermak-choice-layout.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Apply adaptive choice layout
+        run: python3 .github/scripts/apply_beta11_ermak_choice_layout.py
+      - name: Verify mirrors
+        run: |
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+      - name: Commit Beta11
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt app/build.gradle.kts patch/app/build.gradle.kts
+          git diff --cached --quiet && exit 0
+          git commit -m 'Beta11: adapt Ermak diagnostic choice layout'
+          git push origin HEAD:dev14-integration
