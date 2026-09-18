@@ -1,0 +1,37 @@
+name: Hide acceptance locator metadata
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/hide_acceptance_locator_metadata.py
+      - .github/workflows/hide-acceptance-locator-metadata.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Hide service locator metadata
+        run: python3 .github/scripts/hide_acceptance_locator_metadata.py
+      - name: Verify mirrors
+        run: cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
+      - name: Verify hidden locator rules
+        run: |
+          grep -Fq '"search by symptom/equipment"' app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
+          grep -Fq '"applicable brake rules"' app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
+          grep -Fq 'key.startsWith("search by ")' app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app patch
+          git diff --cached --quiet && exit 0
+          git commit -m 'Hide acceptance service locator metadata'
+          git push origin HEAD:dev14-integration
