@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,7 @@ import ru.railbrake.calculator.core.ExamQuestion
 import ru.railbrake.calculator.core.ExamQuestionRepository
 import ru.railbrake.calculator.core.DiagnosticRepository
 import ru.railbrake.calculator.core.Vl80sObservationCatalog
+import ru.railbrake.calculator.data.SecretAccessRepository
 
 private fun examBlockDisplayTitle(sourceTitle: String): String = when (sourceTitle) {
     "Тест 1" -> "Блок 1"
@@ -51,6 +53,8 @@ fun ExamQuestionScreen(
 ) {
     val context = LocalContext.current
     val repository = remember { ExamQuestionRepository(context) }
+    val secretAccessRepository = remember { SecretAccessRepository(context) }
+    var showInKnowledge by remember { mutableStateOf(secretAccessRepository.showExamMaterialsInKnowledge()) }
     var query by rememberSaveable { mutableStateOf("") }
     var block by rememberSaveable { mutableStateOf<String?>(null) }
     var category by rememberSaveable { mutableStateOf<String?>(null) }
@@ -65,6 +69,33 @@ fun ExamQuestionScreen(
                 RailSectionHeader("База вопросов", "329 проверочных вопросов • быстрый поиск по формулировке и ответу")
             }
             TextButton(onClick = onHide) { Text("Скрыть") }
+        }
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(14.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("Показывать материалы в справочнике", fontWeight = FontWeight.Bold)
+                    Text(
+                        if (showInKnowledge) "Материалы из базы 329 вопросов видны в обычном справочнике."
+                        else "Материалы из базы 329 вопросов скрыты из обычного справочника.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = showInKnowledge,
+                    onCheckedChange = { enabled ->
+                        showInKnowledge = enabled
+                        secretAccessRepository.setShowExamMaterialsInKnowledge(enabled)
+                    }
+                )
+            }
         }
         OutlinedTextField(
             value = query,

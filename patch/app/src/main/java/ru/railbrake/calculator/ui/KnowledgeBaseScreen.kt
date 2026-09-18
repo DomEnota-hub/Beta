@@ -30,6 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -63,6 +64,7 @@ import ru.railbrake.calculator.core.KnowledgeArticle
 import ru.railbrake.calculator.core.KnowledgeRepository
 import ru.railbrake.calculator.core.PneumaticScenario
 import ru.railbrake.calculator.data.FavoriteArticleRepository
+import ru.railbrake.calculator.data.SecretAccessRepository
 import kotlin.math.sqrt
 
 @Composable
@@ -75,7 +77,11 @@ fun KnowledgeBaseScreen(
     var selectedArticleId by rememberSaveable(initialArticleId) { mutableStateOf(initialArticleId) }
     val context = LocalContext.current
     val favoritesRepository = remember { FavoriteArticleRepository(context) }
-    val examQuestionRepository = remember { ExamQuestionRepository(context) }
+    val secretAccessRepository = remember { SecretAccessRepository(context) }
+    val showExamMaterialsInKnowledge = remember { secretAccessRepository.showExamMaterialsInKnowledge() }
+    val examQuestionRepository = remember(showExamMaterialsInKnowledge) {
+        if (showExamMaterialsInKnowledge) ExamQuestionRepository(context) else null
+    }
     var favoriteIds by remember { mutableStateOf(favoritesRepository.load()) }
     val article = selectedArticleId?.let(KnowledgeRepository::articleById)
 
@@ -96,6 +102,7 @@ fun KnowledgeBaseScreen(
             onSectionBack = onSectionBack,
             favoriteIds = favoriteIds,
             examQuestionRepository = examQuestionRepository,
+            showExamMaterialsInKnowledge = showExamMaterialsInKnowledge,
             onOpenArticle = { selectedArticleId = it.id },
             onToggleFavorite = ::toggleFavorite
         )
@@ -116,7 +123,8 @@ private fun KnowledgeHome(
     sectionBackLabel: String?,
     onSectionBack: (() -> Unit)?,
     favoriteIds: Set<String>,
-    examQuestionRepository: ExamQuestionRepository,
+    examQuestionRepository: ExamQuestionRepository?,
+    showExamMaterialsInKnowledge: Boolean,
     onOpenArticle: (KnowledgeArticle) -> Unit,
     onToggleFavorite: (String) -> Unit
 ) {
@@ -126,14 +134,22 @@ private fun KnowledgeHome(
     val results = remember(query, category, onlyFavorites, favoriteIds) {
         KnowledgeRepository.search(query, category).filter { !onlyFavorites || it.id in favoriteIds }
     }
-    val categories = remember {
-        (KnowledgeRepository.categories + examQuestionRepository.categories).distinct()
+    val categories = remember(showExamMaterialsInKnowledge, examQuestionRepository) {
+        if (showExamMaterialsInKnowledge && examQuestionRepository != null) {
+            (KnowledgeRepository.categories + examQuestionRepository.categories).distinct()
+        } else {
+            KnowledgeRepository.categories
+        }
     }
-    val thematicFacts = remember(query, category, onlyFavorites) {
-        if (onlyFavorites) emptyList() else examQuestionRepository.thematicFacts(
-            query = query,
-            category = category.takeUnless { it == "Все" }
-        )
+    val thematicFacts = remember(query, category, onlyFavorites, showExamMaterialsInKnowledge, examQuestionRepository) {
+        if (!showExamMaterialsInKnowledge || onlyFavorites || examQuestionRepository == null) {
+            emptyList()
+        } else {
+            examQuestionRepository.thematicFacts(
+                query = query,
+                category = category.takeUnless { it == "Все" }
+            )
+        }
     }
 
     Column(
@@ -155,6 +171,13 @@ private fun KnowledgeHome(
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Поиск по справочнику") },
             singleLine = true,
+            trailingIcon = {
+                if (query.isNotEmpty()) {
+                    IconButton(onClick = { query = "" }) {
+                        Text("×", style = MaterialTheme.typography.titleLarge)
+                    }
+                }
+            },
             shape = RoundedCornerShape(16.dp)
         )
 

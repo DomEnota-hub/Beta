@@ -11,11 +11,19 @@ class SecretAccessRepository(context: Context) {
         preferences.edit().putBoolean(KEY_UNLOCKED, true).apply()
     }
 
+    fun showExamMaterialsInKnowledge(): Boolean =
+        preferences.getBoolean(KEY_SHOW_IN_KNOWLEDGE, false)
+
+    fun setShowExamMaterialsInKnowledge(show: Boolean) {
+        preferences.edit().putBoolean(KEY_SHOW_IN_KNOWLEDGE, show).apply()
+    }
+
     fun hide() {
         preferences.edit().remove(KEY_UNLOCKED).apply()
     }
 
     companion object {
         private const val KEY_UNLOCKED = "exam_questions_unlocked"
+        private const val KEY_SHOW_IN_KNOWLEDGE = "exam_materials_in_knowledge"
     }
 }
