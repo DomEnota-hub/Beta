@@ -1,0 +1,70 @@
+name: Verify safety reference section
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/verify-safety-reference-section.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Verify source and mirrors
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'SAFETY("Охрана труда")' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'TechnicalSection.SAFETY -> loadSafety(TechnicalFamily.VL80S)' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'TechnicalSection.SAFETY -> loadSafety(TechnicalFamily.ERMAK)' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'title = "Опасные и вредные производственные факторы"' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'title = "Когда работу нужно прекратить и сообщить"' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
