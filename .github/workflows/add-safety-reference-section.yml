@@ -1,0 +1,38 @@
+name: Add safety reference section
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/add_safety_reference_section.py
+      - .github/workflows/add-safety-reference-section.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Add safety reference section
+        run: python3 .github/scripts/add_safety_reference_section.py
+      - name: Verify mirrors
+        run: cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+      - name: Verify safety section content
+        run: |
+          grep -Fq 'SAFETY("Охрана труда")' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'title = "Опасные и вредные производственные факторы"' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'title = "Электробезопасность и границы допуска"' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'title = "Когда работу нужно прекратить и сообщить"' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+      - name: Commit safety section
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app patch
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add occupational safety reference section'
+          git push origin HEAD:dev14-integration
