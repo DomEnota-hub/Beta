@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -110,6 +111,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
     var observations by rememberSaveable(scenario.id) { mutableStateOf("") }
     var report by rememberSaveable(scenario.id) { mutableStateOf("") }
     var uncertain by rememberSaveable(scenario.id) { mutableStateOf(false) }
+    var questionNumber by rememberSaveable(scenario.id) { mutableIntStateOf(1) }
     val node = scenario.nodes[nodeId]
 
     LazyColumn(
@@ -142,55 +144,105 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
             item { InfoCard("Ошибка сценария", listOf("Узел маршрута не найден. Вернитесь к выбору неисправности."), MaterialTheme.colorScheme.errorContainer) }
         } else {
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (node.type == "terminal") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
-                    ),
-                    shape = RoundedCornerShape(18.dp)
-                ) {
-                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Text(
-                            when (node.type) {
-                                "question" -> "Уточнение"
-                                "finding" -> "Выявленный признак"
-                                "source_action" -> "Подтверждённое действие"
-                                "terminal" -> "Результат"
-                                else -> "Шаг диагностики"
-                            },
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Black
-                        )
-                        Text(node.text)
-                        node.choices.forEach { choice ->
-                            Button(
-                                onClick = {
-                                    history = history + "${node.text} — ${choice.label}"
-                                    nodeId = choice.nextNodeId
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) { Text(choice.label) }
-                        }
-                        if (node.type == "question" && node.choices.none { choice ->
-                                choice.label.contains("не уверен", true) || choice.label.contains("не знаю", true) ||
-                                    choice.label.contains("недостаточно", true)
-                            }) {
+                if (node.type == "question") {
+                    val uncertaintyChoice = node.choices.firstOrNull { choice ->
+                        choice.label.contains("не уверен", true) ||
+                            choice.label.contains("не знаю", true) ||
+                            choice.label.contains("недостаточно", true)
+                    }
+                    val answerChoices = node.choices.filterNot { it == uncertaintyChoice }
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.42f)),
+                        shape = RoundedCornerShape(17.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text("Уточнение симптома", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                            Text("Шаг $questionNumber; дальнейший вопрос зависит от ответа")
+                            Text(node.text, fontWeight = FontWeight.Bold)
+                            if (answerChoices.isNotEmpty()) {
+                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    answerChoices.getOrNull(0)?.let { choice ->
+                                        Button(onClick = {
+                                            history = history + "${node.text} — ${choice.label}"
+                                            questionNumber += 1
+                                            nodeId = choice.nextNodeId
+                                        }) { Text(choice.label) }
+                                    }
+                                    answerChoices.getOrNull(1)?.let { choice ->
+                                        OutlinedButton(onClick = {
+                                            history = history + "${node.text} — ${choice.label}"
+                                            questionNumber += 1
+                                            nodeId = choice.nextNodeId
+                                        }) { Text(choice.label) }
+                                    }
+                                }
+                                answerChoices.drop(2).forEach { choice ->
+                                    OutlinedButton(
+                                        onClick = {
+                                            history = history + "${node.text} — ${choice.label}"
+                                            questionNumber += 1
+                                            nodeId = choice.nextNodeId
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) { Text(choice.label) }
+                                }
+                            }
                             TextButton(
                                 onClick = {
-                                    history = history + "${node.text} — Не уверен"
-                                    uncertain = true
-                                },
-                                modifier = Modifier.fillMaxWidth()
+                                    history = history + "${node.text} — ${uncertaintyChoice?.label ?: "Не уверен"}"
+                                    if (uncertaintyChoice != null) {
+                                        questionNumber += 1
+                                        nodeId = uncertaintyChoice.nextNodeId
+                                    } else {
+                                        uncertain = true
+                                    }
+                                }
                             ) { Text("Не уверен — записать и завершить") }
+                            history.filter { " — " in it }.forEach {
+                                Text("• $it", style = MaterialTheme.typography.bodySmall)
+                            }
                         }
-                        if (node.choices.isEmpty() && node.nextNodeId != null) {
-                            Button(
-                                onClick = {
-                                    if (node.text.isNotBlank()) history = history + node.text
-                                    nodeId = node.nextNodeId
+                    }
+                } else {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (node.type == "terminal") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+                        ),
+                        shape = RoundedCornerShape(18.dp)
+                    ) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text(
+                                when (node.type) {
+                                    "finding" -> "Выявленный признак"
+                                    "source_action" -> "Подтверждённое действие"
+                                    "terminal" -> "Результат"
+                                    else -> "Шаг диагностики"
                                 },
-                                modifier = Modifier.fillMaxWidth()
-                            ) { Text("Продолжить") }
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Black
+                            )
+                            Text(node.text)
+                            node.choices.forEach { choice ->
+                                Button(
+                                    onClick = {
+                                        history = history + "${node.text} — ${choice.label}"
+                                        nodeId = choice.nextNodeId
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) { Text(choice.label) }
+                            }
+                            if (node.choices.isEmpty() && node.nextNodeId != null) {
+                                Button(
+                                    onClick = {
+                                        if (node.text.isNotBlank()) history = history + node.text
+                                        nodeId = node.nextNodeId
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) { Text("Продолжить") }
+                            }
                         }
                     }
                 }
@@ -237,6 +289,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                         nodeId = scenario.startNodeId
                         history = emptyList()
                         uncertain = false
+                        questionNumber = 1
                     }) { Text("Начать заново") }
                     Button(onClick = onBack) { Text("К списку неисправностей") }
                 }
