@@ -1,0 +1,59 @@
+name: Copy hotfix3 into Beta
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/copy-hotfix3.yml
+
+permissions:
+  contents: write
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Beta control repo
+        uses: actions/checkout@v4
+        with:
+          path: beta-control
+
+      - name: Checkout exact hotfix3
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: ac5607f8d7a9c359f91da0eede309b2983ad18cf
+          path: source
+          fetch-depth: 0
+
+      - name: Add Beta usage restriction and baseline note
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp beta-control/BETA_USE_RESTRICTION.txt source/BETA_USE_RESTRICTION.txt
+          cat > source/BETA_BASELINE.md <<'EOF'
+          # RailBrakeCalculator Beta baseline
+
+          This repository is a Beta copy of:
+          - upstream: `DomEnota-hub/Test-`
+          - commit: `ac5607f8d7a9c359f91da0eede309b2983ad18cf`
+          - version: `1.2.2-dev14-hotfix3`
+
+          Experimental use only. See `BETA_USE_RESTRICTION.txt`.
+          EOF
+
+      - name: Publish full hotfix3 copy to Beta main
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd source
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add BETA_USE_RESTRICTION.txt BETA_BASELINE.md
+          git commit -m 'Beta: copy hotfix3 baseline' || true
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin HEAD:main
