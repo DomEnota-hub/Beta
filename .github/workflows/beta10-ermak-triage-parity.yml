@@ -1,0 +1,32 @@
+name: Beta10 Ermak triage parity
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - qa/beta10_ermak_triage_parity.py
+      - .github/workflows/beta10-ermak-triage-parity.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Apply Ermak triage parity patch
+        run: python3 qa/beta10_ermak_triage_parity.py
+      - name: Commit Beta10 triage parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app patch/app
+          git diff --cached --check
+          git commit -m "Beta10: align Ermak triage with VL80S"
+          git push origin HEAD:dev14-integration
