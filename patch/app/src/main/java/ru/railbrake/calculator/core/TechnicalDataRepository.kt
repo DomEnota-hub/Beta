@@ -132,7 +132,7 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.ELECTRICAL -> loadVl80sElectrical()
             TechnicalSection.PNEUMATIC -> loadVl80sPneumatic()
             TechnicalSection.ACCEPTANCE -> loadVl80sAcceptance()
-            TechnicalSection.KNOWLEDGE -> loadVl80sKnowledge() + loadWheelFlatReference(TechnicalFamily.VL80S)
+            TechnicalSection.KNOWLEDGE -> loadVl80sKnowledge() + loadWheelFlatReference(TechnicalFamily.VL80S) + loadBrakeJamReference(TechnicalFamily.VL80S)
             TechnicalSection.SYSTEMS -> loadVl80sSystems()
             TechnicalSection.SAFETY -> loadSafety(TechnicalFamily.VL80S)
         }
@@ -140,7 +140,7 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.PROFILES -> loadErmakProfiles()
             TechnicalSection.SYSTEMS -> loadErmakSystems()
             TechnicalSection.EQUIPMENT -> loadErmakEquipment()
-            TechnicalSection.KNOWLEDGE -> loadErmakKnowledge() + loadWheelFlatReference(TechnicalFamily.ERMAK)
+            TechnicalSection.KNOWLEDGE -> loadErmakKnowledge() + loadWheelFlatReference(TechnicalFamily.ERMAK) + loadBrakeJamReference(TechnicalFamily.ERMAK)
             TechnicalSection.DIAGNOSTICS -> loadErmakDiagnostics()
             TechnicalSection.ELECTRICAL -> loadErmakSchemes().filter { it.section == TechnicalSection.ELECTRICAL }
             TechnicalSection.PNEUMATIC -> loadErmakSchemes().filter { it.section == TechnicalSection.PNEUMATIC }
@@ -592,6 +592,49 @@ class TechnicalDataRepository(private val context: Context) {
                 hotspots = technicalHotspots
             )
         }
+
+
+    private fun loadBrakeJamReference(family: TechnicalFamily): List<TechnicalEntry> {
+        val id = if (family == TechnicalFamily.VL80S) "vl80-brake-jam" else "ER-KB-BRAKE-JAM"
+        return listOf(
+            TechnicalEntry(
+                id = id,
+                family = family,
+                section = TechnicalSection.KNOWLEDGE,
+                title = "Заклинивание тормоза вагона: порядок действий",
+                subtitle = "Ручной отпуск, выключение неисправного тормоза и контроль фактического отпуска",
+                status = "ATTENTION",
+                blocks = listOf(
+                    TechnicalBlock("Если отдельный вагон не отпустил", listOf(
+                        "По указанию машиниста проверить фактический отпуск: выход штока тормозного цилиндра и отход тормозных колодок (накладок) от колес (дисков).",
+                        "Если тормоз отдельного вагона не отпустил, выполнить ручной отпуск — выпустить воздух из запасного резервуара через выпускной клапан.",
+                        "После восстановления зарядного давления выполнить установленную проверку торможения и отпуска и повторно убедиться в отпуске тормоза."
+                    )),
+                    TechnicalBlock("Если неисправность сохраняется и тормоз выключается", listOf(
+                        "Перекрыть разобщительный кран на отводе тормозной магистрали к воздухораспределителю — неисправный тормоз вагона отключается от управления по тормозной магистрали.",
+                        "Полностью выпустить воздух из запасного резервуара и камер воздухораспределителя через выпускной клапан.",
+                        "Убедиться, что шток тормозного цилиндра вернулся и тормозные колодки (накладки) отошли от колес (дисков).",
+                        "Если после полного выпуска воздуха колодки (накладки) не отошли, не считать тормоз отпущенным: требуется осмотр механической части тормоза и дальнейшее решение по установленному порядку."
+                    )),
+                    TechnicalBlock("После выключения тормоза", listOf(
+                        "Доложить машинисту номер или место вагона, выполненные действия и результат проверки отпуска.",
+                        "Учесть выключенный тормоз при определении фактического тормозного нажатия поезда и внести необходимые изменения в справку ВУ-45 в установленном порядке.",
+                        "После возобновления движения проверить действие тормозов поезда в установленном порядке."
+                    )),
+                    TechnicalBlock("Безопасность при вмешательстве в тормозное оборудование", listOf(
+                        "Если требуется техническое обслуживание или ремонт тормозного оборудования грузового вагона в составе поезда, работы выполняются только после перекрытия разобщительного крана и выпуска сжатого воздуха из запасного (рабочего) резервуара и тормозного цилиндра.",
+                        "Не разбирать соединения и не ослаблять элементы пневматической системы, находящиеся под давлением."
+                    )),
+                    TechnicalBlock("Нормативная основа", listOf(
+                        "Распоряжение ОАО «РЖД» от 12.12.2017 № 2580р (ред. от 18.02.2025): при отсутствии отпуска у отдельных вагонов предусмотрен выпуск воздуха из запасных резервуаров через выпускной клапан с последующей проверкой отпуска.",
+                        "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава, протокол Совета по железнодорожному транспорту от 6–7 мая 2014 г. № 60.",
+                        "ПОТ РЖД-4100612-ЦДИ-128-2018, п. 2.2.4: требования безопасности при обслуживании и ремонте тормозного оборудования грузового вагона в составе поезда."
+                    ))
+                ),
+                searchText = "заклинивание тормоза не отпустил вагон ручной отпуск воздухораспределитель выпускной клапан запасный резервуар разобщительный кран колодки тормозной цилиндр ву-45 тормозное нажатие".lowercase()
+            )
+        )
+    }
 
 
     private fun loadWheelFlatReference(family: TechnicalFamily): List<TechnicalEntry> {
