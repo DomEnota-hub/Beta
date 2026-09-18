@@ -298,7 +298,12 @@ private fun DiagnosticCatalog(
                         Text(observation.kind.title, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         Text(observation.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
                         Text(observation.description)
-                        Text("Связано: ${observation.equipmentIds.joinToString()}", style = MaterialTheme.typography.bodySmall)
+                        val relatedEquipmentTitles = observation.equipmentIds
+                            .mapNotNull { id -> Vl80sObservationCatalog.equipment(id)?.title }
+                            .distinct()
+                        if (relatedEquipmentTitles.isNotEmpty()) {
+                            Text("Связано: ${relatedEquipmentTitles.joinToString()}", style = MaterialTheme.typography.bodySmall)
+                        }
                         Text("Открыть безопасный алгоритм →", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                 }

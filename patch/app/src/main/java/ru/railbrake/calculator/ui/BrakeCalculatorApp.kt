@@ -186,7 +186,7 @@ fun BrakeCalculatorApp(
                     )
                     Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Text("Железнодорожный помощник", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                        Text("ВЛ80С • Ермак", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                        Text("Пользовательский профиль", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                     }
                 }
 
@@ -1424,12 +1424,22 @@ private fun PaletteScreen(
     palette: AccentPalette,
     onPaletteChange: (AccentPalette) -> Unit
 ) {
+    val context = LocalContext.current
+    val packageInfo = remember(context) {
+        context.packageManager.getPackageInfo(context.packageName, 0)
+    }
+    val actualVersionCode = if (android.os.Build.VERSION.SDK_INT >= 28) {
+        packageInfo.longVersionCode
+    } else {
+        @Suppress("DEPRECATION")
+        packageInfo.versionCode.toLong()
+    }
     SectionCard("Оформление", "Графитовая основа постоянна; меняется только рабочий акцент") {
         AccentPalette.entries.forEach { option ->
             ChoiceOption(
                 title = option.title,
                 subtitle = when (option) {
-                    AccentPalette.BLUE -> "Основной янтарный акцент нового интерфейса"
+                    AccentPalette.BLUE -> "Классический холодный синий акцент приложения"
                     AccentPalette.GREEN -> "Спокойный зелёный для альтернативного оформления"
                     AccentPalette.YELLOW -> "Более светлый сигнальный акцент"
                     AccentPalette.PURPLE -> "Холодный дополнительный акцент"
@@ -1439,9 +1449,9 @@ private fun PaletteScreen(
             )
         }
     }
-    RailInfoBand("Основная тема dev8: графитовый фон, металлические вторичные элементы и янтарный рабочий акцент. Красный зарезервирован для опасности и ОПП.")
+    RailInfoBand("Графитовая основа постоянна; выбранная палитра меняет рабочий акцент. Красный зарезервирован для опасности и ОПП.")
     SectionCard("О приложении", "Текущая рабочая сборка") {
-        Metric("Версия", "1.2.2-dev10 (138)")
+        Metric("Версия", "${packageInfo.versionName ?: "—"} ($actualVersionCode)")
         Metric("Профиль", "Рабочий")
     }
     SafetyNotice()

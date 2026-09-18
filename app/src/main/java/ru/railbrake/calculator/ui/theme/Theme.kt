@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 enum class AccentPalette(val title: String, val primary: Color, val container: Color) {
-    BLUE("Янтарный", RailAmber, RailAmberSoft),
+    BLUE("Холодный синий", Color(0xFF82A9FF), Color(0xFF182947)),
     GREEN("Стальной зелёный", Color(0xFF68C9A5), Color(0xFF18342C)),
     YELLOW("Сигнальный жёлтый", Color(0xFFFFC857), Color(0xFF3B3017)),
     PURPLE("Холодный фиолетовый", Color(0xFFB9A3E8), Color(0xFF302744))
