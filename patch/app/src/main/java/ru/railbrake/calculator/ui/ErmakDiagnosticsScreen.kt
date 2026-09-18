@@ -66,7 +66,7 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
     ) {
         item {
             RailSectionHeader("Диагностика Ермак", "Выберите неисправность или наблюдаемый симптом")
-            ErmakSafetyNotice()
+            DiagnosticSafetyNotice()
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
@@ -99,26 +99,6 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
                     Text("Начать диагностику →", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold)
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun ErmakSafetyNotice() {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-        shape = RoundedCornerShape(17.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-            Text(
-                "Важно: это не допуск к работам",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.error
-            )
-            Text("• ${DiagnosticRepository.safetyNotice}")
         }
     }
 }

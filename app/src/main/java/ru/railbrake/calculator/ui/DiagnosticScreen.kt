@@ -154,7 +154,7 @@ private fun DiagnosticCatalog(
                 "${DiagnosticRepository.scenarios.size} сценариев • ветвящиеся уточнения • безопасные проверки"
             )
         }
-        item { SafetyNotice() }
+        item { DiagnosticSafetyNotice() }
         item {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 item {
@@ -429,7 +429,7 @@ private fun DiagnosticDetails(
                 )
             }
         }
-        item { SafetyNotice() }
+        item { DiagnosticSafetyNotice() }
         item { InfoCard("Сначала", scenario.immediateActions, MaterialTheme.colorScheme.primaryContainer) }
         if (scenario.observableSigns.isNotEmpty()) {
             item { InfoCard("Что наблюдать", scenario.observableSigns, MaterialTheme.colorScheme.surfaceVariant) }
@@ -628,7 +628,7 @@ private fun EquipmentDetails(
             Text(equipment.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
             Text(equipment.purpose, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        item { SafetyNotice() }
+        item { DiagnosticSafetyNotice() }
         item {
             InfoCard(
                 "Назначение и связи",
@@ -870,7 +870,7 @@ private fun DiagnosticCheckCard(check: DiagnosticCheck) {
 }
 
 @Composable
-private fun SafetyNotice() {
+internal fun DiagnosticSafetyNotice() {
     BorderedCautionCard(
         title = "Важно: это не допуск к работам",
         lines = listOf(DiagnosticRepository.safetyNotice)
