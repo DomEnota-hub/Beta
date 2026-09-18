@@ -18,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import ru.railbrake.calculator.core.DiagnosticRepository
-import ru.railbrake.calculator.core.Vl80sObservationCatalog
 import ru.railbrake.calculator.data.HistoryRecord
 
 @Composable
@@ -51,10 +49,6 @@ internal fun HomeScreen(
             Text("Два технических профиля локомотивной бригады", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
 
-        RailInfoBand(
-            "${DiagnosticRepository.scenarios.size} диагностических сценария • ${Vl80sObservationCatalog.equipment.size} узлов оборудования"
-        )
-
         RailHeroCard(
             title = "Диагностика ВЛ80С",
             subtitle = "Поиск неисправности по наблюдаемым признакам, ветвящиеся уточнения и безопасные проверки.",
@@ -73,7 +67,7 @@ internal fun HomeScreen(
             RailNavCard(
                 title = "Локомотив / атлас",
                 subtitle = "ВЛ80С и Ермак: оборудование, статьи и схемы",
-                marker = "⌁",
+                marker = "⚡",
                 onClick = onLocomotives,
                 modifier = Modifier.weight(1f)
             )

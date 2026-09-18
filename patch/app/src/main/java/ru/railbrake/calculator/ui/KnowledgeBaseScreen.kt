@@ -149,8 +149,6 @@ private fun KnowledgeHome(
             "Справочник",
             "Материалы, нормы, схемы и связанные рабочие сведения"
         )
-        RailInfoBand("Внешние первоисточники открываются в браузере.")
-
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },

@@ -149,10 +149,7 @@ private fun DiagnosticCatalog(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            RailSectionHeader(
-                "Диагностика ВЛ80С",
-                "${DiagnosticRepository.scenarios.size} сценариев • ветвящиеся уточнения • безопасные проверки"
-            )
+            RailSectionHeader("Диагностика ВЛ80С")
         }
         item { DiagnosticSafetyNotice() }
         item {
@@ -873,12 +870,13 @@ private fun DiagnosticCheckCard(check: DiagnosticCheck) {
 internal fun DiagnosticSafetyNotice() {
     BorderedCautionCard(
         title = "Важно: это не допуск к работам",
-        lines = listOf(DiagnosticRepository.safetyNotice)
+        lines = listOf(DiagnosticRepository.safetyNotice),
+        bulletLines = false
     )
 }
 
 @Composable
-private fun BorderedCautionCard(title: String, lines: List<String>) {
+private fun BorderedCautionCard(title: String, lines: List<String>, bulletLines: Boolean = true) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
@@ -887,7 +885,7 @@ private fun BorderedCautionCard(title: String, lines: List<String>) {
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
             Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.error)
-            lines.forEach { Text("• $it") }
+            lines.forEach { Text(if (bulletLines) "• $it" else it) }
         }
     }
 }
