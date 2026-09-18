@@ -1,0 +1,331 @@
+name: Beta hotfix3 experiment
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/beta-hotfix3.yml'
+      - 'BETA_USE_RESTRICTION.txt'
+      - 'README.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      UPSTREAM_SHA: ac5607f8d7a9c359f91da0eede309b2983ad18cf
+      EXPECTED_SIGNING_CERT_SHA256: ea9fe9341a6ba72b585bd7ff82ce29c8fc5b7b59e76b8b134df203eaab8e2788
+      RELEASE_KEYSTORE_B64: ${{ secrets.RAILBRAKE_KEYSTORE_BASE64 }}
+
+    steps:
+      - name: Checkout Beta control files
+        uses: actions/checkout@v4
+        with:
+          path: beta
+
+      - name: Checkout exact hotfix3 baseline
+        uses: actions/checkout@v4
+        with:
+          repository: DomEnota-hub/Test-
+          ref: ${{ env.UPSTREAM_SHA }}
+          path: source
+          fetch-depth: 0
+
+      - name: Apply Beta changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('source')
+          def ms(rel): return [root/rel, root/'patch'/rel]
+          def sub(rel,pattern,repl,n=1,flags=0):
+              for p in ms(rel):
+                  s=p.read_text(encoding='utf-8'); s2,c=re.subn(pattern,repl,s,count=n,flags=flags)
+                  if c!=n: raise SystemExit(f'{p}: expected {n}, got {c}: {pattern[:70]}')
+                  p.write_text(s2,encoding='utf-8')
+          def rep(rel,old,new):
+              for p in ms(rel):
+                  s=p.read_text(encoding='utf-8')
+                  if s.count(old)!=1: raise SystemExit(f'{p}: expected one literal match')
+                  p.write_text(s.replace(old,new,1),encoding='utf-8')
+
+          rep('app/build.gradle.kts','versionCode = 145','versionCode = 146')
+          rep('app/build.gradle.kts','versionName = "1.2.2-dev14-hotfix3"','versionName = "1.2.2-dev14-beta1"')
+
+          rel='app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt'
+          for p in ms(rel):
+              s=p.read_text(encoding='utf-8').replace('import ru.railbrake.calculator.core.DiagnosticRepository\n','').replace('import ru.railbrake.calculator.core.Vl80sObservationCatalog\n','')
+              s2,c=re.subn(r'\n\s*RailInfoBand\(\n\s*"\$\{DiagnosticRepository\.scenarios\.size\} диагностических сценария • \$\{Vl80sObservationCatalog\.equipment\.size\} узлов оборудования"\n\s*\)\n','\n',s,count=1)
+              if c!=1: raise SystemExit(f'{p}: home counter not found')
+              p.write_text(s2,encoding='utf-8')
+
+          rel='app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt'
+          rep(rel,'                "${DiagnosticRepository.scenarios.size} сценариев • ветвящиеся уточнения • безопасные проверки"','                "Выберите неисправность, наблюдаемый признак или быстрый маршрут"')
+          rep(rel,'                item { FilterChip(catalogMode == "training", { catalogMode = "training" }, label = { Text("Тренажёр") }) }\n','')
+          rep(rel,'''        if (catalogMode == "scenarios" || catalogMode == "observations") item {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                label = { Text(if (catalogMode == "scenarios") "Симптом или аппарат" else "Лампа, прибор, звук или аппарат") },
+                placeholder = { Text(if (catalogMode == "scenarios") "Например: ЭКГ, №395, БУРТ, АЛСН" else "Например: выбило ГВ, ТМ падает, стук, боксование") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+''','''        if (catalogMode == "scenarios" || catalogMode == "observations" || catalogMode == "quick") item {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                label = { Text(when (catalogMode) { "scenarios" -> "Симптом или аппарат"; "quick" -> "Поиск по быстрому маршруту"; else -> "Лампа, прибор, звук или аппарат" }) },
+                placeholder = { Text(when (catalogMode) { "scenarios" -> "Например: ЭКГ, №395, БУРТ, АЛСН"; "quick" -> "Например: тормоза, ГВ, дым"; else -> "Например: выбило ГВ, ТМ падает, стук, боксование" }) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+''')
+          rep(rel,'''                quickRouteItems.filter { item ->
+                    DiagnosticRepository.scenario(item.scenarioId)?.let { scenario ->
+                        LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
+                    } == true
+                },
+''','''                quickRouteItems.filter { item ->
+                    val matchesQuery = query.isBlank() || item.title.contains(query, true) || item.subtitle.contains(query, true)
+                    matchesQuery && DiagnosticRepository.scenario(item.scenarioId)?.let { scenario ->
+                        LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
+                    } == true
+                },
+''')
+          rep(rel,'                        Text("Связано: ${observation.equipmentIds.joinToString()}", style = MaterialTheme.typography.bodySmall)\n','''                        val linkedTitles = observation.equipmentIds.mapNotNull(Vl80sObservationCatalog::equipment).map { it.title }.distinct()
+                        if (linkedTitles.isNotEmpty()) Text("Связано: ${linkedTitles.joinToString()}", style = MaterialTheme.typography.bodySmall)
+''')
+          rep(rel,'''@Composable
+private fun SafetyNotice() {
+    BorderedCautionCard(
+        title = "Важно: это не допуск к работам",
+        lines = listOf(DiagnosticRepository.safetyNotice)
+    )
+}
+''','''@Composable
+internal fun SafetyNotice() {
+    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.error), shape = RoundedCornerShape(17.dp), modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+            Text("Важно: это не допуск к работам", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.error)
+            Text(DiagnosticRepository.safetyNotice)
+        }
+    }
+}
+''')
+
+          rel='app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt'
+          rep(rel,'''            InfoCard(
+                "Важно: это не допуск к работам",
+                listOf(
+                    "Диагностика помогает локализовать отказ и подготовить доклад.",
+                    "Она не заменяет местную инструкцию, установленный допуск и требования безопасности."
+                ),
+                MaterialTheme.colorScheme.errorContainer
+            )
+''','            SafetyNotice()\n')
+
+          rel='app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt'
+          anchor='''private fun examBlockDisplayTitle(sourceTitle: String): String = when (sourceTitle) {
+    "Тест 1" -> "Блок 1"
+    "Тест 2 - блок 1" -> "Блок 2"
+    "Тест 2 - блок 2" -> "Блок 3"
+    "Тест 2 - блок 3" -> "Блок 4"
+    else -> sourceTitle
+}
+'''
+          helper=anchor+'''\ninternal fun formatExamCorrectAnswer(answer: String): String {
+    val parts = answer.split('•').map { it.trim() }.filter { it.isNotEmpty() }
+    return if (parts.size > 1) parts.joinToString("\\n") { "- $it" } else answer
+}
+'''
+          rep(rel,anchor,helper)
+          rep(rel,'Text(item.correctAnswer, modifier = Modifier.fillMaxWidth().padding(12.dp), style = MaterialTheme.typography.bodyLarge)','Text(formatExamCorrectAnswer(item.correctAnswer), modifier = Modifier.fillMaxWidth().padding(12.dp), style = MaterialTheme.typography.bodyLarge)')
+
+          rel='app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt'
+          rep(rel,'import ru.railbrake.calculator.data.FavoriteArticleRepository\n','import ru.railbrake.calculator.data.FavoriteArticleRepository\nimport ru.railbrake.calculator.data.SecretAccessRepository\n')
+          rep(rel,'    val examQuestionRepository = remember { ExamQuestionRepository(context) }\n','    val examQuestionRepository = remember { ExamQuestionRepository(context) }\n    val examQuestionsUnlocked = remember { SecretAccessRepository(context).isUnlocked() }\n')
+          rep(rel,'            examQuestionRepository = examQuestionRepository,\n            onOpenArticle = { selectedArticleId = it.id },','            examQuestionRepository = examQuestionRepository,\n            examQuestionsUnlocked = examQuestionsUnlocked,\n            onOpenArticle = { selectedArticleId = it.id },')
+          rep(rel,'    examQuestionRepository: ExamQuestionRepository,\n    onOpenArticle: (KnowledgeArticle) -> Unit,','    examQuestionRepository: ExamQuestionRepository,\n    examQuestionsUnlocked: Boolean,\n    onOpenArticle: (KnowledgeArticle) -> Unit,')
+          rep(rel,'''    val categories = remember {
+        (KnowledgeRepository.categories + examQuestionRepository.categories).distinct()
+    }
+    val thematicFacts = remember(query, category, onlyFavorites) {
+        if (onlyFavorites) emptyList() else examQuestionRepository.thematicFacts(
+''','''    val categories = remember(examQuestionsUnlocked) {
+        if (examQuestionsUnlocked) (KnowledgeRepository.categories + examQuestionRepository.categories).distinct() else KnowledgeRepository.categories
+    }
+    val thematicFacts = remember(query, category, onlyFavorites, examQuestionsUnlocked) {
+        if (onlyFavorites || !examQuestionsUnlocked) emptyList() else examQuestionRepository.thematicFacts(
+''')
+          rep(rel,'        RailInfoBand("Внешние первоисточники открываются в браузере.")\n\n','')
+          print('BETA_PATCH_APPLIED')
+          PY
+          cp beta/BETA_USE_RESTRICTION.txt source/BETA_USE_RESTRICTION.txt
+          mkdir -p source/.github/workflows
+          cp beta/.github/workflows/beta-hotfix3.yml source/.github/workflows/beta-hotfix3.yml
+          cat > source/BETA_BASELINE.md <<EOF
+          # RailBrakeCalculator Beta baseline
+
+          Upstream: DomEnota-hub/Test- @ ${UPSTREAM_SHA}
+          Beta: 1.2.2-dev14-beta1 / versionCode 146
+          Experimental use only; see BETA_USE_RESTRICTION.txt.
+          EOF
+
+      - name: Verify source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp source/app/build.gradle.kts source/patch/app/build.gradle.kts
+          grep -Fq 'versionCode = 146' source/app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta1"' source/app/build.gradle.kts
+          ! grep -Fq 'диагностических сценария •' source/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          ! grep -Fq 'Text("Тренажёр")' source/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          grep -Fq 'Поиск по быстрому маршруту' source/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          grep -Fq 'internal fun SafetyNotice()' source/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          grep -Fq 'formatExamCorrectAnswer' source/app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          ! grep -Fq 'Внешние первоисточники открываются в браузере.' source/app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
+          grep -Fq '!examQuestionsUnlocked' source/app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
+          for f in HomeScreen.kt DiagnosticScreen.kt ErmakDiagnosticsScreen.kt ExamQuestionScreen.kt KnowledgeBaseScreen.kt; do
+            cmp "source/app/src/main/java/ru/railbrake/calculator/ui/$f" "source/patch/app/src/main/java/ru/railbrake/calculator/ui/$f"
+          done
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Prepare build tree
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc && mkdir buildsrc
+          unzip -q source/RailBrakeCalculator.zip -d buildsrc
+          cp -a source/patch/. buildsrc/RailBrakeCalculator/
+          python3 source/qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets | tee runtime-assets-overlay.log
+
+      - name: Unit, lint, debug
+        working-directory: buildsrc/RailBrakeCalculator
+        run: |
+          set -euo pipefail
+          timeout 15m gradle :app:testDebugUnitTest --stacktrace --console=plain 2>&1 | tee unit-tests.log
+          timeout 15m gradle :app:lintDebug --stacktrace --console=plain 2>&1 | tee lint.log
+          timeout 15m gradle :app:assembleDebug --stacktrace --console=plain 2>&1 | tee build-debug.log
+
+      - name: Verify debug contracts
+        run: |
+          APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          python3 source/qa/verify_technical_assets_in_apk.py "$APK" | tee technical-assets-debug.log
+          python3 source/qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets "$APK" | tee runtime-assets-debug.log
+
+      - name: Android runtime smoke
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          cores: 2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory 1536
+          script: |
+            export APK="$GITHUB_WORKSPACE/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk"
+            export QA_OUT="$GITHUB_WORKSPACE/qa-evidence"
+            python3 source/qa/dev14_android_smoke.py
+
+      - name: Decode signing key
+        working-directory: buildsrc/RailBrakeCalculator
+        run: |
+          set -euo pipefail
+          test -n "$RELEASE_KEYSTORE_B64" || { echo 'RAILBRAKE_KEYSTORE_BASE64 is unavailable'; exit 20; }
+          printf '%s' "$RELEASE_KEYSTORE_B64" | base64 --decode > release.keystore
+          test -s release.keystore
+
+      - name: Build signed release
+        working-directory: buildsrc/RailBrakeCalculator
+        env:
+          RAILBRAKE_KEYSTORE_PATH: ${{ github.workspace }}/buildsrc/RailBrakeCalculator/release.keystore
+          RAILBRAKE_STORE_PASSWORD: ${{ secrets.RAILBRAKE_STORE_PASSWORD }}
+          RAILBRAKE_KEY_ALIAS: ${{ secrets.RAILBRAKE_KEY_ALIAS }}
+          RAILBRAKE_KEY_PASSWORD: ${{ secrets.RAILBRAKE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$RAILBRAKE_STORE_PASSWORD" && test -n "$RAILBRAKE_KEY_ALIAS" && test -n "$RAILBRAKE_KEY_PASSWORD"
+          timeout 15m gradle :app:assembleRelease --stacktrace --console=plain 2>&1 | tee build-release.log
+
+      - name: Verify and package release
+        run: |
+          set -euo pipefail
+          APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
+          mkdir -p final-package
+          cp "$APK" final-package/RailBrakeCalculator-1.2.2-dev14-beta1-release-signed.apk
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/aapt" dump badging "$APK" | tee final-package/APK_BADGING.txt
+          grep -Fq "package: name='ru.railbrake.calculator' versionCode='146' versionName='1.2.2-dev14-beta1'" final-package/APK_BADGING.txt
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose --print-certs "$APK" | tee final-package/APKSIGNER.txt
+          grep -qi "Signer #1 certificate SHA-256 digest: $EXPECTED_SIGNING_CERT_SHA256" final-package/APKSIGNER.txt
+          python3 source/qa/verify_technical_assets_in_apk.py "$APK" | tee final-package/TECHNICAL_ASSETS.txt
+          python3 source/qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets "$APK" | tee final-package/RUNTIME_ASSETS.txt
+          sha256sum final-package/RailBrakeCalculator-1.2.2-dev14-beta1-release-signed.apk | tee final-package/SHA256SUMS.txt
+          (cd source && zip -qr "$GITHUB_WORKSPACE/final-package/RailBrakeCalculator-1.2.2-dev14-beta1-source.zip" . -x '.git/*' '*/build/*' '.gradle/*' '*.keystore')
+          sha256sum final-package/RailBrakeCalculator-1.2.2-dev14-beta1-source.zip >> final-package/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-1.2.2-dev14-beta1-release-signed
+          path: final-package/RailBrakeCalculator-1.2.2-dev14-beta1-release-signed.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-1.2.2-dev14-beta1-source
+          path: final-package/RailBrakeCalculator-1.2.2-dev14-beta1-source.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: beta1-verification
+          path: |
+            qa-evidence/
+            runtime-assets-overlay.log
+            runtime-assets-debug.log
+            technical-assets-debug.log
+            final-package/
+            buildsrc/RailBrakeCalculator/unit-tests.log
+            buildsrc/RailBrakeCalculator/lint.log
+            buildsrc/RailBrakeCalculator/build-debug.log
+            buildsrc/RailBrakeCalculator/build-release.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Publish patched source to Beta main
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd source
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Beta1: apply Work fixes on hotfix3'
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin HEAD:main
