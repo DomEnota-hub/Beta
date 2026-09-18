@@ -69,10 +69,14 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
         return
     }
 
-    val visible = scenarios.orEmpty().filter { scenario ->
-        (initialEquipmentId == null || initialEquipmentId in scenario.equipmentIds) &&
-            (query.isBlank() || listOf(scenario.title, scenario.symptom, scenario.category)
-                .any { it.contains(query, ignoreCase = true) })
+    val visible = if (catalogMode == "scenarios") {
+        scenarios.orEmpty().filter { scenario ->
+            (initialEquipmentId == null || initialEquipmentId in scenario.equipmentIds) &&
+                (query.isBlank() || listOf(scenario.title, scenario.symptom, scenario.category)
+                    .any { it.contains(query, ignoreCase = true) })
+        }
+    } else {
+        emptyList()
     }
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
