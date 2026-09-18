@@ -153,6 +153,7 @@ fun BrakeCalculatorApp(
     var locomotiveMaterialQuery by rememberSaveable { mutableStateOf<String?>(null) }
     var technicalFamilyName by rememberSaveable { mutableStateOf(TechnicalFamily.VL80S.name) }
     var technicalSectionName by rememberSaveable { mutableStateOf(TechnicalSection.EQUIPMENT.name) }
+    var technicalInitialEntryId by rememberSaveable { mutableStateOf<String?>(null) }
     var diagnosticRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var locomotiveRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var acceptanceRootVersion by rememberSaveable { mutableIntStateOf(0) }
@@ -345,18 +346,26 @@ fun BrakeCalculatorApp(
                         onOpenTechnical = { family, section ->
                             technicalFamilyName = family.name
                             technicalSectionName = section.name
+                            technicalInitialEntryId = null
                             screenName = AppScreen.LOCOMOTIVE_MATERIAL.name
                         },
                         onOpenInteractiveVl80s = {
                             locomotiveMaterialQuery = null
                             locomotiveMaterialArticleId = "vl80-layout"
                             screenName = AppScreen.LOCOMOTIVE_LEGACY.name
+                        },
+                        onOpenInteractiveErmak = {
+                            technicalFamilyName = TechnicalFamily.ERMAK.name
+                            technicalSectionName = TechnicalSection.ELECTRICAL.name
+                            technicalInitialEntryId = "ER-SCH-LAYOUT-2ES5K-BASE"
+                            screenName = AppScreen.LOCOMOTIVE_MATERIAL.name
                         }
                     )
                 }
                 AppScreen.LOCOMOTIVE_MATERIAL -> TechnicalCatalogScreen(
                     initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),
                     initialSection = runCatching { TechnicalSection.valueOf(technicalSectionName) }.getOrDefault(TechnicalSection.EQUIPMENT),
+                    initialEntryId = technicalInitialEntryId,
                     onSectionBack = { screenName = AppScreen.LOCOMOTIVES.name },
                     onOpenLegacyArticle = { articleId ->
                         locomotiveMaterialQuery = null
@@ -1292,7 +1301,8 @@ private fun HistoryScreen(repository: HistoryRepository, version: Int, onCleared
 @Composable
 private fun LocomotiveReferenceScreen(
     onOpenTechnical: (TechnicalFamily, TechnicalSection) -> Unit,
-    onOpenInteractiveVl80s: () -> Unit
+    onOpenInteractiveVl80s: () -> Unit,
+    onOpenInteractiveErmak: () -> Unit
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var seriesExpanded by rememberSaveable { mutableStateOf(false) }
@@ -1321,9 +1331,7 @@ private fun LocomotiveReferenceScreen(
         }
         Text(family.subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         val materials = buildList<Pair<String, () -> Unit>> {
-            if (family == TechnicalFamily.VL80S) {
-                add("Интерактивный атлас" to onOpenInteractiveVl80s)
-            }
+            add("Интерактивный атлас" to if (family == TechnicalFamily.VL80S) onOpenInteractiveVl80s else onOpenInteractiveErmak)
             add("Оборудование" to { onOpenTechnical(family, TechnicalSection.EQUIPMENT) })
             add("Системы" to { onOpenTechnical(family, TechnicalSection.SYSTEMS) })
             add("Статьи" to { onOpenTechnical(family, TechnicalSection.KNOWLEDGE) })

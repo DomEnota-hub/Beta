@@ -25,6 +25,15 @@ data class TechnicalBlock(
     val lines: List<String>
 )
 
+data class TechnicalHotspot(
+    val equipmentId: String,
+    val label: String,
+    val x: Int,
+    val y: Int,
+    val width: Int,
+    val height: Int
+)
+
 data class TechnicalEntry(
     val id: String,
     val family: TechnicalFamily,
@@ -36,6 +45,7 @@ data class TechnicalEntry(
     val relatedIds: List<String> = emptyList(),
     val sequence: List<String> = emptyList(),
     val sequenceLabels: Map<String, String> = emptyMap(),
+    val hotspots: List<TechnicalHotspot> = emptyList(),
     val searchText: String
 )
 
@@ -494,6 +504,18 @@ class TechnicalDataRepository(private val context: Context) {
                     id to hotspot.optString("label").ifBlank { hotspot.optString("title") }
                 }
             }.toMap()
+            val technicalHotspots = hotspots.mapNotNull { hotspot ->
+                val equipmentId = hotspot.optString("equipmentId")
+                val layout = hotspot.obj("layoutHint")
+                if (equipmentId.isBlank() || !layout.has("x") || !layout.has("y")) null else TechnicalHotspot(
+                    equipmentId = equipmentId,
+                    label = hotspot.optString("label").ifBlank { equipmentId },
+                    x = layout.optInt("x"),
+                    y = layout.optInt("y"),
+                    width = layout.optInt("width", 185),
+                    height = layout.optInt("height", 78)
+                )
+            }
             entry(
                 item, TechnicalFamily.ERMAK, section,
                 title = item.optString("title"),
@@ -509,7 +531,8 @@ class TechnicalDataRepository(private val context: Context) {
                 ),
                 relatedIds = item.array("equipmentRefs").strings(),
                 sequence = sequence.distinct(),
-                sequenceLabels = labels
+                sequenceLabels = labels,
+                hotspots = technicalHotspots
             )
         }
 
@@ -560,7 +583,8 @@ class TechnicalDataRepository(private val context: Context) {
         blocks: List<TechnicalBlock>,
         relatedIds: List<String> = emptyList(),
         sequence: List<String> = emptyList(),
-        sequenceLabels: Map<String, String> = emptyMap()
+        sequenceLabels: Map<String, String> = emptyMap(),
+        hotspots: List<TechnicalHotspot> = emptyList()
     ): TechnicalEntry {
         val id = source.optString("id")
         val aliases = source.array("aliases").strings()
@@ -583,6 +607,7 @@ class TechnicalDataRepository(private val context: Context) {
             relatedIds = relatedIds.filter(String::isNotBlank).distinct(),
             sequence = sequence.filter(String::isNotBlank).distinct(),
             sequenceLabels = sequenceLabels.filterKeys(String::isNotBlank),
+            hotspots = hotspots.filter { it.equipmentId.isNotBlank() && it.width > 0 && it.height > 0 },
             searchText = search
         )
     }

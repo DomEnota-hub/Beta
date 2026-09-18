@@ -2,15 +2,23 @@ package ru.railbrake.calculator.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -36,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -102,7 +111,10 @@ fun TechnicalCatalogScreen(
             val filtered = if (selectedSection == TechnicalSection.ACCEPTANCE && query.isBlank()) {
                 loaded.filter { it.status == "ROUTE" }
             } else loaded
-            filtered.sortedByDescending { it.sequence.isNotEmpty() }
+            filtered.sortedWith(
+                compareByDescending<TechnicalEntry> { isErmakLayoutEntry(it.id) }
+                    .thenByDescending { it.sequence.isNotEmpty() }
+            )
         }
     }
     LazyColumn(
@@ -318,7 +330,9 @@ private fun TechnicalEntryDetail(
                 RailStatusPill(status, accent = accent)
             }
         }
-        if (entry.section == TechnicalSection.ACCEPTANCE && entry.sequence.isNotEmpty()) {
+        if (entry.id.startsWith("ER-SCH-LAYOUT-") && entry.hotspots.isNotEmpty()) {
+            item { ErmakInteractiveAtlas(entry, repository, onOpen) }
+        } else if (entry.section == TechnicalSection.ACCEPTANCE && entry.sequence.isNotEmpty()) {
             item { TechnicalSequence(entry, repository, onOpen) }
         } else if (entry.sequence.isNotEmpty()) {
             item { TechnicalSequenceLinks(entry, repository, onOpen) }
@@ -361,6 +375,134 @@ private fun TechnicalEntryDetail(
                 ) {
                     Text("${technicalEntryTitle(target)} →")
                 }
+            }
+        }
+    }
+}
+
+internal fun isErmakLayoutEntry(id: String): Boolean = id.startsWith("ER-SCH-LAYOUT-")
+
+internal val ErmakAtlasVariants = listOf(
+    "ER-SCH-LAYOUT-2ES5K-BASE" to "2ЭС5К",
+    "ER-SCH-LAYOUT-3ES5K-HEAD" to "3ЭС5К · головная",
+    "ER-SCH-LAYOUT-3ES5K-BOOSTER" to "3ЭС5К · бустерная"
+)
+
+@Composable
+private fun ErmakInteractiveAtlas(
+    entry: TechnicalEntry,
+    repository: TechnicalDataRepository,
+    onOpen: (TechnicalEntry) -> Unit
+) {
+    var selectedId by rememberSaveable(entry.id) { mutableStateOf(entry.hotspots.firstOrNull()?.equipmentId) }
+    var query by rememberSaveable(entry.id) { mutableStateOf("") }
+    val selectedHotspot = entry.hotspots.firstOrNull { it.equipmentId == selectedId }
+    val selectedEquipment = selectedHotspot?.let { repository.entry(it.equipmentId) }
+    val visible = entry.hotspots.filter {
+        query.isBlank() || it.label.contains(query, ignoreCase = true) || it.equipmentId.contains(query, ignoreCase = true)
+    }
+    val maxX = entry.hotspots.maxOfOrNull { it.x + it.width }?.coerceAtLeast(1) ?: 1
+    val maxY = entry.hotspots.maxOfOrNull { it.y + it.height }?.coerceAtLeast(1) ?: 1
+    val scale = 0.62f
+    val mapWidth = maxX * scale
+    val mapHeight = maxY * scale
+    val horizontal = rememberScrollState()
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer),
+        border = BorderStroke(2.dp, InteractiveSchemeAccent),
+        shape = RoundedCornerShape(18.dp)
+    ) {
+        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("Интерактивный атлас «Ермак»", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+            Text(
+                "Функциональная карта по встроенным данным компоновки. Зоны показывают принадлежность оборудования, но не заменяют заводской монтажный чертёж.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text("Исполнение и секция", color = InteractiveSchemeAccent, fontWeight = FontWeight.Bold)
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(ErmakAtlasVariants) { (id, label) ->
+                    val target = repository.entry(id)
+                    FilterChip(
+                        selected = entry.id == id,
+                        onClick = { target?.let(onOpen) },
+                        enabled = target != null,
+                        label = { Text(label) }
+                    )
+                }
+            }
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                label = { Text("Найти аппарат на карте") }
+            )
+            Text("Элементов: ${entry.hotspots.size}", style = MaterialTheme.typography.labelMedium, color = InteractiveSchemeAccent)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(horizontal)
+                    .background(Color(0xFF0D1F22), RoundedCornerShape(14.dp))
+            ) {
+                Box(Modifier.width(mapWidth.dp).height(mapHeight.dp)) {
+                    entry.hotspots.forEach { hotspot ->
+                        val selected = hotspot.equipmentId == selectedId
+                        val matched = hotspot in visible
+                        Box(
+                            modifier = Modifier
+                                .offset(x = (hotspot.x * scale).dp, y = (hotspot.y * scale).dp)
+                                .size(width = (hotspot.width * scale).dp, height = (hotspot.height * scale).dp)
+                                .background(
+                                    color = when {
+                                        selected -> InteractiveSchemeAccent.copy(alpha = 0.72f)
+                                        matched -> InteractiveSchemeAccent.copy(alpha = 0.20f)
+                                        else -> Color(0xFF243336)
+                                    },
+                                    shape = RoundedCornerShape(7.dp)
+                                )
+                                .clickable { selectedId = hotspot.equipmentId }
+                                .padding(horizontal = 5.dp, vertical = 3.dp)
+                        ) {
+                            Text(
+                                hotspot.label,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (selected) Color(0xFF071313) else MaterialTheme.colorScheme.onSurface,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+            }
+            selectedHotspot?.let { hotspot ->
+                Text(hotspot.label, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                selectedEquipment?.let { equipment ->
+                    technicalEntrySubtitle(equipment)?.let {
+                        Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    OutlinedButton(
+                        onClick = { onOpen(equipment) },
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) { Text("Подробнее") }
+                } ?: Text(
+                    "Для выбранной зоны отдельная карточка оборудования пока отсутствует.",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            if (query.isNotBlank()) {
+                Text("Результаты поиска", fontWeight = FontWeight.Bold)
+                visible.take(20).forEach { hotspot ->
+                    OutlinedButton(
+                        onClick = { selectedId = hotspot.equipmentId },
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) { Text(hotspot.label) }
+                }
+                if (visible.size > 20) Text("Показаны первые 20 из ${visible.size}", style = MaterialTheme.typography.bodySmall)
             }
         }
     }

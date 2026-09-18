@@ -26,4 +26,17 @@ class InteractiveAtlasShortcutTest {
             assertTrue(interactiveLegacyShortcuts(TechnicalFamily.ERMAK, section).isEmpty())
         }
     }
+
+    @Test
+    fun ermakAtlasExposesAllSupportedSectionVariants() {
+        assertEquals(
+            listOf(
+                "ER-SCH-LAYOUT-2ES5K-BASE",
+                "ER-SCH-LAYOUT-3ES5K-HEAD",
+                "ER-SCH-LAYOUT-3ES5K-BOOSTER"
+            ),
+            ErmakAtlasVariants.map { it.first }
+        )
+        assertTrue(ErmakAtlasVariants.all { isErmakLayoutEntry(it.first) })
+    }
 }
