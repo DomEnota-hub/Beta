@@ -1,0 +1,89 @@
+name: Fix wheel-flat table build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/fix-wheel-flat-table-build.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Remove invalid weight import
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          do
+            sed -i '/^import androidx\.compose\.foundation\.layout\.weight$/d' "$f"
+          done
+          cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'Modifier.weight(0.75f)' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          ! grep -Fq 'import androidx.compose.foundation.layout.weight' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          git diff --check
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          if ! git diff --cached --quiet; then
+            git commit -m 'Fix wheel-flat table Compose import'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
