@@ -162,31 +162,47 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                             Text("Шаг $questionNumber; дальнейший вопрос зависит от ответа")
                             Text(node.text, fontWeight = FontWeight.Bold)
                             if (answerChoices.isNotEmpty()) {
-                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                    answerChoices.getOrNull(0)?.let { choice ->
-                                        Button(onClick = {
-                                            history = history + "${node.text} — ${choice.label}"
-                                            questionNumber += 1
-                                            nodeId = choice.nextNodeId
-                                        }) { Text(choice.label) }
+                                val compactBinaryChoices = answerChoices.size == 2 &&
+                                    answerChoices.all { it.label.length <= 14 }
+                                if (compactBinaryChoices) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                        answerChoices.getOrNull(0)?.let { choice ->
+                                            Button(onClick = {
+                                                history = history + "${node.text} — ${choice.label}"
+                                                questionNumber += 1
+                                                nodeId = choice.nextNodeId
+                                            }) { Text(choice.label) }
+                                        }
+                                        answerChoices.getOrNull(1)?.let { choice ->
+                                            OutlinedButton(onClick = {
+                                                history = history + "${node.text} — ${choice.label}"
+                                                questionNumber += 1
+                                                nodeId = choice.nextNodeId
+                                            }) { Text(choice.label) }
+                                        }
                                     }
-                                    answerChoices.getOrNull(1)?.let { choice ->
-                                        OutlinedButton(onClick = {
-                                            history = history + "${node.text} — ${choice.label}"
-                                            questionNumber += 1
-                                            nodeId = choice.nextNodeId
-                                        }) { Text(choice.label) }
+                                } else {
+                                    answerChoices.forEachIndexed { index, choice ->
+                                        if (index == 0) {
+                                            Button(
+                                                onClick = {
+                                                    history = history + "${node.text} — ${choice.label}"
+                                                    questionNumber += 1
+                                                    nodeId = choice.nextNodeId
+                                                },
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) { Text(choice.label) }
+                                        } else {
+                                            OutlinedButton(
+                                                onClick = {
+                                                    history = history + "${node.text} — ${choice.label}"
+                                                    questionNumber += 1
+                                                    nodeId = choice.nextNodeId
+                                                },
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) { Text(choice.label) }
+                                        }
                                     }
-                                }
-                                answerChoices.drop(2).forEach { choice ->
-                                    OutlinedButton(
-                                        onClick = {
-                                            history = history + "${node.text} — ${choice.label}"
-                                            questionNumber += 1
-                                            nodeId = choice.nextNodeId
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) { Text(choice.label) }
                                 }
                             }
                             TextButton(
