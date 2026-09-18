@@ -58,7 +58,8 @@ fun TechnicalCatalogScreen(
     onSectionBack: () -> Unit,
     lockFamily: Boolean = false,
     lockSection: Boolean = false,
-    initialEntryId: String? = null
+    initialEntryId: String? = null,
+    onOpenLegacyArticle: ((String) -> Unit)? = null
 ) {
     val context = LocalContext.current
     val repository = remember { TechnicalDataRepository(context.applicationContext) }
@@ -98,7 +99,10 @@ fun TechnicalCatalogScreen(
     val visible by produceState<List<TechnicalEntry>?>(initialValue = null, family, selectedSection, query) {
         value = withContext(Dispatchers.Default) {
             val loaded = repository.entries(family, selectedSection, query)
-            if (selectedSection == TechnicalSection.ACCEPTANCE && query.isBlank()) loaded.filter { it.status == "ROUTE" } else loaded
+            val filtered = if (selectedSection == TechnicalSection.ACCEPTANCE && query.isBlank()) {
+                loaded.filter { it.status == "ROUTE" }
+            } else loaded
+            filtered.sortedByDescending { it.sequence.isNotEmpty() }
         }
     }
     LazyColumn(
@@ -170,8 +174,28 @@ fun TechnicalCatalogScreen(
                 )
             }
         }
+        interactiveLegacyShortcuts(family, selectedSection).forEach { shortcut ->
+            item(key = "interactive-${shortcut.articleId}") {
+                Card(
+                    onClick = { onOpenLegacyArticle?.invoke(shortcut.articleId) },
+                    enabled = onOpenLegacyArticle != null,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer),
+                    border = BorderStroke(2.dp, InteractiveSchemeAccent)
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text("ИНТЕРАКТИВНАЯ СХЕМА", style = MaterialTheme.typography.labelSmall, color = InteractiveSchemeAccent, fontWeight = FontWeight.Black)
+                        Text(shortcut.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                        Text(shortcut.subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Открыть интерактивную схему →", color = InteractiveSchemeAccent, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
         items(visible.orEmpty(), key = { it.id }) { entry ->
             val accent = technicalSectionAccent(entry.section, entry.status)
+            val interactive = entry.sequence.isNotEmpty() && entry.section != TechnicalSection.ACCEPTANCE
             Card(
                 onClick = {
                     if (entry.id == "VL80-ROUTE-route_canonical") acceptanceStartChoice = true
@@ -179,22 +203,54 @@ fun TechnicalCatalogScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = technicalSectionContainer(entry.section)),
-                border = BorderStroke(1.dp, accent.copy(alpha = 0.52f))
+                colors = CardDefaults.cardColors(containerColor = if (interactive) InteractiveSchemeContainer else technicalSectionContainer(entry.section)),
+                border = BorderStroke(if (interactive) 2.dp else 1.dp, if (interactive) InteractiveSchemeAccent else accent.copy(alpha = 0.52f))
             ) {
                 Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    technicalStatusLabel(entry.status)?.let { status ->
+                    if (interactive) {
+                        Text("ИНТЕРАКТИВНАЯ СХЕМА", style = MaterialTheme.typography.labelSmall, color = InteractiveSchemeAccent, fontWeight = FontWeight.Black)
+                    } else technicalStatusLabel(entry.status)?.let { status ->
                         Text(status, style = MaterialTheme.typography.labelSmall, color = accent)
                     }
                     Text(technicalEntryTitle(entry), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
                     technicalEntrySubtitle(entry)?.let { subtitle ->
                         Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
-                    Text("Открыть карточку →", color = accent, fontWeight = FontWeight.Bold)
+                    Text(if (interactive) "Открыть интерактивную схему →" else "Открыть карточку →", color = if (interactive) InteractiveSchemeAccent else accent, fontWeight = FontWeight.Bold)
                 }
             }
         }
     }
+}
+
+private val InteractiveSchemeContainer = Color(0xFF17363A)
+private val InteractiveSchemeAccent = Color(0xFF65E3D2)
+
+internal data class InteractiveLegacyShortcut(val articleId: String, val title: String, val subtitle: String)
+
+internal fun interactiveLegacyShortcuts(family: TechnicalFamily, section: TechnicalSection): List<InteractiveLegacyShortcut> = when {
+    family == TechnicalFamily.VL80S && section == TechnicalSection.EQUIPMENT -> listOf(
+        InteractiveLegacyShortcut(
+            articleId = "vl80-layout",
+            title = "Расположение оборудования ВЛ80С",
+            subtitle = "Схема секции с кликабельными зонами, краткой сводкой и переходом к подробному описанию."
+        )
+    )
+    family == TechnicalFamily.VL80S && section == TechnicalSection.PNEUMATIC -> listOf(
+        InteractiveLegacyShortcut(
+            articleId = "vl80-pneumatic-simulator",
+            title = "Интерактивная пневмосхема ВЛ80С",
+            subtitle = "Пошаговое движение воздуха, указатели маршрута и кликабельные приборы."
+        )
+    )
+    family == TechnicalFamily.VL80S && section == TechnicalSection.ELECTRICAL -> listOf(
+        InteractiveLegacyShortcut(
+            articleId = "vl80-electrical-simulator",
+            title = "Интерактивная электросхема ВЛ80С",
+            subtitle = "Пошаговый разбор цепи с переходами между связанными элементами."
+        )
+    )
+    else -> emptyList()
 }
 
 @Composable

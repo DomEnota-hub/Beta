@@ -355,7 +355,12 @@ fun BrakeCalculatorApp(
                 AppScreen.LOCOMOTIVE_MATERIAL -> TechnicalCatalogScreen(
                     initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),
                     initialSection = runCatching { TechnicalSection.valueOf(technicalSectionName) }.getOrDefault(TechnicalSection.EQUIPMENT),
-                    onSectionBack = { screenName = AppScreen.LOCOMOTIVES.name }
+                    onSectionBack = { screenName = AppScreen.LOCOMOTIVES.name },
+                    onOpenLegacyArticle = { articleId ->
+                        locomotiveMaterialQuery = null
+                        locomotiveMaterialArticleId = articleId
+                        screenName = AppScreen.LOCOMOTIVE_LEGACY.name
+                    }
                 )
                 AppScreen.LOCOMOTIVE_LEGACY -> KnowledgeBaseScreen(
                     initialArticleId = locomotiveMaterialArticleId,
@@ -1314,20 +1319,26 @@ private fun LocomotiveReferenceScreen(
         }
         Text(family.subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         val materials = buildList<Pair<String, () -> Unit>> {
+            if (family == TechnicalFamily.VL80S) {
+                add("Интерактивный атлас" to onOpenInteractiveVl80s)
+            }
             add("Оборудование" to { onOpenTechnical(family, TechnicalSection.EQUIPMENT) })
             add("Системы" to { onOpenTechnical(family, TechnicalSection.SYSTEMS) })
             add("Статьи" to { onOpenTechnical(family, TechnicalSection.KNOWLEDGE) })
             add("Электросхемы" to { onOpenTechnical(family, TechnicalSection.ELECTRICAL) })
             add("Пневмосхемы" to { onOpenTechnical(family, TechnicalSection.PNEUMATIC) })
-            if (family == TechnicalFamily.VL80S) {
-                add("Интерактивный атлас" to onOpenInteractiveVl80s)
-            }
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(materials, key = { it.first }) { (label, action) ->
                 FilterChip(
                     selected = false,
                     onClick = action,
+                    colors = if (label == "Интерактивный атлас") {
+                        FilterChipDefaults.filterChipColors(
+                            containerColor = InteractiveAtlasChipContainer,
+                            labelColor = InteractiveAtlasChipAccent
+                        )
+                    } else FilterChipDefaults.filterChipColors(),
                     label = { Text(label) }
                 )
             }
@@ -1374,6 +1385,9 @@ private fun LocomotiveReferenceScreen(
         }
     }
 }
+
+private val InteractiveAtlasChipContainer = Color(0xFF17363A)
+private val InteractiveAtlasChipAccent = Color(0xFF65E3D2)
 
 @Composable
 private fun LocomotiveCard(loco: LocomotiveSpec) {
