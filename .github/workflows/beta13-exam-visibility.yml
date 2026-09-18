@@ -1,0 +1,36 @@
+name: Beta13 exam visibility
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/apply_beta13_exam_visibility.py
+      - .github/workflows/beta13-exam-visibility.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Apply Beta13 visibility patch
+        run: python3 .github/scripts/apply_beta13_exam_visibility.py
+      - name: Verify mirrors
+        run: |
+          cmp app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+      - name: Commit Beta13
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app patch
+          git diff --cached --quiet && exit 0
+          git commit -m 'Beta13: gate exam-derived knowledge materials'
+          git push origin HEAD:dev14-integration
