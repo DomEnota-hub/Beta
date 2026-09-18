@@ -1,0 +1,93 @@
+name: Add wheel-flat reference
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/add_wheel_flat_reference.py
+      - .github/workflows/add-wheel-flat-reference.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply wheel-flat reference patch
+        run: python3 .github/scripts/add_wheel_flat_reference.py
+
+      - name: Verify source mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'Ползуны колесных пар: скорость и действия' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq '> 1–2 мм¦Не более 15 км/ч' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq '> 4 мм¦Не более 10 км/ч' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'Приказ Минтранса России от 23.06.2022 № 250' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'referenceTableRows' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          git diff --check
+
+      - name: Commit source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+                  app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add wheel-flat speed reference'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
