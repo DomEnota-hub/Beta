@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -352,7 +353,12 @@ private fun TechnicalEntryDetail(
                 .mapNotNull(::technicalPresentationLine)
                 .distinct()
             val references = repository.referencedEntries(block.lines)
-            if (displayLines.isEmpty() && references.isEmpty()) return@items
+            val referenceTableRows = if (block.title.startsWith("Таблица —")) {
+                block.lines.mapNotNull { line ->
+                    line.split("¦", limit = 3).takeIf { it.size == 3 }
+                }
+            } else emptyList()
+            if (displayLines.isEmpty() && references.isEmpty() && referenceTableRows.isEmpty()) return@items
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = technicalBlockContainer(entry.section, block.title)),
@@ -361,13 +367,30 @@ private fun TechnicalEntryDetail(
             ) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                     Text(block.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                    displayLines.forEach { line -> Text("• $line") }
-                    references.forEach { target ->
-                        OutlinedButton(
-                            onClick = { onOpen(target) },
-                            modifier = Modifier.fillMaxWidth(),
-                            border = BorderStroke(1.dp, Color.Black)
-                        ) { Text("${technicalEntryTitle(target)} →") }
+                    if (referenceTableRows.isNotEmpty()) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text("Размер", modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                            Text("Скорость", modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                            Text("Действие", modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                        }
+                        HorizontalDivider()
+                        referenceTableRows.forEachIndexed { index, cells ->
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Text(cells[0], modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                                Text(cells[1], modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.bodySmall)
+                                Text(cells[2], modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.bodySmall)
+                            }
+                            if (index != referenceTableRows.lastIndex) HorizontalDivider()
+                        }
+                    } else {
+                        displayLines.forEach { line -> Text("• $line") }
+                        references.forEach { target ->
+                            OutlinedButton(
+                                onClick = { onOpen(target) },
+                                modifier = Modifier.fillMaxWidth(),
+                                border = BorderStroke(1.dp, Color.Black)
+                            ) { Text("${technicalEntryTitle(target)} →") }
+                        }
                     }
                 }
             }

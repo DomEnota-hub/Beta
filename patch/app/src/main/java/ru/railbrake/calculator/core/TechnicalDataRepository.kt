@@ -132,7 +132,7 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.ELECTRICAL -> loadVl80sElectrical()
             TechnicalSection.PNEUMATIC -> loadVl80sPneumatic()
             TechnicalSection.ACCEPTANCE -> loadVl80sAcceptance()
-            TechnicalSection.KNOWLEDGE -> loadVl80sKnowledge()
+            TechnicalSection.KNOWLEDGE -> loadVl80sKnowledge() + loadWheelFlatReference(TechnicalFamily.VL80S)
             TechnicalSection.SYSTEMS -> loadVl80sSystems()
             TechnicalSection.SAFETY -> loadSafety(TechnicalFamily.VL80S)
         }
@@ -140,7 +140,7 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.PROFILES -> loadErmakProfiles()
             TechnicalSection.SYSTEMS -> loadErmakSystems()
             TechnicalSection.EQUIPMENT -> loadErmakEquipment()
-            TechnicalSection.KNOWLEDGE -> loadErmakKnowledge()
+            TechnicalSection.KNOWLEDGE -> loadErmakKnowledge() + loadWheelFlatReference(TechnicalFamily.ERMAK)
             TechnicalSection.DIAGNOSTICS -> loadErmakDiagnostics()
             TechnicalSection.ELECTRICAL -> loadErmakSchemes().filter { it.section == TechnicalSection.ELECTRICAL }
             TechnicalSection.PNEUMATIC -> loadErmakSchemes().filter { it.section == TechnicalSection.PNEUMATIC }
@@ -592,6 +592,47 @@ class TechnicalDataRepository(private val context: Context) {
                 hotspots = technicalHotspots
             )
         }
+
+
+    private fun loadWheelFlatReference(family: TechnicalFamily): List<TechnicalEntry> {
+        val id = if (family == TechnicalFamily.VL80S) "vl80-wheel-flats" else "ER-KB-WHEEL-FLATS"
+        return listOf(
+            TechnicalEntry(
+                id = id,
+                family = family,
+                section = TechnicalSection.KNOWLEDGE,
+                title = "Ползуны колесных пар: скорость и действия",
+                subtitle = "Порядок следования при обнаружении ползуна (выбоины) в пути",
+                status = "INFORMATION",
+                blocks = listOf(
+                    TechnicalBlock("Важно", listOf(
+                        "Таблица ниже относится к порядку следования после обнаружения ползуна в пути. Она не заменяет браковочные нормы для штатной эксплуатации колесных пар.",
+                        "Размер ползуна в таблице — его глубина. Приоритет имеют действующие ПТЭ, распоряжения владельца инфраструктуры и указания ДСП/ДНЦ в конкретной ситуации."
+                    )),
+                    TechnicalBlock("Таблица — локомотив", listOf(
+                        "> 1–2 мм¦Не более 15 км/ч¦До ближайшей железнодорожной станции; колесная пара должна быть заменена.",
+                        "> 2–4 мм¦Не более 10 км/ч¦До ближайшей железнодорожной станции; колесная пара должна быть заменена.",
+                        "> 4 мм¦Не более 10 км/ч¦До ближайшей станции только при вывешивании колесной пары или исключении возможности вращения колеса."
+                    )),
+                    TechnicalBlock("При ползуне более 4 мм на локомотиве", listOf(
+                        "Локомотив должен быть отцеплен от поезда.",
+                        "Тормозные цилиндры и тяговый электродвигатель (группа электродвигателей) поврежденной колесной пары должны быть отключены.",
+                        "Осевой редуктор поврежденной колесной пары должен быть отключен."
+                    )),
+                    TechnicalBlock("Таблица — пассажирские и грузовые вагоны", listOf(
+                        "> 1–2 мм¦Пассажирский: не более 100 км/ч; грузовой: не более 70 км/ч¦До ближайшего ПТО, имеющего средства для замены колесных пар.",
+                        "> 2–6 мм¦Не более 15 км/ч¦До ближайшей железнодорожной станции; колесная пара должна быть заменена.",
+                        "> 6–12 мм¦Не более 10 км/ч¦До ближайшей железнодорожной станции; колесная пара должна быть заменена.",
+                        "> 12 мм¦Не более 10 км/ч¦До ближайшей станции при вывешивании колесной пары или исключении возможности вращения колеса."
+                    )),
+                    TechnicalBlock("Нормативная основа", listOf(
+                        "Приказ Минтранса России от 23.06.2022 № 250 «Об утверждении Правил технической эксплуатации железных дорог Российской Федерации», пункт 155."
+                    ))
+                ),
+                searchText = "ползун ползуны выбоина колесная пара колесные пары скорость 15 10 100 70 локомотив вагон птэ пункт 155".lowercase()
+            )
+        )
+    }
 
 
     private fun loadSafety(family: TechnicalFamily): List<TechnicalEntry> {
