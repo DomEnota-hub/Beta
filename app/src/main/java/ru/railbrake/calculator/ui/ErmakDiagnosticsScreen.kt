@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -38,6 +40,11 @@ import kotlinx.coroutines.withContext
 import ru.railbrake.calculator.core.DiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticScenario
+import ru.railbrake.calculator.data.DiagnosticSessionRecord
+import ru.railbrake.calculator.data.DiagnosticSessionRepository
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId: String? = null) {
@@ -48,11 +55,17 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
     }
     var selectedId by rememberSaveable(initialScenarioId, initialEquipmentId) { mutableStateOf(initialScenarioId) }
     var query by rememberSaveable { mutableStateOf("") }
+    var catalogMode by rememberSaveable { mutableStateOf("scenarios") }
+    var historyVersion by remember { mutableIntStateOf(0) }
+    val sessionRepository = remember { DiagnosticSessionRepository(context) }
+    val sessions = remember(historyVersion, selectedId) {
+        sessionRepository.loadForProfile(DiagnosticSessionRepository.PROFILE_ERMAK)
+    }
     val selected = scenarios?.firstOrNull { it.id == selectedId }
 
     BackHandler(enabled = selected != null) { selectedId = null }
     if (selected != null) {
-        ErmakDiagnosticRoute(selected, onBack = { selectedId = null })
+        ErmakDiagnosticRoute(selected, onBack = { selectedId = null }, onSaved = { historyVersion++ })
         return
     }
 
@@ -68,16 +81,59 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
         item {
             RailSectionHeader("Диагностика Ермак", "Выберите неисправность или наблюдаемый симптом")
             DiagnosticSafetyNotice()
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Поиск по симптому") },
-                singleLine = true,
-                shape = RoundedCornerShape(16.dp)
-            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                item { FilterChip(catalogMode == "scenarios", { catalogMode = "scenarios" }, label = { Text("Неисправность") }) }
+                item { FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") }) }
+            }
+            if (catalogMode == "scenarios") {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Поиск по симптому") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
         }
-        if (scenarios == null) {
+        if (catalogMode == "history") {
+            item {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("Локальный журнал Ермака", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                    if (sessions.isNotEmpty()) {
+                        TextButton(onClick = {
+                            sessionRepository.clearProfile(DiagnosticSessionRepository.PROFILE_ERMAK)
+                            historyVersion++
+                        }) { Text("Очистить") }
+                    }
+                }
+            }
+            if (sessions.isEmpty()) {
+                item {
+                    InfoCard(
+                        "Пока пусто",
+                        listOf("Сохранённые результаты диагностики Ермака появятся здесь и останутся на устройстве."),
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+            }
+            items(sessions, key = { it.timestampMillis }) { session ->
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Text(session.scenarioTitle, fontWeight = FontWeight.Black)
+                        Text(
+                            SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(Date(session.timestampMillis)),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(session.severity)
+                        Text(session.report, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        } else if (scenarios == null) {
             item {
                 Row(Modifier.fillMaxWidth().padding(24.dp), horizontalArrangement = Arrangement.Center) {
                     CircularProgressIndicator()
@@ -104,14 +160,47 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
     }
 }
 
+private fun ermakSeverityTitle(value: String): String = when (value.trim().uppercase()) {
+    "INFORMATION", "INFO" -> "Информация"
+    "ATTENTION", "WARNING" -> "Внимание"
+    "RESTRICT_OPERATION", "RESTRICT" -> "Ограничить эксплуатацию"
+    "STOP_AND_REPORT", "STOP" -> "Остановиться и доложить"
+    else -> value.replace('_', ' ').trim().ifBlank { "Диагностическая запись" }
+}
+
+private fun buildErmakDiagnosticReport(
+    scenario: ErmakDiagnosticScenario,
+    terminalText: String?,
+    uncertain: Boolean,
+    history: List<String>,
+    observations: String,
+    report: String
+): String = buildString {
+    appendLine("Ермак — ${scenario.title}")
+    appendLine("Симптом: ${scenario.symptom}")
+    appendLine("Результат: ${if (uncertain) "Недостаточно данных" else terminalText.orEmpty().ifBlank { "Маршрут завершён" }}")
+    if (history.isNotEmpty()) {
+        appendLine("Пройденная ветка:")
+        history.forEach { appendLine("• $it") }
+    }
+    if (observations.isNotBlank()) appendLine("Наблюдения: ${observations.trim()}")
+    if (report.isNotBlank()) appendLine("Доклад / заметки: ${report.trim()}")
+    if (scenario.reportFields.isNotEmpty()) {
+        appendLine("Что зафиксировать: ${scenario.reportFields.joinToString()}")
+    }
+}.trim()
+
 @Composable
-private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -> Unit) {
+private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -> Unit, onSaved: () -> Unit) {
     var nodeId by rememberSaveable(scenario.id) { mutableStateOf(scenario.startNodeId) }
     var history by rememberSaveable(scenario.id) { mutableStateOf(emptyList<String>()) }
     var observations by rememberSaveable(scenario.id) { mutableStateOf("") }
     var report by rememberSaveable(scenario.id) { mutableStateOf("") }
     var uncertain by rememberSaveable(scenario.id) { mutableStateOf(false) }
     var questionNumber by rememberSaveable(scenario.id) { mutableIntStateOf(1) }
+    var savedLocally by rememberSaveable(scenario.id) { mutableStateOf(false) }
+    val context = LocalContext.current
+    val sessionRepository = remember { DiagnosticSessionRepository(context) }
     val node = scenario.nodes[nodeId]
 
     LazyColumn(
@@ -300,12 +389,43 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                 if (scenario.prohibited.isNotEmpty()) {
                     InfoCard("Запрещено", scenario.prohibited, MaterialTheme.colorScheme.errorContainer)
                 }
+                val savedReport = buildErmakDiagnosticReport(
+                    scenario = scenario,
+                    terminalText = node?.text,
+                    uncertain = uncertain,
+                    history = history,
+                    observations = observations,
+                    report = report
+                )
+                OutlinedButton(
+                    onClick = {
+                        sessionRepository.add(
+                            DiagnosticSessionRecord(
+                                timestampMillis = System.currentTimeMillis(),
+                                profileId = DiagnosticSessionRepository.PROFILE_ERMAK,
+                                variantId = DiagnosticSessionRepository.VARIANT_ERMAK_GENERAL,
+                                scenarioId = scenario.id,
+                                scenarioTitle = scenario.title,
+                                severity = ermakSeverityTitle(scenario.severity),
+                                report = savedReport
+                            )
+                        )
+                        savedLocally = true
+                        onSaved()
+                    },
+                    enabled = !savedLocally,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text(if (savedLocally) "Сохранено в журнал" else "Сохранить в локальную историю") }
+                if (savedLocally) {
+                    Text("Сессия сохранена на устройстве.", color = MaterialTheme.colorScheme.primary)
+                }
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                     OutlinedButton(onClick = {
                         nodeId = scenario.startNodeId
                         history = emptyList()
                         uncertain = false
                         questionNumber = 1
+                        savedLocally = false
                     }) { Text("Начать заново") }
                     Button(onClick = onBack) { Text("К списку неисправностей") }
                 }

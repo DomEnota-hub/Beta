@@ -119,7 +119,7 @@ private fun DiagnosticCatalog(
     val sessionRepository = remember { DiagnosticSessionRepository(context) }
     var selectedVariantId by rememberSaveable { mutableStateOf(profileRepository.selectedVariantId()) }
     var historyVersion by remember { mutableStateOf(0) }
-    val sessions = remember(historyVersion) { sessionRepository.load() }
+    val sessions = remember(historyVersion) { sessionRepository.loadForProfile(DiagnosticSessionRepository.PROFILE_VL80S) }
     val results = remember(query, category, selectedVariantId) {
         DiagnosticRepository.search(query, category).filter { scenario ->
             LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
@@ -224,7 +224,7 @@ private fun DiagnosticCatalog(
             item {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text("Локальный журнал", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-                    if (sessions.isNotEmpty()) TextButton(onClick = { sessionRepository.clear(); historyVersion++ }) { Text("Очистить") }
+                    if (sessions.isNotEmpty()) TextButton(onClick = { sessionRepository.clearProfile(DiagnosticSessionRepository.PROFILE_VL80S); historyVersion++ }) { Text("Очистить") }
                 }
             }
             if (sessions.isEmpty()) item { InfoCard("Пока пусто", listOf("Сохранённые результаты диагностики появятся здесь и останутся на устройстве."), MaterialTheme.colorScheme.surfaceVariant) }
