@@ -524,20 +524,22 @@ private fun MassScreen(
     onOpenAppendix: (AppendixPrefill) -> Unit,
     onExamQuestionsUnlocked: () -> Unit
 ) {
+    val context = LocalContext.current
+    val inputPrefs = remember { context.getSharedPreferences("calculation_inputs", android.content.Context.MODE_PRIVATE) }
     var outputModeName by rememberSaveable { mutableStateOf(OutputMode.QUICK.name) }
     var sourceName by rememberSaveable { mutableStateOf(MassSource.DIRECT.name) }
     val outputMode = OutputMode.valueOf(outputModeName)
     val source = MassSource.valueOf(sourceName)
 
     var mass by rememberSaveable { mutableStateOf("") }
-    var directAxles by rememberSaveable { mutableStateOf("") }
+    var directAxles by rememberSaveable { mutableStateOf(inputPrefs.getString("axles", "").orEmpty()) }
     var wag4 by rememberSaveable { mutableStateOf("") }
     var wag6 by rememberSaveable { mutableStateOf("") }
     var wag8 by rememberSaveable { mutableStateOf("") }
     var extraAxles by rememberSaveable { mutableStateOf("") }
     var manualLoad by rememberSaveable { mutableStateOf("") }
-    var slope by rememberSaveable { mutableStateOf(12.0) }
-    var availableShoes by rememberSaveable { mutableStateOf("") }
+    var slope by rememberSaveable { mutableStateOf(inputPrefs.getString("slope", "").orEmpty().toRuDoubleOrNull() ?: 12.0) }
+    var availableShoes by rememberSaveable { mutableStateOf(inputPrefs.getString("available_shoes", "").orEmpty()) }
     var axlesPerHandBrake by rememberSaveable { mutableStateOf("") }
     var tenChoiceName by rememberSaveable { mutableStateOf("") }
     var oily by rememberSaveable { mutableStateOf(false) }
@@ -596,7 +598,7 @@ private fun MassScreen(
         when (source) {
             MassSource.DIRECT -> {
                 NumericField("Масса учитываемого состава, т", mass, true) { mass = it; invalidate() }
-                NumericField("Количество учитываемых осей", directAxles, false) { directAxles = it; invalidate() }
+                NumericField("Количество учитываемых осей", directAxles, false) { directAxles = it; inputPrefs.edit().putString("axles", it).apply(); invalidate() }
             }
             MassSource.WAGONS -> {
                 NumericField("Масса учитываемого состава, т", mass, true) { mass = it; invalidate() }
@@ -732,7 +734,7 @@ private fun MassScreen(
             items(BrakeCalculator.massSlopesPermille) { value ->
                 FilterChip(
                     selected = value == slope,
-                    onClick = { slope = value; invalidate() },
+                    onClick = { slope = value; inputPrefs.edit().putString("slope", value.toString()).apply(); invalidate() },
                     label = { Text("${fmt(value)}‰") }
                 )
             }
@@ -740,7 +742,7 @@ private fun MassScreen(
     }
 
     SectionCard("Фактические средства", "Башмаки используются первыми, ручной тормоз дополняет только недостающую часть") {
-        NumericField("Доступно тормозных башмаков (например, 16)", availableShoes, false) { availableShoes = it; invalidate() }
+        NumericField("Доступно тормозных башмаков (например, 16)", availableShoes, false) { availableShoes = it; inputPrefs.edit().putString("available_shoes", it).apply(); invalidate() }
         NumericField("Оси на одну единицу ручного тормоза (например, 4)", axlesPerHandBrake, false) { axlesPerHandBrake = it; invalidate() }
     }
 
@@ -1047,14 +1049,16 @@ private fun AppendixScreen(
     prefill: AppendixPrefill?,
     onHistory: (HistoryRecord) -> Unit
 ) {
-    var axles by rememberSaveable(prefill?.token) { mutableStateOf(prefill?.axleCount?.toString() ?: "") }
+    val context = LocalContext.current
+    val inputPrefs = remember { context.getSharedPreferences("calculation_inputs", android.content.Context.MODE_PRIVATE) }
+    var axles by rememberSaveable(prefill?.token) { mutableStateOf(prefill?.axleCount?.toString() ?: inputPrefs.getString("axles", "").orEmpty()) }
     var profileName by rememberSaveable { mutableStateOf(ProfileMode.NORMAL.name) }
-    var slope by rememberSaveable { mutableStateOf("8") }
+    var slope by rememberSaveable { mutableStateOf(inputPrefs.getString("slope", "8").orEmpty()) }
     var formulaName by rememberSaveable { mutableStateOf(AppendixFormula.FORMULA_1.name) }
     var oily by rememberSaveable(prefill?.token) { mutableStateOf(prefill?.oilyRails ?: false) }
     var wind by rememberSaveable(prefill?.token) { mutableStateOf(prefill?.windSpeedMs ?: "0") }
     var windMatches by rememberSaveable(prefill?.token) { mutableStateOf(prefill?.windMatches ?: false) }
-    var availableShoes by rememberSaveable { mutableStateOf("") }
+    var availableShoes by rememberSaveable { mutableStateOf(inputPrefs.getString("available_shoes", "").orEmpty()) }
     var axlesPerHandBrake by rememberSaveable { mutableStateOf("") }
     var leavingWithoutLocomotive by rememberSaveable { mutableStateOf(true) }
     var point20ConditionName by rememberSaveable { mutableStateOf("") }
@@ -1065,12 +1069,12 @@ private fun AppendixScreen(
     val slopeValue = slope.toRuDoubleOrNull() ?: 0.0
 
     SectionCard("Закрепляемая группа", "Расчёт по конкретному пути или его отрезку") {
-        NumericField("Количество осей", axles, false) { axles = it; result = null }
+        NumericField("Количество осей", axles, false) { axles = it; inputPrefs.edit().putString("axles", it).apply(); result = null }
         Text("Подсказка по выбору уклона", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         ChoiceOption("Обычный", "Уклон задан для пути", profile == ProfileMode.NORMAL) { profileName = ProfileMode.NORMAL.name; result = null }
         ChoiceOption("Ломаный, весь путь", "Используется средний уклон всего пути", profile == ProfileMode.BROKEN_FULL_TRACK) { profileName = ProfileMode.BROKEN_FULL_TRACK.name; result = null }
         ChoiceOption("Отдельный отрезок", "Используется фактический уклон отрезка", profile == ProfileMode.SEPARATE_SEGMENT) { profileName = ProfileMode.SEPARATE_SEGMENT.name; result = null }
-        NumericField("Уклон, ‰", slope, true) { slope = it; result = null }
+        NumericField("Уклон, ‰", slope, true) { slope = it; inputPrefs.edit().putString("slope", it).apply(); result = null }
     }
 
     if (slopeValue > 0.5) {
@@ -1119,7 +1123,7 @@ private fun AppendixScreen(
     }
 
     SectionCard("Фактические средства", null) {
-        NumericField("Доступно тормозных башмаков (например, 16)", availableShoes, false) { availableShoes = it; result = null }
+        NumericField("Доступно тормозных башмаков (например, 16)", availableShoes, false) { availableShoes = it; inputPrefs.edit().putString("available_shoes", it).apply(); result = null }
         NumericField("Оси на одну единицу стояночного тормоза (например, 4)", axlesPerHandBrake, false) { axlesPerHandBrake = it; result = null }
     }
 
@@ -1440,6 +1444,7 @@ private fun PaletteScreen(
                 title = option.title,
                 subtitle = when (option) {
                     AccentPalette.BLUE -> "Классический холодный синий акцент приложения"
+                    AccentPalette.AMBER -> "Тёплый янтарный акцент прежнего оформления"
                     AccentPalette.GREEN -> "Спокойный зелёный для альтернативного оформления"
                     AccentPalette.YELLOW -> "Более светлый сигнальный акцент"
                     AccentPalette.PURPLE -> "Холодный дополнительный акцент"

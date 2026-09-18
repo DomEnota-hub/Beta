@@ -27,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -166,6 +167,13 @@ fun TechnicalCatalogScreen(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 label = { Text("Поиск по названию, аппарату или признаку") },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }) {
+                            Text("×", style = MaterialTheme.typography.titleLarge)
+                        }
+                    }
+                },
                 shape = RoundedCornerShape(16.dp)
             )
         }

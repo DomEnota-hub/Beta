@@ -25,6 +25,8 @@ private val exactLabels = mapOf(
     "all_base_variants_verify_actual_section" to "Для всех базовых исполнений с обязательной проверкой фактической секции",
     "actual_section_scheme_required" to "Требуется схема фактической секции",
     "section-aware applicability" to "Применимость определяется по фактическому исполнению секции",
+    "applicable acceptance/safety requirements" to "Применимые требования приёмки и безопасности",
+    "locomotive inspection duty scope" to "Объём обязанностей при осмотре локомотива",
     "unknown" to "Не определено",
     "head" to "Головная секция",
     "booster" to "Бустерная секция",
