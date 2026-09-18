@@ -119,6 +119,11 @@ private val sourcePoint = Regex("^p\\.(\\d+(?:[.-]\\d+)*)$", RegexOption.IGNORE_
 private val vlProfileSubtitle = Regex("^Профиль секции\\s+vl80s_[A-Za-z0-9_]+$", RegexOption.IGNORE_CASE)
 private val rangeTitle = Regex("^(\\d+)-(\\d+)$")
 
+private val hiddenServiceLocators = setOf(
+    "search by symptom/equipment",
+    "applicable brake rules"
+)
+
 internal fun technicalPresentationLine(value: String): String? {
     val cleaned = userFacingTechnicalText(value).trim()
     if (cleaned.isBlank()) return null
@@ -132,7 +137,7 @@ private fun technicalPresentationAtom(value: String): String? {
     val raw = value.trim()
     if (raw.isBlank() || isInternalTechnicalReference(raw)) return null
     val key = raw.lowercase()
-    if (key in hiddenMetadata) return null
+    if (key in hiddenMetadata || key in hiddenServiceLocators || key.startsWith("search by ")) return null
     exactLabels[key]?.let { return it }
     englishRules[key]?.let { return it }
     translateQuantity(key)?.let { return it }
