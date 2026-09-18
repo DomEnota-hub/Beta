@@ -36,6 +36,7 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalAssetReader.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalAssetReader.kt
           cmp app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           expected=(
@@ -54,6 +55,8 @@ jobs:
           grep -Fq 'id = "oil-pump-failure"' app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt
           ! grep -Fq 'label = { Text("Тренажёр") }' app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
           ! grep -Fq 'observation.equipmentIds.joinToString()' app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          grep -Fq 'Text("Уточнение симптома"' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'Text("Шаг $questionNumber; дальнейший вопрос зависит от ответа")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           grep -Fq 'Text("Пользовательский профиль"' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
           grep -Fq 'BLUE("Холодный синий", Color(0xFF82A9FF), Color(0xFF182947))' app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           ! grep -Fq '1.2.2-dev10 (138)' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
@@ -93,12 +96,12 @@ jobs:
           cmp patch/app/build.gradle.kts buildsrc/RailBrakeCalculator/app/build.gradle.kts
           python3 qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets | tee runtime-assets-overlay.log
 
-      - name: Verify Beta9 identity
+      - name: Verify Beta10 identity
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'versionCode = 154' buildsrc/RailBrakeCalculator/app/build.gradle.kts
-          grep -Fq 'versionName = "1.2.2-dev14-beta9"' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+          grep -Fq 'versionCode = 155' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta10"' buildsrc/RailBrakeCalculator/app/build.gradle.kts
 
       - name: Run unit tests
         working-directory: buildsrc/RailBrakeCalculator
@@ -156,7 +159,7 @@ jobs:
           set -euo pipefail
           APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/aapt" dump badging "$APK" | tee apk-badging.log
-          grep -Fq "package: name='ru.railbrake.calculator' versionCode='154' versionName='1.2.2-dev14-beta9'" apk-badging.log
+          grep -Fq "package: name='ru.railbrake.calculator' versionCode='155' versionName='1.2.2-dev14-beta10'" apk-badging.log
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose --print-certs "$APK" | tee signed-apksigner.log
           grep -qi "Signer #1 certificate SHA-256 digest: $EXPECTED_SIGNING_CERT_SHA256" signed-apksigner.log
           python3 qa/verify_technical_assets_in_apk.py "$APK" | tee technical-assets-release.log
@@ -165,7 +168,7 @@ jobs:
       - name: Upload signed release APK
         uses: actions/upload-artifact@v4
         with:
-          name: RailBrakeCalculator-1.2.2-dev14-beta9-release-signed
+          name: RailBrakeCalculator-1.2.2-dev14-beta10-release-signed
           path: buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 30
