@@ -59,6 +59,7 @@ import ru.railbrake.calculator.core.technicalPresentationLine
 import ru.railbrake.calculator.core.technicalStatusPresentation
 import ru.railbrake.calculator.data.AcceptanceCheckState
 import ru.railbrake.calculator.data.AcceptanceStateRepository
+import ru.railbrake.calculator.data.acceptanceSummary
 
 @Composable
 fun TechnicalCatalogScreen(
@@ -334,7 +335,7 @@ private fun TechnicalEntryDetail(
         if (entry.id.startsWith("ER-SCH-LAYOUT-") && entry.hotspots.isNotEmpty()) {
             item { ErmakInteractiveAtlas(entry, repository, onOpen) }
         } else if (entry.section == TechnicalSection.ACCEPTANCE && entry.sequence.isNotEmpty()) {
-            item { TechnicalSequence(entry, repository, onOpen) }
+            item { TechnicalSequence(entry, repository) }
         } else if (entry.sequence.isNotEmpty()) {
             item { TechnicalSequenceLinks(entry, repository, onOpen) }
         }
@@ -577,40 +578,111 @@ private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalD
 }
 
 @Composable
-private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository, onOpen: (TechnicalEntry) -> Unit) {
+private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository) {
     val context = LocalContext.current
     val acceptanceRepository = remember(context) { AcceptanceStateRepository(context.applicationContext) }
     var step by rememberSaveable(entry.id) { mutableIntStateOf(0) }
     var stateVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+    var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
+    var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
     val currentId=entry.sequence[step.coerceIn(entry.sequence.indices)]
     val target=repository.entry(currentId)
     val accent=technicalSectionAccent(entry.section,entry.status)
     val currentState = stateVersion.let { acceptanceRepository.state(currentId) }
+    val checklistItems = entry.sequence.mapNotNull { id -> repository.entry(id)?.let { id to it } }
+    val states = stateVersion.let { entry.sequence.map(acceptanceRepository::state) }
+    val summary = acceptanceSummary(states)
+    val visibleItems = checklistItems.filter { (_, item) ->
+        checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
+            technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
+    }
     Card(modifier=Modifier.fillMaxWidth(),colors=CardDefaults.cardColors(containerColor=MaterialTheme.colorScheme.secondaryContainer),border=BorderStroke(1.dp,accent.copy(alpha=.45f)),shape=RoundedCornerShape(18.dp)) {
         Column(Modifier.padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
             Text("Пошаговая приёмка",style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.Black)
-            Text("Шаг ${step+1} из ${entry.sequence.size}",color=accent)
-            Text(target?.let(::technicalEntryTitle)?:"Пункт приёмки",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.Black)
-            target?.let { item ->
-                technicalEntrySubtitle(item)?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant) }
-                item.blocks.forEach { block ->
-                    val lines=repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).distinct()
-                    if(lines.isNotEmpty()) Card(colors=CardDefaults.cardColors(containerColor=technicalBlockContainer(item.section,block.title)),modifier=Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(block.title,fontWeight=FontWeight.Black); lines.forEach { Text("• $it") } }
+            Text("${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} пунктов обработано",color=accent)
+            if (showFullChecklist) {
+                OutlinedTextField(
+                    value = checklistQuery,
+                    onValueChange = { checklistQuery = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Поиск по названию") }
+                )
+                visibleItems.forEach { (id, item) ->
+                    val itemState = stateVersion.let { acceptanceRepository.state(id) }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(technicalEntryTitle(item), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                            technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                            AcceptanceStatusSelector(
+                                itemTitle = technicalEntryTitle(item),
+                                currentState = itemState,
+                                onSelect = { option -> acceptanceRepository.setState(id, option); stateVersion++ }
+                            )
+                        }
                     }
                 }
-                Text("Состояние: ${currentState.label}",color=accent,fontWeight=FontWeight.Bold)
-                Text("Перед переходом выберите результат проверки этого пункта", style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)
-                LazyRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                    items(AcceptanceCheckState.entries) { option ->
-                        FilterChip(selected=currentState==option,onClick={ acceptanceRepository.setState(currentId, option); stateVersion++ },label={Text(option.label)})
+                if (visibleItems.isEmpty()) Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                AcceptanceResultCard(summary)
+                OutlinedButton(onClick = { showFullChecklist = false }, modifier = Modifier.fillMaxWidth()) { Text("Вернуться к пошаговой проверке") }
+            } else {
+                Text("Шаг ${step+1} из ${entry.sequence.size}",color=accent)
+                Text(target?.let(::technicalEntryTitle)?:"Пункт приёмки",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.Black)
+                target?.let { item ->
+                    technicalEntrySubtitle(item)?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant) }
+                    item.blocks.forEach { block ->
+                        val lines=repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).distinct()
+                        if(lines.isNotEmpty()) Card(colors=CardDefaults.cardColors(containerColor=technicalBlockContainer(item.section,block.title)),modifier=Modifier.fillMaxWidth()) {
+                            Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(block.title,fontWeight=FontWeight.Black); lines.forEach { Text("• $it") } }
+                        }
                     }
+                    AcceptanceStatusSelector(
+                        itemTitle = technicalEntryTitle(item),
+                        currentState = currentState,
+                        onSelect = { option -> acceptanceRepository.setState(currentId, option); stateVersion++ }
+                    )
                 }
+                Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick={if(step>0)step--},enabled=step>0){Text("Назад")}; Button(onClick={if(step<entry.sequence.lastIndex)step++},enabled=step<entry.sequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED){Text("Далее")} }
+                OutlinedButton(onClick={showFullChecklist=true},modifier=Modifier.fillMaxWidth()){Text("Открыть полную карточку")}
+                if (summary.complete) AcceptanceResultCard(summary)
             }
-            Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick={if(step>0)step--},enabled=step>0){Text("Назад")}; Button(onClick={if(step<entry.sequence.lastIndex)step++},enabled=step<entry.sequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED){Text("Далее")} }
-            if(target!=null) OutlinedButton(onClick={onOpen(target)},modifier=Modifier.fillMaxWidth()){Text("Открыть полную карточку")}
         }
     }
+}
+
+@Composable
+private fun AcceptanceStatusSelector(
+    itemTitle: String,
+    currentState: AcceptanceCheckState,
+    onSelect: (AcceptanceCheckState) -> Unit
+) {
+    Text("Статус: ${currentState.label}", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+    Text(itemTitle, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Black)
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(AcceptanceCheckState.entries) { option ->
+            FilterChip(selected = currentState == option, onClick = { onSelect(option) }, label = { Text(option.label) })
+        }
+    }
+}
+
+@Composable
+private fun AcceptanceResultCard(summary: ru.railbrake.calculator.data.AcceptanceSummary) {
+    val tone = if (summary.complete && summary.notes == 0) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer
+    InfoCard(
+        summary.result,
+        listOf(
+            "Проверено: ${summary.checked}",
+            "Замечания: ${summary.notes}",
+            "Не применяется: ${summary.notApplicable}",
+            "Не проверено: ${summary.notChecked}"
+        ),
+        tone
+    )
 }
 
 @Composable
