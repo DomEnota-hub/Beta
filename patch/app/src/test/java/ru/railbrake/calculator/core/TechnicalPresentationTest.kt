@@ -60,4 +60,12 @@ class TechnicalPresentationTest {
         assertEquals("Требует сверки со схемой секции", technicalStatusPresentation("SECONDARY_SOURCE_REQUIRES_DRAWING"))
         assertNull(technicalStatusPresentation("SOME_NEW_INTERNAL_STATUS"))
     }
+
+    @Test
+    fun equipmentMetadataUsesRussianLabels() {
+        assertEquals("Крыша", technicalPresentationLine("roof"))
+        assertEquals("На каждой секции", technicalPresentationLine("each_section"))
+        assertEquals("Имеет пневматический привод от", technicalPresentationLine("pneumatically_operated_by"))
+        assertEquals("В", technicalPresentationLine("V"))
+    }
 }

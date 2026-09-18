@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -309,14 +310,60 @@ private fun TechnicalEntryDetail(
 
 @Composable
 private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalDataRepository, onOpen: (TechnicalEntry) -> Unit) {
-    val targets = entry.sequence.mapNotNull(repository::entry).distinctBy { it.id }
-    if (targets.isEmpty()) return
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp)) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Состав и переходы", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-            targets.forEach { target ->
+    if (entry.sequence.isEmpty()) return
+    var step by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+    var query by rememberSaveable(entry.id) { mutableStateOf("") }
+    val steps = entry.sequence.map { id ->
+        val target = repository.entry(id)
+        val label = target?.let(::technicalEntryTitle)
+            ?: entry.sequenceLabels[id]?.let(::technicalPresentationLine)
+            ?: "Узел схемы"
+        Triple(id, label, target)
+    }
+    val visible = steps.filter { (_, label, _) -> query.isBlank() || label.contains(query, ignoreCase = true) }
+    val safeStep = step.coerceIn(steps.indices)
+    val current = steps[safeStep]
+    val accent = technicalSectionAccent(entry.section, entry.status)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, accent.copy(alpha = 0.55f)),
+        shape = RoundedCornerShape(18.dp)
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("Интерактивная схема", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text("Узел ${safeStep + 1} из ${steps.size}", color = accent, fontWeight = FontWeight.Bold)
+            Text(current.second, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+            current.third?.let { target ->
+                technicalEntrySubtitle(target)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                 OutlinedButton(onClick = { onOpen(target) }, modifier = Modifier.fillMaxWidth()) {
-                    Text(technicalEntryTitle(target))
+                    Text("Открыть карточку оборудования")
+                }
+            } ?: Text(
+                "Служебный узел маршрута; отдельная карточка оборудования не предусмотрена.",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = { step-- }, enabled = safeStep > 0) { Text("Назад") }
+                Button(onClick = { step++ }, enabled = safeStep < steps.lastIndex) { Text("Далее") }
+                TextButton(onClick = { step = 0 }) { Text("Сбросить") }
+            }
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                label = { Text("Найти узел или аппарат") }
+            )
+            visible.forEach { (id, label, target) ->
+                OutlinedButton(
+                    onClick = {
+                        step = steps.indexOfFirst { it.first == id }.coerceAtLeast(0)
+                        query = ""
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(if (target == null) label else "$label →")
                 }
             }
         }

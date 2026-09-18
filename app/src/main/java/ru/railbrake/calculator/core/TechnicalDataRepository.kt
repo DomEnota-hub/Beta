@@ -35,6 +35,7 @@ data class TechnicalEntry(
     val blocks: List<TechnicalBlock>,
     val relatedIds: List<String> = emptyList(),
     val sequence: List<String> = emptyList(),
+    val sequenceLabels: Map<String, String> = emptyMap(),
     val searchText: String
 )
 
@@ -204,9 +205,12 @@ class TechnicalDataRepository(private val context: Context) {
                 blocks = listOfNotEmpty(
                     block("Назначение", item.optString("purpose")),
                     block("Расположение", item.obj("location").summary()),
+                    block("Функциональные связи", item.array("legacyConnections").strings()),
                     block("Обозначения", item.array("aliases").strings() + item.array("schemeNodeIds").strings()),
                     block("Системы", item.array("systemIds").strings()),
                     block("Диагностика", item.array("diagnosticScenarioIds").strings()),
+                    block("Применимость", item.obj("applicability").summary()),
+                    block("Особенности", item.array("featureRules").stringsOrSummaries()),
                     block("Источники", item.array("sourceRefs").stringsOrSummaries())
                 ),
                 relatedIds = related
@@ -404,6 +408,8 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Параметры", item.array("parameters").stringsOrSummaries()),
                     block("Применимость", item.obj("applicability").summary()),
                     block("Системы", item.array("systemIds").strings()),
+                    block("Связи с оборудованием", item.array("relations").stringsOrSummaries()),
+                    block("Примечания", item.array("notes").stringsOrSummaries()),
                     block("Источники", item.array("sourceRefs").stringsOrSummaries())
                 ),
                 relatedIds = item.array("relations").objects().mapNotNull { it.optString("targetId").takeIf(String::isNotBlank) } +
@@ -483,6 +489,11 @@ class TechnicalDataRepository(private val context: Context) {
                         ?: step.optString("equipmentId").takeIf(String::isNotBlank)
                 }
             } else hotspots.mapNotNull { it.optString("equipmentId").takeIf(String::isNotBlank) }
+            val labels = hotspots.mapNotNull { hotspot ->
+                hotspot.optString("equipmentId").takeIf(String::isNotBlank)?.let { id ->
+                    id to hotspot.optString("label").ifBlank { hotspot.optString("title") }
+                }
+            }.toMap()
             entry(
                 item, TechnicalFamily.ERMAK, section,
                 title = item.optString("title"),
@@ -497,7 +508,8 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Покрытие", item.obj("coverage").summary())
                 ),
                 relatedIds = item.array("equipmentRefs").strings(),
-                sequence = sequence.distinct()
+                sequence = sequence.distinct(),
+                sequenceLabels = labels
             )
         }
 
@@ -512,6 +524,10 @@ class TechnicalDataRepository(private val context: Context) {
             node.optString("equipmentId").takeIf(String::isNotBlank)
                 ?: node.optString("virtualNodeId").takeIf(String::isNotBlank)
         }
+        val sequenceLabels = nodes.mapNotNull { node ->
+            val id = node.optString("equipmentId").ifBlank { node.optString("virtualNodeId") }
+            id.takeIf(String::isNotBlank)?.let { it to node.optString("label").ifBlank { it } }
+        }.toMap()
         return entry(
             item, family, section,
             title = item.optString("title"),
@@ -529,7 +545,8 @@ class TechnicalDataRepository(private val context: Context) {
                 block("Источники", item.array("sourceRefs").stringsOrSummaries())
             ),
             relatedIds = sequence,
-            sequence = sequence
+            sequence = sequence,
+            sequenceLabels = sequenceLabels
         )
     }
 
@@ -542,7 +559,8 @@ class TechnicalDataRepository(private val context: Context) {
         status: String,
         blocks: List<TechnicalBlock>,
         relatedIds: List<String> = emptyList(),
-        sequence: List<String> = emptyList()
+        sequence: List<String> = emptyList(),
+        sequenceLabels: Map<String, String> = emptyMap()
     ): TechnicalEntry {
         val id = source.optString("id")
         val aliases = source.array("aliases").strings()
@@ -564,6 +582,7 @@ class TechnicalDataRepository(private val context: Context) {
             blocks = blocks,
             relatedIds = relatedIds.filter(String::isNotBlank).distinct(),
             sequence = sequence.filter(String::isNotBlank).distinct(),
+            sequenceLabels = sequenceLabels.filterKeys(String::isNotBlank),
             searchText = search
         )
     }
