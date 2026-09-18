@@ -20,33 +20,13 @@ jobs:
           ref: dev14-integration
       - name: Apply UI identity patch
         run: python3 qa/beta8_stage2_4_patch.py
-      - name: Update safe-build identity
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('.github/workflows/dev14-safe-build.yml')
-          s = p.read_text(encoding='utf-8')
-          replacements = {
-              "versionCode = 152": "versionCode = 153",
-              'versionName = "1.2.2-dev14-beta7"': 'versionName = "1.2.2-dev14-beta8"',
-              "versionCode='152' versionName='1.2.2-dev14-beta7'": "versionCode='153' versionName='1.2.2-dev14-beta8'",
-              "RailBrakeCalculator-1.2.2-dev14-beta7-release-signed": "RailBrakeCalculator-1.2.2-dev14-beta8-release-signed",
-          }
-          for old, new in replacements.items():
-              if old not in s:
-                  raise SystemExit(f'missing safe-build identity token: {old}')
-              s = s.replace(old, new)
-          p.write_text(s, encoding='utf-8')
-          PY
       - name: Commit UI identity package
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app patch/app .github/workflows/dev14-safe-build.yml
+          git add app patch/app
           git diff --cached --check
           git commit -m "Beta8: localize UI and finalize identity"
           git push origin HEAD:dev14-integration
