@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.railbrake.calculator.core.DiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticScenario
 
@@ -65,14 +66,7 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
     ) {
         item {
             RailSectionHeader("Диагностика Ермак", "Выберите неисправность или наблюдаемый симптом")
-            InfoCard(
-                "Важно: это не допуск к работам",
-                listOf(
-                    "Диагностика помогает локализовать отказ и подготовить доклад.",
-                    "Она не заменяет местную инструкцию, установленный допуск и требования безопасности."
-                ),
-                MaterialTheme.colorScheme.errorContainer
-            )
+            ErmakSafetyNotice()
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
@@ -105,6 +99,26 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
                     Text("Начать диагностику →", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ErmakSafetyNotice() {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+        shape = RoundedCornerShape(17.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+            Text(
+                "Важно: это не допуск к работам",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.error
+            )
+            Text("• ${DiagnosticRepository.safetyNotice}")
         }
     }
 }
