@@ -1,0 +1,30 @@
+name: Update Dev14 safe build for Beta14
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/update_dev14_safe_build_beta14.py
+      - .github/workflows/update-dev14-safe-build-beta14.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Update canonical safe build
+        run: python3 .github/scripts/update_dev14_safe_build_beta14.py
+      - name: Commit canonical build update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/dev14-safe-build.yml
+          git diff --cached --quiet && exit 0
+          git commit -m 'Beta14: update canonical safe build checks'
+          git push origin HEAD:dev14-integration
