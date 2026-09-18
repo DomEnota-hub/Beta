@@ -67,6 +67,7 @@ private val quickRouteItems = listOf(
     QuickRouteItem("Токоприёмник / ГВ", "Не поднимается токоприёмник, не включается или отключается ГВ.", "gv-no-close"),
     QuickRouteItem("Тяга и ЭКГ", "Нет тяги, не набираются позиции, различается ток секций или групп.", "traction-no-assemble"),
     QuickRouteItem("Вспомогательные машины", "Не запускаются фазорасщепитель, вентиляторы или компрессор.", "aux-machines"),
+    QuickRouteItem("Масляный насос трансформатора", "Не запускается, отключается или не подтверждается работа маслонасоса трансформатора.", "oil-pump-failure"),
     QuickRouteItem("Тормоза и давление", "Падает ТМ, не отпускает тормоз, не набирается давление ГР.", "brake-pipe-leak"),
     QuickRouteItem("Безопасность движения", "АЛСН/ЭПК, внезапное торможение, срабатывание контроля бдительности.", "alsn-epk"),
     QuickRouteItem("Нагрев, дым, запах", "Признаки пожара, пробоя или опасного нагрева оборудования.", "smoke-fire-flashover")
@@ -119,15 +120,6 @@ private fun DiagnosticCatalog(
     var selectedVariantId by rememberSaveable { mutableStateOf(profileRepository.selectedVariantId()) }
     var historyVersion by remember { mutableStateOf(0) }
     val sessions = remember(historyVersion) { sessionRepository.load() }
-    var trainingScenarioId by rememberSaveable { mutableStateOf("gv-no-close") }
-    val trainingScenarios = remember(selectedVariantId) {
-        DiagnosticRepository.scenarios.filter { scenario ->
-            LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
-        }
-    }
-    val trainingScenario = trainingScenarios.firstOrNull { it.id == trainingScenarioId }
-        ?: trainingScenarios.firstOrNull()
-    var trainingAnswer by rememberSaveable(trainingScenario?.id ?: "none") { mutableStateOf<DiagnosticResponse?>(null) }
     val results = remember(query, category, selectedVariantId) {
         DiagnosticRepository.search(query, category).filter { scenario ->
             LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
@@ -142,6 +134,19 @@ private fun DiagnosticCatalog(
                 } == true
             }
         } to equipment
+    }
+    val quickResults = quickRouteItems.filter { item ->
+        val scenario = DiagnosticRepository.scenario(item.scenarioId)
+        val matchesVariant = scenario?.let { candidate ->
+            LocomotiveProfiles.appliesToVariant(selectedVariantId, candidate.applicableVariantIds)
+        } == true
+        val matchesQuery = query.isBlank() || listOf(
+            item.title,
+            item.subtitle,
+            scenario?.title.orEmpty(),
+            scenario?.summary.orEmpty()
+        ).any { value -> value.contains(query, ignoreCase = true) }
+        matchesVariant && matchesQuery
     }
 
     LazyColumn(
@@ -175,16 +180,31 @@ private fun DiagnosticCatalog(
                     label = { Text("В пути") }
                 )
                 }
-                item { FilterChip(catalogMode == "training", { catalogMode = "training" }, label = { Text("Тренажёр") }) }
                 item { FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") }) }
             }
         }
-        if (catalogMode == "scenarios" || catalogMode == "observations") item {
+        if (catalogMode == "scenarios" || catalogMode == "observations" || catalogMode == "quick") item {
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                label = { Text(if (catalogMode == "scenarios") "Симптом или аппарат" else "Лампа, прибор, звук или аппарат") },
-                placeholder = { Text(if (catalogMode == "scenarios") "Например: ЭКГ, №395, БУРТ, АЛСН" else "Например: выбило ГВ, ТМ падает, стук, боксование") },
+                label = {
+                    Text(
+                        when (catalogMode) {
+                            "scenarios" -> "Симптом или аппарат"
+                            "observations" -> "Лампа, прибор, звук или аппарат"
+                            else -> "Поиск во вкладке «В пути»"
+                        }
+                    )
+                },
+                placeholder = {
+                    Text(
+                        when (catalogMode) {
+                            "scenarios" -> "Например: ЭКГ, №395, БУРТ, АЛСН"
+                            "observations" -> "Например: выбило ГВ, ТМ падает, стук, боксование"
+                            else -> "Например: маслонасос, тормоза, дым"
+                        }
+                    )
+                },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -218,41 +238,6 @@ private fun DiagnosticCatalog(
                     }
                 }
             }
-        } else if (catalogMode == "training") {
-            item {
-                InfoCard(
-                    "Учебный симулятор",
-                    listOf("Ситуации используют те же безопасные деревья, что и рабочий режим. Ответ не является разрешением на вмешательство."),
-                    MaterialTheme.colorScheme.tertiaryContainer
-                )
-            }
-            trainingScenario?.let { scenario ->
-                item {
-                    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant), modifier = Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("Ситуация", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-                            Text(scenario.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                            Text(scenario.summary)
-                            Text(scenario.questions.first().text, fontWeight = FontWeight.Bold)
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Button(onClick = { trainingAnswer = DiagnosticResponse.YES }) { Text("Да") }
-                                OutlinedButton(onClick = { trainingAnswer = DiagnosticResponse.NO }) { Text("Нет") }
-                                TextButton(onClick = { trainingAnswer = DiagnosticResponse.UNKNOWN }) { Text("Не знаю") }
-                            }
-                            trainingAnswer?.let { answer ->
-                                Text(DiagnosticRepository.meaning(scenario.questions.first(), answer), color = MaterialTheme.colorScheme.primary)
-                                Button(onClick = {
-                                    val all = trainingScenarios
-                                    if (all.isNotEmpty()) {
-                                        val index = all.indexOfFirst { it.id == scenario.id }.coerceAtLeast(0)
-                                        trainingScenarioId = all[(index + 1) % all.size].id
-                                    }
-                                }) { Text("Следующая ситуация") }
-                            }
-                        }
-                    }
-                }
-            }
         } else if (catalogMode == "quick") {
             item {
                 BorderedCautionCard(
@@ -263,14 +248,16 @@ private fun DiagnosticCatalog(
                     )
                 )
             }
-            items(
-                quickRouteItems.filter { item ->
-                    DiagnosticRepository.scenario(item.scenarioId)?.let { scenario ->
-                        LocomotiveProfiles.appliesToVariant(selectedVariantId, scenario.applicableVariantIds)
-                    } == true
-                },
-                key = { it.scenarioId }
-            ) { item ->
+            if (quickResults.isEmpty()) {
+                item {
+                    InfoCard(
+                        "Ничего не найдено",
+                        listOf("Измените запрос или очистите строку поиска."),
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+            }
+            items(quickResults, key = { it.scenarioId }) { item ->
                 val scenario = DiagnosticRepository.scenario(item.scenarioId)
                 Card(
                     onClick = { scenario?.let(onOpen) },
