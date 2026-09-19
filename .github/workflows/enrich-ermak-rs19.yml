@@ -1,0 +1,128 @@
+name: Enrich Ermak RS-19 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_rs19.py'
+      - '.github/workflows/enrich-ermak-rs19.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply RS-19 enrichment
+        run: python3 .github/scripts/enrich_ermak_rs19.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          matches=[r for r in eq['records'] if r.get('id')=='ER-EQ-TR-003']
+          assert len(matches)==1, len(matches)
+          p=matches[0]
+          assert 'РС-19' in p.get('modelNames',[])
+          assert {'L2','L3','L4','L5'} <= set(p.get('schemeDesignations',[]))
+          assert len(p['parameters'])==9
+          assert any(x['name']=='Номинальное напряжение изоляции' and x['value']==1400 for x in p['parameters'])
+          assert any(x['name']=='Ток продолжительного режима' and x['value']==810 for x in p['parameters'])
+          assert any(x['name']=='Ток часового режима' and x['value']==870 for x in p['parameters'])
+          assert any(x['name']=='Начальная индуктивность, не менее' and x['value']==11.7 for x in p['parameters'])
+          assert any(x['name']=='Индуктивность при токе 810 А, не менее' and x['value']==8.2 for x in p['parameters'])
+          assert any(x['name']=='Охлаждение' and x['value']=='воздушное принудительное' for x in p['parameters'])
+          assert any(x['name']=='Расход охлаждающего воздуха' and x['value']==20 for x in p['parameters'])
+          assert any(x['name']=='Масса' and x['value']==443 for x in p['parameters'])
+          assert any(x['name']=='Габаритные размеры' and x['value']=='765×475×600' for x in p['parameters'])
+          ids={x.get('sourceId') for x in p['sourceRefs'] if isinstance(x,dict)}
+          assert {'ER-SRC-055','ER-SRC-056','ER-SRC-057'} <= ids
+          purpose=p['purpose'].lower()
+          assert 'пульсац' in purpose and 'тягов' in purpose
+          assert p['parameterCoverage']['count']==9
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles=[a for a in kb['articles'] if a.get('id')=='ER-KB-EQ-ER-EQ-TR-003' or a.get('equipmentId')=='ER-EQ-TR-003']
+          by_id={a.get('id'):a for a in articles}
+          assert len(by_id)==1, list(by_id)
+          a=next(iter(by_id.values()))
+          assert len(a['keyParameters'])==9
+          assert all(x in a['sourceRefs'] for x in ['ER-SRC-055','ER-SRC-056','ER-SRC-057'])
+          principle=a['principle'].lower()
+          assert 'индуктив' in principle and 'пульсац' in principle
+          assert any('РС-19-01' in rule and 'поосным регулированием' in rule for rule in a.get('variantRules',[]))
+          assert len(a['normalState']) >= 3 and len(a['deviationSigns']) >= 3
+          assert a['atlasData']['parameterCoverage']['count']==9
+          print('RS-19 enrichment verified for ER-EQ-TR-003')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak RS-19 smoothing reactor reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
