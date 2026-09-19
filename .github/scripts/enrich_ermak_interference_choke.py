@@ -149,3 +149,5 @@ for base in ROOTS:
     patch_knowledge(base / 'ermak_knowledge.json.gz')
 
 print('Ermak DP-011 interference choke reference enriched in app and patch mirrors')
+
+# Reapply canonical DP-011 enrichment after concurrent catalog edits.
