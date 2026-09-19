@@ -1,0 +1,131 @@
+name: Enrich Ermak VB-8 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_vb8.py'
+      - '.github/workflows/enrich-ermak-vb8.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply VB-8 enrichment
+        run: python3 .github/scripts/enrich_ermak_vb8.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          matches=[r for r in eq['records'] if r.get('id')=='ER-EQ-TR-004']
+          assert len(matches)==1, len(matches)
+          p=matches[0]
+          assert 'ВБ-8' in p.get('modelNames',[]), p.get('modelNames')
+          assert {'QF11','QF12'} <= set(p.get('schemeDesignations',[])), p.get('schemeDesignations')
+          assert len(p['parameters'])==9
+          expected = {
+              'Номинальное напряжение главной цепи': 1250,
+              'Номинальный ток главной цепи': 1000,
+              'Номинальный ток уставки': '2000 (+200/-100)',
+              'Пределы регулирования тока уставки': '1500–2500',
+              'Собственное время отключения при скорости нарастания тока 150 А/мс, не более': 3,
+              'Номинальное напряжение цепи управления постоянного тока': 50,
+              'Номинальный ток удерживающей катушки': 0.5,
+              'Номинальное давление сжатого воздуха привода': 0.5,
+              'Масса': 79.5,
+          }
+          got={x['name']:x['value'] for x in p['parameters']}
+          for k,v in expected.items(): assert got.get(k)==v, (k,got.get(k),v)
+          ids={x.get('sourceId') for x in p['sourceRefs'] if isinstance(x,dict)}
+          assert {'ER-SRC-058','ER-SRC-059','ER-SRC-060','ER-SRC-061'} <= ids, ids
+          assert 'рекуператив' in p['purpose'].lower()
+          assert any('Сопротивление удерживающей катушки' in n for n in p.get('notes',[]))
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles=[a for a in kb['articles'] if a.get('id')=='ER-KB-EQ-ER-EQ-TR-004' or a.get('equipmentId')=='ER-EQ-TR-004']
+          by_id={a.get('id'):a for a in articles}
+          assert len(by_id)==1, list(by_id)
+          a=next(iter(by_id.values()))
+          assert len(a['keyParameters'])==9
+          assert all(x in a['sourceRefs'] for x in ['ER-SRC-058','ER-SRC-059','ER-SRC-060','ER-SRC-061'])
+          assert 'размагничивающ' in a['principle'].lower() and 'дугогас' in a['principle'].lower()
+          assert any('2 мм' in x for x in a['normalState'])
+          assert any('2 мм' in x for x in a['deviationSigns'])
+          assert any('85,2' in rule and '90 Ом' in rule for rule in a.get('variantRules',[]))
+          assert a['atlasData']['parameterCoverage']['count']==9
+          print('VB-8 enrichment verified for ER-EQ-TR-004')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak VB-8 high-speed breaker reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
