@@ -1,0 +1,109 @@
+name: Enrich Ermak R-213-1 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_disconnector.py'
+      - '.github/workflows/enrich-ermak-disconnector.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply R-213-1 enrichment
+        run: python3 .github/scripts/enrich_ermak_disconnector.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          r=next(x for x in eq['records'] if x['id']=='ER-EQ-HV-003')
+          assert 'Р-213-1' in r['modelNames']
+          assert len(r['parameters'])==4
+          assert any(x['name']=='Номинальное напряжение' and x['value']==25 for x in r['parameters'])
+          assert any(x['name']=='Номинальный ток на стоянке' and x['value']==530 for x in r['parameters'])
+          assert any(x['name']=='Номинальный ток при движении' and x['value']==1100 for x in r['parameters'])
+          assert any(x['name']=='Масса' and x['value']==72 for x in r['parameters'])
+          assert any(x.get('sourceId')=='ER-SRC-040' for x in r['sourceRefs'])
+          assert 'обесточенной' in r['purpose'].lower()
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          a=next(x for x in kb['articles'] if x['id']=='ER-KB-EQ-ER-EQ-HV-003')
+          assert len(a['keyParameters'])==4
+          assert 'ER-SRC-040' in a['sourceRefs']
+          assert 'не предназначен для отключения тока нагрузки' in a['principle']
+          print('R-213-1 enrichment verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak R-213-1 disconnector reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
