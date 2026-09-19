@@ -1,0 +1,39 @@
+name: Inspect Ermak traction catalog
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-traction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: List traction equipment records
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              root=json.load(f)
+          for r in root['records']:
+              rid=r.get('id','')
+              if '-TR-' not in rid:
+                  continue
+              print(json.dumps({
+                  'id': rid,
+                  'name': r.get('name'),
+                  'model': r.get('model'),
+                  'modelNames': r.get('modelNames'),
+                  'purpose': r.get('purpose'),
+                  'parameterCount': len(r.get('parameters',[])),
+              }, ensure_ascii=False))
+          PY
