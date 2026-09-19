@@ -32,6 +32,7 @@ jobs:
           cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
           python3 - <<'PY'
           import gzip, json
+
           with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
               eq=json.load(f)
           matches=[r for r in eq['records'] if r.get('id')=='ER-EQ-TR-004']
@@ -39,7 +40,7 @@ jobs:
           p=matches[0]
           assert 'ВБ-8' in p.get('modelNames',[]), p.get('modelNames')
           assert {'QF11','QF12'} <= set(p.get('schemeDesignations',[])), p.get('schemeDesignations')
-          assert len(p['parameters'])==9
+          assert len(p['parameters'])==10
           expected = {
               'Номинальное напряжение главной цепи': 1250,
               'Номинальный ток главной цепи': 1000,
@@ -48,16 +49,18 @@ jobs:
               'Собственное время отключения при скорости нарастания тока 150 А/мс, не более': 3,
               'Номинальное напряжение цепи управления постоянного тока': 50,
               'Номинальный ток удерживающей катушки': 0.5,
+              'Сопротивление удерживающей катушки при 20 °C': 90,
               'Номинальное давление сжатого воздуха привода': 0.5,
               'Масса': 79.5,
           }
           got={x['name']:x['value'] for x in p['parameters']}
-          for k,v in expected.items(): assert got.get(k)==v, (k,got.get(k),v)
+          for k,v in expected.items():
+              assert got.get(k)==v, (k,got.get(k),v)
           ids={x.get('sourceId') for x in p['sourceRefs'] if isinstance(x,dict)}
           assert {'ER-SRC-058','ER-SRC-059','ER-SRC-060','ER-SRC-061'} <= ids, ids
+          assert eq['sourceRegistry']['VB8_FACTORY_SAME_TYPE_DATA']['document'].startswith('ИДМБ.661142.004-01 РЭ4')
           assert 'рекуператив' in p['purpose'].lower()
-          assert any('Сопротивление удерживающей катушки' in n for n in p.get('notes',[]))
-          assert any('85,2' in n and '90 Ом' in n for n in p.get('notes',[]))
+          assert any('90 Ом' in n and '85,2' in n for n in p.get('notes',[]))
 
           with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
               kb=json.load(f)
@@ -65,13 +68,15 @@ jobs:
           by_id={a.get('id'):a for a in articles}
           assert len(by_id)==1, list(by_id)
           a=next(iter(by_id.values()))
-          assert len(a['keyParameters'])==9
+          assert len(a['keyParameters'])==10
           assert all(x in a['sourceRefs'] for x in ['ER-SRC-058','ER-SRC-059','ER-SRC-060','ER-SRC-061'])
           assert 'размагничивающ' in a['principle'].lower() and 'дугогас' in a['principle'].lower()
+          assert any('85 %' in x for x in a['normalState'])
+          assert any('70 %' in x for x in a['normalState'])
           assert any('2 мм' in x for x in a['normalState'])
-          assert any('2 мм' in x for x in a['deviationSigns'])
-          assert a['atlasData']['parameterCoverage']['count']==9
-          print('VB-8 enrichment verified for ER-EQ-TR-004')
+          assert any('ЭП1М' in rule and '90 Ом' in rule and 'маркиров' in rule for rule in a.get('variantRules',[]))
+          assert a['atlasData']['parameterCoverage']['count']==10
+          print('VB-8 provenance and content verified for ER-EQ-TR-004')
           PY
           git diff --check
 
