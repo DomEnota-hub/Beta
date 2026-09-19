@@ -1,0 +1,133 @@
+name: Enrich Ermak PKD-01 reverser reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_pkd01_reverser.py'
+      - '.github/workflows/enrich-ermak-pkd01-reverser.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply PKD-01 reverser enrichment
+        run: python3 .github/scripts/enrich_ermak_pkd01_reverser.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          rows=[r for r in eq['records'] if r.get('id')=='ER-EQ-TR-006']
+          assert len(rows)==1, len(rows)
+          p=rows[0]
+          assert 'ПКД-01' in p.get('modelNames',[]), p.get('modelNames')
+          assert p.get('schemeDesignations')==['QP1'], p.get('schemeDesignations')
+          assert len(p.get('parameters',[]))==7
+          expected={
+              'Номинальное напряжение главной цепи':3000,
+              'Номинальный ток главной цепи':1100,
+              'Номинальное напряжение вспомогательной цепи':50,
+              'Номинальный ток контактов вспомогательной цепи':16,
+              'Номинальное напряжение цепи управления':50,
+              'Номинальное давление сжатого воздуха привода':0.5,
+              'Масса':72.5,
+          }
+          got={x['name']:x['value'] for x in p['parameters']}
+          for k,v in expected.items(): assert got.get(k)==v,(k,got.get(k),v)
+          ids={x.get('sourceId') for x in p.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-062','ER-SRC-063','ER-SRC-064','ER-SRC-065','ER-SRC-066'} <= ids, ids
+          assert 'обмотках возбуждения' in p.get('purpose','').lower()
+
+          neighbor=next(r for r in eq['records'] if r.get('id')=='ER-EQ-TR-007')
+          assert 'ПКД-01' in neighbor.get('modelNames',[])
+          assert 'QT1' in neighbor.get('schemeDesignations',[])
+          assert not neighbor.get('parameters'), neighbor.get('parameters')
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles=[a for a in kb['articles'] if a.get('id')=='ER-KB-EQ-ER-EQ-TR-006' or a.get('equipmentId')=='ER-EQ-TR-006']
+          by_id={a.get('id'):a for a in articles}
+          assert len(by_id)==1,list(by_id)
+          a=next(iter(by_id.values()))
+          assert len(a.get('keyParameters',[]))==7
+          assert all(x in a.get('sourceRefs',[]) for x in ['ER-SRC-062','ER-SRC-063','ER-SRC-064','ER-SRC-065','ER-SRC-066'])
+          assert any('7 мВ' in x and '300 А' in x for x in a.get('normalState',[]))
+          assert any('8–10 мм' in x for x in a.get('normalState',[]))
+          assert any('7 мВ' in x for x in a.get('deviationSigns',[]))
+          assert any('ПКД-142' in x and 'QT1' in x for x in a.get('variantRules',[]))
+          assert a['atlasData']['parameterCoverage']['count']==7
+          print('PKD-01 QP1 reverser enrichment verified; QT1 neighbor untouched')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak PKD-01 reverser reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
