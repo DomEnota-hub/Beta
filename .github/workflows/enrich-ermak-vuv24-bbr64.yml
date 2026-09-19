@@ -1,0 +1,149 @@
+name: Enrich Ermak VUV-24 and BBR-64 references
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_vuv24_bbr64.py'
+      - '.github/workflows/enrich-ermak-vuv24-bbr64.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply VUV-24 and BBR-64 enrichment
+        run: python3 .github/scripts/enrich_ermak_vuv24_bbr64.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by_id={r.get('id'):r for r in eq['records']}
+
+          v=by_id['ER-EQ-TR-008']
+          assert v.get('modelNames') == ['ВУВ-24'], v.get('modelNames')
+          assert v.get('schemeDesignations') == ['U3'], v.get('schemeDesignations')
+          assert len(v.get('parameters',[])) == 7
+          vp={p['name']:p['value'] for p in v['parameters']}
+          assert vp['Номинальный продолжительный выпрямительный ток'] == 850
+          assert vp['Выпрямительный ток 20-минутного режима'] == 1100
+          assert vp['Номинальное напряжение питания'] == '2×270'
+          assert vp['Допустимый диапазон напряжения питания'] == '100–330'
+          assert vp['Номинальное напряжение цепей управления'] == 50
+          assert vp['Расход охлаждающего воздуха, не менее'] == 10
+          assert vp['Масса'] == 147
+          vids={x.get('sourceId') for x in v.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-068','ER-SRC-069','ER-SRC-072'} <= vids, vids
+          assert 'возбуж' in v.get('purpose','').lower() and 'тормож' in v.get('purpose','').lower()
+          assert 'ВУВ-24-01' not in v.get('modelNames',[])
+
+          b=by_id['ER-EQ-TR-010']
+          assert b.get('modelNames') == ['ББР-64'], b.get('modelNames')
+          assert b.get('schemeDesignations') == ['R10'], b.get('schemeDesignations')
+          assert len(b.get('parameters',[])) == 8
+          bp={p['name']:p['value'] for p in b['parameters']}
+          assert bp['Номинальный ток'] == 1000
+          assert bp['Номинальное напряжение изоляции'] == 2000
+          assert bp['Расход охлаждающего воздуха на входе, не менее'] == 250
+          assert bp['Превышение температуры охлаждающего воздуха на выходе, не более'] == 125
+          assert not any(p['name']=='Масса' for p in b['parameters'])
+          bids={x.get('sourceId') for x in b.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-070','ER-SRC-071','ER-SRC-072'} <= bids, bids
+          assert 'рекуператив' in b.get('purpose','').lower() and 'распредел' in b.get('purpose','').lower()
+          assert any('2678' in n and 'не включена' in n for n in b.get('notes',[]))
+
+          n=by_id['ER-EQ-TR-009']
+          assert len(n.get('parameters',[])) == 5
+          assert {'РОВ-21','ИШ-95'} <= set(n.get('modelNames',[]))
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles={a.get('equipmentId'):a for a in kb['articles']}
+          va=articles['ER-EQ-TR-008']
+          assert len(va.get('keyParameters',[])) == 7
+          assert all(x in va.get('sourceRefs',[]) for x in ['ER-SRC-068','ER-SRC-069','ER-SRC-072'])
+          assert len(va.get('normalState',[])) >= 4 and len(va.get('deviationSigns',[])) >= 4
+          assert any('ВУВ-24-01' in r for r in va.get('variantRules',[]))
+          assert va['atlasData']['parameterCoverage']['count'] == 7
+
+          ba=articles['ER-EQ-TR-010']
+          assert len(ba.get('keyParameters',[])) == 8
+          assert all(x in ba.get('sourceRefs',[]) for x in ['ER-SRC-070','ER-SRC-071','ER-SRC-072'])
+          assert len(ba.get('normalState',[])) >= 4 and len(ba.get('deviationSigns',[])) >= 4
+          assert any('ББР-64-01' in r for r in ba.get('variantRules',[]))
+          assert ba['atlasData']['parameterCoverage']['count'] == 8
+          print('TR-008 VUV-24 and TR-010 BBR-64 package verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak VUV-24 and BBR-64 traction reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
