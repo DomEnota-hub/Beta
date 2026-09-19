@@ -238,12 +238,13 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
             }
         } else if (catalogMode == "quick") {
             item {
-                BorderedCautionCard(
+                InfoCard(
                     "Быстрая оценка",
                     listOf(
                         "Здесь собраны сценарии, которые полезно быстро открыть в пути. Это только безопасное первичное направление поиска.",
                         "При дыме, огне, дуге, повреждении токоведущих частей или неясном срабатывании защиты прекратите диагностические действия и доложите."
-                    )
+                    ),
+                    MaterialTheme.colorScheme.surfaceVariant
                 )
             }
             if (visible.isEmpty()) {
