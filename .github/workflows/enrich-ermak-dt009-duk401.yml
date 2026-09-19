@@ -1,0 +1,148 @@
+name: Enrich Ermak DT-009 and DUK-4-01 references
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_dt009_duk401.py'
+      - '.github/workflows/enrich-ermak-dt009-duk401.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply DT-009 and DUK-4-01 enrichment
+        run: python3 .github/scripts/enrich_ermak_dt009_duk401.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by_id={r.get('id'):r for r in eq['records']}
+
+          dt=by_id['ER-EQ-TR-011']
+          assert dt.get('modelNames') == ['ДТ-009'], dt.get('modelNames')
+          assert dt.get('schemeDesignations') == ['ДТ','ДТЯ','ДТВ'], dt.get('schemeDesignations')
+          assert len(dt.get('parameters',[])) == 9
+          dp={p['name']:p['value'] for p in dt['parameters']}
+          assert dp['Номинальное напряжение изоляции шины первичного тока'] == 3000
+          assert dp['Номинальный первичный ток'] == 1000
+          assert dp['Диапазон измеряемого тока'] == '0–1500'
+          assert dp['Коэффициент трансформации'] == '1:5000'
+          assert dp['Напряжение питания датчика'] == '±24'
+          assert dp['Выходное внутреннее сопротивление'] == 40
+          assert dp['Масса'] == 3.5
+          dt_ids={x.get('sourceId') for x in dt.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-073','ER-SRC-075'} <= dt_ids, dt_ids
+          assert any('SP58' in n and 'обязательным' in n for n in dt.get('notes',[]))
+
+          duk=by_id['ER-EQ-TR-012']
+          assert duk.get('modelNames') == ['ДУК-4-01'], duk.get('modelNames')
+          assert duk.get('schemeDesignations') == ['T21','T22','T23','T24'], duk.get('schemeDesignations')
+          assert duk.get('quantity') == '4 per section'
+          assert len(duk.get('parameters',[])) == 5
+          up={p['name']:p['value'] for p in duk['parameters']}
+          assert up['Номинальный ток первичной обмотки'] == 2550
+          assert up['Часовой ток первичной обмотки'] == 2750
+          assert up['Напряжение вторичной обмотки при номинальном первичном токе'] == 21
+          assert up['Номинальный ток вторичной обмотки'] == 0.03
+          assert up['Масса'] == 8.5
+          duk_ids={x.get('sourceId') for x in duk.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-074','ER-SRC-075'} <= duk_ids, duk_ids
+          assert any('250 витков' in n for n in duk.get('notes',[]))
+
+          assert len(by_id['ER-EQ-TR-008'].get('parameters',[])) == 7
+          assert len(by_id['ER-EQ-TR-009'].get('parameters',[])) == 5
+          assert len(by_id['ER-EQ-TR-010'].get('parameters',[])) == 8
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles={a.get('equipmentId'):a for a in kb['articles']}
+          dta=articles['ER-EQ-TR-011']
+          assert len(dta.get('keyParameters',[])) == 9
+          assert all(x in dta.get('sourceRefs',[]) for x in ['ER-SRC-002','ER-SRC-005','ER-SRC-073','ER-SRC-075'])
+          assert len(dta.get('normalState',[])) >= 4 and len(dta.get('deviationSigns',[])) >= 4
+          assert any('SP58' in r for r in dta.get('variantRules',[]))
+          assert dta['atlasData']['parameterCoverage']['count'] == 9
+
+          duka=articles['ER-EQ-TR-012']
+          assert len(duka.get('keyParameters',[])) == 5
+          assert all(x in duka.get('sourceRefs',[]) for x in ['ER-SRC-002','ER-SRC-005','ER-SRC-074','ER-SRC-075'])
+          assert len(duka.get('normalState',[])) >= 4 and len(duka.get('deviationSigns',[])) >= 4
+          assert any('T21–T24' in r for r in duka.get('variantRules',[]))
+          assert duka['atlasData']['parameterCoverage']['count'] == 5
+          print('TR-011 DT-009 and TR-012 DUK-4-01 package verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak DT-009 and DUK-4-01 traction sensor reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
