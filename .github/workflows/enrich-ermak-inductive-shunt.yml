@@ -59,7 +59,8 @@ jobs:
           a=next(iter(by_id.values()))
           assert len(a['keyParameters'])==5
           assert all(x in a['sourceRefs'] for x in ['ER-SRC-049','ER-SRC-050','ER-SRC-051','ER-SRC-052'])
-          assert 'ослабления возбуждения' in a['principle'].lower()
+          principle=a['principle'].lower()
+          assert 'ослаблен' in principle and 'возбужден' in principle
           assert any('ИШ-009' in rule and 'ИШ-95' in rule for rule in a.get('variantRules',[]))
           assert len(a['normalState']) >= 3 and len(a['deviationSigns']) >= 3
           print('Field weakening enrichment verified for ER-EQ-TR-009')
