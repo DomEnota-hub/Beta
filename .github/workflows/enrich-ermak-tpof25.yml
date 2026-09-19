@@ -1,0 +1,109 @@
+name: Enrich Ermak TPOF-25 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_tpof25.py'
+      - '.github/workflows/enrich-ermak-tpof25.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply TPOF-25 enrichment
+        run: python3 .github/scripts/enrich_ermak_tpof25.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          r=next(x for x in eq['records'] if x['id']=='ER-EQ-HV-006')
+          assert 'ТПОФ-25' in r['modelNames']
+          assert len(r['parameters'])==8
+          assert any(x['name']=='Номинальный первичный ток' and x['value']==400 for x in r['parameters'])
+          assert any(x['name']=='Номинальный ток вторичной обмотки' and x['value']==25 for x in r['parameters'])
+          assert any(x['name']=='Ток динамической устойчивости, амплитудное значение' and x['value']==25 for x in r['parameters'])
+          assert any(x['name']=='Ток термической стойкости' and x['value']==10 for x in r['parameters'])
+          assert any(x.get('sourceId')=='ER-SRC-043' for x in r['sourceRefs'])
+          assert any(x.get('sourceId')=='ER-SRC-044' for x in r['sourceRefs'])
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          a=next(x for x in kb['articles'] if x['id']=='ER-KB-EQ-ER-EQ-HV-006')
+          assert len(a['keyParameters'])==8
+          assert 'ER-SRC-043' in a['sourceRefs'] and 'ER-SRC-044' in a['sourceRefs']
+          assert 'высоковольтного ввода' in a['summary'].lower()
+          print('TPOF-25 enrichment verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak TPOF-25 current transformer reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
