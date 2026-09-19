@@ -1,0 +1,116 @@
+name: Enrich Ermak OPN-1.28 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_opn128.py'
+      - '.github/workflows/enrich-ermak-opn128.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply OPN-1.28 enrichment
+        run: python3 .github/scripts/enrich_ermak_opn128.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          p=next(r for r in eq['records'] if r['id']=='ER-EQ-TR-002')
+          assert 'ОПН-1,28 УХЛ2' in p['modelNames']
+          assert {'F2','F3'} <= set(p['schemeDesignations'])
+          assert len(p['parameters'])==5
+          assert any(x['name']=='Номинальное напряжение' and x['value']==1.28 for x in p['parameters'])
+          assert any(x['name'].startswith('Наибольшее рабочее напряжение') and x['value']==1.56 for x in p['parameters'])
+          assert any(x['name'].startswith('Остающееся напряжение') and x['value']==3.6 for x in p['parameters'])
+          assert any(x['name']=='Высота' and x['value']==145 for x in p['parameters'])
+          assert any(x['name']=='Масса' and x['value']=='3.5±0.3' for x in p['parameters'])
+          ids={x.get('sourceId') for x in p['sourceRefs'] if isinstance(x,dict)}
+          assert {'ER-SRC-053','ER-SRC-054'} <= ids
+          assert 'атмосферных' in p['purpose'].lower() and 'коммутационных' in p['purpose'].lower()
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          a=next(x for x in kb['articles'] if x['id']=='ER-KB-EQ-ER-EQ-TR-002')
+          assert len(a['keyParameters'])==5
+          assert all(x in a['sourceRefs'] for x in ['ER-SRC-053','ER-SRC-054'])
+          assert 'высоконелиней' in a['principle'].lower()
+          assert any('F2/F3' in rule and 'ОПН-1,28В/Ф/П' in rule for rule in a.get('variantRules',[]))
+          assert len(a['normalState']) >= 3 and len(a['deviationSigns']) >= 3
+          assert a['atlasData']['parameterCoverage']['count']==5
+          print('OPN-1.28 enrichment verified for ER-EQ-TR-002')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak OPN-1.28 surge arrester reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
