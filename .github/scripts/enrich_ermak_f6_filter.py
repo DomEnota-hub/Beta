@@ -8,7 +8,7 @@ EQUIPMENT_ID = 'ER-EQ-HV-005'
 ARTICLE_ID = 'ER-KB-EQ-ER-EQ-HV-005'
 SCHEME_SOURCE_ID = 'ER-SRC-002'
 MANUAL_SOURCE_ID = 'ER-SRC-005'
-DATA_SOURCE_ID = 'ER-SRC-042'
+DATA_SOURCE_ID = 'ER-SRC-046'
 DATA_URL = 'https://djvu.online/file/TVgYn3LTUveDJ'
 
 PARAMETERS = [
@@ -76,7 +76,10 @@ def patch_equipment(path: Path):
         'Фильтр Ф-6 образует настроенный колебательный контур и не является коммутационным аппаратом.'
     )
     record['parameters'] = PARAMETERS
-    record['sourceRefs'] = unique_refs(record.get('sourceRefs', []) + [DATA_REF])
+    record['sourceRefs'] = unique_refs([
+        *[ref for ref in record.get('sourceRefs', []) if not (isinstance(ref, dict) and ref.get('sourceId') == 'ER-SRC-042' and ref.get('title', '').startswith('Фильтр Ф-6'))],
+        DATA_REF,
+    ])
     record['parameterCoverage'] = {'status': 'documented', 'count': len(PARAMETERS)}
     notes = [n for n in record.get('notes', []) if not n.startswith('Ф-6:')]
     notes += [
@@ -115,10 +118,11 @@ def patch_knowledge(path: Path):
         'Повреждение катушки, конденсаторов, основания или изоляционных деталей.',
         'Признаки пробоя изоляции, деформации узла либо нарушения механического крепления.'
     ]
-    refs = article.setdefault('sourceRefs', [])
+    refs = [r for r in article.setdefault('sourceRefs', []) if r != 'ER-SRC-042']
+    article['sourceRefs'] = refs
     for ref in [SCHEME_SOURCE_ID, MANUAL_SOURCE_ID, DATA_SOURCE_ID]:
-        if ref not in refs:
-            refs.append(ref)
+        if ref not in article['sourceRefs']:
+            article['sourceRefs'].append(ref)
     rules = [r for r in article.get('variantRules', []) if not r.startswith('Ф-6')]
     rules.append(
         'Ф-6 подтверждён базовым руководством 2ЭС5К/3ЭС5К. Числовые параметры относятся к аппарату Ф-6; '

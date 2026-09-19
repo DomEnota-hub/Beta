@@ -35,19 +35,24 @@ jobs:
           with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
               eq=json.load(f)
           r=next(x for x in eq['records'] if x['id']=='ER-EQ-HV-005')
+          dp=next(x for x in eq['records'] if x['id']=='ER-EQ-HV-002')
           assert 'Ф-6' in r['modelNames']
           assert len(r['parameters'])==6
           assert any(x['name']=='Номинальный ток' and x['value']==320 for x in r['parameters'])
           assert any(x['name']=='Индуктивность' and x['value']=='7.5±0.5' for x in r['parameters'])
           assert any(x['name']=='Частота настройки контура' and x['value']==2.13 for x in r['parameters'])
-          assert any(x.get('sourceId')=='ER-SRC-042' for x in r['sourceRefs'])
+          assert all(x.get('sourceId')=='ER-SRC-046' for x in r['parameters'])
+          assert any(x.get('sourceId')=='ER-SRC-046' for x in r['sourceRefs'])
+          assert all(not (isinstance(x,dict) and x.get('sourceId')=='ER-SRC-042' and x.get('title','').startswith('Фильтр Ф-6')) for x in r['sourceRefs'])
+          assert any(x.get('sourceId')=='ER-SRC-042' for x in dp['parameters'])
           with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
               kb=json.load(f)
           a=next(x for x in kb['articles'] if x['id']=='ER-KB-EQ-ER-EQ-HV-005')
           assert len(a['keyParameters'])==6
-          assert 'ER-SRC-042' in a['sourceRefs']
+          assert 'ER-SRC-046' in a['sourceRefs']
+          assert 'ER-SRC-042' not in a['sourceRefs']
           assert 'контур' in a['principle'].lower()
-          print('F-6 enrichment verified')
+          print('F-6 enrichment and source provenance verified')
           PY
           git diff --check
 
@@ -62,7 +67,7 @@ jobs:
                   app/src/main/assets/technical/ermak_knowledge.json.gz \
                   patch/app/src/main/assets/technical/ermak_knowledge.json.gz
           if ! git diff --cached --quiet; then
-            git commit -m 'Enrich Ermak F-6 primary filter reference data'
+            git commit -m 'Fix Ermak F-6 source provenance'
             git push origin HEAD:dev14-integration
           fi
 
