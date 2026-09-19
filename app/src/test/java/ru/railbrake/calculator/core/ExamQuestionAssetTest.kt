@@ -8,8 +8,21 @@ import org.junit.Test
 import java.io.File
 
 class ExamQuestionAssetTest {
+    private val encodedAsset by lazy {
+        File("src/main/assets/exam_questions.json").readText()
+    }
+
     private val root by lazy {
-        JSONObject(File("src/main/assets/exam_questions.json").readText())
+        JSONObject(ExamPayloadCodec.decode(encodedAsset))
+    }
+
+    @Test
+    fun packagedAssetIsNotPlainQuestionJson() {
+        val raw = encodedAsset.trim()
+        assertFalse(raw.startsWith("{"))
+        assertFalse(raw.contains("\"questions\""))
+        assertFalse(raw.contains("Тепловозы классифицируются"))
+        assertTrue(raw.length > 1000)
     }
 
     @Test
