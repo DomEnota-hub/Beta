@@ -8,31 +8,41 @@ EQUIPMENT_ID = 'ER-EQ-HV-004'
 ARTICLE_ID = 'ER-KB-EQ-ER-EQ-HV-004'
 MANUAL_SOURCE_ID = 'ER-SRC-005'
 MAKER_SOURCE_ID = 'ER-SRC-032'
-TO2_SOURCE_ID = 'ER-SRC-038'
-TO2_URL = 'https://zinref.ru/000_uchebniki/04600_raznie_3/080_eletrovoz_2s5k_TO2/004.htm'
+TRAINING_SOURCE_ID = 'ER-SRC-038'
+MAINT_SOURCE_ID = 'ER-SRC-039'
+TRAINING_URL = 'https://scbist.com/scb/uploaded/1_1569870485.pdf'
+MAINT_URL = 'https://zinref.ru/000_uchebniki/04600_raznie_3/080_eletrovoz_2s5k_TO2/004.htm'
 
 EXTRA_PARAMETERS = [
     {
         'name': 'Наибольшее рабочее напряжение',
         'value': 29,
         'unit': 'kV',
-        'sourceId': TO2_SOURCE_ID,
+        'sourceId': TRAINING_SOURCE_ID,
         'condition': 'ВОВ-25А-10/400 УХЛ1'
     },
     {
         'name': 'Номинальный ток оперативной коммутации',
         'value': 10,
         'unit': 'A',
-        'sourceId': TO2_SOURCE_ID,
+        'sourceId': TRAINING_SOURCE_ID,
         'condition': 'ВОВ-25А-10/400 УХЛ1'
     },
 ]
 
-TO2_REF = {
-    'sourceId': TO2_SOURCE_ID,
-    'document': 'Материалы ТО-2 электровоза 2ЭС5К',
+TRAINING_REF = {
+    'sourceId': TRAINING_SOURCE_ID,
+    'document': 'Забайкальский учебный центр профессиональных квалификаций',
+    'title': 'Главный выключатель ВОВ-25А-10/400 УХЛ1 — технические характеристики',
+    'url': TRAINING_URL,
+    'locator': 'раздел 7.1'
+}
+
+MAINT_REF = {
+    'sourceId': MAINT_SOURCE_ID,
+    'document': 'Технологические материалы ТО-2 электровоза 2ЭС5К',
     'title': 'Выключатель ВОВ-25А-10/400 УХЛ1: состав и контроль',
-    'url': TO2_URL,
+    'url': MAINT_URL,
     'locator': 'технологическая карта КЭ 58'
 }
 
@@ -62,8 +72,20 @@ def unique_refs(items):
 
 
 def merge_parameters(existing):
-    names = {p.get('name') for p in existing}
-    return existing + [p for p in EXTRA_PARAMETERS if p['name'] not in names]
+    extra_by_name = {p['name']: p for p in EXTRA_PARAMETERS}
+    result = []
+    seen = set()
+    for p in existing:
+        name = p.get('name')
+        if name in extra_by_name:
+            result.append(extra_by_name[name])
+            seen.add(name)
+        else:
+            result.append(p)
+    for name, p in extra_by_name.items():
+        if name not in seen:
+            result.append(p)
+    return result
 
 
 def kb_parameters(parameters):
@@ -82,10 +104,13 @@ def kb_parameters(parameters):
 
 def patch_equipment(path: Path):
     root = read_gz(path)
-    root.setdefault('sourceRegistry', {})['ES5K_VOV_TO2'] = TO2_REF
+    registry = root.setdefault('sourceRegistry', {})
+    registry['VOV_ZAB_UC'] = TRAINING_REF
+    registry['ES5K_VOV_TO2'] = MAINT_REF
     record = next(r for r in root['records'] if r.get('id') == EQUIPMENT_ID)
     record['parameters'] = merge_parameters(record.get('parameters', []))
-    record['sourceRefs'] = unique_refs(record.get('sourceRefs', []) + [TO2_REF])
+    old_refs = [x for x in record.get('sourceRefs', []) if not (isinstance(x, dict) and x.get('sourceId') in {TRAINING_SOURCE_ID, MAINT_SOURCE_ID})]
+    record['sourceRefs'] = unique_refs(old_refs + [TRAINING_REF, MAINT_REF])
     record['parameterCoverage'] = {'status': 'documented', 'count': len(record['parameters'])}
     record['purpose'] = (
         'Оперативное включение и отключение секции от контактной сети и аварийное отключение '
@@ -123,10 +148,10 @@ def patch_knowledge(path: Path):
         'С выключателем связан трансформатор тока ТПОФ-25, а отключение по аварийному току '
         'формируется цепями защиты главного выключателя.'
     )
-    article['keyParameters'] = kb_parameters(
-        next(r for r in read_gz(path.parent / 'ermak_equipment.json.gz')['records'] if r.get('id') == EQUIPMENT_ID)
-        .get('parameters', [])
-    ) if (path.parent / 'ermak_equipment.json.gz').exists() else article.get('keyParameters', [])
+    equipment_path = path.parent / 'ermak_equipment.json.gz'
+    if equipment_path.exists():
+        parameters = next(r for r in read_gz(equipment_path)['records'] if r.get('id') == EQUIPMENT_ID).get('parameters', [])
+        article['keyParameters'] = kb_parameters(parameters)
     article['normalState'] = [
         'Выключатель включается только при выполненных штатных блокировках и достаточном давлении сжатого воздуха.',
         'После включения первичная цепь тягового трансформатора получает питание без срабатывания максимальной или земляной защиты.',
@@ -138,10 +163,11 @@ def patch_knowledge(path: Path):
         'Наблюдается утечка сжатого воздуха, неполное срабатывание механизма либо несоответствие фактического положения индикации.',
         'Повторное отключение защитой рассматривается как симптом неисправности цепи или оборудования, а не как основание для многократного повторного включения.'
     ]
-    refs = article.setdefault('sourceRefs', [])
-    for ref in [MANUAL_SOURCE_ID, MAKER_SOURCE_ID, TO2_SOURCE_ID]:
+    refs = [r for r in article.get('sourceRefs', []) if r not in {TRAINING_SOURCE_ID, MAINT_SOURCE_ID}]
+    for ref in [MANUAL_SOURCE_ID, MAKER_SOURCE_ID, TRAINING_SOURCE_ID, MAINT_SOURCE_ID]:
         if ref not in refs:
             refs.append(ref)
+    article['sourceRefs'] = refs
     rules = [r for r in article.get('variantRules', []) if not r.startswith('ВОВ-25А-10/400')]
     rules.append('ВОВ-25А-10/400 УХЛ1 указан в базовом руководстве 2ЭС5К/3ЭС5К; фактическое исполнение аппарата на конкретной секции подтверждать по маркировке и документации локомотива.')
     article['variantRules'] = rules
