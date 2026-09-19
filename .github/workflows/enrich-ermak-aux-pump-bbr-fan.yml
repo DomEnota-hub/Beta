@@ -1,0 +1,167 @@
+name: Enrich Ermak transformer pump and BBR fan references
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_aux_pump_bbr_fan.py'
+      - '.github/workflows/enrich-ermak-aux-pump-bbr-fan.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply AU-004 and AU-005 enrichment
+        run: python3 .github/scripts/enrich_ermak_aux_pump_bbr_fan.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by_id={r.get('id'):r for r in eq['records']}
+
+          pump=by_id['ER-EQ-AU-004']
+          assert pump.get('modelNames') == ['ТТ 63/10-02'], pump.get('modelNames')
+          assert pump.get('schemeDesignations') == ['M15'], pump.get('schemeDesignations')
+          assert len(pump.get('parameters',[])) == 7
+          p={x['name']:x['value'] for x in pump['parameters']}
+          assert p['Номинальная подача'] == 63
+          assert p['Напор при номинальной подаче'] == 10
+          assert p['Рабочий интервал подач'] == '40–80'
+          assert p['Допускаемый кавитационный запас при номинальной подаче'] == 3.5
+          assert p['Номинальная мощность встроенного электродвигателя'] == 2.2
+          assert p['Габаритные размеры'] == '425×330×445'
+          assert p['Масса'] == 105
+          pump_ids={x.get('sourceId') for x in pump.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-002','ER-SRC-005','ER-SRC-078','ER-SRC-079'} <= pump_ids, pump_ids
+          assert any('−15' in n and '−10' in n for n in pump.get('notes',[]))
+
+          fan=by_id['ER-EQ-AU-005']
+          assert fan.get('modelNames') == ['НВА-55'], fan.get('modelNames')
+          assert fan.get('schemeDesignations') == ['M13'], fan.get('schemeDesignations')
+          assert len(fan.get('parameters',[])) == 12
+          q={x['name']:x['value'] for x in fan['parameters']}
+          assert q['Род тока электродвигателя'] == 'трёхфазный'
+          assert q['Номинальное линейное напряжение электродвигателя'] == 380
+          assert q['Мощность на валу электродвигателя'] == 55
+          assert q['Номинальный линейный ток электродвигателя'] == 113
+          assert q['Номинальная частота'] == 50
+          assert q['Синхронная частота вращения'] == 1500
+          assert q['КПД электродвигателя'] == 90.2
+          assert q['Коэффициент мощности'] == 0.82
+          assert q['Класс нагревостойкости изоляции'] == 'F'
+          assert q['Масса электродвигателя НВА-55'] == 375
+          assert q['Минимальный расход воздуха через ББР'] == 250
+          fan_ids={x.get('sourceId') for x in fan.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-002','ER-SRC-072','ER-SRC-079','ER-SRC-080','ER-SRC-081','ER-SRC-082'} <= fan_ids, fan_ids
+          assert any('НВА-55С' in n and 'позд' in n for n in fan.get('notes',[]))
+
+          tr010=by_id['ER-EQ-TR-010']
+          assert len(tr010.get('parameters',[])) == 8
+          tr013=by_id['ER-EQ-TR-013']
+          assert tr013.get('parameters') == []
+          assert tr013.get('modelNames') == []
+          assert tr013.get('schemeDesignations') == []
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles={a.get('equipmentId'):a for a in kb['articles']}
+          ap=articles['ER-EQ-AU-004']
+          assert len(ap.get('keyParameters',[])) == 7
+          assert ap['atlasData']['parameterCoverage']['count'] == 7
+          assert ap['atlasData']['modelNames'] == ['ТТ 63/10-02']
+          assert all(x in ap.get('sourceRefs',[]) for x in ['ER-SRC-002','ER-SRC-005','ER-SRC-078','ER-SRC-079'])
+          assert len(ap.get('normalState',[])) >= 4 and len(ap.get('deviationSigns',[])) >= 4
+          assert len(ap.get('variantRules',[])) == len(set(ap.get('variantRules',[])))
+
+          af=articles['ER-EQ-AU-005']
+          assert len(af.get('keyParameters',[])) == 12
+          assert af['atlasData']['parameterCoverage']['count'] == 12
+          assert af['atlasData']['modelNames'] == ['НВА-55']
+          assert all(x in af.get('sourceRefs',[]) for x in ['ER-SRC-002','ER-SRC-072','ER-SRC-079','ER-SRC-080','ER-SRC-081','ER-SRC-082'])
+          assert len(af.get('normalState',[])) >= 4 and len(af.get('deviationSigns',[])) >= 4
+          assert any('НВА-55С:' in r for r in af.get('variantRules',[]))
+          assert len(af.get('variantRules',[])) == len(set(af.get('variantRules',[])))
+
+          registry=eq.get('sourceRegistry',{})
+          ids={v.get('sourceId'):k for k,v in registry.items() if isinstance(v,dict)}
+          assert ids.get('ER-SRC-078') == 'TT6310_PRODUCT_DATA', ids.get('ER-SRC-078')
+          assert ids.get('ER-SRC-079') == 'ERMAK_AUX_OPERATION', ids.get('ER-SRC-079')
+          assert ids.get('ER-SRC-080') == 'ERMAK_NVA55_BASE', ids.get('ER-SRC-080')
+          assert ids.get('ER-SRC-081') == 'NVA55_SAME_TYPE_FACTORY_DATA', ids.get('ER-SRC-081')
+          assert ids.get('ER-SRC-082') == 'NVA55S_LATE_VARIANT_CHANGE', ids.get('ER-SRC-082')
+          print('AU-004 transformer pump and AU-005 BBR fan package verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak transformer pump and BBR fan reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
