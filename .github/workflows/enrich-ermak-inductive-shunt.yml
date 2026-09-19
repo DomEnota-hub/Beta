@@ -1,0 +1,127 @@
+name: Enrich Ermak ISh-009 reference
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_inductive_shunt.py'
+      - '.github/workflows/enrich-ermak-inductive-shunt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply ISh-009 enrichment
+        run: python3 .github/scripts/enrich_ermak_inductive_shunt.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+
+          def searchable(record):
+              values=[record.get('name',''), record.get('model','')]
+              for key in ('modelNames','aliases'):
+                  value=record.get(key,[])
+                  if isinstance(value,list):
+                      values.extend(x for x in value if isinstance(x,str))
+              return ' '.join(str(x) for x in values if x)
+
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          matches=[r for r in eq['records'] if 'ИШ-009' in searchable(r)]
+          assert len(matches)==1, len(matches)
+          p=matches[0]
+          assert len(p['parameters'])==5
+          assert any(x['name']=='Номинальное напряжение изоляции' and x['value']==2000 for x in p['parameters'])
+          assert any(x['name']=='Номинальный ток' and x['value']==520 for x in p['parameters'])
+          assert any(x['name']=='Индуктивность при токе до 100 А, не менее' and x['value']==2.2 for x in p['parameters'])
+          assert any(x['name']=='Индуктивность при токе 520 А, не менее' and x['value']==1.7 for x in p['parameters'])
+          assert any(x['name']=='Электрическое сопротивление' and x['value']==0.0066 for x in p['parameters'])
+          ids={x.get('sourceId') for x in p['sourceRefs'] if isinstance(x,dict)}
+          assert {'ER-SRC-049','ER-SRC-050','ER-SRC-051','ER-SRC-052'} <= ids
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          expected=f"ER-KB-EQ-{p['id']}"
+          articles=[a for a in kb['articles'] if a.get('equipmentId')==p['id'] or a.get('id')==expected]
+          by_id={a.get('id'):a for a in articles}
+          assert len(by_id)==1, list(by_id)
+          a=next(iter(by_id.values()))
+          assert len(a['keyParameters'])==5
+          assert all(x in a['sourceRefs'] for x in ['ER-SRC-049','ER-SRC-050','ER-SRC-051','ER-SRC-052'])
+          assert 'ослабления возбуждения' in a['principle'].lower()
+          assert any('ИШ-95' in rule for rule in a.get('variantRules',[]))
+          assert len(a['normalState']) >= 3 and len(a['deviationSigns']) >= 3
+          print('ISh-009 enrichment verified for', p['id'])
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak ISh-009 inductive shunt reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
