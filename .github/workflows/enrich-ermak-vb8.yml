@@ -57,6 +57,7 @@ jobs:
           assert {'ER-SRC-058','ER-SRC-059','ER-SRC-060','ER-SRC-061'} <= ids, ids
           assert 'рекуператив' in p['purpose'].lower()
           assert any('Сопротивление удерживающей катушки' in n for n in p.get('notes',[]))
+          assert any('85,2' in n and '90 Ом' in n for n in p.get('notes',[]))
 
           with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
               kb=json.load(f)
@@ -69,7 +70,6 @@ jobs:
           assert 'размагничивающ' in a['principle'].lower() and 'дугогас' in a['principle'].lower()
           assert any('2 мм' in x for x in a['normalState'])
           assert any('2 мм' in x for x in a['deviationSigns'])
-          assert any('85,2' in rule and '90 Ом' in rule for rule in a.get('variantRules',[]))
           assert a['atlasData']['parameterCoverage']['count']==9
           print('VB-8 enrichment verified for ER-EQ-TR-004')
           PY
