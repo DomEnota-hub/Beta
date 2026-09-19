@@ -1,0 +1,119 @@
+name: Harden hidden access
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/harden_hidden_access.py'
+      - '.github/workflows/harden-hidden-access.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply hidden access hardening
+        run: python3 .github/scripts/harden_hidden_access.py
+
+      - name: Verify source contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          cmp app/src/test/java/ru/railbrake/calculator/ui/DeveloperEasterEggTest.kt patch/app/src/test/java/ru/railbrake/calculator/ui/DeveloperEasterEggTest.kt
+          ! grep -R -Fq 'isSecretExamAccessCode' app/src/main/java patch/app/src/main/java
+          ! grep -R -Fq 'exam_questions_unlocked' app/src/main/java patch/app/src/main/java
+          ! grep -R -Fq 'secret_access' app/src/main/java patch/app/src/main/java
+          grep -Fq 'recordDirectCalculation' app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
+          grep -Fq 'putLong(KEY_GATE, stateMarker)' app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
+          grep -Fq 'isMinifyEnabled = true' app/build.gradle.kts
+          grep -Fq 'isMinifyEnabled = true' patch/app/build.gradle.kts
+          git diff --check
+
+      - name: Commit hardened source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt \
+                  app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt \
+                  app/src/test/java/ru/railbrake/calculator/ui/DeveloperEasterEggTest.kt \
+                  patch/app/src/test/java/ru/railbrake/calculator/ui/DeveloperEasterEggTest.kt
+          if ! git diff --cached --quiet; then
+            git commit -m 'Harden hidden section access'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
+
+      - name: Minified release build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleRelease --stacktrace --console=plain
+
+      - name: Verify release access surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(find buildsrc/RailBrakeCalculator/app/build/outputs/apk/release -name '*.apk' -type f | head -n 1)
+          test -n "$APK"
+          test -f "$APK"
+          unzip -Z1 "$APK" | grep -E '^classes([0-9]+)?\.dex$' > /tmp/dex-list.txt
+          : > /tmp/dex-strings.txt
+          while IFS= read -r dex; do
+            unzip -p "$APK" "$dex" | strings >> /tmp/dex-strings.txt
+          done < /tmp/dex-list.txt
+          ! grep -Fq 'isSecretExamAccessCode' /tmp/dex-strings.txt
+          ! grep -Fq 'exam_questions_unlocked' /tmp/dex-strings.txt
+          ! grep -Fq 'secret_access' /tmp/dex-strings.txt
+          echo 'Release APK is minified and old obvious access identifiers are absent.'
