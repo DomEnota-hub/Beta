@@ -46,6 +46,72 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+private val ermakDiagnosticCategories = listOf(
+    "Все",
+    "Высоковольтные цепи",
+    "Тяга",
+    "Вспомогательные машины",
+    "Тормоза",
+    "Пневматика",
+    "Ходовая часть",
+    "Управление и защита",
+    "Прочее"
+)
+
+private fun ermakScenarioText(scenario: ErmakDiagnosticScenario): String = listOf(
+    scenario.category,
+    scenario.title,
+    scenario.symptom,
+    scenario.immediateActions.joinToString(" "),
+    scenario.probableCauses.joinToString(" "),
+    scenario.reportFields.joinToString(" ")
+).joinToString(" ").lowercase().replace('ё', 'е')
+
+private fun String.containsAny(vararg needles: String): Boolean = needles.any(::contains)
+
+private fun ermakCategory(scenario: ErmakDiagnosticScenario): String {
+    val text = ermakScenarioText(scenario)
+    return when {
+        text.containsAny(
+            "токоприем", "главный выключател", "высоковольт", "ввк", "трансформатор",
+            "перенапряж", "изоляц", "крышев", "силовая цеп"
+        ) -> "Высоковольтные цепи"
+        text.containsAny(
+            "тяга", "тягов", "тэд", "экг", "позици", "боксован", "юз"
+        ) -> "Тяга"
+        text.containsAny(
+            "вспомогатель", "вентилятор", "фазорасщеп", "компрессор", "масляный насос", "маслонасос"
+        ) -> "Вспомогательные машины"
+        text.containsAny(
+            "тормоз", "квт", "кран машиниста", "тормозных цилиндр", "тормозного цилиндр", "эпт"
+        ) -> "Тормоза"
+        text.containsAny(
+            "пневм", "давлен", "тормозная магистрал", "питательная магистрал", "главных резервуар",
+            "утечк воздуха", "воздухораспредел"
+        ) -> "Пневматика"
+        text.containsAny(
+            "ходов", "тележ", "колес", "букс", "рессор", "редуктор", "подвес", "стук", "вибрац"
+        ) -> "Ходовая часть"
+        text.containsAny(
+            "защит", "блокиров", "сигнализац", "управлен", "контроллер", "бортовой"
+        ) -> "Управление и защита"
+        else -> "Прочее"
+    }
+}
+
+private fun ermakMatchesQuery(scenario: ErmakDiagnosticScenario, query: String): Boolean =
+    query.isBlank() || ermakScenarioText(scenario).contains(query.trim().lowercase().replace('ё', 'е'))
+
+private fun ermakQuickCandidate(scenario: ErmakDiagnosticScenario): Boolean {
+    val severity = scenario.severity.trim().uppercase()
+    val text = ermakScenarioText(scenario)
+    return severity in setOf("ATTENTION", "WARNING", "RESTRICT_OPERATION", "RESTRICT", "STOP_AND_REPORT", "STOP") ||
+        text.containsAny(
+            "не включ", "не запуска", "отключ", "нет тяги", "тормоз", "давлен", "дым", "огонь",
+            "нагрев", "стук", "вибрац", "защит", "токоприем"
+        )
+}
+
 @Composable
 fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId: String? = null) {
     val context = LocalContext.current
@@ -55,10 +121,11 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
     }
     var selectedId by rememberSaveable(initialScenarioId, initialEquipmentId) { mutableStateOf(initialScenarioId) }
     var query by rememberSaveable { mutableStateOf("") }
+    var category by rememberSaveable { mutableStateOf("Все") }
     var catalogMode by rememberSaveable { mutableStateOf("scenarios") }
     var historyVersion by remember { mutableIntStateOf(0) }
     val sessionRepository = remember { DiagnosticSessionRepository(context) }
-    val sessions = remember(historyVersion, selectedId) {
+    val sessions = remember(historyVersion) {
         sessionRepository.loadForProfile(DiagnosticSessionRepository.PROFILE_ERMAK)
     }
     val selected = scenarios?.firstOrNull { it.id == selectedId }
@@ -69,15 +136,16 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
         return
     }
 
-    val visible = if (catalogMode == "scenarios") {
-        scenarios.orEmpty().filter { scenario ->
-            (initialEquipmentId == null || initialEquipmentId in scenario.equipmentIds) &&
-                (query.isBlank() || listOf(scenario.title, scenario.symptom, scenario.category)
-                    .any { it.contains(query, ignoreCase = true) })
-        }
-    } else {
-        emptyList()
+    val baseScenarios = scenarios.orEmpty().filter { scenario ->
+        (initialEquipmentId == null || initialEquipmentId in scenario.equipmentIds) && ermakMatchesQuery(scenario, query)
     }
+    val visible = when (catalogMode) {
+        "scenarios" -> baseScenarios.filter { category == "Все" || ermakCategory(it) == category }
+        "observations" -> baseScenarios.sortedBy { it.symptom.lowercase() }
+        "quick" -> baseScenarios.filter(::ermakQuickCandidate).sortedBy { ermakCategory(it) + it.title }
+        else -> emptyList()
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -87,19 +155,44 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
             DiagnosticSafetyNotice()
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 item { FilterChip(catalogMode == "scenarios", { catalogMode = "scenarios" }, label = { Text("Неисправность") }) }
+                item { FilterChip(catalogMode == "observations", { catalogMode = "observations" }, label = { Text("Что я вижу?") }) }
+                item { FilterChip(catalogMode == "quick", { catalogMode = "quick" }, label = { Text("В пути") }) }
                 item { FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") }) }
             }
-            if (catalogMode == "scenarios") {
+            if (catalogMode != "history") {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Поиск по симптому") },
+                    label = {
+                        Text(
+                            when (catalogMode) {
+                                "observations" -> "Лампа, прибор, звук или симптом"
+                                "quick" -> "Поиск во вкладке «В пути»"
+                                else -> "Симптом или аппарат"
+                            }
+                        )
+                    },
                     singleLine = true,
                     shape = RoundedCornerShape(16.dp)
                 )
             }
         }
+
+        if (catalogMode == "scenarios") {
+            item {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(ermakDiagnosticCategories) { item ->
+                        FilterChip(
+                            selected = category == item,
+                            onClick = { category = item },
+                            label = { Text(item) }
+                        )
+                    }
+                }
+            }
+        }
+
         if (catalogMode == "history") {
             item {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -143,21 +236,72 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
                     CircularProgressIndicator()
                 }
             }
+        } else if (catalogMode == "quick") {
+            item {
+                BorderedCautionCard(
+                    "Быстрая оценка",
+                    listOf(
+                        "Здесь собраны сценарии, которые полезно быстро открыть в пути. Это только безопасное первичное направление поиска.",
+                        "При дыме, огне, дуге, повреждении токоведущих частей или неясном срабатывании защиты прекратите диагностические действия и доложите."
+                    )
+                )
+            }
+            if (visible.isEmpty()) {
+                item { InfoCard("Ничего не найдено", listOf("Измените запрос или очистите строку поиска."), MaterialTheme.colorScheme.surfaceVariant) }
+            }
+            items(visible, key = { "quick-${it.id}" }) { scenario ->
+                Card(
+                    onClick = { selectedId = scenario.id },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text(ermakCategory(scenario), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text(ermakSeverityTitle(scenario.severity), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                        Text(scenario.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                        Text(scenario.symptom, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Открыть безопасный маршрут →", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        } else if (catalogMode == "observations") {
+            if (visible.isEmpty()) {
+                item { InfoCard("Ничего не найдено", listOf("Попробуйте описать то, что видно или слышно: лампу, показание, звук, запах или поведение аппарата."), MaterialTheme.colorScheme.surfaceVariant) }
+            }
+            items(visible, key = { "observation-${it.id}" }) { scenario ->
+                Card(
+                    onClick = { selectedId = scenario.id },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text(ermakCategory(scenario), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text("Наблюдаемый признак", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                        Text(scenario.symptom, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                        Text(scenario.title, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Открыть безопасный алгоритм →", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
         } else if (visible.isEmpty()) {
-            item { InfoCard("Сценарии не найдены", listOf("Измените запрос или вернитесь к общему списку."), MaterialTheme.colorScheme.surfaceVariant) }
-        }
-        items(visible, key = { it.id }) { scenario ->
-            Card(
-                onClick = { selectedId = scenario.id },
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.48f)),
-                shape = RoundedCornerShape(18.dp)
-            ) {
-                Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(scenario.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                    Text(scenario.symptom, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text("Начать диагностику →", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold)
+            item { InfoCard("Сценарии не найдены", listOf("Измените запрос, выберите категорию «Все» или вернитесь к общему списку."), MaterialTheme.colorScheme.surfaceVariant) }
+        } else {
+            items(visible, key = { it.id }) { scenario ->
+                Card(
+                    onClick = { selectedId = scenario.id },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text(ermakCategory(scenario), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text(ermakSeverityTitle(scenario.severity), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                        Text(scenario.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                        Text(scenario.symptom, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Открыть алгоритм →", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
