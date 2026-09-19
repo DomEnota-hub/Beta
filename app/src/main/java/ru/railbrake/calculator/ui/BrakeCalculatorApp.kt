@@ -130,9 +130,6 @@ private data class AppendixPrefill(
 internal fun isDeveloperEasterEgg(massTons: Double, axleCount: Int?): Boolean =
     abs(massTons - 2381.0) < 1e-9 && axleCount == 999
 
-internal fun isSecretExamAccessCode(massTons: Double, axleCount: Int?): Boolean =
-    abs(massTons - 1000.0) < 1e-9 && axleCount == 2381
-
 @Composable
 fun BrakeCalculatorApp(
     palette: AccentPalette,
@@ -141,7 +138,7 @@ fun BrakeCalculatorApp(
     val context = LocalContext.current
     val historyRepository = remember { HistoryRepository(context) }
     val secretAccessRepository = remember { SecretAccessRepository(context) }
-    var examQuestionsUnlocked by remember { mutableStateOf(secretAccessRepository.isUnlocked()) }
+    var auxiliaryToolsVisible by remember { mutableStateOf(secretAccessRepository.isUnlocked()) }
     var historyVersion by remember { mutableIntStateOf(0) }
     var screenName by rememberSaveable { mutableStateOf(AppScreen.HOME.name) }
     var appendixPrefill by remember { mutableStateOf<AppendixPrefill?>(null) }
@@ -194,7 +191,7 @@ fun BrakeCalculatorApp(
                 val toolItems = buildList {
                     add(AppScreen.CALCULATIONS)
                     add(AppScreen.HISTORY)
-                    if (examQuestionsUnlocked) add(AppScreen.EXAM_QUESTIONS)
+                    if (auxiliaryToolsVisible) add(AppScreen.EXAM_QUESTIONS)
                 }
                 mainItems.forEach { item ->
                     NavigationDrawerItem(
@@ -318,9 +315,10 @@ fun BrakeCalculatorApp(
                             appendixPrefill = prefill
                             screenName = AppScreen.APPENDIX.name
                         },
-                        onExamQuestionsUnlocked = {
-                            secretAccessRepository.unlock()
-                            examQuestionsUnlocked = true
+                        onDirectCalculation = { massTons, axleCount ->
+                            if (secretAccessRepository.recordDirectCalculation(massTons, axleCount)) {
+                                auxiliaryToolsVisible = true
+                            }
                         }
                     )
                 }
@@ -407,7 +405,7 @@ fun BrakeCalculatorApp(
                 AppScreen.EXAM_QUESTIONS -> key(examRootVersion) { ExamQuestionScreen(
                     onHide = {
                         secretAccessRepository.hide()
-                        examQuestionsUnlocked = false
+                        auxiliaryToolsVisible = false
                         screenName = AppScreen.HOME.name
                     },
                     onOpenScenario = { scenarioId ->
@@ -522,7 +520,7 @@ private fun CalculationsHub(onMass: () -> Unit, onAppendix: () -> Unit) {
 private fun MassScreen(
     onHistory: (HistoryRecord) -> Unit,
     onOpenAppendix: (AppendixPrefill) -> Unit,
-    onExamQuestionsUnlocked: () -> Unit
+    onDirectCalculation: (Double, Int?) -> Unit
 ) {
     val context = LocalContext.current
     val inputPrefs = remember { context.getSharedPreferences("calculation_inputs", android.content.Context.MODE_PRIVATE) }
@@ -807,8 +805,8 @@ private fun MassScreen(
             error = null
             showDeveloperEasterEgg = source == MassSource.DIRECT &&
                 isDeveloperEasterEgg(massValue, axleCount)
-            if (source == MassSource.DIRECT && isSecretExamAccessCode(massValue, axleCount)) {
-                onExamQuestionsUnlocked()
+            if (source == MassSource.DIRECT) {
+                onDirectCalculation(massValue, axleCount)
             }
 
             onHistory(
