@@ -123,7 +123,21 @@ def searchable_text(record):
 def find_equipment(root):
     candidates = [r for r in root['records'] if 'ИШ-009' in searchable_text(r)]
     if len(candidates) != 1:
-        raise SystemExit(f'Expected exactly one ИШ-009 equipment record, found {len(candidates)}')
+        nearby = []
+        for r in root['records']:
+            text = searchable_text(r)
+            if 'шунт' in text.lower() or 'иш-' in text.lower():
+                nearby.append({
+                    'id': r.get('id'),
+                    'name': r.get('name'),
+                    'model': r.get('model'),
+                    'modelNames': r.get('modelNames'),
+                    'aliases': r.get('aliases'),
+                })
+        raise SystemExit(
+            f'Expected exactly one ИШ-009 equipment record, found {len(candidates)}; '
+            f'nearby shunt records={json.dumps(nearby, ensure_ascii=False)}'
+        )
     return candidates[0]
 
 
