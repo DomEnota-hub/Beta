@@ -152,7 +152,22 @@ private fun ExamQuestionCard(
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
             ) {
-                Text(item.correctAnswer, modifier = Modifier.fillMaxWidth().padding(12.dp), style = MaterialTheme.typography.bodyLarge)
+                val answerParts = item.correctAnswer
+                    .split('•')
+                    .map(String::trim)
+                    .filter(String::isNotBlank)
+                val isBulletedAnswer = '•' in item.correctAnswer
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(if (isBulletedAnswer) 6.dp else 0.dp)
+                ) {
+                    answerParts.forEach { answer ->
+                        Text(
+                            text = if (isBulletedAnswer) "• $answer" else answer,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
             }
             if (item.requiresImage) {
                 Text("Вопрос требует исходного изображения", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.error)
