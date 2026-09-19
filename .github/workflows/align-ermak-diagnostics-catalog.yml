@@ -1,0 +1,95 @@
+name: Align Ermak diagnostics catalog
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/align_ermak_diagnostics_catalog.py'
+      - '.github/workflows/align-ermak-diagnostics-catalog.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply diagnostics alignment patch
+        run: python3 .github/scripts/align_ermak_diagnostics_catalog.py
+
+      - name: Verify mirrors and UX contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'title = "Диагностика"' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          ! grep -Fq 'title = "Диагностика ВЛ80С"' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          grep -Fq 'Text("Что я вижу?")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'Text("В пути")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq '"Высоковольтные цепи"' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq '"Вспомогательные машины"' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'Text("Открыть алгоритм →", color = MaterialTheme.colorScheme.primary' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          git diff --check
+
+      - name: Commit source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+                  app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          if ! git diff --cached --quiet; then
+            git commit -m 'Align Ermak diagnostics catalog UX'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
