@@ -1,0 +1,137 @@
+name: Beta15 verification build
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/beta15-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      RELEASE_KEYSTORE_B64: ${{ secrets.RAILBRAKE_KEYSTORE_BASE64 }}
+      EXPECTED_SIGNING_CERT_SHA256: ea9fe9341a6ba72b585bd7ff82ce29c8fc5b7b59e76b8b134df203eaab8e2788
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Verify Beta15 source and mirrors
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          cmp app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'versionCode = 160' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta15"' app/build.gradle.kts
+          grep -Fq 'title = "Диагностика"' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          ! grep -Fq 'title = "Диагностика ВЛ80С"' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          grep -Fq 'Text("Что я вижу?")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'Text("В пути")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq '"Высоковольтные цепи"' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq '"Вспомогательные машины"' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq '.split('"'"'•'"'"')' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          grep -Fq 'Ползуны колесных пар: скорость и действия' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'Заклинивание тормоза вагона: порядок действий' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'Опасные и вредные производственные факторы' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          python3 qa/verify_runtime_asset_paths.py app/src/main/java app/src/main/assets
+          python3 qa/verify_diagnostic_graphs.py app/src/main/assets
+          python3 qa/verify_ermak_atlas.py app/src/main/assets
+          git diff --check
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+          grep -Fq 'versionCode = 160' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta15"' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Build debug APK
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
+
+      - name: Verify debug runtime contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk
+          python3 qa/verify_technical_assets_in_apk.py "$APK"
+          python3 qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets "$APK"
+
+      - name: Decode release signing key
+        working-directory: buildsrc/RailBrakeCalculator
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "$RELEASE_KEYSTORE_B64" | base64 --decode > release.keystore
+          test -s release.keystore
+
+      - name: Build signed release APK
+        working-directory: buildsrc/RailBrakeCalculator
+        env:
+          RAILBRAKE_KEYSTORE_PATH: ${{ github.workspace }}/buildsrc/RailBrakeCalculator/release.keystore
+          RAILBRAKE_STORE_PASSWORD: ${{ secrets.RAILBRAKE_STORE_PASSWORD }}
+          RAILBRAKE_KEY_ALIAS: ${{ secrets.RAILBRAKE_KEY_ALIAS }}
+          RAILBRAKE_KEY_PASSWORD: ${{ secrets.RAILBRAKE_KEY_PASSWORD }}
+        run: timeout --signal=TERM 15m gradle :app:assembleRelease --stacktrace --console=plain
+
+      - name: Verify signed release
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/aapt" dump badging "$APK" | tee apk-badging.log
+          grep -Fq "package: name='ru.railbrake.calculator' versionCode='160' versionName='1.2.2-dev14-beta15'" apk-badging.log
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose --print-certs "$APK" | tee signed-apksigner.log
+          grep -qi "Signer #1 certificate SHA-256 digest: $EXPECTED_SIGNING_CERT_SHA256" signed-apksigner.log
+          python3 qa/verify_technical_assets_in_apk.py "$APK"
+          python3 qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets "$APK"
+
+      - name: Upload Beta15 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RailBrakeCalculator-1.2.2-dev14-beta15-release-signed
+          path: buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
