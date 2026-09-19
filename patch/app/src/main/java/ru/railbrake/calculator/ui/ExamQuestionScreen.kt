@@ -163,7 +163,7 @@ private fun ExamQuestionCard(
                 ) {
                     answerParts.forEach { answer ->
                         Text(
-                            text = if (isBulletedAnswer) "• $answer" else answer,
+                            text = if (isBulletedAnswer) "- $answer" else answer,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
