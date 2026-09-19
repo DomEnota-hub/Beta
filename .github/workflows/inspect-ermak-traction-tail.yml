@@ -1,0 +1,44 @@
+name: Inspect Ermak traction tail
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-traction-tail.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Print traction catalog
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          path='app/src/main/assets/technical/ermak_equipment.json.gz'
+          with gzip.open(path,'rt',encoding='utf-8') as f:
+              root=json.load(f)
+          rows=[]
+          for r in root.get('records',[]):
+              rid=r.get('id','')
+              if rid.startswith('ER-EQ-TR-'):
+                  rows.append({
+                      'id': rid,
+                      'name': r.get('name') or r.get('title'),
+                      'modelNames': r.get('modelNames',[]),
+                      'schemeDesignations': r.get('schemeDesignations',[]),
+                      'parameterCount': len(r.get('parameters',[])),
+                  })
+          rows.sort(key=lambda x:x['id'])
+          print('ERMAK_TRACTION_CATALOG_BEGIN')
+          print(json.dumps(rows,ensure_ascii=False,indent=2))
+          print('ERMAK_TRACTION_CATALOG_END')
+          PY
