@@ -1,0 +1,152 @@
+name: Enrich Ermak network voltage and energy metering references
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_network_metering.py'
+      - '.github/workflows/enrich-ermak-network-metering.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply HV-009 and HV-010 enrichment
+        run: python3 .github/scripts/enrich_ermak_network_metering.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by_id={r.get('id'):r for r in eq['records']}
+
+          h9=by_id['ER-EQ-HV-009']
+          assert h9.get('schemeDesignations') == ['T12','PV1'], h9.get('schemeDesignations')
+          assert h9.get('modelNames') == ['Тр-19','вольтметр сети'], h9.get('modelNames')
+          assert len(h9.get('parameters',[])) == 7
+          p={x['name']:x['value'] for x in h9['parameters']}
+          assert p['Номинальная мощность трансформатора T12 (Тр-19)'] == 155
+          assert p['Номинальное напряжение первичной обмотки A-X'] == 220
+          assert p['Номинальное напряжение вторичной обмотки a2-x'] == 233
+          assert p['Номинальное напряжение вторичной обмотки a1-x'] == 100
+          assert p['Номинальный ток вторичной обмотки a2-x'] == 0.6
+          assert p['Номинальная частота'] == 50
+          assert p['Масса трансформатора Тр-19'] == 2.5
+          h9ids={x.get('sourceId') for x in h9.get('sourceRefs',[]) if isinstance(x,dict)}
+          assert {'ER-SRC-002','ER-SRC-005','ER-SRC-076','ER-SRC-077'} <= h9ids, h9ids
+          assert 'Тр-19' in h9.get('purpose','') and 'PV1' in h9.get('purpose','')
+
+          h10=by_id['ER-EQ-HV-010']
+          assert h10.get('schemeDesignations') == ['PJ1'], h10.get('schemeDesignations')
+          assert h10.get('modelNames') == [], h10.get('modelNames')
+          assert len(h10.get('parameters',[])) == 3
+          q={x['name']:x['value'] for x in h10['parameters']}
+          assert q['Учитываемые направления электроэнергии'] == 'потребление и рекуперация'
+          assert q['Токовый измерительный канал'] == 'T7'
+          assert q['Напряженческий измерительный канал'] == 'T12 через панель U21'
+          assert any('точная модель' in n.lower() and 'не' in n.lower() for n in h10.get('notes',[]))
+          assert 'рекупер' in h10.get('purpose','').lower()
+
+          tr13=by_id['ER-EQ-TR-013']
+          assert tr13.get('parameters') == []
+          assert tr13.get('modelNames') == []
+          assert tr13.get('schemeDesignations') == []
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles={a.get('equipmentId'):a for a in kb['articles']}
+          a9=articles['ER-EQ-HV-009']
+          assert len(a9.get('keyParameters',[])) == 7
+          assert all(x in a9.get('sourceRefs',[]) for x in ['ER-SRC-002','ER-SRC-005','ER-SRC-076','ER-SRC-077'])
+          assert len(a9.get('normalState',[])) >= 4 and len(a9.get('deviationSigns',[])) >= 4
+          assert any('T12/Тр-19' in r for r in a9.get('variantRules',[]))
+          assert a9['atlasData']['parameterCoverage']['count'] == 7
+          assert a9['atlasData']['modelNames'] == ['Тр-19','вольтметр сети']
+
+          a10=articles['ER-EQ-HV-010']
+          assert len(a10.get('keyParameters',[])) == 3
+          assert 'ER-SRC-002' in a10.get('sourceRefs',[])
+          assert len(a10.get('normalState',[])) >= 4 and len(a10.get('deviationSigns',[])) >= 4
+          assert any('точный тип/модель' in r for r in a10.get('variantRules',[]))
+          assert a10['atlasData']['parameterCoverage']['count'] == 3
+          assert a10['atlasData']['modelNames'] == []
+
+          registry=eq.get('sourceRegistry',{})
+          ids={v.get('sourceId'):k for k,v in registry.items() if isinstance(v,dict)}
+          assert ids.get('ER-SRC-076') == 'TR19_FACTORY_DATA', ids.get('ER-SRC-076')
+          assert ids.get('ER-SRC-077') == 'TR19_ERMAK_T12_MAPPING', ids.get('ER-SRC-077')
+          print('HV-009 T12/PV1 and HV-010 PJ1 package verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak network voltage and energy metering reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
