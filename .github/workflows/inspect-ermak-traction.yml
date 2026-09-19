@@ -17,23 +17,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: dev14-integration
-      - name: List traction equipment records
+      - name: Inspect TR-002 and knowledge article
         shell: bash
         run: |
           python3 - <<'PY'
           import gzip, json
           with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
-              root=json.load(f)
-          for r in root['records']:
-              rid=r.get('id','')
-              if '-TR-' not in rid:
-                  continue
-              print(json.dumps({
-                  'id': rid,
-                  'name': r.get('name'),
-                  'model': r.get('model'),
-                  'modelNames': r.get('modelNames'),
-                  'purpose': r.get('purpose'),
-                  'parameterCount': len(r.get('parameters',[])),
-              }, ensure_ascii=False))
+              eq=json.load(f)
+          rec=next(r for r in eq['records'] if r.get('id')=='ER-EQ-TR-002')
+          print('EQUIPMENT')
+          print(json.dumps(rec, ensure_ascii=False, indent=2))
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          expected='ER-KB-EQ-ER-EQ-TR-002'
+          matches=[a for a in kb['articles'] if a.get('id')==expected or a.get('equipmentId')=='ER-EQ-TR-002']
+          print('ARTICLES', len(matches))
+          for a in matches:
+              print(json.dumps(a, ensure_ascii=False, indent=2))
           PY
