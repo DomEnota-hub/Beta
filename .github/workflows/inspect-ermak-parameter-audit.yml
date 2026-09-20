@@ -1,0 +1,50 @@
+name: Inspect Ermak parameter audit
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-parameter-audit.yml'
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export remaining parameterless cards
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          eqp=Path('app/src/main/assets/technical/ermak_equipment.json.gz')
+          kbp=Path('app/src/main/assets/technical/ermak_knowledge.json.gz')
+          with gzip.open(eqp,'rt',encoding='utf-8') as f: eq=json.load(f)
+          with gzip.open(kbp,'rt',encoding='utf-8') as f: kb=json.load(f)
+          arts={a.get('equipmentId'):a for a in kb.get('articles',[]) if a.get('equipmentId')}
+          rows=[]
+          for r in eq.get('records',[]):
+              if r.get('parameters'): continue
+              a=arts.get(r.get('id'),{})
+              rows.append({
+                  'id':r.get('id'),'name':r.get('name'),'domainId':r.get('domainId'),
+                  'systemIds':r.get('systemIds'),'schemeDesignations':r.get('schemeDesignations'),
+                  'modelNames':r.get('modelNames'),'purpose':r.get('purpose'),
+                  'parameterCoverage':r.get('parameterCoverage'),'notes':r.get('notes'),
+                  'sourceRefs':[x.get('sourceId') if isinstance(x,dict) else x for x in r.get('sourceRefs',[])],
+                  'article':{
+                      'summary':a.get('summary'),'variantRules':a.get('variantRules'),
+                      'atlasApplicability':(a.get('atlasData') or {}).get('applicability'),
+                      'knowledgeParameters':(a.get('knowledgeCoverage') or {}).get('parameters'),
+                  }
+              })
+          out={'statistics':eq.get('statistics'),'count':len(rows),'records':rows}
+          Path('ermak-parameter-audit.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('parameterless',len(rows))
+          for x in rows: print(x['id'], x['name'], x['modelNames'], x['schemeDesignations'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ermak-parameter-audit
+          path: ermak-parameter-audit.json
