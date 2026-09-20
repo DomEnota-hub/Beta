@@ -1,0 +1,66 @@
+name: Inspect Ermak next four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-next-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Build read-only inspection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          p=Path('app/src/main/assets/technical/ermak_equipment.json.gz')
+          with gzip.open(p,'rt',encoding='utf-8') as f:
+              root=json.load(f)
+          rows=[]
+          for r in root['records']:
+              if not r.get('parameters'):
+                  rows.append({
+                      'id':r.get('id'),
+                      'name':r.get('name') or r.get('title'),
+                      'domain':r.get('domain'),
+                      'modelNames':r.get('modelNames',[]),
+                      'schemeDesignations':r.get('schemeDesignations',[]),
+                      'parameterCoverage':r.get('parameterCoverage'),
+                      'purpose':r.get('purpose'),
+                      'notes':r.get('notes',[]),
+                      'sourceRefs':r.get('sourceRefs',[]),
+                  })
+          reg=[]
+          for key,v in root.get('sourceRegistry',{}).items():
+              if isinstance(v,dict) and v.get('sourceId'):
+                  reg.append({'key':key,'sourceId':v.get('sourceId'),'title':v.get('title'),'url':v.get('url')})
+          reg.sort(key=lambda x:int(x['sourceId'].rsplit('-',1)[-1]) if x['sourceId'].rsplit('-',1)[-1].isdigit() else -1)
+          out={
+              'statistics':root.get('statistics'),
+              'recordsTotal':len(root['records']),
+              'recordsWithoutParameters':len(rows),
+              'parameterlessRecords':rows,
+              'sourceRegistryTail':reg[-20:],
+          }
+          Path('ermak_next_batch_inspection.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Upload inspection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ermak-next-batch-inspection
+          path: ermak_next_batch_inspection.json
+          if-no-files-found: error
