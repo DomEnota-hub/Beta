@@ -1,0 +1,59 @@
+name: Inspect selected Ermak pneumatic batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-selected-pneumatic-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Build selected read-only inspection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          targets=['ER-EQ-PN-006','ER-EQ-PN-008','ER-EQ-PN-011','ER-EQ-CB-003']
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          by={r['id']:r for r in eq['records']}
+          arts={a.get('equipmentId'):a for a in kb['articles'] if a.get('equipmentId')}
+          reg=[]
+          for key,v in eq.get('sourceRegistry',{}).items():
+              if isinstance(v,dict) and v.get('sourceId'):
+                  reg.append({'key':key,**v})
+          def n(s):
+              t=s.rsplit('-',1)[-1]
+              return int(t) if t.isdigit() else -1
+          reg.sort(key=lambda x:n(x['sourceId']))
+          neighbors=['ER-EQ-PN-003','ER-EQ-PN-004','ER-EQ-PN-005','ER-EQ-PN-007','ER-EQ-PN-009','ER-EQ-PN-010','ER-EQ-PN-012','ER-EQ-CB-001','ER-EQ-CB-002','ER-EQ-CB-004']
+          out={
+              'targets':{eid:{'equipment':by[eid],'knowledge':arts[eid]} for eid in targets},
+              'neighbors':{eid:{'parameters':by[eid].get('parameters',[]),'modelNames':by[eid].get('modelNames',[]),'schemeDesignations':by[eid].get('schemeDesignations',[])} for eid in neighbors if eid in by},
+              'sourceRegistryTail':reg[-20:],
+              'statistics':eq.get('statistics',{}),
+          }
+          Path('ermak_selected_batch_inspection.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Upload inspection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ermak-selected-pneumatic-batch-inspection
+          path: ermak_selected_batch_inspection.json
+          if-no-files-found: error
