@@ -1,0 +1,44 @@
+name: Inspect Ermak CT four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-ct-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Print target records articles and recent sources
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          targets={'ER-EQ-CT-007','ER-EQ-CT-011','ER-EQ-CT-012','ER-EQ-CT-013'}
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          print('TARGET_EQUIPMENT_BEGIN')
+          print(json.dumps([r for r in eq.get('records',[]) if r.get('id') in targets], ensure_ascii=False, indent=2))
+          print('TARGET_EQUIPMENT_END')
+          print('TARGET_KNOWLEDGE_BEGIN')
+          print(json.dumps([a for a in kb.get('articles',[]) if a.get('equipmentId') in targets], ensure_ascii=False, indent=2))
+          print('TARGET_KNOWLEDGE_END')
+          rows=[]
+          for key,val in eq.get('sourceRegistry',{}).items():
+              if isinstance(val,dict) and val.get('sourceId','') >= 'ER-SRC-083':
+                  rows.append({'key':key, **val})
+          print('RECENT_SOURCE_IDS_BEGIN')
+          print(json.dumps(rows, ensure_ascii=False, indent=2))
+          print('RECENT_SOURCE_IDS_END')
+          PY
