@@ -1,0 +1,147 @@
+name: Enrich Ermak final four-node research pass
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-final-research-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply final four-node research pass
+        run: python3 .github/scripts/enrich_ermak_final_research_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          bogie=by['ER-EQ-MC-001']
+          assert bogie['modelNames']==[] and bogie['schemeDesignations']==[] and len(bogie['parameters'])==5
+          p={x['name']:x['value'] for x in bogie['parameters']}
+          assert p['Длина тележки']==4780 and p['Ширина тележки']==2750 and p['База тележки']==2900
+          assert p['Масса тележки']==21200 and p['Масса тележки с ручным тормозом и гребнесмазывателем АГС8']==21300
+          assert any('поздние тележки' in x for x in bogie['notes'])
+
+          pm2=by['ER-EQ-SF-005']
+          assert pm2['modelNames']==['ПМ2-САУТ6'] and pm2.get('parameters',[])==[]
+          assert pm2['parameterCoverage']['count']==0
+          assert any('ПУ2-САУТ-ЦМ/485' in x and 'Не подменять' in x for x in pm2['notes'])
+
+          speed=by['ER-EQ-MC-006']
+          assert speed['schemeDesignations']==['ДС'] and speed['modelNames']==[] and speed.get('parameters',[])==[]
+          assert speed['parameterCoverage']['count']==0
+          assert any('ДСНТ-01' in x and 'Не присваивать' in x for x in speed['notes'])
+
+          ko7=by['ER-EQ-PN-005']
+          assert ko7['schemeDesignations']==['КО7'] and ko7['modelNames']==['1-10'] and len(ko7['parameters'])==4
+          p={x['name']:x['value'] for x in ko7['parameters']}
+          assert p['Рабочее давление']=='0.6–1.0' and p['Присоединительная резьба']=='G1 1/2-B'
+          assert p['Габаритные размеры']=='130×86×157' and p['Масса']==5.0
+          assert any('ВУ 3,5/10-1450' in x and '1-10' in x for x in ko7['notes'])
+          assert any('1-2' in x for x in ko7['notes'])
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          assert ids.get('ER-SRC-115')=='ERMAK_RE6_BOGIE_TECH_DATA'
+          assert ids.get('ER-SRC-116')=='ERMAK_RE6_CHECK_VALVE_1_10'
+          assert len(ids)==len(set(ids))
+          assert eq['statistics']['recordsWithParameters']==82
+          assert eq['statistics']['recordsWithoutParameters']==29
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          assert len(arts['ER-EQ-MC-001']['keyParameters'])==5
+          assert len(arts['ER-EQ-PN-005']['keyParameters'])==4
+          assert arts['ER-EQ-SF-005']['keyParameters']==[]
+          assert arts['ER-EQ-MC-006']['keyParameters']==[]
+          assert any('ДСНТ-01' in x for x in arts['ER-EQ-MC-006'].get('variantRules',[]))
+          assert any('ПУ2/ПУ3/ПУ4/ПУ5' in x for x in arts['ER-EQ-SF-005'].get('variantRules',[]))
+          print('Final four-node research pass verified independently: 2 documented, 2 explicitly left without guessed parameters')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Finalize Ermak bogie KO7 PM2 and speed-sensor research'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
