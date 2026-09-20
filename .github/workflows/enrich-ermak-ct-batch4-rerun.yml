@@ -1,0 +1,167 @@
+name: Enrich Ermak CT four-node control batch rerun
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-ct-batch4-rerun.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply four-node CT enrichment
+        run: python3 .github/scripts/enrich_ermak_ct_batch4.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          km=by['ER-EQ-CT-007']
+          assert km['modelNames']==['КМ-34'] and km['schemeDesignations']==['SM1']
+          assert len(km['parameters'])==5
+          kp={p['name']:p['value'] for p in km['parameters']}
+          assert kp['Номинальное напряжение постоянного тока']==50
+          assert kp['Номинальный ток']==16
+          assert kp['Количество контактов реверсивного вала']==4
+          assert kp['Количество контактов главного вала']==5
+          assert kp['Масса']==10.6
+
+          br=by['ER-EQ-CT-011']
+          assert br['modelNames']==['БВ-108','АЕ2541М','АЕ2544М']
+          assert len(br['parameters'])==5
+          bp={p['name']:p['value'] for p in br['parameters']}
+          assert bp['Номинальное напряжение постоянного тока для DC-исполнений АЕ2541М/АЕ2544М']==110
+          assert bp['Номинальные токи расцепителей АЕ по базовой таблице']=='5; 10; 16; 25'
+          assert bp['Уставки мгновенного срабатывания АЕ']=='1,3; 2; 3; 5; 10'
+          assert bp['Поворот ключа механической блокировки БВ-108 для разблокирования']==90
+
+          il=by['ER-EQ-CT-012']
+          assert il['modelNames']==['ПБ-3','БУ-01/02/03','БП-207-02','ПБ-179']
+          assert len(il['parameters'])==12
+          ip={p['name']:p['value'] for p in il['parameters']}
+          assert ip['ПБ-3 — номинальное давление']==0.5
+          assert ip['ПБ-3 — диапазон рабочих давлений']=='0,35–0,675'
+          assert ip['ПБ-3 — ход штока']==24
+          assert ip['БУ-01/БУ-02 — номинальный ток контактора']==16
+          assert ip['БП-207/ПБ-179 — номинальное давление сжатого воздуха']==0.5
+          assert not any(p['name']=='ПБ-3 — масса' for p in il['parameters'])
+          assert any('БУ-03' in x and 'автоматически не переносятся' in x for x in il['notes'])
+
+          bs=by['ER-EQ-CT-013']
+          assert bs['modelNames']==['БС-173'] and bs['schemeDesignations']==['A23']
+          assert len(bs['parameters'])==7
+          sp={p['name']:p['value'] for p in bs['parameters']}
+          assert sp['Максимальная потребляемая мощность']==8
+          assert sp['Номинальное напряжение цепей индикации (среднее)']==50
+          assert sp['Допустимое переходное перенапряжение в течение 0,010 с']==500
+          assert sp['Максимальное допустимое напряжение питания']==65
+          assert sp['Максимальная масса блока']==2.8
+
+          assert len(by['ER-EQ-CT-002']['parameters'])==5
+          assert len(by['ER-EQ-CT-004']['parameters'])==6
+          assert len(by['ER-EQ-CT-005']['parameters'])==9
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-085':'KM34_AE25_TECH_DATA',
+              'ER-SRC-086':'ERMAK_RE8_CONTROL_MAINT',
+              'ER-SRC-087':'PB3_MANUFACTURER_DATA',
+              'ER-SRC-088':'BU01_BU02_SAME_TYPE_DATA',
+              'ER-SRC-089':'BP207_PB179_SAME_FAMILY_DATA',
+              'ER-SRC-090':'BS173_MANUFACTURER_CATALOG',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key, (sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-CT-007',5),('ER-EQ-CT-011',5),('ER-EQ-CT-012',12),('ER-EQ-CT-013',7)]:
+              assert len(arts[eid]['keyParameters'])==count
+              assert arts[eid]['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert arts[eid]['knowledgeCoverage']['parameters']=='documented'
+          print('Four-node CT package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak KM-34 breaker interlock and BS-173 data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
