@@ -1,0 +1,39 @@
+name: Fix Ermak CT four-node semantic guard
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/fix-ermak-ct-batch4-guard.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Fix exact note assertion
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('.github/workflows/enrich-ermak-ct-batch4.yml')
+          s = p.read_text(encoding='utf-8')
+          old = "assert any('не распространяются автоматически на БУ-03' in x for x in il['notes'])"
+          new = "assert any('БУ-03' in x and 'автоматически не переносятся' in x for x in il['notes'])"
+          if old not in s:
+              raise SystemExit('Target assertion not found or already changed')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+          git diff --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/enrich-ermak-ct-batch4.yml
+          git commit -m 'Fix Ermak four-node semantic note guard'
+          git push origin HEAD:dev14-integration
