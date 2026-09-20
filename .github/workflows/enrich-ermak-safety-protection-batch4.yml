@@ -1,0 +1,188 @@
+name: Enrich Ermak safety and protection four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-safety-protection-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply four-node safety and protection enrichment
+        run: python3 .github/scripts/enrich_ermak_safety_protection_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          klub=by['ER-EQ-SF-001']
+          assert klub['name']=='КЛУБ-У' and klub['modelNames']==[] and klub['schemeDesignations']==[]
+          assert len(klub['parameters'])==4
+          p={x['name']:x['value'] for x in klub['parameters']}
+          assert p['Потребляемая мощность, не более']==300
+          assert p['Рабочая температура']=='−40…+55'
+          assert p['Срок службы']==20
+          assert p['Поддерживаемые напряжения сети постоянного тока']=='50; 75; 110'
+          assert any('не тремя одновременными' in x for x in klub['notes'])
+
+          saut=by['ER-EQ-SF-004']
+          assert saut['name']=='САУТ-ЦМ/485' and saut['modelNames']==[] and saut['schemeDesignations']==[]
+          assert len(saut['parameters'])==8
+          p={x['name']:x['value'] for x in saut['parameters']}
+          assert p['Напряжение питания постоянного тока']==50
+          assert p['Потребляемая мощность, не более']==60
+          assert p['Сопротивление изоляции входных и выходных цепей, не менее']==20
+          assert p['Испытательное напряжение изоляции в течение 60±5 с, не менее']==1200
+          assert p['Рабочая температура']=='−40…+50'
+          assert p['Относительная влажность при 40 °C, не более']==93
+          assert p['Средний срок службы, не менее']==15
+          assert p['Средняя наработка на отказ, не менее']==35000
+          assert any('ПМ2-САУТ6' in x and 'не переносится' in x for x in saut['notes'])
+
+          rt=by['ER-EQ-PR-002']
+          assert rt['name']=='Реле защиты тяговых обмоток и ВИП'
+          assert rt['modelNames']==['РТ-546-1'] and rt['schemeDesignations']==['KA1-KA6']
+          assert len(rt['parameters'])==6
+          p={x['name']:x['value'] for x in rt['parameters']}
+          assert p['Род тока']=='переменный'
+          assert p['Номинальное напряжение изоляции катушки (шины)']==2000
+          assert p['Номинальный ток катушки (шины)']==1950
+          assert p['Ток уставки']=='4000±200'
+          assert p['Номинальное напряжение контактов']==50
+          assert p['Номинальный отключаемый ток контактов при U=50 В и τ=0,05 с']==3
+          assert any('РТ-546-01' in x and 'не объединяются' in x for x in rt['notes'])
+
+          pzko=by['ER-EQ-PR-005']
+          assert pzko['name']=='Панель защиты ТЭД от кругового огня'
+          assert pzko['modelNames']==['ПЗКО-844'] and pzko['schemeDesignations']==[]
+          assert len(pzko['parameters'])==4
+          p={x['name']:x['value'] for x in pzko['parameters']}
+          assert p['Род тока главной цепи']=='пульсирующий'
+          assert p['Коэффициент пульсации']==45
+          assert p['Номинальное напряжение изоляции']==1500
+          assert p['Напряжение срабатывания реле']=='450±50'
+
+          neighbors={
+              'ER-EQ-SF-002':3,'ER-EQ-SF-003':6,'ER-EQ-SF-006':7,'ER-EQ-SF-008':6,
+              'ER-EQ-SF-005':0,'ER-EQ-SF-007':0,'ER-EQ-SF-009':0,
+              'ER-EQ-PR-001':0,'ER-EQ-PR-004':0,'ER-EQ-PR-006':0,
+          }
+          for eid,count in neighbors.items():
+              assert len(by[eid].get('parameters',[]))==count,(eid,len(by[eid].get('parameters',[])))
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-107':'KLUBU_MANUFACTURER_DATA',
+              'ER-SRC-108':'SAUT_CM485_GRSI_DATA',
+              'ER-SRC-109':'ERMAK_PROTECTION_SETTINGS_TABLE',
+              'ER-SRC-110':'RT546_PZKO_TECH_DATA',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key,(sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+          assert eq['statistics']['recordsWithParameters']==72
+          assert eq['statistics']['recordsWithoutParameters']==39
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-SF-001',4),('ER-EQ-SF-004',8),('ER-EQ-PR-002',6),('ER-EQ-PR-005',4)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert any('50/75/110 В' in x for x in arts['ER-EQ-SF-001'].get('variantRules',[]))
+          assert any('ПМ3/ПМ4/ПМ6' in x for x in arts['ER-EQ-SF-004'].get('variantRules',[]))
+          assert any('РТ-546-01' in x for x in arts['ER-EQ-PR-002'].get('variantRules',[]))
+          assert any('РКН-37' in x for x in arts['ER-EQ-PR-005'].get('variantRules',[]))
+          print('Four-node safety/protection package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak KLUB SAUT RT-546 and PZKO data'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
