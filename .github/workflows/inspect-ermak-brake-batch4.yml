@@ -33,7 +33,12 @@ jobs:
               raise SystemExit('knowledge list not found')
           es = equipment_records(e)
           ks = knowledge_records(k)
-          out = {'statistics': e.get('statistics'), 'targets': {}, 'sourceRegistryTail': (e.get('sourceRegistry') or k.get('sourceRegistry') or [])[-12:]}
+          registry = e.get('sourceRegistry') or k.get('sourceRegistry') or {}
+          if isinstance(registry, dict):
+              registry_tail = dict(list(registry.items())[-12:])
+          else:
+              registry_tail = registry[-12:]
+          out = {'statistics': e.get('statistics'), 'targets': {}, 'sourceRegistryTail': registry_tail}
           for tid in targets:
               er = next((x for x in es if x.get('id') == tid), None)
               kr = next((x for x in ks if x.get('equipmentId') == tid), None)
