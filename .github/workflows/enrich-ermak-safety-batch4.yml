@@ -1,0 +1,187 @@
+name: Enrich Ermak safety four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-safety-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply four-node safety enrichment
+        run: python3 .github/scripts/enrich_ermak_safety_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          bil=by['ER-EQ-SF-002']
+          assert bil['modelNames']==['БИЛ-УТ'] and bil['schemeDesignations']==[]
+          assert len(bil['parameters'])==3
+          p={x['name']:x['value'] for x in bil['parameters']}
+          assert p['Максимальный ток потребления при проверке']==1.0
+          assert p['Габаритные размеры, не более']=='236×253×110'
+          assert p['Масса, не более']==3.5
+          assert any('отличается от заводского обозначения' in x for x in bil['notes'])
+
+          pom=by['ER-EQ-SF-003']
+          assert pom['modelNames']==['БИЛ-В-ПОМ'] and pom['schemeDesignations']==[]
+          assert len(pom['parameters'])==6
+          p={x['name']:x['value'] for x in pom['parameters']}
+          assert p['Диапазон напряжения питания']=='41–55'
+          assert p['Ток потребления при проверке, не более']==0.14
+          assert p['Рабочая температура окружающей среды']=='−30…+55'
+          assert p['Степень защиты оболочки']=='IP32'
+          assert p['Габаритные размеры БИЛ-В-ПОМ, не более']=='50×160×84'
+          assert p['Масса БИЛ-В-ПОМ, не более']==0.7
+          assert any('Не смешивать БИЛ-В-ПОМ' in x for x in pom['notes'])
+
+          tsk=by['ER-EQ-SF-006']
+          assert tsk['modelNames']==['ТСКБМ-П','ТСКБМ-К'] and tsk['schemeDesignations']==[]
+          assert len(tsk['parameters'])==7
+          p={x['name']:x['value'] for x in tsk['parameters']}
+          assert p['Система ТСКБМ — входное напряжение']=='50±30%'
+          assert p['Система ТСКБМ — входной ток, не более']==0.5
+          assert p['ТСКБМ-К — габаритные размеры']=='100×300×300'
+          assert p['ТСКБМ-К — масса']==5.0
+          assert p['ТСКБМ-К — рабочая температура']=='−50…+50'
+          assert p['ТСКБМ-П — габаритные размеры']=='250×180×100'
+          assert p['ТСКБМ-П — рабочая температура']=='−40…+40'
+          assert not any(x['name']=='ТСКБМ-П — масса' for x in tsk['parameters'])
+          assert any('Масса ТСКБМ-П сознательно не фиксируется' in x for x in tsk['notes'])
+
+          auu=by['ER-EQ-SF-008']
+          assert auu['modelNames']==['АУУ-1Н'] and auu['schemeDesignations']==[]
+          assert len(auu['parameters'])==6
+          p={x['name']:x['value'] for x in auu['parameters']}
+          assert p['Диапазон рабочих частот GPS/ГЛОНАСС']=='1574–1610'
+          assert p['Коэффициент усиления МШУ']=='27–32'
+          assert p['Коэффициент шума входного фильтра + МШУ']=='<2'
+          assert p['Напряжение питания']=='5–12'
+          assert p['Ток потребления, не более']==50
+          assert p['Рабочая температура']=='−40…+50'
+          assert not any(any(word in x['name'].lower() for word in ['габарит','масса']) for x in auu['parameters'])
+          assert any('Габариты и масса намеренно исключены' in x for x in auu['notes'])
+
+          for eid in ['ER-EQ-SF-001','ER-EQ-SF-004','ER-EQ-SF-005','ER-EQ-SF-007','ER-EQ-SF-009']:
+              assert len(by[eid].get('parameters',[]))==0,(eid,by[eid].get('parameters'))
+          assert len(by['ER-EQ-SF-010'].get('parameters',[]))>0
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-101':'BIL_UT_MANUFACTURER_RE',
+              'ER-SRC-102':'BIL_V_POM_MANUFACTURER_RE',
+              'ER-SRC-103':'BIL_UT_METROLOGY',
+              'ER-SRC-104':'TSKBM_MANUFACTURER_DATA',
+              'ER-SRC-105':'AUU1N_EXACT_TECH_DATA',
+              'ER-SRC-106':'AUU1N_IRZ_BOUNDARY',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key,(sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+          assert eq['statistics']['recordsWithParameters']==68
+          assert eq['statistics']['recordsWithoutParameters']==43
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-SF-002',3),('ER-EQ-SF-003',6),('ER-EQ-SF-006',7),('ER-EQ-SF-008',6)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert any('БИЛ-УТ не объединять' in x for x in arts['ER-EQ-SF-002'].get('variantRules',[]))
+          assert any('БИЛ-В-ПОМ и БИЛ-ПОМ' in x for x in arts['ER-EQ-SF-003'].get('variantRules',[]))
+          assert any('Массу ТСКБМ-П не фиксировать' in x for x in arts['ER-EQ-SF-006'].get('variantRules',[]))
+          assert any('не фиксировать габариты и массу' in x for x in arts['ER-EQ-SF-008'].get('variantRules',[]))
+          print('Four-node safety package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak BIL TSKBM and AUU safety data'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
