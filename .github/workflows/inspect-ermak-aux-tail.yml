@@ -1,0 +1,42 @@
+name: Inspect Ermak auxiliary tail
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-aux-tail.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Print auxiliary records
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              root=json.load(f)
+          rows=[]
+          for r in root.get('records',[]):
+              if r.get('domain') == 'AU':
+                  rows.append({
+                      'id': r.get('id'),
+                      'name': r.get('name'),
+                      'modelNames': r.get('modelNames'),
+                      'schemeDesignations': r.get('schemeDesignations'),
+                      'quantity': r.get('quantity'),
+                      'purpose': r.get('purpose'),
+                      'parameterCount': len(r.get('parameters') or []),
+                      'parameterCoverage': r.get('parameterCoverage'),
+                  })
+          print(json.dumps(rows, ensure_ascii=False, indent=2))
+          PY
