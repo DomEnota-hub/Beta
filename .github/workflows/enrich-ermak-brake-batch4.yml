@@ -1,0 +1,181 @@
+name: Enrich Ermak brake four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-brake-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply four-node brake enrichment
+        run: python3 .github/scripts/enrich_ermak_brake_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          bvr=by['ER-EQ-BR-004']
+          assert bvr['schemeDesignations']==['ВРГ'] and bvr['modelNames']==['010.10-3']
+          assert len(bvr['parameters'])==3
+          p={x['name']:x['value'] for x in bvr['parameters']}
+          assert p['Давление в тормозных цилиндрах — порожний режим']=='0.14–0.18'
+          assert p['Давление в тормозных цилиндрах — средний режим']=='0.30–0.34'
+          assert p['Давление в тормозных цилиндрах — гружёный режим']=='0.40–0.45'
+          assert any('не переносить массу' in x.lower() and '483М' in x for x in bvr['notes'])
+
+          ku=by['ER-EQ-BR-009']
+          assert ku['schemeDesignations']==['КУ'] and ku['modelNames']==['215-1']
+          assert len(ku['parameters'])==2
+          p={x['name']:x['value'] for x in ku['parameters']}
+          assert p['Объём буферного резервуара в цепи крана управления']==5
+          assert p['Диаметр дросселя выпускного отверстия крана управления']==4.5
+          assert any('не универсальный паспорт' in x.lower() for x in ku['notes'])
+
+          epk=by['ER-EQ-BR-012']
+          assert epk['schemeDesignations']==['У25','ЭПК'] and epk['modelNames']==['ЭПК-150']
+          assert len(epk['parameters'])==1
+          assert epk['parameters'][0]['name']=='Объём камеры выдержки времени'
+          assert epk['parameters'][0]['value']==1 and epk['parameters'][0]['unit']=='L'
+          assert any('точный суффикс' in x.lower() and '150И' in x for x in epk['notes'])
+          assert not any(any(t in x['name'].lower() for t in ['напряжение','масса','габарит','ток']) for x in epk['parameters'])
+
+          km=by['ER-EQ-BR-014']
+          assert km['modelNames']==['395М-3-01']
+          assert len(km['parameters'])==5
+          p={x['name']:x['value'] for x in km['parameters']}
+          assert p['Давление сжатого воздуха в питательной магистрали']=='0.65–1.0'
+          assert p['Диапазон давления в тормозной магистрали, регулируемый редуктором']=='0.45–0.62'
+          assert p['Давление настройки редуктора для стендовых испытаний']=='0.54–0.55'
+          assert p['Габаритные размеры']=='380×363×269'
+          assert p['Масса, не более']==21
+          assert any('brake_395' in x for x in km['notes'])
+
+          neighbors={
+              'ER-EQ-BR-001':0,'ER-EQ-BR-002':0,'ER-EQ-BR-003':0,
+              'ER-EQ-BR-005':0,'ER-EQ-BR-007':0,'ER-EQ-BR-008':0,
+              'ER-EQ-BR-010':0,'ER-EQ-BR-011':0,
+              'ER-EQ-PN-006':5,'ER-EQ-PN-008':8,'ER-EQ-PN-011':4,'ER-EQ-CB-003':7,
+          }
+          for eid,count in neighbors.items():
+              assert len(by[eid].get('parameters',[]))==count,(eid,len(by[eid].get('parameters',[])))
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-095':'BTO010_BVR_TECH_DATA',
+              'ER-SRC-096':'ERMAK_OVERHAUL_BRAKE_TYPES',
+              'ER-SRC-097':'ERMAK_BRAKE_PROFILE_CHANGES',
+              'ER-SRC-098':'ERMAK_EPK150_REPAIR',
+              'ER-SRC-099':'EPK150_CONSTRUCTION_DATA',
+              'ER-SRC-100':'KM395M301_EXACT_DATA',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key,(sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+
+          assert eq['statistics']['recordsWithParameters']==64
+          assert eq['statistics']['recordsWithoutParameters']==47
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-BR-004',3),('ER-EQ-BR-009',2),('ER-EQ-BR-012',1),('ER-EQ-BR-014',5)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert any('самостоятельной блочной компоновкой' in x for x in arts['ER-EQ-BR-004'].get('variantRules',[]))
+          assert any('не являются паспортными параметрами' in x for x in arts['ER-EQ-BR-009'].get('variantRules',[]))
+          assert any('точный суффикс' in x for x in arts['ER-EQ-BR-012'].get('variantRules',[]))
+          assert any('brake_395' in x for x in arts['ER-EQ-BR-014'].get('variantRules',[]))
+          print('Four-node Ermak brake package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak 010.10-3 215-1 EPK-150 and 395M-3-01 data'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
