@@ -1,0 +1,186 @@
+name: Enrich Ermak pneumatic and signal four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-pneumatic-signal-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply four-node pneumatic enrichment
+        run: python3 .github/scripts/enrich_ermak_pneumatic_signal_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          kr=by['ER-EQ-PN-006']
+          assert kr['modelNames']==['КР-1'] and kr['schemeDesignations']==['У5']
+          assert len(kr['parameters'])==5
+          p={x['name']:x['value'] for x in kr['parameters']}
+          assert p['Номинальное напряжение электромагнитного вентиля']==50
+          assert p['Максимальное давление сжатого воздуха']==0.9
+          assert p['Время разгрузки магистрали объёмом не более 8 л']==7
+          assert p['Масса']==4.3
+          assert any('КР-1-02' in x and 'не переносятся' in x for x in kr['notes'])
+
+          kp=by['ER-EQ-PN-008']
+          assert kp['modelNames']==['КП-29-01'] and kp['schemeDesignations']==['У21','У22','У23','У24']
+          assert len(kp['parameters'])==8
+          p={x['name']:x['value'] for x in kp['parameters']}
+          assert p['Номинальное напряжение вентиля']==50
+          assert p['Номинальный ток']==0.21
+          assert p['Минимальный ток срабатывания вентиля']==0.15
+          assert p['Рабочее давление сжатого воздуха']=='0.75–0.9'
+          assert p['Ход клапана, не менее']==3
+          assert p['Масса']==6.0
+          assert not any('Напряжение питания нагревателя' in x['name'] for x in kp['parameters'])
+
+          kt=by['ER-EQ-PN-011']
+          assert kt['modelNames']==['КТ-20-02'] and kt['schemeDesignations']==['У10']
+          assert len(kt['parameters'])==4
+          p={x['name']:x['value'] for x in kt['parameters']}
+          assert p['Номинальное напряжение вентиля']==50
+          assert p['Номинальный ток вентиля']==0.13
+          assert p['Сопротивление катушки при 20 °C']==286
+          assert p['Время опускания токоприёмника']=='3.5–6'
+          assert not any('Масса' in x['name'] or 'Рабочее давление' in x['name'] for x in kt['parameters'])
+          assert any('расходящиеся значения' in x for x in kt['notes'])
+
+          snd=by['ER-EQ-CB-003']
+          assert snd['modelNames']==['С-17','ТС-22'] and snd['schemeDesignations']==[]
+          assert len(snd['parameters'])==7
+          p={x['name']:x['value'] for x in snd['parameters']}
+          assert p['С-17 — номинальное напряжение вентиля']==50
+          assert p['С-17 — рабочее давление сжатого воздуха']=='0.75–0.9'
+          assert p['ТС-22 — частота основного тона тифона']=='370±10'
+          assert p['ТС-22 — частота основного тона свистка']=='650±50'
+          assert p['ТС-22 — габаритные размеры']=='103×217×134'
+          assert p['ТС-22 — масса (допуск ±5%)']==5.0
+          assert not any(x['name'].startswith('С-17') and any(t in x['name'].lower() for t in ['ток','масса','частот']) for x in snd['parameters'])
+
+          neighbors={
+              'ER-EQ-PN-003':2,'ER-EQ-PN-004':1,'ER-EQ-PN-005':0,
+              'ER-EQ-PN-007':0,'ER-EQ-PN-009':0,'ER-EQ-PN-010':3,
+              'ER-EQ-PN-012':1,'ER-EQ-CB-001':0,'ER-EQ-CB-002':0,'ER-EQ-CB-004':0,
+          }
+          for eid,count in neighbors.items():
+              assert len(by[eid].get('parameters',[]))==count,(eid,len(by[eid].get('parameters',[])))
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-091':'KR1_SAME_TYPE_MANUAL',
+              'ER-SRC-092':'KP2901_2ES5K_TECH_DATA',
+              'ER-SRC-093':'KT2002_S17_SAME_TYPE_FACTORY_RE',
+              'ER-SRC-094':'TS22_MANUFACTURER_DATA',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key,(sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+
+          assert eq['statistics']['recordsWithParameters']==60
+          assert eq['statistics']['recordsWithoutParameters']==51
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-PN-006',5),('ER-EQ-PN-008',8),('ER-EQ-PN-011',4),('ER-EQ-CB-003',7)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert any('КР-1-02' in x for x in arts['ER-EQ-PN-006'].get('variantRules',[]))
+          assert any('Массу и рабочее давление' in x for x in arts['ER-EQ-PN-011'].get('variantRules',[]))
+          assert any('ток, масса и частотные данные' in x for x in arts['ER-EQ-CB-003'].get('variantRules',[]))
+          print('Four-node pneumatic/signal package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak KR-1 KP-29 KT-20 and sound signal data'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
