@@ -1,0 +1,183 @@
+name: Enrich Ermak pneumatic-brake four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-pnbr-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Apply four-node pneumatic-brake enrichment
+        run: python3 .github/scripts/enrich_ermak_pnbr_batch4.py
+
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+
+          rd=by['ER-EQ-BR-005']
+          assert rd['modelNames']==['042.010'] and rd['schemeDesignations']==['РД1','РД2']
+          assert len(rd['parameters'])==4
+          p={x['name']:x['value'] for x in rd['parameters']}
+          assert p['Время наполнения резервуара 20 л от 0 до 0,35 МПа, не более']==4
+          assert p['Чувствительность поддержания давления при утечке через отверстие 1±0,1 мм']=='±0.015'
+          assert p['Время снижения давления в резервуаре 20 л с 0,35 до 0,04 МПа, не более']==10
+          assert p['Удержание мыльного пузыря при проверке атмосферного клапана']==5
+          assert any('не переносить' in x.lower() and '404' in x for x in rd['notes'])
+
+          keb=by['ER-EQ-BR-007']
+          assert keb['modelNames']==['208-1','208-1-02'] and keb['schemeDesignations']==['КЭБ1','КЭБ2']
+          assert len(keb['parameters'])==4
+          p={x['name']:x['value'] for x in keb['parameters']}
+          assert p['Номинальное напряжение исполнения БТО 010.20-3']==50
+          assert p['Диапазон рабочего напряжения ЭПВН']=='0.7–1.1'
+          assert p['Время наполнения ТЦ от 0 до 0,35 МПа при снятом напряжении, не более']==4
+          assert p['Время снижения давления в ТЦ с 0,35 до 0,04 МПа, не более']==4
+          assert any('208-1-01' in x and '110' in x for x in keb['notes'])
+
+          kru=by['ER-EQ-BR-010']
+          assert kru['modelNames']==['130.20-1'] and kru['schemeDesignations']==['КРУ']
+          assert len(kru['parameters'])==4
+          p={x['name']:x['value'] for x in kru['parameters']}
+          assert p['Рабочие положения рукоятки']=='отпуск; перекрыша; тормоз'
+          assert p['Время наполнения УР 20 л до 0,44 МПа в положении «Отпуск»']=='30–40'
+          assert p['Изменение давления в УР после ступени торможения 0,05 МПа, не более']==0.01
+          assert p['Максимальное подводимое давление сжатого воздуха']==0.64
+          assert any('025А/025Л' in x for x in kru['notes'])
+
+          kaet=by['ER-EQ-BR-011']
+          assert kaet['modelNames']==['130.30'] and kaet['schemeDesignations']==['SQ3','SQ4']
+          assert len(kaet['parameters'])==2
+          p={x['name']:x['value'] for x in kaet['parameters']}
+          assert p['Давление в питательной магистрали при стендовом испытании']==0.69
+          assert p['Время снижения давления в резервуаре 55 л с 0,49 до 0,25 МПа, не более']==3
+          assert any('КМД130' in x for x in kaet['notes'])
+
+          neighbors={
+              'ER-EQ-BR-004':3,'ER-EQ-BR-009':2,'ER-EQ-BR-012':1,'ER-EQ-BR-014':5,
+              'ER-EQ-BR-001':0,'ER-EQ-BR-002':0,'ER-EQ-BR-003':0,'ER-EQ-BR-008':0,
+              'ER-EQ-PN-005':0,'ER-EQ-PN-007':0,
+          }
+          for eid,count in neighbors.items():
+              assert len(by[eid].get('parameters',[]))==count,(eid,len(by[eid].get('parameters',[])))
+
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          expected={
+              'ER-SRC-111':'BTO0103_AND_KM130_COMPOSITION',
+              'ER-SRC-112':'RZD_BRAKE_REPAIR_3508R_2025',
+          }
+          for sid,key in expected.items():
+              assert ids.get(sid)==key,(sid,ids.get(sid))
+          assert len(ids)==len(set(ids))
+          assert eq['statistics']['recordsWithParameters']==76
+          assert eq['statistics']['recordsWithoutParameters']==35
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-BR-005',4),('ER-EQ-BR-007',4),('ER-EQ-BR-010',4),('ER-EQ-BR-011',2)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert any('404' in x for x in arts['ER-EQ-BR-005'].get('variantRules',[]))
+          assert any('208-1-01' in x and '110' in x for x in arts['ER-EQ-BR-007'].get('variantRules',[]))
+          assert arts['ER-EQ-BR-010']['atlasData']['applicability']=={
+              'models':['2ES5K','3ES5K'],
+              'profiles':['brake_130_uktol','base_remote_brake_control'],
+              'exclusions':['brake_395_if_not_equipped']}
+          assert arts['ER-EQ-BR-011']['atlasData']['applicability']=={
+              'models':['2ES5K','3ES5K'],
+              'profiles':['brake_130_uktol','base_remote_brake_control'],
+              'exclusions':['brake_395_if_not_equipped','booster_only']}
+          print('Four-node pneumatic/brake package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak 042 KEB KRU and KAET brake data'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
