@@ -1,0 +1,54 @@
+name: Inspect remaining Ermak parameter candidates
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-final-parameter-candidates.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect all live records without parameters
+        shell: python
+        run: |
+          import gzip, json, pathlib
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          remaining=[]
+          for r in eq['records']:
+              if r.get('parameters'):
+                  continue
+              eid=r['id']; a=arts.get(eid,{})
+              remaining.append({
+                  'id':eid,'name':r.get('name'),'systemId':r.get('systemId'),
+                  'schemeDesignations':r.get('schemeDesignations'),'modelNames':r.get('modelNames'),
+                  'quantity':r.get('quantity'),'placement':r.get('placement'),'purpose':r.get('purpose'),
+                  'sourceRefs':r.get('sourceRefs'),'notes':r.get('notes'),'parameterCoverage':r.get('parameterCoverage'),
+                  'knowledge':{k:a.get(k) for k in ['summary','principle','sourceRefs','variantRules','atlasData','knowledgeCoverage']}
+              })
+          reg=eq.get('sourceRegistry',{})
+          tail=[]
+          if isinstance(reg,dict):
+              vals=[v for v in reg.values() if isinstance(v,dict) and v.get('sourceId')]
+              def sidnum(x):
+                  try:return int(x['sourceId'].split('-')[-1])
+                  except:return -1
+              tail=sorted(vals,key=sidnum)[-30:]
+          out={'statistics':eq.get('statistics'),'count':len(remaining),'remaining':remaining,'sourceRegistryTail':tail}
+          pathlib.Path('ermak_remaining_candidates.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('remaining',len(remaining))
+          for x in remaining:
+              print(x['id'],x['name'],x['modelNames'],x['schemeDesignations'])
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ermak-remaining-candidates
+          path: ermak_remaining_candidates.json
