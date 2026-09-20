@@ -1,0 +1,51 @@
+name: Inspect next Ermak safety-protection batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-safety2-batch4.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect live candidate cards
+        shell: python
+        run: |
+          import gzip, json, pathlib
+          candidates = [
+              'ER-EQ-SF-001','ER-EQ-SF-004','ER-EQ-SF-005','ER-EQ-SF-007','ER-EQ-SF-009',
+              'ER-EQ-PR-001','ER-EQ-PR-002','ER-EQ-PR-004','ER-EQ-PR-005','ER-EQ-PR-006'
+          ]
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          by={r['id']:r for r in eq['records']}
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          reg=eq.get('sourceRegistry',{})
+          src=[]
+          if isinstance(reg,dict):
+              vals=list(reg.values())
+              src=[x for x in vals if isinstance(x,dict) and x.get('sourceId')]
+              src=sorted(src,key=lambda x:int(x['sourceId'].split('-')[-1]))[-20:]
+          out={'statistics':eq.get('statistics'),'candidates':{},'sourceRegistryTail':src}
+          for eid in candidates:
+              if eid not in by or eid not in arts:
+                  raise SystemExit(f'missing {eid}')
+              r=by[eid]
+              a=arts[eid]
+              out['candidates'][eid]={
+                  'equipment':{k:r.get(k) for k in ['id','name','systemId','schemeDesignations','modelNames','quantity','placement','purpose','parameters','sourceRefs','notes','parameterCoverage']},
+                  'knowledge':{k:a.get(k) for k in ['articleId','equipmentId','summary','principle','sourceRefs','variantRules','atlasData','knowledgeCoverage']}
+              }
+          pathlib.Path('ermak_safety2_inspection.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ermak-safety2-inspection
+          path: ermak_safety2_inspection.json
