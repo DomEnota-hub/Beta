@@ -1,0 +1,46 @@
+name: Inspect Ermak brake four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-brake-batch4.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect live gzip data
+        shell: python
+        run: |
+          import gzip, json, pathlib
+          targets = ['ER-EQ-BR-004','ER-EQ-BR-009','ER-EQ-BR-012','ER-EQ-BR-014']
+          eqp = pathlib.Path('app/src/main/assets/technical/ermak_equipment.json.gz')
+          kb = pathlib.Path('app/src/main/assets/technical/ermak_knowledge.json.gz')
+          with gzip.open(eqp, 'rt', encoding='utf-8') as f: e = json.load(f)
+          with gzip.open(kb, 'rt', encoding='utf-8') as f: k = json.load(f)
+          def equipment_records(obj):
+              for key in ('equipment','items','records'):
+                  if isinstance(obj.get(key), list): return obj[key]
+              raise SystemExit('equipment list not found')
+          def knowledge_records(obj):
+              for key in ('articles','knowledge','items','records'):
+                  if isinstance(obj.get(key), list): return obj[key]
+              raise SystemExit('knowledge list not found')
+          es = equipment_records(e)
+          ks = knowledge_records(k)
+          out = {'statistics': e.get('statistics'), 'targets': {}, 'sourceRegistryTail': (e.get('sourceRegistry') or k.get('sourceRegistry') or [])[-12:]}
+          for tid in targets:
+              er = next((x for x in es if x.get('id') == tid), None)
+              kr = next((x for x in ks if x.get('equipmentId') == tid), None)
+              if not er or not kr: raise SystemExit(f'missing {tid}')
+              out['targets'][tid] = {'equipment': er, 'knowledge': kr}
+          pathlib.Path('ermak_brake_batch_inspection.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ermak-brake-batch-inspection
+          path: ermak_brake_batch_inspection.json
