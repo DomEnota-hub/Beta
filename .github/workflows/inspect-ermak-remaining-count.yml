@@ -1,0 +1,52 @@
+name: Inspect Ermak remaining equipment count
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-remaining-count.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+      - name: Count equipment coverage
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip, json
+          from collections import Counter, defaultdict
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              root=json.load(f)
+          recs=root.get('records',[])
+          by_domain=defaultdict(list)
+          for r in recs:
+              by_domain[r.get('domain','?')].append(r)
+          print('TOTAL', len(recs))
+          for domain in sorted(by_domain):
+              rs=by_domain[domain]
+              with_params=sum(bool(r.get('parameters')) for r in rs)
+              zero=len(rs)-with_params
+              statuses=Counter((r.get('parameterCoverage') or {}).get('status','missing') for r in rs)
+              print('DOMAIN',domain,'total',len(rs),'with_params',with_params,'zero',zero,'statuses',dict(statuses))
+          print('ZERO_BEGIN')
+          for r in recs:
+              if not r.get('parameters'):
+                  pc=r.get('parameterCoverage') or {}
+                  print(json.dumps({
+                      'id':r.get('id'),'domain':r.get('domain'),'name':r.get('name'),
+                      'models':r.get('modelNames'),'scheme':r.get('schemeDesignations'),
+                      'status':pc.get('status'),'reason':pc.get('reason')
+                  },ensure_ascii=False))
+          print('ZERO_END')
+          print('WITH_PARAMS',sum(bool(r.get('parameters')) for r in recs))
+          print('ZERO_TOTAL',sum(not r.get('parameters') for r in recs))
+          PY
