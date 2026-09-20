@@ -1,4 +1,4 @@
-name: Inspect Ermak auxiliary tail
+name: Inspect Ermak control tail
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: dev14-integration
-      - name: Print auxiliary records
+      - name: Print control records
         shell: bash
         run: |
           python3 - <<'PY'
@@ -27,7 +27,7 @@ jobs:
               root=json.load(f)
           rows=[]
           for r in root.get('records',[]):
-              if r.get('domain') == 'AU':
+              if r.get('domain') == 'CT':
                   rows.append({
                       'id': r.get('id'),
                       'name': r.get('name'),
