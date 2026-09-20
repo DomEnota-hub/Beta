@@ -1,0 +1,143 @@
+name: Enrich Ermak BU-193 and BS-224 references
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/scripts/enrich_ermak_msud_bu193_bs224.py'
+      - '.github/workflows/enrich-ermak-msud-bu193-bs224.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+
+      - name: Apply CT-002 and CT-004 enrichment
+        run: python3 .github/scripts/enrich_ermak_msud_bu193_bs224.py
+
+      - name: Verify mirrors and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip, json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f:
+              eq=json.load(f)
+          by_id={r['id']:r for r in eq['records']}
+
+          bu=by_id['ER-EQ-CT-002']
+          assert bu['modelNames'] == ['БУ-193']
+          assert bu['schemeDesignations'] == ['A55']
+          assert len(bu['parameters']) == 5
+          bp={p['name']:p['value'] for p in bu['parameters']}
+          assert bp['Последовательный интерфейс бортовой сети'] == 'RS-485'
+          assert bp['Резервирование контроллеров БУТП'] == 'МПК1 основной + МПК2 резервный'
+          assert bp['Структура регулирования в тяге'] == 'двухконтурная'
+          assert bp['Структура регулирования при рекуперации'] == 'трёхконтурная'
+          assert all('193-02' not in str(p['value']) for p in bu['parameters'])
+          buids={x.get('sourceId') for x in bu['sourceRefs'] if isinstance(x,dict)}
+          assert {'ER-SRC-002','ER-SRC-006','ER-SRC-083','ER-SRC-084'} <= buids
+
+          bs=by_id['ER-EQ-CT-004']
+          assert bs['modelNames'] == ['БС-224']
+          assert bs['schemeDesignations'] == ['A81','A82']
+          assert bs['quantity'] == '2 per section'
+          assert len(bs['parameters']) == 6
+          sp={p['name']:p['value'] for p in bs['parameters']}
+          assert sp['Интерфейс бортовой сети'] == 'RS-485'
+          assert sp['Разъёмы СМЕ блока A81'] == 'X19, X20'
+          assert sp['Межсекционные разъёмы блока A82'] == 'X18, X29'
+          assert sp['Интерфейс тормозного оборудования'] == 'CAN к УКТОЛ через A13'
+          assert sp['Резервная передача команд при отказе БУ-193'] == 'SM1/S2 через X5 блока A82'
+
+          assert by_id['ER-EQ-CT-001']['parameters'] == []
+          assert by_id['ER-EQ-CT-003']['parameters'] == []
+          assert len(by_id['ER-EQ-CT-005']['parameters']) == 9
+
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f:
+              kb=json.load(f)
+          articles={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          abu=articles['ER-EQ-CT-002']
+          abs_=articles['ER-EQ-CT-004']
+          assert len(abu['keyParameters']) == 5
+          assert len(abs_['keyParameters']) == 6
+          assert abs_['atlasData']['quantity'] == '2 per section'
+          assert abs_['atlasData']['schemeDesignations'] == ['A81','A82']
+          assert abu['atlasData']['parameterCoverage']['count'] == 5
+          assert abs_['atlasData']['parameterCoverage']['count'] == 6
+          assert any('БУ-193-02' in x for x in abu['variantRules'])
+
+          registry=eq['sourceRegistry']
+          ids={v.get('sourceId'):k for k,v in registry.items() if isinstance(v,dict)}
+          assert ids.get('ER-SRC-083') == 'MSUD_N_ORIGINAL_MANUAL'
+          assert ids.get('ER-SRC-084') == 'BU19302_REPLACEMENT_BOUNDARY'
+          assert len(ids) == len(set(ids))
+          print('CT-002 BU-193 and CT-004 BS-224 package verified')
+          PY
+          git diff --check
+
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enrich Ermak BU-193 and BS-224 control reference data'
+            git push origin HEAD:dev14-integration
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
