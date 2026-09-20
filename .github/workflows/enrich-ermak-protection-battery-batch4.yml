@@ -1,0 +1,134 @@
+name: Enrich Ermak protection and battery four-node batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/enrich-ermak-protection-battery-batch4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+      - name: Apply four-node protection/battery enrichment
+        run: python3 .github/scripts/enrich_ermak_protection_battery_batch4.py
+      - name: Verify mirrors and semantic content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/ermak_equipment.json.gz patch/app/src/main/assets/technical/ermak_equipment.json.gz
+          cmp app/src/main/assets/technical/ermak_knowledge.json.gz patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          python3 - <<'PY'
+          import gzip,json
+          with gzip.open('app/src/main/assets/technical/ermak_equipment.json.gz','rt',encoding='utf-8') as f: eq=json.load(f)
+          by={r['id']:r for r in eq['records']}
+          k2=by['ER-EQ-PR-001']; kv4=by['ER-EQ-PR-004']; ka9=by['ER-EQ-PR-006']; bat=by['ER-EQ-CT-006']
+          assert k2['schemeDesignations']==['K2'] and k2['modelNames']==[] and len(k2['parameters'])==1
+          assert {p['name']:p['value'] for p in k2['parameters']}['Ток уставки реле максимального тока K2']=='250+22.5'
+          assert any('±22,5' in x for x in k2['notes'])
+          assert kv4['schemeDesignations']==['KV4'] and kv4['modelNames']==['РКЗ-306'] and len(kv4['parameters'])==1
+          assert {p['name']:p['value'] for p in kv4['parameters']}['Ток срабатывания РКЗ-306']=='72.6±2.5'
+          assert ka9['schemeDesignations']==['KA9'] and ka9['modelNames']==['РТ-255'] and len(ka9['parameters'])==6
+          p={x['name']:x['value'] for x in ka9['parameters']}
+          assert p['Род тока']=='переменный' and p['Номинальное напряжение изоляции катушки (шины)']==3000
+          assert p['Номинальный ток катушки (шины)']==1000 and p['Ток уставки на Ермаке']=='3500±175'
+          assert p['Время срабатывания по таблице уставок Ермака']==0.01 and p['Номинальное напряжение контактов']==50
+          assert bat['modelNames']==['21KL-125P'] and len(bat['parameters'])==5
+          p={x['name']:x['value'] for x in bat['parameters']}
+          assert p['Номинальная ёмкость']==125 and p['Номинальное напряжение комплекта на секцию']==50
+          assert p['Количество аккумуляторных элементов в комплекте секции']==42 and p['Номинальное напряжение одного элемента KL-125P']==1.2
+          assert p['Максимальный ток подзаряда разряженного комплекта']==31
+          assert any('GB1 и GB2' in x for x in bat['notes'])
+          ids={v.get('sourceId'):k for k,v in eq['sourceRegistry'].items() if isinstance(v,dict)}
+          assert ids.get('ER-SRC-113')=='ERMAK_PROTECTION_SETTINGS_EXTENDED'
+          assert ids.get('ER-SRC-114')=='ERMAK_BATTERY_21KL125P'
+          assert len(ids)==len(set(ids))
+          assert eq['statistics']['recordsWithParameters']==80
+          assert eq['statistics']['recordsWithoutParameters']==31
+          for eid in ['ER-EQ-PR-007','ER-EQ-CT-001','ER-EQ-CT-003','ER-EQ-CT-008','ER-EQ-CT-010']:
+              assert len(by[eid].get('parameters',[]))==0,(eid,by[eid].get('parameters'))
+          with gzip.open('app/src/main/assets/technical/ermak_knowledge.json.gz','rt',encoding='utf-8') as f: kb=json.load(f)
+          arts={a['equipmentId']:a for a in kb['articles'] if a.get('equipmentId')}
+          for eid,count in [('ER-EQ-PR-001',1),('ER-EQ-PR-004',1),('ER-EQ-PR-006',6),('ER-EQ-CT-006',5)]:
+              a=arts[eid]
+              assert len(a['keyParameters'])==count
+              assert a['atlasData']['parameterCoverage']=={'status':'documented','count':count}
+              assert a['knowledgeCoverage']['parameters']=='documented'
+          assert arts['ER-EQ-PR-004']['atlasData']['modelNames']==['РКЗ-306']
+          assert arts['ER-EQ-PR-006']['atlasData']['modelNames']==['РТ-255']
+          assert arts['ER-EQ-CT-006']['atlasData']['modelNames']==['21KL-125P']
+          assert any('250+22,5' in x for x in arts['ER-EQ-PR-001']['variantRules'])
+          assert any('РТ-253' in x and 'РТ-546-1' in x for x in arts['ER-EQ-PR-006']['variantRules'])
+          assert any('42 элемента' in x for x in arts['ER-EQ-CT-006']['variantRules'])
+          print('Four-node protection/battery package verified independently')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+      - name: Commit enriched assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/ermak_equipment.json.gz \
+                  app/src/main/assets/technical/ermak_knowledge.json.gz \
+                  patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+                  patch/app/src/main/assets/technical/ermak_knowledge.json.gz
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/assets/technical/ermak_equipment.json.gz \
+            app/src/main/assets/technical/ermak_knowledge.json.gz \
+            patch/app/src/main/assets/technical/ermak_equipment.json.gz \
+            patch/app/src/main/assets/technical/ermak_knowledge.json.gz | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Enrich Ermak K2 RKZ-306 RT-255 and battery data'
+          git push origin HEAD:dev14-integration
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
