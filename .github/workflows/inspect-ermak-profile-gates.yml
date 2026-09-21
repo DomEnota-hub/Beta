@@ -1,0 +1,56 @@
+name: Inspect Ermak profile gates
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/inspect-ermak-profile-gates.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect Stage 7 profile gates
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          root=Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(root/name,'rt',encoding='utf-8') as f:return json.load(f)
+          links=load('ermak_links.json.gz')
+          schemes=load('ermak_schemes.json.gz')
+          diagnostics=load('ermak_diagnostics.json.gz')
+          out={
+            'link_keys': list(links.keys()),
+            'index_keys': list(links.get('indexes',{}).keys()),
+            'variant_selector': schemes.get('variantSelector'),
+            'schemes': [],
+            'diagnostic_gate_samples': [],
+            'by_scheme': links.get('indexes',{}).get('byScheme',{}),
+          }
+          for s in schemes.get('schemes',[]):
+              out['schemes'].append({
+                'id':s.get('id'),'title':s.get('title'),'schemeType':s.get('schemeType'),
+                'variantRules':s.get('variantRules'),'systemIds':s.get('systemIds'),
+                'equipmentRefs':s.get('equipmentRefs'),
+              })
+          for d in diagnostics.get('scenarios',[]):
+              vg=d.get('variantGate')
+              if vg not in (None,{},[]):
+                  out['diagnostic_gate_samples'].append({
+                    'id':d.get('id'),'title':d.get('title'),'variantGate':vg,
+                    'equipmentRefs':d.get('equipmentRefs'),'systemIds':d.get('systemIds')
+                  })
+          out['diagnostic_gate_count']=len(out['diagnostic_gate_samples'])
+          Path('ermak-profile-gates.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ermak-profile-gates
+          path: ermak-profile-gates.json
