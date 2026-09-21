@@ -5,6 +5,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.railbrake.calculator.core.KnowledgeRepository
 import ru.railbrake.calculator.core.TechnicalFamily
+import ru.railbrake.calculator.core.TechnicalHotspot
 import ru.railbrake.calculator.core.TechnicalSection
 
 class InteractiveAtlasShortcutTest {
@@ -38,5 +39,15 @@ class InteractiveAtlasShortcutTest {
             ErmakAtlasVariants.map { it.first }
         )
         assertTrue(ErmakAtlasVariants.all { isErmakLayoutEntry(it.first) })
+    }
+
+    @Test
+    fun ermakAtlasHitTestChoosesSmallestOverlappingZone() {
+        val large = TechnicalHotspot("large", "Большая зона", 0, 0, 200, 120)
+        val small = TechnicalHotspot("small", "Малая зона", 40, 30, 40, 30)
+
+        assertEquals("small", ermakAtlasHitTest(listOf(large, small), 50f, 40f)?.equipmentId)
+        assertEquals("large", ermakAtlasHitTest(listOf(large, small), 150f, 80f)?.equipmentId)
+        assertEquals(null, ermakAtlasHitTest(listOf(large, small), 250f, 200f))
     }
 }

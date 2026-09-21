@@ -1,9 +1,11 @@
 package ru.railbrake.calculator.ui
 
+import android.graphics.Paint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,8 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -43,10 +43,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -86,7 +92,20 @@ fun TechnicalCatalogScreen(
     val availableSections = remember(family, lockSection, initialSection) { if (lockSection) listOf(initialSection) else repository.sections(family) }
     val selectedSection = runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull()?.takeIf(availableSections::contains)
         ?: availableSections.first()
-    val selected = selectedId?.let(repository::entry)
+    val selectedState by produceState<Pair<Boolean, TechnicalEntry?>>(
+        initialValue = (selectedId == null) to null,
+        selectedId,
+        repository
+    ) {
+        val id = selectedId
+        value = if (id == null) {
+            true to null
+        } else {
+            withContext(Dispatchers.Default) { true to repository.entry(id) }
+        }
+    }
+    val selectedLoaded = selectedState.first
+    val selected = selectedState.second?.takeIf { it.id == selectedId }
 
     fun openTarget(target: TechnicalEntry) {
         val source = selected
@@ -109,8 +128,8 @@ fun TechnicalCatalogScreen(
         selectedId = previousId
     }
 
-    BackHandler(enabled = selected != null || acceptanceStartChoice) {
-        if (selected != null) backFromSelected() else acceptanceStartChoice = false
+    BackHandler(enabled = selectedId != null || acceptanceStartChoice) {
+        if (selectedId != null) backFromSelected() else acceptanceStartChoice = false
     }
 
     if (acceptanceStartChoice) {
@@ -121,15 +140,38 @@ fun TechnicalCatalogScreen(
         return
     }
 
+    if (selectedId != null && !selectedLoaded) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            ChildBackButton(selectedSection.title, ::backFromSelected)
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            Text("Карточка загружается…", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        return
+    }
+
     if (selected != null) {
-        val previousEntry = technicalNavigationIds(navigationPath).lastOrNull()?.let(repository::entry)
         TechnicalEntryDetail(
             entry = selected,
             repository = repository,
-            backLabel = previousEntry?.let { "Назад к «${technicalEntryTitle(it).take(34)}»" } ?: selected.section.title,
+            backLabel = if (navigationPath.isBlank()) selected.section.title else "Назад",
             onBack = ::backFromSelected,
             onOpen = ::openTarget
         )
+        return
+    }
+
+    if (selectedId != null && selectedLoaded) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            ChildBackButton(selectedSection.title, ::backFromSelected)
+            Text("Карточка не найдена", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+            Text("Вернитесь к списку и выберите другой элемент.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
         return
     }
 
@@ -527,6 +569,18 @@ internal val ErmakAtlasVariants = listOf(
     "ER-SCH-LAYOUT-3ES5K-BOOSTER" to "3ЭС5К · бустерная"
 )
 
+internal fun ermakAtlasHitTest(
+    hotspots: List<ru.railbrake.calculator.core.TechnicalHotspot>,
+    x: Float,
+    y: Float
+): ru.railbrake.calculator.core.TechnicalHotspot? = hotspots
+    .asSequence()
+    .filter { hotspot ->
+        x >= hotspot.x && x <= hotspot.x + hotspot.width &&
+            y >= hotspot.y && y <= hotspot.y + hotspot.height
+    }
+    .minByOrNull { hotspot -> hotspot.width * hotspot.height }
+
 @Composable
 private fun ErmakInteractiveAtlas(
     entry: TechnicalEntry,
@@ -565,6 +619,15 @@ private fun ErmakInteractiveAtlas(
     val mapWidth = maxX * scale
     val mapHeight = maxY * scale
     val horizontal = rememberScrollState()
+    val visibleIds = remember(visible) { visible.asSequence().map { it.equipmentId }.toSet() }
+    val variantTargets by produceState<Map<String, TechnicalEntry?>>(
+        initialValue = emptyMap(),
+        repository
+    ) {
+        value = withContext(Dispatchers.Default) {
+            ErmakAtlasVariants.associate { (id, _) -> id to repository.entry(id) }
+        }
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -582,7 +645,7 @@ private fun ErmakInteractiveAtlas(
             Text("Исполнение и секция", color = InteractiveSchemeAccent, fontWeight = FontWeight.Bold)
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(ErmakAtlasVariants) { (id, label) ->
-                    val target = repository.entry(id)
+                    val target = variantTargets[id]
                     FilterChip(
                         selected = entry.id == id,
                         onClick = { target?.let(onOpen) },
@@ -605,33 +668,59 @@ private fun ErmakInteractiveAtlas(
                     .horizontalScroll(horizontal)
                     .background(Color(0xFF0D1F22), RoundedCornerShape(14.dp))
             ) {
-                Box(Modifier.width(mapWidth.dp).height(mapHeight.dp)) {
-                    entry.hotspots.forEach { hotspot ->
-                        val selected = hotspot.equipmentId == selectedId
-                        val matched = hotspot in visible
-                        Box(
-                            modifier = Modifier
-                                .offset(x = (hotspot.x * scale).dp, y = (hotspot.y * scale).dp)
-                                .size(width = (hotspot.width * scale).dp, height = (hotspot.height * scale).dp)
-                                .background(
-                                    color = when {
-                                        selected -> InteractiveSchemeAccent.copy(alpha = 0.72f)
-                                        matched -> InteractiveSchemeAccent.copy(alpha = 0.20f)
-                                        else -> Color(0xFF243336)
-                                    },
-                                    shape = RoundedCornerShape(7.dp)
-                                )
-                                .clickable { selectedId = hotspot.equipmentId }
-                                .padding(horizontal = 5.dp, vertical = 3.dp)
-                        ) {
-                            Text(
-                                hotspot.label,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = if (selected) Color(0xFF071313) else MaterialTheme.colorScheme.onSurface,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                Canvas(
+                    modifier = Modifier
+                        .width(mapWidth.dp)
+                        .height(mapHeight.dp)
+                        .pointerInput(entry.id, entry.hotspots) {
+                            detectTapGestures { tap ->
+                                val sourceX = tap.x / density / scale
+                                val sourceY = tap.y / density / scale
+                                ermakAtlasHitTest(entry.hotspots, sourceX, sourceY)?.let { hotspot ->
+                                    selectedId = hotspot.equipmentId
+                                }
+                            }
                         }
+                ) {
+                    val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                        textSize = 10.dp.toPx()
+                        typeface = android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
+                    }
+                    entry.hotspots.forEach { hotspot ->
+                        val isSelected = hotspot.equipmentId == selectedId
+                        val isMatched = hotspot.equipmentId in visibleIds
+                        val left = (hotspot.x * scale).dp.toPx()
+                        val top = (hotspot.y * scale).dp.toPx()
+                        val width = (hotspot.width * scale).dp.toPx()
+                        val height = (hotspot.height * scale).dp.toPx()
+                        val fill = when {
+                            isSelected -> InteractiveSchemeAccent.copy(alpha = 0.72f)
+                            isMatched -> InteractiveSchemeAccent.copy(alpha = 0.20f)
+                            else -> Color(0xFF243336)
+                        }
+                        drawRoundRect(
+                            color = fill,
+                            topLeft = Offset(left, top),
+                            size = Size(width, height),
+                            cornerRadius = CornerRadius(7.dp.toPx())
+                        )
+                        drawRoundRect(
+                            color = if (isSelected) InteractiveSchemeAccent else Color(0xFF42585C),
+                            topLeft = Offset(left, top),
+                            size = Size(width, height),
+                            cornerRadius = CornerRadius(7.dp.toPx()),
+                            style = Stroke(1.dp.toPx())
+                        )
+                        labelPaint.color = (if (isSelected) Color(0xFF071313) else Color(0xFFE7F0F2)).toArgb()
+                        val compactLabel = hotspot.label.let { label ->
+                            if (label.length <= 21) label else label.take(20).trimEnd() + "…"
+                        }
+                        drawContext.canvas.nativeCanvas.drawText(
+                            compactLabel,
+                            left + 5.dp.toPx(),
+                            top + (height / 2f) + (labelPaint.textSize * 0.35f),
+                            labelPaint
+                        )
                     }
                 }
             }
@@ -685,12 +774,27 @@ private fun ErmakSchemeDiagnostics(
     var query by rememberSaveable(entry.id, "ermak-scheme-diagnostics-query") { mutableStateOf("") }
     val gatedCount = linkContext.diagnosticLinks.count { it.profileGateRequired }
     val directCount = linkContext.diagnosticLinks.size - gatedCount
-    val available = linkContext.diagnosticLinks
-        .filter { !it.profileGateRequired || executionConfirmed }
-        .mapNotNull { link -> repository.entry(link.diagnosticId) }
-        .distinctBy(TechnicalEntry::id)
-    val visible = available.filter { target ->
-        query.isBlank() || target.searchText.contains(query.trim(), ignoreCase = true)
+    val availableState by produceState<Pair<Boolean, List<TechnicalEntry>>>(
+        initialValue = false to emptyList(),
+        entry.id,
+        executionConfirmed,
+        repository
+    ) {
+        value = withContext(Dispatchers.Default) {
+            true to linkContext.diagnosticLinks
+                .asSequence()
+                .filter { !it.profileGateRequired || executionConfirmed }
+                .mapNotNull { link -> repository.entry(link.diagnosticId) }
+                .distinctBy(TechnicalEntry::id)
+                .toList()
+        }
+    }
+    val availableLoaded = availableState.first
+    val available = availableState.second
+    val visible = remember(available, query) {
+        available.filter { target ->
+            query.isBlank() || target.searchText.contains(query.trim(), ignoreCase = true)
+        }
     }
     val modelText = linkContext.models.map(::ermakSchemeModelLabel).distinct().joinToString(" / ")
 
@@ -740,7 +844,14 @@ private fun ErmakSchemeDiagnostics(
                     }
                 }
             }
-            if (available.isNotEmpty()) {
+            if (!availableLoaded) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                Text(
+                    "Диагностические переходы загружаются…",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            } else if (available.isNotEmpty()) {
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
