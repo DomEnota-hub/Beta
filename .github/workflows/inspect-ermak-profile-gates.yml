@@ -26,28 +26,65 @@ jobs:
           links=load('ermak_links.json.gz')
           schemes=load('ermak_schemes.json.gz')
           diagnostics=load('ermak_diagnostics.json.gz')
+          by_scheme=links.get('indexes',{}).get('byScheme',{})
+          diag_by_id={d.get('id'):d for d in diagnostics.get('scenarios',[])}
+
+          interesting_ids=set()
+          for scheme_id in [
+              'ER-SCH-EL-BASE-CONTROL','ER-SCH-FIRE-BASE','ER-SCH-LAYOUT-2ES5K-BASE',
+              'ER-SCH-PN-BRAKE-395','ER-SCH-PN-BRAKE-130','ER-SCH-SAFETY-BLOK',
+              'ER-SCH-EL-AXLE-MODERN'
+          ]:
+              links_for_scheme=by_scheme.get(scheme_id,{}).get('diagnosticLinks',[])
+              gated=[x for x in links_for_scheme if x.get('profileGateRequired')]
+              ungated=[x for x in links_for_scheme if not x.get('profileGateRequired')]
+              interesting_ids.update(x.get('diagnosticId') for x in gated[:4])
+              interesting_ids.update(x.get('diagnosticId') for x in ungated[:4])
+
+          def relevant_fields(d):
+              if not d:return None
+              keep={}
+              for k,v in d.items():
+                  kl=k.lower()
+                  if any(token in kl for token in ['variant','profile','applic','model','scope','section','equipment','system','gate','require']):
+                      keep[k]=v
+              proj=d.get('vl80sUiProjection')
+              if isinstance(proj,dict):
+                  keep['vl80sUiProjection_relevant']={k:v for k,v in proj.items() if any(t in k.lower() for t in ['applic','variant','profile','model','scope','section','gate','require'])}
+              return {'allKeys':list(d.keys()),'relevant':keep,'full':d}
+
           out={
             'link_keys': list(links.keys()),
             'index_keys': list(links.get('indexes',{}).keys()),
             'variant_selector': schemes.get('variantSelector'),
-            'schemes': [],
-            'diagnostic_gate_samples': [],
-            'by_scheme': links.get('indexes',{}).get('byScheme',{}),
+            'scheme_samples': {},
+            'diagnostics': {i: relevant_fields(diag_by_id.get(i)) for i in sorted(x for x in interesting_ids if x)},
           }
-          for s in schemes.get('schemes',[]):
-              out['schemes'].append({
-                'id':s.get('id'),'title':s.get('title'),'schemeType':s.get('schemeType'),
-                'variantRules':s.get('variantRules'),'systemIds':s.get('systemIds'),
-                'equipmentRefs':s.get('equipmentRefs'),
-              })
+          for scheme_id in [
+              'ER-SCH-EL-BASE-CONTROL','ER-SCH-FIRE-BASE','ER-SCH-LAYOUT-2ES5K-BASE',
+              'ER-SCH-PN-BRAKE-395','ER-SCH-PN-BRAKE-130','ER-SCH-SAFETY-BLOK',
+              'ER-SCH-EL-AXLE-MODERN'
+          ]:
+              out['scheme_samples'][scheme_id]=by_scheme.get(scheme_id)
+
+          # Inventory every field/value shape that appears to be a selector or gate.
+          inventory={}
           for d in diagnostics.get('scenarios',[]):
-              vg=d.get('variantGate')
-              if vg not in (None,{},[]):
-                  out['diagnostic_gate_samples'].append({
-                    'id':d.get('id'),'title':d.get('title'),'variantGate':vg,
-                    'equipmentRefs':d.get('equipmentRefs'),'systemIds':d.get('systemIds')
-                  })
-          out['diagnostic_gate_count']=len(out['diagnostic_gate_samples'])
+              for k,v in d.items():
+                  if any(token in k.lower() for token in ['variant','profile','applic','model','scope','section','gate','require']):
+                      inventory.setdefault(k,{'types':set(),'examples':[]})
+                      inventory[k]['types'].add(type(v).__name__)
+                      if len(inventory[k]['examples'])<8: inventory[k]['examples'].append(v)
+              proj=d.get('vl80sUiProjection')
+              if isinstance(proj,dict):
+                  for k,v in proj.items():
+                      if any(token in k.lower() for token in ['variant','profile','applic','model','scope','section','gate','require']):
+                          key='vl80sUiProjection.'+k
+                          inventory.setdefault(key,{'types':set(),'examples':[]})
+                          inventory[key]['types'].add(type(v).__name__)
+                          if len(inventory[key]['examples'])<8: inventory[key]['examples'].append(v)
+          out['diagnostic_field_inventory']={k:{'types':sorted(v['types']),'examples':v['examples']} for k,v in inventory.items()}
+
           Path('ermak-profile-gates.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
           PY
       - uses: actions/upload-artifact@v4
