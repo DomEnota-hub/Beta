@@ -1,0 +1,350 @@
+name: Apply Beta20 acceptance toolbar
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/apply-beta20-acceptance-toolbar.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Verify base revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "afc948f475e3098442561aa16d753fff86f6e8c9"
+
+      - name: Apply Beta20 acceptance UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          sources = [
+              Path('app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt'),
+              Path('patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt'),
+          ]
+
+          new_sequence = r'''@Composable
+          private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository) {
+              val context = LocalContext.current
+              val acceptanceRepository = remember(context) { AcceptanceStateRepository(context.applicationContext) }
+              val familyKey = entry.family.name
+              var step by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+              var stateVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+              var settingsVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+              var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
+              var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
+              var visibleLimit by rememberSaveable(entry.id) { mutableIntStateOf(30) }
+
+              val disabledIds = settingsVersion.let { acceptanceRepository.disabledIds(familyKey) }
+              val disabledInRoute = entry.sequence.filter(disabledIds::contains)
+              val activeSequence = entry.sequence.filterNot(disabledIds::contains)
+              val effectiveStep = if (activeSequence.isEmpty()) 0 else step.coerceIn(0, activeSequence.lastIndex)
+              val currentId = activeSequence.getOrNull(effectiveStep)
+              val target = currentId?.let(repository::entry)
+              val accent = technicalSectionAccent(entry.section, entry.status)
+              val currentState = currentId?.let { id -> stateVersion.let { acceptanceRepository.state(id) } }
+                  ?: AcceptanceCheckState.NOT_CHECKED
+              val currentNote = currentId?.let { id -> stateVersion.let { acceptanceRepository.note(id) } }.orEmpty()
+              val checklistItems = activeSequence.mapNotNull { id -> repository.entry(id)?.let { id to it } }
+              val states = stateVersion.let { activeSequence.map(acceptanceRepository::state) }
+              val summary = acceptanceSummary(states)
+              val savedNotes = stateVersion.let {
+                  checklistItems.mapNotNull { (id, item) ->
+                      acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
+                          technicalEntryTitle(item) to note
+                      }
+                  }
+              }
+              val visibleItems = checklistItems.filter { (_, item) ->
+                  checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
+                      technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
+              }
+
+              Card(
+                  modifier = Modifier.fillMaxWidth(),
+                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                  border = BorderStroke(1.dp, accent.copy(alpha = .45f)),
+                  shape = RoundedCornerShape(18.dp)
+              ) {
+                  Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                      Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                      Text(
+                          "Активно: ${activeSequence.size} из ${entry.sequence.size} • Отключено: ${disabledInRoute.size}",
+                          color = accent,
+                          fontWeight = FontWeight.Bold
+                      )
+                      Text(
+                          "${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} активных пунктов обработано",
+                          color = accent
+                      )
+
+                      if (activeSequence.isEmpty()) {
+                          Text(
+                              "Все шаги этой приёмки отключены. Вернитесь к списку и откройте раздел «Отключено».",
+                              color = MaterialTheme.colorScheme.onSurfaceVariant
+                          )
+                      } else if (showFullChecklist) {
+                          OutlinedTextField(
+                              value = checklistQuery,
+                              onValueChange = {
+                                  checklistQuery = it
+                                  visibleLimit = 30
+                              },
+                              modifier = Modifier.fillMaxWidth(),
+                              singleLine = true,
+                              label = { Text("Поиск по названию") }
+                          )
+                          visibleItems.take(visibleLimit).forEach { (id, item) ->
+                              val itemState = stateVersion.let { acceptanceRepository.state(id) }
+                              val itemNote = stateVersion.let { acceptanceRepository.note(id) }
+                              Card(
+                                  modifier = Modifier.fillMaxWidth(),
+                                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                  border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+                                  shape = RoundedCornerShape(14.dp)
+                              ) {
+                                  Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                      Text(
+                                          technicalEntryTitle(item),
+                                          style = MaterialTheme.typography.titleMedium,
+                                          fontWeight = FontWeight.Black
+                                      )
+                                      technicalEntrySubtitle(item)?.let {
+                                          Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                      }
+                                      AcceptanceStatusSelector(
+                                          itemId = id,
+                                          itemTitle = technicalEntryTitle(item),
+                                          currentState = itemState,
+                                          note = itemNote,
+                                          onSelect = { option ->
+                                              acceptanceRepository.setState(id, option)
+                                              stateVersion++
+                                          },
+                                          onSaveNote = { text ->
+                                              acceptanceRepository.setNote(id, text)
+                                              acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
+                                              stateVersion++
+                                          }
+                                      )
+                                      TextButton(
+                                          onClick = {
+                                              acceptanceRepository.setDisabled(familyKey, id, true)
+                                              settingsVersion++
+                                          }
+                                      ) { Text("Отключить шаг") }
+                                  }
+                              }
+                          }
+                          if (visibleItems.isEmpty()) {
+                              Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                          } else if (visibleItems.size > visibleLimit) {
+                              OutlinedButton(
+                                  onClick = { visibleLimit = (visibleLimit + 30).coerceAtMost(visibleItems.size) },
+                                  modifier = Modifier.fillMaxWidth()
+                              ) {
+                                  Text("Показать ещё (${visibleItems.size - visibleLimit})")
+                              }
+                          }
+                          AcceptanceResultCard(summary, savedNotes)
+                          OutlinedButton(
+                              onClick = { showFullChecklist = false },
+                              modifier = Modifier.fillMaxWidth()
+                          ) { Text("Вернуться к пошаговой проверке") }
+                      } else {
+                          Text("Шаг ${effectiveStep + 1} из ${activeSequence.size}", color = accent)
+                          Text(
+                              target?.let(::technicalEntryTitle) ?: "Пункт приёмки",
+                              style = MaterialTheme.typography.titleLarge,
+                              fontWeight = FontWeight.Black
+                          )
+                          target?.let { item ->
+                              technicalEntrySubtitle(item)?.let {
+                                  Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                              }
+                              item.blocks.forEach { block ->
+                                  val lines = repository.displayLines(block.lines)
+                                      .mapNotNull(::technicalPresentationLine)
+                                      .distinct()
+                                  if (lines.isNotEmpty()) {
+                                      Card(
+                                          colors = CardDefaults.cardColors(
+                                              containerColor = technicalBlockContainer(item.section, block.title)
+                                          ),
+                                          modifier = Modifier.fillMaxWidth()
+                                      ) {
+                                          Column(
+                                              Modifier.padding(12.dp),
+                                              verticalArrangement = Arrangement.spacedBy(5.dp)
+                                          ) {
+                                              Text(block.title, fontWeight = FontWeight.Black)
+                                              lines.forEach { Text("• $it") }
+                                          }
+                                      }
+                                  }
+                              }
+                              val activeId = currentId ?: return@let
+                              AcceptanceStatusSelector(
+                                  itemId = activeId,
+                                  itemTitle = technicalEntryTitle(item),
+                                  currentState = currentState,
+                                  note = currentNote,
+                                  onSelect = { option ->
+                                      acceptanceRepository.setState(activeId, option)
+                                      stateVersion++
+                                  },
+                                  onSaveNote = { text ->
+                                      acceptanceRepository.setNote(activeId, text)
+                                      acceptanceRepository.setState(activeId, AcceptanceCheckState.NOTE)
+                                      stateVersion++
+                                  }
+                              )
+                              OutlinedButton(
+                                  onClick = {
+                                      acceptanceRepository.setDisabled(familyKey, activeId, true)
+                                      settingsVersion++
+                                      if (effectiveStep >= activeSequence.lastIndex && effectiveStep > 0) {
+                                          step = effectiveStep - 1
+                                      }
+                                  },
+                                  modifier = Modifier.fillMaxWidth()
+                              ) { Text("Отключить этот шаг") }
+                          }
+                          Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                              OutlinedButton(
+                                  onClick = { if (effectiveStep > 0) step = effectiveStep - 1 },
+                                  enabled = effectiveStep > 0
+                              ) { Text("Назад") }
+                              Button(
+                                  onClick = { if (effectiveStep < activeSequence.lastIndex) step = effectiveStep + 1 },
+                                  enabled = effectiveStep < activeSequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED
+                              ) { Text("Далее") }
+                          }
+                          OutlinedButton(
+                              onClick = {
+                                  showFullChecklist = true
+                                  visibleLimit = 30
+                              },
+                              modifier = Modifier.fillMaxWidth()
+                          ) { Text("Открыть полную карточку") }
+                          if (summary.complete) AcceptanceResultCard(summary, savedNotes)
+                      }
+                  }
+              }
+          }
+
+          '''
+
+          for path in sources:
+              text = path.read_text(encoding='utf-8')
+              if 'acceptanceMode' in text:
+                  raise SystemExit(f'{path}: Beta20 patch already present')
+
+              text = text.replace(
+                  'import androidx.compose.ui.Modifier\n',
+                  'import androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\n',
+                  1,
+              )
+
+              old_state = '''    var acceptanceStartChoice by rememberSaveable { mutableStateOf(false) }\n    val family = runCatching { TechnicalFamily.valueOf(familyName) }.getOrDefault(TechnicalFamily.VL80S)\n'''
+              new_state = '''    var acceptanceStartChoice by rememberSaveable { mutableStateOf(false) }\n    val acceptanceRepository = remember(context) { AcceptanceStateRepository(context.applicationContext) }\n    var acceptanceMode by rememberSaveable { mutableStateOf("ACTIVE") }\n    var acceptanceToolbarVersion by rememberSaveable { mutableIntStateOf(0) }\n    var acceptanceDisabledQuery by rememberSaveable { mutableStateOf("") }\n    var acceptanceHelpVisible by rememberSaveable { mutableStateOf(false) }\n    val family = runCatching { TechnicalFamily.valueOf(familyName) }.getOrDefault(TechnicalFamily.VL80S)\n'''
+              if text.count(old_state) != 1:
+                  raise SystemExit(f'{path}: state anchor mismatch')
+              text = text.replace(old_state, new_state, 1)
+
+              old_section_state = '''    val selectedSection = runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull()?.takeIf(availableSections::contains)\n        ?: availableSections.first()\n    val selectedState by produceState<Pair<Boolean, TechnicalEntry?>>(\n'''
+              new_section_state = '''    val selectedSection = runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull()?.takeIf(availableSections::contains)\n        ?: availableSections.first()\n    val dedicatedAcceptance = lockSection && initialSection == TechnicalSection.ACCEPTANCE\n    val acceptanceFamilyKey = family.name\n    val acceptanceSaveParameters = acceptanceToolbarVersion.let { acceptanceRepository.saveParameters(acceptanceFamilyKey) }\n    val acceptanceDisabledIds = acceptanceToolbarVersion.let { acceptanceRepository.disabledIds(acceptanceFamilyKey) }\n    val acceptanceDisabledEntries by produceState<List<Pair<String, TechnicalEntry>>?>(\n        initialValue = if (dedicatedAcceptance) null else emptyList(),\n        dedicatedAcceptance,\n        family,\n        acceptanceToolbarVersion,\n        acceptanceMode,\n        acceptanceDisabledQuery,\n        repository\n    ) {\n        value = if (!dedicatedAcceptance || acceptanceMode != "DISABLED") {\n            emptyList()\n        } else {\n            withContext(Dispatchers.Default) {\n                acceptanceRepository.disabledIds(acceptanceFamilyKey)\n                    .mapNotNull { id -> repository.entry(id)?.let { id to it } }\n                    .filter { (_, item) ->\n                        acceptanceDisabledQuery.isBlank() ||\n                            technicalEntryTitle(item).contains(acceptanceDisabledQuery, ignoreCase = true) ||\n                            technicalEntrySubtitle(item)?.contains(acceptanceDisabledQuery, ignoreCase = true) == true\n                    }\n                    .sortedBy { (_, item) -> technicalEntryTitle(item) }\n            }\n        }\n    }\n    val selectedState by produceState<Pair<Boolean, TechnicalEntry?>>(\n'''
+              if text.count(old_section_state) != 1:
+                  raise SystemExit(f'{path}: selected section anchor mismatch')
+              text = text.replace(old_section_state, new_section_state, 1)
+
+              old_back = '''    BackHandler(enabled = selectedId != null || acceptanceStartChoice) {\n        if (selectedId != null) backFromSelected() else acceptanceStartChoice = false\n    }\n'''
+              new_back = '''    BackHandler(\n        enabled = selectedId != null || acceptanceStartChoice || (dedicatedAcceptance && acceptanceMode == "DISABLED")\n    ) {\n        when {\n            selectedId != null -> backFromSelected()\n            acceptanceStartChoice -> acceptanceStartChoice = false\n            dedicatedAcceptance && acceptanceMode == "DISABLED" -> acceptanceMode = "ACTIVE"\n        }\n    }\n'''
+              if text.count(old_back) != 1:
+                  raise SystemExit(f'{path}: back handler anchor mismatch')
+              text = text.replace(old_back, new_back, 1)
+
+              old_family_query = '''                            query = ""\n                        },\n                        label = { Text(option.title) }\n'''
+              new_family_query = '''                            query = ""\n                            acceptanceDisabledQuery = ""\n                        },\n                        label = { Text(option.title) }\n'''
+              if text.count(old_family_query) < 1:
+                  raise SystemExit(f'{path}: family selector anchor mismatch')
+              text = text.replace(old_family_query, new_family_query, 1)
+
+              old_toolbar = '''        item {\n            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n                items(availableSections) { option ->\n                    val accent = technicalSectionAccent(option, "")\n                    FilterChip(\n                        selected = selectedSection == option,\n                        onClick = { sectionName = option.name; query = "" },\n                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = accent.copy(alpha = 0.22f), selectedLabelColor = accent),\n                        label = { Text(option.title, color = if (selectedSection == option) accent else MaterialTheme.colorScheme.onSurfaceVariant) }\n                    )\n                }\n            }\n        }\n'''
+              new_toolbar = '''        item {\n            if (dedicatedAcceptance) {\n                val accent = technicalSectionAccent(TechnicalSection.ACCEPTANCE, "")\n                LazyRow(\n                    horizontalArrangement = Arrangement.spacedBy(8.dp),\n                    verticalAlignment = Alignment.CenterVertically\n                ) {\n                    item {\n                        FilterChip(\n                            selected = acceptanceMode == "ACTIVE",\n                            onClick = { acceptanceMode = "ACTIVE" },\n                            colors = FilterChipDefaults.filterChipColors(\n                                selectedContainerColor = accent.copy(alpha = 0.22f),\n                                selectedLabelColor = accent\n                            ),\n                            label = { Text("Приёмка") }\n                        )\n                    }\n                    item {\n                        FilterChip(\n                            selected = acceptanceMode == "DISABLED",\n                            onClick = { acceptanceMode = "DISABLED" },\n                            colors = FilterChipDefaults.filterChipColors(\n                                selectedContainerColor = accent.copy(alpha = 0.22f),\n                                selectedLabelColor = accent\n                            ),\n                            label = {\n                                Text(\n                                    if (acceptanceDisabledIds.isEmpty()) "Отключено"\n                                    else "Отключено · ${acceptanceDisabledIds.size}"\n                                )\n                            }\n                        )\n                    }\n                    item {\n                        Row(\n                            verticalAlignment = Alignment.CenterVertically,\n                            horizontalArrangement = Arrangement.spacedBy(4.dp)\n                        ) {\n                            Text("Сохранять", style = MaterialTheme.typography.labelMedium)\n                            Switch(\n                                checked = acceptanceSaveParameters,\n                                onCheckedChange = { enabled ->\n                                    acceptanceRepository.setSaveParameters(acceptanceFamilyKey, enabled)\n                                    acceptanceToolbarVersion++\n                                }\n                            )\n                        }\n                    }\n                    item {\n                        Card(\n                            onClick = { acceptanceHelpVisible = true },\n                            modifier = Modifier.width(44.dp).height(40.dp),\n                            shape = RoundedCornerShape(20.dp),\n                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),\n                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)\n                        ) {\n                            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {\n                                Text("?", fontWeight = FontWeight.Black)\n                            }\n                        }\n                    }\n                }\n            } else {\n                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n                    items(availableSections) { option ->\n                        val accent = technicalSectionAccent(option, "")\n                        FilterChip(\n                            selected = selectedSection == option,\n                            onClick = { sectionName = option.name; query = "" },\n                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = accent.copy(alpha = 0.22f), selectedLabelColor = accent),\n                            label = { Text(option.title, color = if (selectedSection == option) accent else MaterialTheme.colorScheme.onSurfaceVariant) }\n                        )\n                    }\n                }\n            }\n        }\n'''
+              if text.count(old_toolbar) != 1:
+                  raise SystemExit(f'{path}: toolbar anchor mismatch')
+              text = text.replace(old_toolbar, new_toolbar, 1)
+
+              active_start = text.index('        item {\n            OutlinedTextField(\n                value = query,')
+              active_end_marker = '    }\n}\n\nprivate val InteractiveSchemeContainer'
+              active_end = text.index(active_end_marker, active_start)
+              active_block = text[active_start:active_end]
+
+              disabled_block = '''        if (dedicatedAcceptance && acceptanceMode == "DISABLED") {\n            item {\n                Text(\n                    "Отключённые шаги ${family.title}",\n                    style = MaterialTheme.typography.titleMedium,\n                    fontWeight = FontWeight.Black\n                )\n                Text(\n                    if (acceptanceSaveParameters) {\n                        "Изменения сохраняются и будут восстановлены при следующем запуске."\n                    } else {\n                        "Изменения временные и не перезаписывают ранее сохранённый набор."\n                    },\n                    style = MaterialTheme.typography.bodySmall,\n                    color = MaterialTheme.colorScheme.onSurfaceVariant\n                )\n            }\n            item {\n                OutlinedTextField(\n                    value = acceptanceDisabledQuery,\n                    onValueChange = { acceptanceDisabledQuery = it },\n                    modifier = Modifier.fillMaxWidth(),\n                    singleLine = true,\n                    label = { Text("Поиск в отключённых") },\n                    trailingIcon = {\n                        if (acceptanceDisabledQuery.isNotEmpty()) {\n                            IconButton(onClick = { acceptanceDisabledQuery = "" }) {\n                                Text("×", style = MaterialTheme.typography.titleLarge)\n                            }\n                        }\n                    },\n                    shape = RoundedCornerShape(16.dp)\n                )\n            }\n            if (acceptanceDisabledIds.isNotEmpty()) {\n                item {\n                    OutlinedButton(\n                        onClick = {\n                            acceptanceRepository.restoreAllDisabled(acceptanceFamilyKey)\n                            acceptanceToolbarVersion++\n                        },\n                        modifier = Modifier.fillMaxWidth()\n                    ) { Text("Вернуть все") }\n                }\n            }\n            when {\n                acceptanceDisabledEntries == null -> item {\n                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())\n                }\n                acceptanceDisabledIds.isEmpty() -> item {\n                    InfoCard(\n                        "Отключённых шагов нет",\n                        listOf("Все пункты приёмки ${family.title} сейчас активны."),\n                        MaterialTheme.colorScheme.surfaceVariant\n                    )\n                }\n                acceptanceDisabledEntries!!.isEmpty() -> item {\n                    InfoCard(\n                        "Ничего не найдено",\n                        listOf("Измените запрос в списке отключённых шагов."),\n                        MaterialTheme.colorScheme.surfaceVariant\n                    )\n                }\n                else -> items(acceptanceDisabledEntries!!, key = { it.first }) { (id, item) ->\n                    val note = acceptanceRepository.note(id)\n                    Card(\n                        modifier = Modifier.fillMaxWidth(),\n                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),\n                        border = BorderStroke(1.dp, technicalSectionAccent(TechnicalSection.ACCEPTANCE, "").copy(alpha = 0.35f)),\n                        shape = RoundedCornerShape(14.dp)\n                    ) {\n                        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {\n                            Text(\n                                technicalEntryTitle(item),\n                                style = MaterialTheme.typography.titleMedium,\n                                fontWeight = FontWeight.Black\n                            )\n                            technicalEntrySubtitle(item)?.let {\n                                Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)\n                            }\n                            if (note.isNotBlank()) {\n                                Text("Сохранённое замечание: $note", style = MaterialTheme.typography.bodySmall)\n                            }\n                            OutlinedButton(\n                                onClick = {\n                                    acceptanceRepository.setDisabled(acceptanceFamilyKey, id, false)\n                                    acceptanceToolbarVersion++\n                                },\n                                modifier = Modifier.fillMaxWidth()\n                            ) { Text("Вернуть") }\n                        }\n                    }\n                }\n            }\n        } else {\n'''
+              text = text[:active_start] + disabled_block + active_block + '        }\n' + text[active_end:]
+
+              help_anchor = '    }\n}\n\nprivate val InteractiveSchemeContainer'
+              help_block = '''    }\n    if (dedicatedAcceptance && acceptanceHelpVisible) {\n        AlertDialog(\n            onDismissRequest = { acceptanceHelpVisible = false },\n            title = { Text("Настройка приёмки", fontWeight = FontWeight.Black) },\n            text = {\n                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {\n                    Text("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")\n                    Text("Отключённые пункты не участвуют в пошаговой приёмке и не учитываются как непроверенные в итоговом результате.")\n                    Text("В разделе «Отключено» можно вернуть отдельный пункт или восстановить все шаги сразу.")\n                    Text("Переключатель «Сохранять»: включён — выбранные отключения сохраняются для текущего локомотива; выключен — изменения действуют временно и не изменяют ранее сохранённый набор.")\n                    Text("Настройки ВЛ80С и Ермака хранятся отдельно.")\n                }\n            },\n            confirmButton = {\n                TextButton(onClick = { acceptanceHelpVisible = false }) { Text("Понятно") }\n            }\n        )\n    }\n}\n\nprivate val InteractiveSchemeContainer'''
+              if text.count(help_anchor) != 1:
+                  raise SystemExit(f'{path}: help anchor mismatch')
+              text = text.replace(help_anchor, help_block, 1)
+
+              seq_start = text.index('@Composable\nprivate fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository) {')
+              seq_end = text.index('@Composable\nprivate fun AcceptanceStatusSelector(', seq_start)
+              text = text[:seq_start] + new_sequence + text[seq_end:]
+
+              path.write_text(text, encoding='utf-8')
+
+          for path in [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]:
+              text = path.read_text(encoding='utf-8')
+              text = text.replace(
+                  '// Beta19: acceptance step visibility and per-family saved settings.',
+                  '// Beta20: top-level acceptance controls and disabled-step manager.',
+                  1,
+              )
+              text = text.replace('versionCode = 164', 'versionCode = 165', 1)
+              text = text.replace('versionName = "1.2.2-dev14-beta19"', 'versionName = "1.2.2-dev14-beta20"', 1)
+              path.write_text(text, encoding='utf-8')
+
+          Path('.github/workflows/apply-beta20-acceptance-toolbar.yml').unlink()
+          PY
+
+      - name: Verify mirrors and patch shape
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'versionCode = 165' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta20"' app/build.gradle.kts
+          grep -Fq 'Text("Сохранять"' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'acceptanceHelpVisible' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'Отключённых шагов нет' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          ! grep -Fq 'var acceptanceTab by rememberSaveable(entry.id)' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+
+      - name: Commit without overwriting concurrent work
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse origin/dev14-integration)" = "$GITHUB_SHA"
+          git config user.name "DomEnota-hub"
+          git config user.email "domenota6212@gmail.com"
+          git add -A
+          git commit -m "Move acceptance settings to top toolbar"
+          git push origin HEAD:dev14-integration
