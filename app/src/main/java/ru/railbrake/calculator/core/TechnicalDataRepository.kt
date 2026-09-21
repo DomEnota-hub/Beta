@@ -64,6 +64,28 @@ class TechnicalDataRepository(private val context: Context) {
             }.toMap()
     }
 
+    // Stage 7 is the canonical Ermak cross-link graph. Equipment/system/article
+    // cards consume these indexes directly instead of duplicating link lists.
+    private val ermakLinkIndexes by lazy {
+        json("technical/ermak_links.json").obj("indexes")
+    }
+
+    private fun ermakEquipmentLinks(equipmentId: String): JSONObject =
+        ermakLinkIndexes.obj("byEquipment").obj(equipmentId)
+
+    private fun ermakSystemLinks(systemId: String): JSONObject =
+        ermakLinkIndexes.obj("bySystem").obj(systemId)
+
+    private fun ermakKnowledgeLinks(article: JSONObject): JSONObject {
+        val equipmentId = article.optString("equipmentId")
+        if (equipmentId.isNotBlank()) return ermakEquipmentLinks(equipmentId)
+        val articleId = article.optString("id")
+        if (articleId.startsWith("ER-KB-SYS-")) {
+            return ermakSystemLinks(articleId.removePrefix("ER-KB-"))
+        }
+        return JSONObject()
+    }
+
     val entries: List<TechnicalEntry>
         get() = TechnicalFamily.entries.flatMap { family ->
             sections(family).flatMap { section -> sectionEntries(family, section) }
@@ -404,6 +426,7 @@ class TechnicalDataRepository(private val context: Context) {
             val summary = systemArticle?.optString("summary").orEmpty()
                 .ifBlank { item.optString("purpose").ifBlank { item.optString("description") } }
             val relatedSystems = systemArticle?.array("relatedSystems")?.strings().orEmpty()
+            val canonicalLinks = ermakSystemLinks(systemId)
 
             entry(
                 item, TechnicalFamily.ERMAK, TechnicalSection.SYSTEMS,
@@ -424,6 +447,8 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Справочные материалы", supportingArticles.mapNotNull { article ->
                         article.optString("title").takeIf(String::isNotBlank)
                     }),
+                    block("Диагностика", canonicalLinks.array("diagnosticIds").strings()),
+                    block("Схемы", canonicalLinks.array("schemeIds").strings()),
                     block("Требует уточнения по исполнению", systemArticle?.array("openQuestions")?.strings().orEmpty())
                 ),
                 relatedIds = buildList {
@@ -431,6 +456,8 @@ class TechnicalDataRepository(private val context: Context) {
                     systemArticle?.optString("id")?.takeIf(String::isNotBlank)?.let(::add)
                     addAll(supportingArticles.mapNotNull { it.optString("id").takeIf(String::isNotBlank) })
                     addAll(relatedSystems)
+                    addAll(canonicalLinks.array("diagnosticIds").strings())
+                    addAll(canonicalLinks.array("schemeIds").strings())
                     addAll(item.array("relations").objects().mapNotNull { it.optString("targetId").takeIf(String::isNotBlank) })
                 }.distinct()
             )
@@ -448,6 +475,7 @@ class TechnicalDataRepository(private val context: Context) {
         return records.map { item ->
             val equipmentId = item.optString("id")
             val knowledge = knowledgeByEquipment[equipmentId]
+            val canonicalLinks = ermakEquipmentLinks(equipmentId)
             val relationIds = item.array("relations").objects()
                 .mapNotNull { relation -> relation.optString("targetId").takeIf(String::isNotBlank) }
                 .distinct()
@@ -472,12 +500,18 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Связанное оборудование", relatedEquipmentNames),
                     block("Применимость", item.obj("applicability").summary()),
                     block("Системы", item.array("systemIds").strings()),
+                    block("Статья", listOfNotNull(canonicalLinks.optString("equipmentArticleId").takeIf(String::isNotBlank))),
+                    block("Диагностика", canonicalLinks.array("diagnosticIds").strings()),
+                    block("Схемы", canonicalLinks.array("schemeIds").strings()),
                     block("Примечания", item.array("notes").stringsOrSummaries()),
                     block("Источники", item.array("sourceRefs").stringsOrSummaries())
                 ),
                 relatedIds = buildList {
                     addAll(relationIds)
                     addAll(item.array("systemIds").strings())
+                    canonicalLinks.optString("equipmentArticleId").takeIf(String::isNotBlank)?.let(::add)
+                    addAll(canonicalLinks.array("diagnosticIds").strings())
+                    addAll(canonicalLinks.array("schemeIds").strings())
                     knowledge?.optString("id")?.takeIf(String::isNotBlank)?.let(::add)
                 }.distinct()
             )
@@ -486,6 +520,7 @@ class TechnicalDataRepository(private val context: Context) {
 
     private fun loadErmakKnowledge(): List<TechnicalEntry> =
         json("technical/ermak_knowledge.json").array("articles").objects().map { item ->
+            val canonicalLinks = ermakKnowledgeLinks(item)
             entry(
                 item, TechnicalFamily.ERMAK, TechnicalSection.KNOWLEDGE,
                 title = item.optString("title"),
@@ -500,11 +535,15 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Параметры", item.array("keyParameters").stringsOrSummaries()),
                     block("Применимость", item.obj("scope").summary()),
                     block("Особенности исполнения", item.array("variantRules").strings()),
+                    block("Диагностика", canonicalLinks.array("diagnosticIds").strings()),
+                    block("Схемы", canonicalLinks.array("schemeIds").strings()),
                     block("Источники", item.array("sourceRefs").stringsOrSummaries())
                 ),
                 relatedIds = buildList {
                     addAll(item.array("equipmentRefs").strings())
                     addAll(item.array("relatedSystems").strings())
+                    addAll(canonicalLinks.array("diagnosticIds").strings())
+                    addAll(canonicalLinks.array("schemeIds").strings())
                     addAll(item.obj("futureLinks").allStrings())
                 }.distinct()
             )
