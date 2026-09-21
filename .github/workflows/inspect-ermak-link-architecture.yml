@@ -14,47 +14,39 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect link architecture and diagnostic matches
+      - name: Inspect canonical link indexes
         shell: bash
         run: |
           python3 - <<'PY'
-          import gzip,json,re
+          import gzip,json
           from pathlib import Path
           root=Path('app/src/main/assets/technical')
-          names=['ermak_equipment','ermak_knowledge','ermak_links','ermak_system_map','ermak_diagnostics']
-          data={}
-          for n in names:
-              with gzip.open(root/f'{n}.json.gz','rt',encoding='utf-8') as f:data[n]=json.load(f)
-          out={}
-          for n,v in data.items():
-              out[n]={'type':type(v).__name__,'keys':list(v.keys()) if isinstance(v,dict) else None,'count':len(v) if hasattr(v,'__len__') else None}
-              if isinstance(v,dict):
-                  for k,val in v.items():
-                      if isinstance(val,list) and val:
-                          out[n]['sample_list_key']=k;out[n]['sample']=val[0];break
-                      if isinstance(val,dict) and val:
-                          out[n]['sample_dict_key']=k;out[n]['sample']=next(iter(val.items()));break
-          eq=data['ermak_equipment']
-          rows=eq.get('records',[])
-          kb=data['ermak_knowledge']
-          arts=kb.get('articles',[])
-          links=data['ermak_links']
-          diags=data['ermak_diagnostics']
-          dtext=json.dumps(diags,ensure_ascii=False).lower()
-          candidates=[]
-          for r in rows:
-              tokens=[]
-              tokens += [r.get('id','')]
-              tokens += r.get('schemeDesignations',[]) or []
-              tokens += r.get('modelNames',[]) or []
-              title=r.get('title') or r.get('name') or ''
-              if title: tokens.append(title)
-              hits=[t for t in tokens if t and len(t)>=3 and str(t).lower() in dtext]
-              if hits:
-                  candidates.append({'id':r.get('id'),'title':title,'systemId':r.get('systemId'),'scheme':r.get('schemeDesignations',[]),'models':r.get('modelNames',[]),'hits':hits[:8]})
-          out['diagnostic_candidates']=candidates
-          out['equipment_link_fields']=[{k:r.get(k) for k in r.keys() if 'link' in k.lower() or 'diag' in k.lower() or 'article' in k.lower() or 'system' in k.lower()} for r in rows[:8]]
-          out['knowledge_link_fields']=[{k:a.get(k) for k in a.keys() if 'link' in k.lower() or 'diag' in k.lower() or 'equipment' in k.lower() or 'system' in k.lower()} for a in arts[:8]]
+          def load(n):
+              with gzip.open(root/f'{n}.json.gz','rt',encoding='utf-8') as f:return json.load(f)
+          eq=load('ermak_equipment'); kb=load('ermak_knowledge'); links=load('ermak_links'); sm=load('ermak_system_map'); dg=load('ermak_diagnostics')
+          rows=eq.get('records',[]); arts=kb.get('articles',[])
+          out={
+            'equipmentCount':len(rows),
+            'articleCount':len(arts),
+            'linksStatistics':links.get('statistics'),
+            'linksPolicy':links.get('policy'),
+            'linksQuarantine':links.get('quarantine'),
+            'linksExplicitNonBlockingGaps':links.get('explicitNonBlockingGaps'),
+            'linksIndexes':links.get('indexes'),
+            'systems':sm.get('systems'),
+            'criticalLinks':sm.get('criticalLinks'),
+            'diagnosticsStatistics':dg.get('statistics'),
+            'diagnosticsIntegrationContract':dg.get('integrationContract'),
+            'diagnosticsIndexes':dg.get('indexes'),
+            'scenarioSamples':dg.get('scenarios',[])[:3],
+          }
+          # Report current article futureLinks and equipment systemIds for likely first package.
+          targets=['ER-EQ-HV-004','ER-EQ-TR-004','ER-EQ-PN-006','ER-EQ-BR-014','ER-EQ-PR-004','ER-EQ-SF-001']
+          out['targets']=[]
+          for eid in targets:
+              r=next((x for x in rows if x.get('id')==eid),None)
+              a=next((x for x in arts if x.get('equipmentId')==eid),None)
+              out['targets'].append({'equipmentId':eid,'record':r,'article':a})
           Path('link-architecture.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
           PY
       - uses: actions/upload-artifact@v4
