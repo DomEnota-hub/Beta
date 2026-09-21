@@ -1,0 +1,136 @@
+name: Refine Ermak cross-link UX
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/refine-ermak-link-ux.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Capture guarded head
+        shell: bash
+        run: echo "START_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Apply cross-link UX patch
+        run: python3 .github/scripts/refine_ermak_link_ux.py
+
+      - name: Verify mirrors and UX contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          python3 - <<'PY'
+          from pathlib import Path
+          catalog=Path('app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt').read_text(encoding='utf-8')
+          app=Path('app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt').read_text(encoding='utf-8')
+          required_catalog=[
+              'onOpenDiagnosticScenario: ((String, String, TechnicalSection) -> Unit)? = null',
+              'var navigationPath by rememberSaveable(initialEntryId)',
+              'technicalNavigationPush(navigationPath, it)',
+              'technicalNavigationPop(navigationPath)',
+              'target.section == TechnicalSection.DIAGNOSTICS',
+              'onOpenDiagnosticScenario(target.id, source.id, source.section)',
+              'val relatedGroups = relatedEntries.groupBy(TechnicalEntry::section)',
+              'Материалы сгруппированы по назначению',
+              'internal fun technicalRelatedSectionOrder(section: TechnicalSection)',
+          ]
+          required_app=[
+              'var diagnosticReturnScreenName by rememberSaveable',
+              'AppScreen.DIAGNOSTICS -> diagnosticReturnScreenName',
+              'onOpenDiagnosticScenario = { scenarioId, sourceEntryId, sourceSection ->',
+              'technicalInitialEntryId = sourceEntryId',
+              'technicalSectionName = sourceSection.name',
+              'diagnosticReturnScreenName = AppScreen.LOCOMOTIVE_MATERIAL.name',
+          ]
+          for needle in required_catalog:
+              assert needle in catalog, needle
+          for needle in required_app:
+              assert needle in app, needle
+          assert '.take(40)' not in catalog
+          print('Cross-link UX semantics verified')
+          PY
+          git diff --check
+          git diff --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+
+      - name: Commit guarded UX wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse origin/dev14-integration)" = "$START_HEAD"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          git diff --cached --name-only | sort > /tmp/staged.txt
+          cmp /tmp/staged.txt /tmp/expected.txt
+          git commit -m 'Refine Ermak cross-link navigation UX'
+          git fetch origin dev14-integration
+          test "$(git rev-parse origin/dev14-integration)" = "$START_HEAD"
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
