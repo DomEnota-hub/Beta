@@ -1,0 +1,87 @@
+name: Audit VL80S link depth
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-vl80s-link-depth.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect VL80S nested graph
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip,json,re
+          from pathlib import Path
+          from collections import Counter,defaultdict
+          root=Path('app/src/main/assets/technical')
+          def load(n):
+              with gzip.open(root/n,'rt',encoding='utf-8') as f:return json.load(f)
+          def arr(o,k):
+              v=o.get(k,[]) if isinstance(o,dict) else []
+              return v if isinstance(v,list) else []
+          def strings(v):
+              out=[]
+              if isinstance(v,str): out.append(v)
+              elif isinstance(v,list):
+                  for x in v: out+=strings(x)
+              elif isinstance(v,dict):
+                  for x in v.values(): out+=strings(x)
+              return out
+          ve=load('vl80s_equipment.json.gz'); vd=load('vl80s_diagnostics.json.gz'); vel=load('vl80s_electrical.json.gz'); vp=load('vl80s_pneumatic.json.gz')
+          eq=arr(ve,'records'); dg=arr(vd,'scenarios'); schemes=arr(vel,'baseSchemes')+arr(vp,'views')
+          eqids={x.get('id') for x in eq if x.get('id')}; schids={x.get('id') for x in schemes if x.get('id')}
+          nested=[]; broken=[]; diag_without=[]
+          for d in dg:
+              refs=[]
+              for k in ('electricalSchemes','pneumaticViews'):
+                  refs += [x for x in strings(d.get(k)) if isinstance(x,str) and x.startswith('VL-SCH-')]
+              refs=list(dict.fromkeys(refs))
+              if not refs: diag_without.append(d.get('id'))
+              for x in refs:
+                  nested.append((d.get('id'),x))
+                  if x not in schids: broken.append({'diagnostic':d.get('id'),'target':x})
+          scheme_to_eq=defaultdict(set)
+          for s in schemes:
+              sid=s.get('id')
+              for x in arr(s,'equipmentIds'):
+                  if x in eqids: scheme_to_eq[sid].add(x)
+              for n in arr(s,'nodes'):
+                  if isinstance(n,dict):
+                      x=n.get('equipmentId')
+                      if x in eqids: scheme_to_eq[sid].add(x)
+          eq_to_scheme=defaultdict(set)
+          for sid,vals in scheme_to_eq.items():
+              for x in vals:eq_to_scheme[x].add(sid)
+          # legacy schemeNodeIds: check if tokens exist anywhere in current Kotlin sources
+          kt='\n'.join(p.read_text(encoding='utf-8',errors='ignore') for p in Path('app/src/main/java').rglob('*.kt'))
+          legacy=[]
+          for e in eq:
+              refs=arr(e,'schemeNodeIds')
+              if not refs: continue
+              legacy.append({'equipmentId':e.get('id'),'refs':refs,'foundInKotlin':{x:(re.search(r'(?<![A-Za-z0-9_])'+re.escape(x)+r'(?![A-Za-z0-9_])',kt,re.I) is not None) for x in refs}})
+          out={
+            'counts':{'equipment':len(eq),'diagnostics':len(dg),'schemes':len(schemes),'diagnosticSchemePairs':len(nested),'equipmentWithCanonicalScheme':sum(1 for x in eqids if eq_to_scheme[x]),'equipmentWithoutCanonicalScheme':sum(1 for x in eqids if not eq_to_scheme[x])},
+            'brokenDiagnosticSchemeRefs':broken,
+            'diagnosticsWithoutSchemeRefs':sorted(x for x in diag_without if x),
+            'equipmentWithoutCanonicalScheme':sorted(x for x in eqids if not eq_to_scheme[x]),
+            'equipmentSchemeSamples':{x:sorted(eq_to_scheme[x]) for x in sorted(eqids) if eq_to_scheme[x]},
+            'schemeEquipmentCounts':{x:len(scheme_to_eq[x]) for x in sorted(schids)},
+            'legacySchemeNodeIds':legacy,
+            'legacyRefsNotFoundInKotlin':sorted({r for row in legacy for r,ok in row['foundInKotlin'].items() if not ok})
+          }
+          Path('vl80s-link-depth.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps({'counts':out['counts'],'broken':len(broken),'diagWithoutScheme':len(out['diagnosticsWithoutSchemeRefs']),'legacyNotFound':out['legacyRefsNotFoundInKotlin']},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vl80s-link-depth
+          path: vl80s-link-depth.json
