@@ -1,0 +1,259 @@
+name: Audit Ermak and VL80S technical data
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-ermak-vl80s.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit technical graph and UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, re, hashlib
+          from pathlib import Path
+          from collections import Counter, defaultdict
+
+          ROOT=Path('app/src/main/assets/technical')
+          PATCH=Path('patch/app/src/main/assets/technical')
+          OUT={'head':None,'mirrors':{},'ermak':{},'vl80s':{},'ui':{},'global':{}}
+
+          def load(name):
+              p=ROOT/name
+              with gzip.open(p,'rt',encoding='utf-8') as f:
+                  return json.load(f)
+
+          def arr(o,k):
+              v=o.get(k,[]) if isinstance(o,dict) else []
+              return v if isinstance(v,list) else []
+
+          def sid(x):
+              return x.get('id') if isinstance(x,dict) else None
+
+          def dup(vals):
+              c=Counter(v for v in vals if v)
+              return sorted([v for v,n in c.items() if n>1])
+
+          def ids(items):
+              return {sid(x) for x in items if sid(x)}
+
+          def check_refs(rows, field, valid):
+              bad=[]
+              for r in rows:
+                  for x in arr(r,field):
+                      if isinstance(x,str) and x and x not in valid:
+                          bad.append({'owner':sid(r),'field':field,'target':x})
+              return bad
+
+          # app/patch mirrors for every technical asset that exists in both places
+          for p in sorted(ROOT.glob('*.json.gz')):
+              q=PATCH/p.name
+              if q.exists():
+                  a=p.read_bytes(); b=q.read_bytes()
+                  OUT['mirrors'][p.name]={'match':a==b,'app_sha256':hashlib.sha256(a).hexdigest(),'patch_sha256':hashlib.sha256(b).hexdigest()}
+              else:
+                  OUT['mirrors'][p.name]={'match':False,'missing_patch':True}
+
+          # ---------- ERMAK ----------
+          ee=load('ermak_equipment.json.gz'); ed=load('ermak_diagnostics.json.gz'); ek=load('ermak_knowledge.json.gz')
+          el=load('ermak_links.json.gz'); es=load('ermak_schemes.json.gz'); em=load('ermak_system_map.json.gz')
+          eq=arr(ee,'records'); dg=arr(ed,'scenarios'); kb=arr(ek,'articles'); sch=arr(es,'schemes'); systems=arr(em,'systems')
+          eqids=ids(eq); dgids=ids(dg); kbids=ids(kb); schids=ids(sch); sysids=ids(systems)
+          # if system_map schema differs, recover IDs recursively at top-ish levels
+          if not sysids:
+              candidates=[]
+              for k,v in em.items() if isinstance(em,dict) else []:
+                  if isinstance(v,list): candidates.extend(x for x in v if isinstance(x,dict) and str(x.get('id','')).startswith('SYS-'))
+                  elif isinstance(v,dict) and str(v.get('id','')).startswith('SYS-'): candidates.append(v)
+              systems=candidates; sysids=ids(systems)
+
+          er={
+            'counts':{'equipment':len(eq),'diagnostics':len(dg),'knowledge':len(kb),'schemes':len(sch),'systems':len(sysids)},
+            'duplicateIds':{'equipment':dup([sid(x) for x in eq]),'diagnostics':dup([sid(x) for x in dg]),'knowledge':dup([sid(x) for x in kb]),'schemes':dup([sid(x) for x in sch])},
+            'emptyCoreFields':{},'badRefs':{},'orphans':{},'linkGraph':{},'duplicates':{}
+          }
+          for label,rows in [('equipment',eq),('diagnostics',dg),('knowledge',kb),('schemes',sch)]:
+              er['emptyCoreFields'][label]=[sid(r) for r in rows if not sid(r) or not str(r.get('title') or r.get('name') or '').strip()]
+          er['badRefs']['equipmentToDiagnostics']=check_refs(eq,'diagnosticScenarioIds',dgids)
+          er['badRefs']['equipmentToSystems']=check_refs(eq,'systemIds',sysids) if sysids else []
+          er['badRefs']['diagnosticsToEquipment']=check_refs(dg,'equipmentIds',eqids)+check_refs(dg,'equipmentRefs',eqids)
+          er['badRefs']['diagnosticsToSystems']=check_refs(dg,'systemIds',sysids) if sysids else []
+          er['badRefs']['schemesToEquipment']=check_refs(sch,'equipmentRefs',eqids)
+          er['badRefs']['schemesToSystems']=check_refs(sch,'systemIds',sysids) if sysids else []
+          # knowledge equipment/system links
+          er['badRefs']['knowledgeToEquipment']=[]
+          er['badRefs']['knowledgeToSystems']=[]
+          for r in kb:
+              eid=r.get('equipmentId')
+              if eid and eid not in eqids: er['badRefs']['knowledgeToEquipment'].append({'owner':sid(r),'target':eid})
+              for x in arr(r,'equipmentRefs'):
+                  if x not in eqids: er['badRefs']['knowledgeToEquipment'].append({'owner':sid(r),'target':x})
+              for x in arr(r,'systemIds'):
+                  if sysids and x not in sysids: er['badRefs']['knowledgeToSystems'].append({'owner':sid(r),'target':x})
+
+          # Stage 7 canonical indexes
+          ix=el.get('indexes',{}) if isinstance(el,dict) else {}
+          byeq=ix.get('byEquipment',{}) if isinstance(ix,dict) else {}
+          bysys=ix.get('bySystem',{}) if isinstance(ix,dict) else {}
+          bysch=ix.get('byScheme',{}) if isinstance(ix,dict) else {}
+          er['linkGraph']={
+            'byEquipment':len(byeq),'bySystem':len(bysys),'byScheme':len(bysch),
+            'equipmentMissingIndex':sorted(eqids-set(byeq)),
+            'unknownEquipmentIndex':sorted(set(byeq)-eqids),
+            'schemesMissingIndex':sorted(schids-set(bysch)),
+            'unknownSchemeIndex':sorted(set(bysch)-schids),
+            'brokenIndexTargets':[]
+          }
+          for eid,row in byeq.items():
+              aid=row.get('equipmentArticleId') if isinstance(row,dict) else None
+              if aid and aid not in kbids: er['linkGraph']['brokenIndexTargets'].append({'owner':eid,'kind':'article','target':aid})
+              for x in arr(row,'diagnosticIds'):
+                  if x not in dgids: er['linkGraph']['brokenIndexTargets'].append({'owner':eid,'kind':'diagnostic','target':x})
+              for x in arr(row,'schemeIds'):
+                  if x not in schids: er['linkGraph']['brokenIndexTargets'].append({'owner':eid,'kind':'scheme','target':x})
+          for sid_,row in bysch.items():
+              for link in arr(row,'diagnosticLinks'):
+                  x=link.get('diagnosticId') if isinstance(link,dict) else None
+                  if x and x not in dgids: er['linkGraph']['brokenIndexTargets'].append({'owner':sid_,'kind':'schemeDiagnostic','target':x})
+
+          # orphan-ish: no graph refs / no content associations
+          diag_eq_refs=Counter()
+          for r in dg:
+              for x in arr(r,'equipmentIds')+arr(r,'equipmentRefs'): diag_eq_refs[x]+=1
+          scheme_eq_refs=Counter()
+          for r in sch:
+              for x in arr(r,'equipmentRefs'): scheme_eq_refs[x]+=1
+          er['orphans']['equipmentNoDiagnosticRef']=sorted([x for x in eqids if diag_eq_refs[x]==0 and not arr(byeq.get(x,{}),'diagnosticIds')])
+          er['orphans']['equipmentNoSchemeRef']=sorted([x for x in eqids if scheme_eq_refs[x]==0 and not arr(byeq.get(x,{}),'schemeIds')])
+          er['orphans']['diagnosticsNoEquipment']=sorted([sid(r) for r in dg if not (arr(r,'equipmentIds') or arr(r,'equipmentRefs'))])
+          er['duplicates']['equipmentTitles']=sorted([k for k,v in Counter(str(r.get('name') or r.get('title') or '').strip().lower() for r in eq if str(r.get('name') or r.get('title') or '').strip()).items() if v>1])
+          er['duplicates']['diagnosticTitles']=sorted([k for k,v in Counter(str(r.get('title') or '').strip().lower() for r in dg if str(r.get('title') or '').strip()).items() if v>1])
+          er['statsFromFile']=el.get('statistics',{}) if isinstance(el,dict) else {}
+          OUT['ermak']=er
+
+          # ---------- VL80S ----------
+          ve=load('vl80s_equipment.json.gz'); vd=load('vl80s_diagnostics.json.gz'); vel=load('vl80s_electrical.json.gz'); vp=load('vl80s_pneumatic.json.gz'); va=load('vl80s_acceptance.json.gz')
+          eq=arr(ve,'records'); dg=arr(vd,'scenarios'); els=arr(vel,'baseSchemes'); pns=arr(vp,'views'); acc=arr(va,'items'); routes=arr(va,'routes')
+          eqids=ids(eq); dgids=ids(dg); schrows=els+pns; schids=ids(schrows); accids=ids(acc)
+          # system IDs are synthesized from equipment + diagnostics, so treat union as valid
+          sysids=set()
+          for r in eq+dg: sysids.update(arr(r,'systemIds'))
+          vl={
+            'counts':{'equipment':len(eq),'diagnostics':len(dg),'electricalSchemes':len(els),'pneumaticViews':len(pns),'acceptanceItems':len(acc),'acceptanceRoutes':len(routes),'systemsSynthesized':len(sysids)},
+            'duplicateIds':{'equipment':dup([sid(x) for x in eq]),'diagnostics':dup([sid(x) for x in dg]),'schemes':dup([sid(x) for x in schrows]),'acceptance':dup([sid(x) for x in acc])},
+            'emptyCoreFields':{},'badRefs':{},'orphans':{},'duplicates':{},'coverage':{}
+          }
+          for label,rows in [('equipment',eq),('diagnostics',dg),('schemes',schrows),('acceptance',acc)]:
+              vl['emptyCoreFields'][label]=[sid(r) for r in rows if not sid(r) or not str(r.get('title') or r.get('name') or '').strip()]
+          vl['badRefs']['equipmentToDiagnostics']=check_refs(eq,'diagnosticScenarioIds',dgids)
+          vl['badRefs']['diagnosticsToEquipment']=check_refs(dg,'equipmentIds',eqids)+check_refs(dg,'equipmentRefs',eqids)
+          # generic relations targetId when they look canonical equipment IDs
+          relbad=[]
+          for r in eq:
+              for z in arr(r,'relations'):
+                  if isinstance(z,dict):
+                      x=z.get('targetId')
+                      if isinstance(x,str) and x.startswith('VL-EQ-') and x not in eqids: relbad.append({'owner':sid(r),'target':x})
+          vl['badRefs']['equipmentRelations']=relbad
+          # scheme sequence/node refs: only validate direct equipment-looking IDs
+          badsch=[]
+          for r in schrows:
+              for field in ['equipmentRefs','equipmentIds','sequence','nodeIds']:
+                  for x in arr(r,field):
+                      if isinstance(x,str) and x.startswith('VL-EQ-') and x not in eqids: badsch.append({'owner':sid(r),'field':field,'target':x})
+          vl['badRefs']['schemesToEquipment']=badsch
+          # acceptance references
+          badacc=[]
+          for r in acc:
+              x=r.get('equipmentId')
+              if x and x not in eqids: badacc.append({'owner':sid(r),'field':'equipmentId','target':x})
+              for x in arr(r,'relatedEquipmentIds'):
+                  if x not in eqids: badacc.append({'owner':sid(r),'field':'relatedEquipmentIds','target':x})
+              for h in arr(r,'diagnosticHints'):
+                  if isinstance(h,dict):
+                      x=h.get('scenarioId') or h.get('id')
+                      if x and x not in dgids: badacc.append({'owner':sid(r),'field':'diagnosticHints','target':x})
+          for r in routes:
+              for x in arr(r,'itemIds'):
+                  # route IDs may be raw IDs transformed at runtime; match raw acceptance ids
+                  if x not in accids: badacc.append({'owner':sid(r),'field':'itemIds','target':x})
+          vl['badRefs']['acceptance']=badacc
+          # references/coverage
+          diag_refs=Counter()
+          for r in dg:
+              for x in arr(r,'equipmentIds')+arr(r,'equipmentRefs'): diag_refs[x]+=1
+          explicit_eq_diag={sid(r):len(arr(r,'diagnosticScenarioIds')) for r in eq}
+          vl['orphans']['equipmentNoDiagnosticRef']=sorted([x for x in eqids if diag_refs[x]==0 and explicit_eq_diag.get(x,0)==0])
+          vl['orphans']['diagnosticsNoEquipment']=sorted([sid(r) for r in dg if not (arr(r,'equipmentIds') or arr(r,'equipmentRefs'))])
+          vl['coverage']['equipmentWithDiagnosticExplicit']=sum(1 for r in eq if arr(r,'diagnosticScenarioIds'))
+          vl['coverage']['equipmentWithDiagnosticAnyDirection']=sum(1 for x in eqids if diag_refs[x] or explicit_eq_diag.get(x,0))
+          vl['coverage']['equipmentWithSystem']=sum(1 for r in eq if arr(r,'systemIds'))
+          vl['coverage']['diagnosticsWithSystem']=sum(1 for r in dg if arr(r,'systemIds'))
+          vl['duplicates']['equipmentTitles']=sorted([k for k,v in Counter(str(r.get('name') or r.get('title') or '').strip().lower() for r in eq if str(r.get('name') or r.get('title') or '').strip()).items() if v>1])
+          vl['duplicates']['diagnosticTitles']=sorted([k for k,v in Counter(str(r.get('title') or '').strip().lower() for r in dg if str(r.get('title') or '').strip()).items() if v>1])
+          OUT['vl80s']=vl
+
+          # ---------- UI / stale strings ----------
+          needles=[
+              '92 сценар', '92 диагност', 'ветвящиеся уточнения', 'Внешние первоисточники открываются в браузере',
+              'ВЛ80С • Ермак', 'локальном хранении', 'локально на устройстве', 'Исполнение'
+          ]
+          hits={n:[] for n in needles}
+          roots=[Path('app/src/main/java'),Path('patch/app/src/main/java')]
+          for root in roots:
+              if not root.exists(): continue
+              for p in root.rglob('*.kt'):
+                  text=p.read_text(encoding='utf-8',errors='ignore')
+                  for n in needles:
+                      for m in re.finditer(re.escape(n),text,re.I):
+                          line=text.count('\n',0,m.start())+1
+                          hits[n].append({'file':str(p),'line':line,'text':text.splitlines()[line-1].strip()[:220]})
+          OUT['ui']['staleStringHits']={k:v for k,v in hits.items() if v}
+          # cross-link UX tokens expected after latest package
+          cat=Path('app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt').read_text(encoding='utf-8')
+          app=Path('app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt').read_text(encoding='utf-8')
+          OUT['ui']['crossLinkContract']={
+              'navigationStack':'technicalNavigationPush' in cat and 'technicalNavigationPop' in cat,
+              'groupedRelated':'relatedGroups' in cat and 'technicalRelatedSectionOrder' in cat,
+              'diagnosticRoute':'onOpenDiagnosticScenario' in cat and 'diagnosticReturnScreenName' in app,
+              'schemeProfileGate':'ErmakSchemeDiagnostics' in cat and 'profileGateRequired' in cat,
+          }
+          # mirror source files relevant to cross-link runtime
+          source_pairs=[
+            'src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt',
+            'src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt',
+            'src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt'
+          ]
+          OUT['ui']['sourceMirrors']={}
+          for rel in source_pairs:
+              a=Path('app')/rel; b=Path('patch/app')/rel
+              OUT['ui']['sourceMirrors'][rel]={'app':a.exists(),'patch':b.exists(),'match':a.exists() and b.exists() and a.read_bytes()==b.read_bytes()}
+
+          # overall severity counts
+          def collect_bad(obj):
+              n=0
+              for key in ['badRefs','duplicateIds']:
+                  for v in obj.get(key,{}).values():
+                      if isinstance(v,list): n += len(v)
+              return n
+          OUT['global']['hardIntegrityIssueCount']=collect_bad(er)+collect_bad(vl)+sum(1 for x in OUT['mirrors'].values() if not x.get('match'))
+          OUT['global']['ermakOrphanCounts']={k:len(v) for k,v in er['orphans'].items()}
+          OUT['global']['vl80sOrphanCounts']={k:len(v) for k,v in vl['orphans'].items()}
+          OUT['global']['staleUiHitCount']=sum(len(v) for v in OUT['ui']['staleStringHits'].values())
+
+          Path('technical-audit.json').write_text(json.dumps(OUT,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps({'global':OUT['global'],'ermakCounts':er['counts'],'vl80sCounts':vl['counts'],'crossLink':OUT['ui']['crossLinkContract']},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: technical-audit
+          path: technical-audit.json
