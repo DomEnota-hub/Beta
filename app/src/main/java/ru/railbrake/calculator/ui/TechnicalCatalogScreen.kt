@@ -1353,24 +1353,25 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
                       }
                   }
               }
+              val activeId = currentId ?: return@let
               AcceptanceStatusSelector(
-                  itemId = currentId!!,
+                  itemId = activeId,
                   itemTitle = technicalEntryTitle(item),
                   currentState = currentState,
                   note = currentNote,
                   onSelect = { option ->
-                      acceptanceRepository.setState(currentId, option)
+                      acceptanceRepository.setState(activeId, option)
                       stateVersion++
                   },
                   onSaveNote = { text ->
-                      acceptanceRepository.setNote(currentId, text)
-                      acceptanceRepository.setState(currentId, AcceptanceCheckState.NOTE)
+                      acceptanceRepository.setNote(activeId, text)
+                      acceptanceRepository.setState(activeId, AcceptanceCheckState.NOTE)
                       stateVersion++
                   }
               )
               OutlinedButton(
                   onClick = {
-                      acceptanceRepository.setDisabled(familyKey, currentId, true)
+                      acceptanceRepository.setDisabled(familyKey, activeId, true)
                       settingsVersion++
                       if (effectiveStep >= activeSequence.lastIndex && effectiveStep > 0) {
                           step = effectiveStep - 1
