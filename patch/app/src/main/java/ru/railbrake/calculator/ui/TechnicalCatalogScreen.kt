@@ -71,7 +71,8 @@ fun TechnicalCatalogScreen(
     lockFamily: Boolean = false,
     lockSection: Boolean = false,
     initialEntryId: String? = null,
-    onOpenLegacyArticle: ((String) -> Unit)? = null
+    onOpenLegacyArticle: ((String) -> Unit)? = null,
+    onOpenDiagnosticScenario: ((String, String, TechnicalSection) -> Unit)? = null
 ) {
     val context = LocalContext.current
     val repository = remember { TechnicalDataRepository(context.applicationContext) }
@@ -79,6 +80,7 @@ fun TechnicalCatalogScreen(
     var sectionName by rememberSaveable { mutableStateOf(initialSection.name) }
     var query by rememberSaveable { mutableStateOf("") }
     var selectedId by rememberSaveable(initialEntryId) { mutableStateOf(initialEntryId) }
+    var navigationPath by rememberSaveable(initialEntryId) { mutableStateOf("") }
     var acceptanceStartChoice by rememberSaveable { mutableStateOf(false) }
     val family = runCatching { TechnicalFamily.valueOf(familyName) }.getOrDefault(TechnicalFamily.VL80S)
     val availableSections = remember(family, lockSection, initialSection) { if (lockSection) listOf(initialSection) else repository.sections(family) }
@@ -86,24 +88,47 @@ fun TechnicalCatalogScreen(
         ?: availableSections.first()
     val selected = selectedId?.let(repository::entry)
 
+    fun openTarget(target: TechnicalEntry) {
+        val source = selected
+        if (
+            target.family == TechnicalFamily.ERMAK &&
+            target.section == TechnicalSection.DIAGNOSTICS &&
+            source != null &&
+            onOpenDiagnosticScenario != null
+        ) {
+            onOpenDiagnosticScenario(target.id, source.id, source.section)
+            return
+        }
+        source?.id?.let { navigationPath = technicalNavigationPush(navigationPath, it) }
+        selectedId = target.id
+    }
+
+    fun backFromSelected() {
+        val (previousId, remainingPath) = technicalNavigationPop(navigationPath)
+        navigationPath = remainingPath
+        selectedId = previousId
+    }
+
     BackHandler(enabled = selected != null || acceptanceStartChoice) {
-        if (selected != null) selectedId = null else acceptanceStartChoice = false
+        if (selected != null) backFromSelected() else acceptanceStartChoice = false
     }
 
     if (acceptanceStartChoice) {
         AcceptanceStartChoice(
             onBack = { acceptanceStartChoice = false },
-            onSelect = { selectedId = it; acceptanceStartChoice = false }
+            onSelect = { selectedId = it; navigationPath = ""; acceptanceStartChoice = false }
         )
         return
     }
 
     if (selected != null) {
+        val previousEntry = technicalNavigationIds(navigationPath).lastOrNull()?.let(repository::entry)
         TechnicalEntryDetail(
             entry = selected,
             repository = repository,
-            onBack = { selectedId = null },
-            onOpen = { target -> selectedId = target.id }
+            backLabel = previousEntry?.let { "Назад к «${technicalEntryTitle(it).take(34)}»" } ?: selected.section.title,
+            onBack = ::backFromSelected,
+            onOpen = ::openTarget
         )
         return
     }
@@ -221,7 +246,10 @@ fun TechnicalCatalogScreen(
             Card(
                 onClick = {
                     if (entry.id == "VL80-ROUTE-route_canonical") acceptanceStartChoice = true
-                    else selectedId = entry.id
+                    else {
+                        navigationPath = ""
+                        selectedId = entry.id
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -312,6 +340,7 @@ private fun AcceptanceStartChoice(onBack: () -> Unit, onSelect: (String) -> Unit
 private fun TechnicalEntryDetail(
     entry: TechnicalEntry,
     repository: TechnicalDataRepository,
+    backLabel: String,
     onBack: () -> Unit,
     onOpen: (TechnicalEntry) -> Unit
 ) {
@@ -323,15 +352,21 @@ private fun TechnicalEntryDetail(
     val relatedEntries = entry.relatedIds
         .distinct()
         .mapNotNull(repository::entry)
-        .filterNot { it.id in referencedIds }
-        .take(40)
+        .filterNot { it.id == entry.id || it.id in referencedIds }
+        .sortedWith(
+            compareBy<TechnicalEntry> { technicalRelatedSectionOrder(it.section) }
+                .thenBy { technicalEntryTitle(it).lowercase() }
+        )
+    val relatedGroups = relatedEntries.groupBy(TechnicalEntry::section)
+        .toList()
+        .sortedBy { (section, _) -> technicalRelatedSectionOrder(section) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            ChildBackButton(entry.section.title, onBack)
+            ChildBackButton(backLabel, onBack)
             Text(technicalEntryTitle(entry), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
             technicalEntrySubtitle(entry)?.let { subtitle ->
                 Text(subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -401,22 +436,60 @@ private fun TechnicalEntryDetail(
                 }
             }
         }
-        if (relatedEntries.isNotEmpty()) {
+        if (relatedGroups.isNotEmpty()) {
             item {
                 HorizontalDivider()
                 Text("Связанные материалы", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                Text(
+                    "Материалы сгруппированы по назначению; уже показанные внутри карточки ссылки здесь не повторяются.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
-            items(relatedEntries, key = { "related-${it.id}" }) { target ->
-                OutlinedButton(
-                    onClick = { onOpen(target) },
-                    modifier = Modifier.fillMaxWidth(),
-                    border = BorderStroke(1.dp, Color.Black)
-                ) {
-                    Text("${technicalEntryTitle(target)} →")
+            relatedGroups.forEach { (section, targets) ->
+                item(key = "related-header-${entry.id}-${section.name}") {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(section.title, fontWeight = FontWeight.Bold, color = technicalSectionAccent(section, ""))
+                        Text("${targets.size}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+                items(targets, key = { "related-${section.name}-${it.id}" }) { target ->
+                    OutlinedButton(
+                        onClick = { onOpen(target) },
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) {
+                        Text("${technicalEntryTitle(target)} →")
+                    }
                 }
             }
         }
     }
+}
+
+internal fun technicalNavigationIds(path: String): List<String> =
+    path.lineSequence().map(String::trim).filter(String::isNotBlank).toList()
+
+internal fun technicalNavigationPush(path: String, currentId: String): String =
+    (technicalNavigationIds(path) + currentId).joinToString("\n")
+
+internal fun technicalNavigationPop(path: String): Pair<String?, String> {
+    val ids = technicalNavigationIds(path)
+    return ids.lastOrNull() to ids.dropLast(1).joinToString("\n")
+}
+
+internal fun technicalRelatedSectionOrder(section: TechnicalSection): Int = when (section) {
+    TechnicalSection.SYSTEMS -> 0
+    TechnicalSection.EQUIPMENT -> 1
+    TechnicalSection.KNOWLEDGE -> 2
+    TechnicalSection.DIAGNOSTICS -> 3
+    TechnicalSection.ELECTRICAL, TechnicalSection.PNEUMATIC -> 4
+    TechnicalSection.SAFETY -> 5
+    TechnicalSection.PROFILES -> 6
+    TechnicalSection.ACCEPTANCE -> 7
 }
 
 internal fun isErmakLayoutEntry(id: String): Boolean = id.startsWith("ER-SCH-LAYOUT-")

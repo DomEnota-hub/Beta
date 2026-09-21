@@ -146,6 +146,7 @@ fun BrakeCalculatorApp(
     var knowledgeStartQuery by rememberSaveable { mutableStateOf<String?>(null) }
     var diagnosticStartScenarioId by rememberSaveable { mutableStateOf<String?>(null) }
     var diagnosticStartEquipmentId by rememberSaveable { mutableStateOf<String?>(null) }
+    var diagnosticReturnScreenName by rememberSaveable { mutableStateOf(AppScreen.HOME.name) }
     var locomotiveMaterialArticleId by rememberSaveable { mutableStateOf<String?>(null) }
     var locomotiveMaterialQuery by rememberSaveable { mutableStateOf<String?>(null) }
     var technicalFamilyName by rememberSaveable { mutableStateOf(TechnicalFamily.VL80S.name) }
@@ -202,6 +203,7 @@ fun BrakeCalculatorApp(
                                 AppScreen.DIAGNOSTICS -> {
                                     diagnosticStartScenarioId = null
                                     diagnosticStartEquipmentId = null
+                                    diagnosticReturnScreenName = AppScreen.HOME.name
                                     diagnosticRootVersion++
                                 }
                                 AppScreen.LOCOMOTIVES -> {
@@ -260,6 +262,7 @@ fun BrakeCalculatorApp(
             screenName = when (screen) {
                 AppScreen.MASS, AppScreen.APPENDIX -> AppScreen.CALCULATIONS.name
                 AppScreen.LOCOMOTIVE_MATERIAL, AppScreen.LOCOMOTIVE_LEGACY -> AppScreen.LOCOMOTIVES.name
+                AppScreen.DIAGNOSTICS -> diagnosticReturnScreenName
                 else -> AppScreen.HOME.name
             }
         }
@@ -288,6 +291,7 @@ fun BrakeCalculatorApp(
                     onDiagnostics = {
                         diagnosticStartScenarioId = null
                         diagnosticStartEquipmentId = null
+                        diagnosticReturnScreenName = AppScreen.HOME.name
                         screenName = AppScreen.DIAGNOSTICS.name
                     },
                     onKnowledge = {
@@ -369,6 +373,16 @@ fun BrakeCalculatorApp(
                         locomotiveMaterialQuery = null
                         locomotiveMaterialArticleId = articleId
                         screenName = AppScreen.LOCOMOTIVE_LEGACY.name
+                    },
+                    onOpenDiagnosticScenario = { scenarioId, sourceEntryId, sourceSection ->
+                        technicalFamilyName = TechnicalFamily.ERMAK.name
+                        technicalSectionName = sourceSection.name
+                        technicalInitialEntryId = sourceEntryId
+                        diagnosticStartScenarioId = scenarioId
+                        diagnosticStartEquipmentId = null
+                        diagnosticReturnScreenName = AppScreen.LOCOMOTIVE_MATERIAL.name
+                        diagnosticRootVersion++
+                        screenName = AppScreen.DIAGNOSTICS.name
                     }
                 )
                 AppScreen.LOCOMOTIVE_LEGACY -> KnowledgeBaseScreen(
@@ -411,11 +425,13 @@ fun BrakeCalculatorApp(
                     onOpenScenario = { scenarioId ->
                         diagnosticStartScenarioId = scenarioId
                         diagnosticStartEquipmentId = null
+                        diagnosticReturnScreenName = AppScreen.HOME.name
                         screenName = AppScreen.DIAGNOSTICS.name
                     },
                     onOpenEquipment = { equipmentId ->
                         diagnosticStartScenarioId = null
                         diagnosticStartEquipmentId = equipmentId
+                        diagnosticReturnScreenName = AppScreen.HOME.name
                         screenName = AppScreen.DIAGNOSTICS.name
                     },
                     onOpenKnowledgeTopic = { topic ->
