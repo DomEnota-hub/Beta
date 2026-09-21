@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -511,7 +512,13 @@ fun TechnicalCatalogScreen(
                     }
                     Text(technicalEntryTitle(entry), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
                     technicalEntrySubtitle(entry)?.let { subtitle ->
-                        Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(
+                            subtitle,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = if (entry.family == TechnicalFamily.ERMAK) 2 else Int.MAX_VALUE,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
                     Text(if (interactive) "Открыть интерактивную схему →" else "Открыть карточку →", color = if (interactive) InteractiveSchemeAccent else accent, fontWeight = FontWeight.Bold)
                 }
@@ -617,9 +624,30 @@ private fun TechnicalEntryDetail(
 ) {
     val accent = technicalSectionAccent(entry.section, entry.status)
     val isErmakLayout = isErmakLayoutEntry(entry.id)
+    val compactErmak = entry.family == TechnicalFamily.ERMAK && entry.section != TechnicalSection.ACCEPTANCE
     val detailBlocks = remember(entry.id) {
         if (isErmakLayout) entry.blocks.filterNot { it.title == "Оборудование" } else entry.blocks
     }
+    val renderableDetailBlocks = remember(entry.id, repository) {
+        detailBlocks.filter { block ->
+            repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).any() ||
+                repository.referencedEntries(block.lines).isNotEmpty() ||
+                (block.title.startsWith("Таблица —") && block.lines.any { it.split("¦", limit = 3).size == 3 })
+        }
+    }
+    var expandedErmakBlocks by rememberSaveable(entry.id) {
+        mutableStateOf(
+            renderableDetailBlocks
+                .filter { ermakCompactBlockStartsExpanded(it.title) }
+                .joinToString("\n") { it.title }
+        )
+    }
+    var selectedErmakRelatedSection by rememberSaveable(entry.id) { mutableStateOf<String?>(null) }
+    val expandedErmakBlockTitles = remember(expandedErmakBlocks) {
+        ermakExpandedBlockTitles(expandedErmakBlocks)
+    }
+    val allErmakBlocksExpanded = compactErmak && renderableDetailBlocks.isNotEmpty() &&
+        renderableDetailBlocks.all { it.title in expandedErmakBlockTitles }
     val referencedIds = remember(entry.id, repository) {
         if (isErmakLayout) {
             emptySet()
@@ -667,7 +695,12 @@ private fun TechnicalEntryDetail(
             ChildBackButton(backLabel, onBack)
             Text(technicalEntryTitle(entry), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
             technicalEntrySubtitle(entry)?.let { subtitle ->
-                Text(subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    subtitle,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = if (compactErmak) 3 else Int.MAX_VALUE,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
             technicalStatusLabel(entry.status)?.let { status ->
                 RailStatusPill(status, accent = accent)
@@ -687,7 +720,36 @@ private fun TechnicalEntryDetail(
                     ErmakSchemeDiagnostics(entry, linkContext, repository, onOpen)
                 }
             }
-        items(detailBlocks, key = { it.title }) { block ->
+        if (compactErmak && renderableDetailBlocks.isNotEmpty()) {
+            item(key = "ermak-details-control-${entry.id}") {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Подробности", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                        Text(
+                            "${renderableDetailBlocks.size} разделов • открывайте только нужное",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            expandedErmakBlocks = if (allErmakBlocksExpanded) {
+                                ""
+                            } else {
+                                renderableDetailBlocks.joinToString("\n") { it.title }
+                            }
+                        }
+                    ) {
+                        Text(if (allErmakBlocksExpanded) "Свернуть всё" else "Показать всё")
+                    }
+                }
+            }
+        }
+        items(renderableDetailBlocks, key = { it.title }) { block ->
             val displayLines = repository.displayLines(block.lines)
                 .mapNotNull(::technicalPresentationLine)
                 .distinct()
@@ -697,7 +759,12 @@ private fun TechnicalEntryDetail(
                     line.split("¦", limit = 3).takeIf { it.size == 3 }
                 }
             } else emptyList()
-            if (displayLines.isEmpty() && references.isEmpty() && referenceTableRows.isEmpty()) return@items
+            val expanded = !compactErmak || block.title in expandedErmakBlockTitles
+            val contentCount = if (referenceTableRows.isNotEmpty()) {
+                referenceTableRows.size
+            } else {
+                displayLines.size + references.size
+            }
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = technicalBlockContainer(entry.section, block.title)),
@@ -705,67 +772,166 @@ private fun TechnicalEntryDetail(
                 shape = RoundedCornerShape(18.dp)
             ) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                    Text(block.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                    if (referenceTableRows.isNotEmpty()) {
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("Размер", modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
-                            Text("Скорость", modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
-                            Text("Действие", modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
-                        }
-                        HorizontalDivider()
-                        referenceTableRows.forEachIndexed { index, cells ->
-                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Text(cells[0], modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
-                                Text(cells[1], modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.bodySmall)
-                                Text(cells[2], modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.bodySmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            Text(block.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                            if (compactErmak && !expanded) {
+                                Text(
+                                    "$contentCount пунктов",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
-                            if (index != referenceTableRows.lastIndex) HorizontalDivider()
                         }
-                    } else {
-                        displayLines.forEach { line -> Text("• $line") }
-                        references.forEach { target ->
-                            OutlinedButton(
-                                onClick = { onOpen(target) },
-                                modifier = Modifier.fillMaxWidth(),
-                                border = BorderStroke(1.dp, Color.Black)
-                            ) { Text("${technicalEntryTitle(target)} →") }
+                        if (compactErmak) {
+                            TextButton(
+                                onClick = {
+                                    expandedErmakBlocks = ermakToggleExpandedBlock(expandedErmakBlocks, block.title)
+                                }
+                            ) {
+                                Text(if (expanded) "Свернуть" else "Раскрыть")
+                            }
+                        }
+                    }
+                    if (expanded) {
+                        if (referenceTableRows.isNotEmpty()) {
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Text("Размер", modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                                Text("Скорость", modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                                Text("Действие", modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Black)
+                            }
+                            HorizontalDivider()
+                            referenceTableRows.forEachIndexed { index, cells ->
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Text(cells[0], modifier = Modifier.weight(0.75f), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                                    Text(cells[1], modifier = Modifier.weight(0.9f), style = MaterialTheme.typography.bodySmall)
+                                    Text(cells[2], modifier = Modifier.weight(1.55f), style = MaterialTheme.typography.bodySmall)
+                                }
+                                if (index != referenceTableRows.lastIndex) HorizontalDivider()
+                            }
+                        } else {
+                            displayLines.forEach { line -> Text("• $line") }
+                            references.forEach { target ->
+                                OutlinedButton(
+                                    onClick = { onOpen(target) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    border = BorderStroke(1.dp, Color.Black)
+                                ) { Text("${technicalEntryTitle(target)} →") }
+                            }
                         }
                     }
                 }
             }
         }
         if (relatedGroups.isNotEmpty()) {
-            item {
-                HorizontalDivider()
-                Text("Связанные материалы", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-                Text(
-                    "Материалы сгруппированы по назначению; уже показанные внутри карточки ссылки здесь не повторяются.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            relatedGroups.forEach { (section, targets) ->
-                item(key = "related-header-${entry.id}-${section.name}") {
-                    Row(
+            if (compactErmak) {
+                item(key = "compact-related-${entry.id}") {
+                    val selectedGroup = relatedGroups.firstOrNull { (section, _) ->
+                        section.name == selectedErmakRelatedSection
+                    }
+                    Card(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, accent.copy(alpha = 0.38f)),
+                        shape = RoundedCornerShape(18.dp)
                     ) {
-                        Text(section.title, fontWeight = FontWeight.Bold, color = technicalSectionAccent(section, ""))
-                        Text("${targets.size}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("Связанные материалы", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                                Text("${relatedEntries.size}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                items(relatedGroups) { (section, targets) ->
+                                    FilterChip(
+                                        selected = selectedErmakRelatedSection == section.name,
+                                        onClick = {
+                                            selectedErmakRelatedSection = if (selectedErmakRelatedSection == section.name) null else section.name
+                                        },
+                                        label = { Text("${section.title} · ${targets.size}") }
+                                    )
+                                }
+                            }
+                            if (selectedGroup == null) {
+                                Text(
+                                    "Выберите группу, чтобы открыть связанные карточки.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            } else {
+                                selectedGroup.second.forEach { target ->
+                                    OutlinedButton(
+                                        onClick = { onOpen(target) },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        border = BorderStroke(1.dp, Color.Black)
+                                    ) {
+                                        Text("${technicalEntryTitle(target)} →")
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                items(targets, key = { "related-${section.name}-${it.id}" }) { target ->
-                    OutlinedButton(
-                        onClick = { onOpen(target) },
-                        modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, Color.Black)
-                    ) {
-                        Text("${technicalEntryTitle(target)} →")
+            } else {
+                item {
+                    HorizontalDivider()
+                    Text("Связанные материалы", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                    Text(
+                        "Материалы сгруппированы по назначению; уже показанные внутри карточки ссылки здесь не повторяются.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                relatedGroups.forEach { (section, targets) ->
+                    item(key = "related-header-${entry.id}-${section.name}") {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(section.title, fontWeight = FontWeight.Bold, color = technicalSectionAccent(section, ""))
+                            Text("${targets.size}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                    items(targets, key = { "related-${section.name}-${it.id}" }) { target ->
+                        OutlinedButton(
+                            onClick = { onOpen(target) },
+                            modifier = Modifier.fillMaxWidth(),
+                            border = BorderStroke(1.dp, Color.Black)
+                        ) {
+                            Text("${technicalEntryTitle(target)} →")
+                        }
                     }
                 }
             }
         }
     }
+}
+
+internal fun ermakCompactBlockStartsExpanded(title: String): Boolean {
+    val normalized = title.trim().lowercase()
+    return normalized.startsWith("назнач") ||
+        normalized.startsWith("располож") ||
+        normalized.startsWith("кратк") ||
+        normalized.startsWith("важно") ||
+        normalized.startsWith("главное") ||
+        normalized.contains("опас") ||
+        normalized.contains("предупреж")
+}
+
+internal fun ermakExpandedBlockTitles(serialized: String): Set<String> =
+    serialized.lineSequence().map(String::trim).filter(String::isNotBlank).toSet()
+
+internal fun ermakToggleExpandedBlock(serialized: String, title: String): String {
+    val titles = ermakExpandedBlockTitles(serialized).toMutableSet()
+    if (!titles.add(title)) titles.remove(title)
+    return titles.sorted().joinToString("\n")
 }
 
 internal fun technicalNavigationIds(path: String): List<String> =

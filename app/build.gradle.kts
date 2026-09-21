@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta20: top-level acceptance controls and disabled-step manager.
+// Beta21: compact progressive-disclosure presentation for Ermak.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
@@ -19,8 +19,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 165
-        versionName = "1.2.2-dev14-beta20"
+        versionCode = 166
+        versionName = "1.2.2-dev14-beta21"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
