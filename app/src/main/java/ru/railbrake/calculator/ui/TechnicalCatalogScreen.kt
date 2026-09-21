@@ -1101,7 +1101,7 @@ private fun ErmakInteractiveAtlas(
             Text(
                 "Функциональная карта по встроенным данным компоновки. Зоны показывают принадлежность оборудования, но не заменяют заводской монтажный чертёж.",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = InteractiveSchemeMuted
             )
             Text("Исполнение и секция", color = InteractiveSchemeAccent, fontWeight = FontWeight.Bold)
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1111,6 +1111,14 @@ private fun ErmakInteractiveAtlas(
                         selected = entry.id == id,
                         onClick = { target?.let(onOpen) },
                         enabled = target != null,
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = Color.Transparent,
+                            labelColor = InteractiveSchemeMuted,
+                            selectedContainerColor = InteractiveSchemeAccent.copy(alpha = 0.18f),
+                            selectedLabelColor = InteractiveSchemeOnSurface,
+                            disabledContainerColor = Color.Transparent,
+                            disabledLabelColor = InteractiveSchemeMuted.copy(alpha = 0.72f)
+                        ),
                         label = { Text(label) }
                     )
                 }
@@ -1120,7 +1128,17 @@ private fun ErmakInteractiveAtlas(
                 onValueChange = { query = it },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                label = { Text("Найти аппарат на карте") }
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = InteractiveSchemeOnSurface),
+                label = { Text("Найти аппарат на карте", color = InteractiveSchemeMuted) },
+                colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = InteractiveSchemeOnSurface,
+                    unfocusedTextColor = InteractiveSchemeOnSurface,
+                    cursorColor = InteractiveSchemeAccent,
+                    focusedBorderColor = InteractiveSchemeAccent,
+                    unfocusedBorderColor = InteractiveSchemeMuted.copy(alpha = 0.62f),
+                    focusedLabelColor = InteractiveSchemeAccent,
+                    unfocusedLabelColor = InteractiveSchemeMuted
+                )
             )
             Text("Элементов: ${entry.hotspots.size}", style = MaterialTheme.typography.labelMedium, color = InteractiveSchemeAccent)
             Box(
