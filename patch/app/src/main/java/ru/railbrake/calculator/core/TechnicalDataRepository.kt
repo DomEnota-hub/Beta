@@ -100,6 +100,31 @@ class TechnicalDataRepository(private val context: Context) {
         return JSONObject()
     }
 
+    // VL80S assets already contain canonical equipment IDs in scheme nodes. Build the
+    // reverse index at runtime so equipment cards can navigate back to the current
+    // electrical/pneumatic schemes instead of exposing legacy schemeNodeIds tokens.
+    private val vl80sSchemeIdsByEquipment by lazy {
+        val result = linkedMapOf<String, MutableList<String>>()
+        val schemes = buildList {
+            addAll(json("technical/vl80s_electrical.json").array("baseSchemes").objects())
+            addAll(json("technical/vl80s_pneumatic.json").array("views").objects())
+        }
+        schemes.forEach { scheme ->
+            val schemeId = scheme.optString("id")
+            if (schemeId.isBlank()) return@forEach
+            val equipmentIds = buildList {
+                addAll(scheme.array("equipmentIds").strings())
+                addAll(scheme.array("nodes").objects().mapNotNull { node ->
+                    node.optString("equipmentId").takeIf(String::isNotBlank)
+                })
+            }.distinct()
+            equipmentIds.forEach { equipmentId ->
+                result.getOrPut(equipmentId) { mutableListOf() }.add(schemeId)
+            }
+        }
+        result.mapValues { (_, ids) -> ids.distinct() }
+    }
+
     fun ermakSchemeLinkContext(schemeId: String): ErmakSchemeLinkContext? {
         val byScheme = ermakLinkIndexes.optJSONObject("byScheme") ?: return null
         val raw = byScheme.optJSONObject(schemeId) ?: return null
@@ -268,9 +293,12 @@ class TechnicalDataRepository(private val context: Context) {
 
     private fun loadVl80sEquipment(): List<TechnicalEntry> =
         json("technical/vl80s_equipment.json").array("records").objects().map { item ->
+            val equipmentId = item.optString("id")
+            val canonicalSchemeIds = vl80sSchemeIdsByEquipment[equipmentId].orEmpty()
             val related = buildList {
                 addAll(item.array("diagnosticScenarioIds").strings())
                 addAll(item.array("relations").objects().mapNotNull { it.optString("targetId").takeIf(String::isNotBlank) })
+                addAll(canonicalSchemeIds)
             }.distinct()
             entry(
                 item, TechnicalFamily.VL80S, TechnicalSection.EQUIPMENT,
@@ -281,8 +309,9 @@ class TechnicalDataRepository(private val context: Context) {
                     block("Назначение", item.optString("purpose")),
                     block("Расположение", item.obj("location").summary()),
                     block("Функциональные связи", item.array("legacyConnections").strings()),
-                    block("Обозначения", item.array("aliases").strings() + item.array("schemeNodeIds").strings()),
+                    block("Обозначения", item.array("aliases").strings()),
                     block("Системы", item.array("systemIds").strings()),
+                    block("Схемы", canonicalSchemeIds),
                     block("Диагностика", item.array("diagnosticScenarioIds").strings()),
                     block("Применимость", item.obj("applicability").summary()),
                     block("Особенности", item.array("featureRules").stringsOrSummaries()),

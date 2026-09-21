@@ -44,14 +44,9 @@ internal fun HomeScreen(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text("ВЛ80С • Ермак", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-            Text("Два технических профиля локомотивной бригады", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-
         RailHeroCard(
             title = "Диагностика",
-            subtitle = "ВЛ80С и Ермак: поиск неисправности по наблюдаемым признакам, ветвящиеся уточнения и безопасные проверки.",
+            subtitle = "ВЛ80С и Ермак: поиск неисправности по наблюдаемым признакам и безопасные проверки.",
             action = "НАЧАТЬ ДИАГНОСТИКУ  →",
             onClick = onDiagnostics
         )
