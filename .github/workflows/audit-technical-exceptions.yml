@@ -1,0 +1,125 @@
+name: Audit technical exceptions
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-technical-exceptions.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect audit exceptions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip,json,re
+          from pathlib import Path
+          from collections import Counter
+          root=Path('app/src/main/assets/technical')
+          def load(n):
+              with gzip.open(root/n,'rt',encoding='utf-8') as f:return json.load(f)
+          def arr(o,k):
+              v=o.get(k,[]) if isinstance(o,dict) else []
+              return v if isinstance(v,list) else []
+          def pick(r):
+              if not isinstance(r,dict): return r
+              keys=['id','title','name','summary','purpose','category','severity','systemIds','equipmentIds','equipmentRefs','diagnosticScenarioIds','aliases','schemeNodeIds','applicability','variantGate','variantRules','relations','sourceRefs']
+              return {k:r.get(k) for k in keys if k in r}
+          out={}
+          # Ermak exception details
+          ed=load('ermak_diagnostics.json.gz'); el=load('ermak_links.json.gz'); es=load('ermak_schemes.json.gz')
+          dg=arr(ed,'scenarios'); sch=arr(es,'schemes')
+          out['ermakDiag036']=pick(next((x for x in dg if x.get('id')=='ER-DIAG-036'),{}))
+          bys=el.get('indexes',{}).get('byScheme',{})
+          no_diag=[]
+          for s in sch:
+              row=bys.get(s.get('id'),{})
+              if not arr(row,'diagnosticLinks'):
+                  no_diag.append({'scheme':pick(s),'index':row})
+          out['ermakSchemesWithoutDiagnostics']=no_diag
+
+          # VL80 exception details
+          ve=load('vl80s_equipment.json.gz'); vd=load('vl80s_diagnostics.json.gz'); va=load('vl80s_acceptance.json.gz'); vel=load('vl80s_electrical.json.gz'); vp=load('vl80s_pneumatic.json.gz')
+          eq=arr(ve,'records'); dg=arr(vd,'scenarios'); acc=arr(va,'items'); routes=arr(va,'routes')
+          target=next((x for x in eq if x.get('id')=='VL-EQ-CB-003'),{})
+          out['vl80EquipmentCB003']=pick(target)
+          aliases=[str(x).lower() for x in arr(target,'aliases')]
+          tokens=[t for t in re.split(r'[^0-9a-zа-яё]+',str(target.get('name','')).lower()) if len(t)>=4]
+          hits=[]
+          for d in dg:
+              text=json.dumps(d,ensure_ascii=False).lower()
+              why=[]
+              for a in aliases:
+                  if a and a in text: why.append('alias:'+a)
+              for t in tokens:
+                  if t in text: why.append('token:'+t)
+              if why: hits.append({'scenario':pick(d),'why':sorted(set(why))})
+          out['vl80PossibleDiagnosticsForCB003']=hits
+          orphan_ids={'cab-heating-smell','door-lock-fault','ext-coupler-damage','heater-fault'}
+          out['vl80DiagnosticsWithoutEquipment']=[pick(x) for x in dg if x.get('id') in orphan_ids]
+
+          # acceptance route coverage
+          accids={x.get('id') for x in acc if x.get('id')}
+          route_items=[]
+          per_route=[]
+          for r in routes:
+              ids=arr(r,'itemIds'); route_items.extend(ids)
+              per_route.append({'id':r.get('id'),'title':r.get('title'),'mode':r.get('mode'),'count':len(ids),'duplicates':[x for x,n in Counter(ids).items() if n>1]})
+          covered=set(route_items)
+          out['vl80AcceptanceCoverage']={
+              'items':len(accids),'routes':len(routes),'coveredUnique':len(covered & accids),
+              'uncovered':sorted(accids-covered),'unknownRouteIds':sorted(covered-accids),
+              'itemsInMultipleRoutes':sorted([x for x,n in Counter(route_items).items() if n>1]),'routesDetail':per_route
+          }
+
+          # Scheme structural summary, to understand actual equipment linking
+          def schsum(s):
+              return {
+                'id':s.get('id'),'title':s.get('title'),
+                'keys':sorted(s.keys()),
+                'sequenceLen':len(arr(s,'sequence')),
+                'equipmentRefs':arr(s,'equipmentRefs'),
+                'equipmentIds':arr(s,'equipmentIds'),
+                'nodesLen':len(arr(s,'nodes')),
+                'hotspotsLen':len(arr(s,'hotspots')),
+                'edgesLen':len(arr(s,'edges'))+len(arr(s,'semanticEdges')),
+              }
+          out['vl80ElectricalSchemes']=[schsum(x) for x in arr(vel,'baseSchemes')]
+          out['vl80PneumaticViews']=[schsum(x) for x in arr(vp,'views')]
+
+          # Equipment->scheme node coverage using schemeNodeIds and recursively visible node ids
+          all_node_ids=set()
+          def walk(v):
+              if isinstance(v,dict):
+                  if isinstance(v.get('id'),str): all_node_ids.add(v['id'])
+                  for z in v.values(): walk(z)
+              elif isinstance(v,list):
+                  for z in v: walk(z)
+          walk(vel); walk(vp)
+          no_scheme_nodes=[]; some_missing=[]
+          for e in eq:
+              refs=arr(e,'schemeNodeIds')
+              if not refs: no_scheme_nodes.append(e.get('id')); continue
+              missing=[x for x in refs if x not in all_node_ids]
+              if missing: some_missing.append({'id':e.get('id'),'missing':missing,'refs':refs})
+          out['vl80SchemeNodeCoverage']={'equipmentWithoutSchemeNodeIds':no_scheme_nodes,'equipmentWithMissingSchemeNodeIds':some_missing,'allDiscoveredNodeIds':len(all_node_ids)}
+
+          Path('technical-exceptions.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps({
+            'ermakNoDiagSchemes':[x['scheme'].get('id') for x in no_diag],
+            'vl80CB003':pick(target),
+            'vl80Acceptance':out['vl80AcceptanceCoverage'],
+            'vl80SchemeCoverage':{'withoutRefs':len(no_scheme_nodes),'withMissing':len(some_missing)}
+          },ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: technical-exceptions
+          path: technical-exceptions.json
