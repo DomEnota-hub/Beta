@@ -50,6 +50,20 @@ data class TechnicalEntry(
     val searchText: String
 )
 
+data class ErmakSchemeDiagnosticLink(
+    val diagnosticId: String,
+    val profileGateRequired: Boolean,
+    val reason: String
+)
+
+data class ErmakSchemeLinkContext(
+    val models: List<String>,
+    val profiles: List<String>,
+    val selectionRequired: Boolean,
+    val notes: String,
+    val diagnosticLinks: List<ErmakSchemeDiagnosticLink>
+)
+
 class TechnicalDataRepository(private val context: Context) {
     companion object {
         private val sharedSectionCache = mutableMapOf<Pair<TechnicalFamily, TechnicalSection>, List<TechnicalEntry>>()
@@ -84,6 +98,28 @@ class TechnicalDataRepository(private val context: Context) {
             return ermakSystemLinks(articleId.removePrefix("ER-KB-"))
         }
         return JSONObject()
+    }
+
+    fun ermakSchemeLinkContext(schemeId: String): ErmakSchemeLinkContext? {
+        val byScheme = ermakLinkIndexes.optJSONObject("byScheme") ?: return null
+        val raw = byScheme.optJSONObject(schemeId) ?: return null
+        val rules = raw.obj("variantRules")
+        val diagnostics = raw.array("diagnosticLinks").objects().mapNotNull { item ->
+            item.optString("diagnosticId").takeIf(String::isNotBlank)?.let { diagnosticId ->
+                ErmakSchemeDiagnosticLink(
+                    diagnosticId = diagnosticId,
+                    profileGateRequired = item.optBoolean("profileGateRequired", false),
+                    reason = item.optString("reason")
+                )
+            }
+        }.distinctBy(ErmakSchemeDiagnosticLink::diagnosticId)
+        return ErmakSchemeLinkContext(
+            models = rules.array("models").strings(),
+            profiles = rules.array("includeProfiles").strings(),
+            selectionRequired = rules.optBoolean("selectionRequired", false),
+            notes = rules.optString("notes"),
+            diagnosticLinks = diagnostics
+        )
     }
 
     val entries: List<TechnicalEntry>

@@ -347,6 +347,13 @@ private fun TechnicalEntryDetail(
         } else if (entry.sequence.isNotEmpty()) {
             item { TechnicalSequenceLinks(entry, repository, onOpen) }
         }
+        repository.ermakSchemeLinkContext(entry.id)
+            ?.takeIf { it.diagnosticLinks.isNotEmpty() }
+            ?.let { linkContext ->
+                item(key = "scheme-diagnostics-${entry.id}") {
+                    ErmakSchemeDiagnostics(entry, linkContext, repository, onOpen)
+                }
+            }
         items(entry.blocks, key = { it.title }) { block ->
             val displayLines = repository.displayLines(block.lines)
                 .mapNotNull(::technicalPresentationLine)
@@ -538,6 +545,113 @@ private fun ErmakInteractiveAtlas(
             }
         }
     }
+}
+
+@Composable
+private fun ErmakSchemeDiagnostics(
+    entry: TechnicalEntry,
+    linkContext: ru.railbrake.calculator.core.ErmakSchemeLinkContext,
+    repository: TechnicalDataRepository,
+    onOpen: (TechnicalEntry) -> Unit
+) {
+    var executionConfirmed by rememberSaveable(entry.id, "ermak-scheme-execution") { mutableStateOf(false) }
+    var query by rememberSaveable(entry.id, "ermak-scheme-diagnostics-query") { mutableStateOf("") }
+    val gatedCount = linkContext.diagnosticLinks.count { it.profileGateRequired }
+    val directCount = linkContext.diagnosticLinks.size - gatedCount
+    val available = linkContext.diagnosticLinks
+        .filter { !it.profileGateRequired || executionConfirmed }
+        .mapNotNull { link -> repository.entry(link.diagnosticId) }
+        .distinctBy(TechnicalEntry::id)
+    val visible = available.filter { target ->
+        query.isBlank() || target.searchText.contains(query.trim(), ignoreCase = true)
+    }
+    val modelText = linkContext.models.map(::ermakSchemeModelLabel).distinct().joinToString(" / ")
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = technicalBlockContainer(entry.section, "Диагностика")),
+        border = BorderStroke(1.dp, InteractiveSchemeAccent.copy(alpha = 0.65f)),
+        shape = RoundedCornerShape(18.dp)
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            Text("Диагностика по схеме", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text(
+                "Сразу доступно: $directCount • после подтверждения исполнения: $gatedCount",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            if (gatedCount > 0) {
+                if (!executionConfirmed) {
+                    if (modelText.isNotBlank()) {
+                        Text("Серия схемы: $modelText", fontWeight = FontWeight.Bold)
+                    }
+                    Text(
+                        "Часть переходов зависит от фактического исполнения. Подтверждайте только если открытая схема соответствует установленному на локомотиве оборудованию. Подтверждение действует только для этой схемы.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    OutlinedButton(
+                        onClick = { executionConfirmed = true },
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, InteractiveSchemeAccent)
+                    ) {
+                        Text("Подтвердить соответствие исполнения")
+                    }
+                    Text(
+                        "Скрыто до подтверждения: $gatedCount",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                } else {
+                    Text(
+                        "Исполнение подтверждено для этой схемы. Профильные диагностические переходы разблокированы.",
+                        color = InteractiveSchemeAccent,
+                        fontWeight = FontWeight.Bold
+                    )
+                    TextButton(onClick = { executionConfirmed = false }) {
+                        Text("Сбросить подтверждение")
+                    }
+                }
+            }
+            if (available.isNotEmpty()) {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Найти диагностический сценарий") }
+                )
+                visible.take(20).forEach { target ->
+                    OutlinedButton(
+                        onClick = { onOpen(target) },
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) {
+                        Text("${technicalEntryTitle(target)} →")
+                    }
+                }
+                if (visible.size > 20) {
+                    Text(
+                        "Показаны первые 20 из ${visible.size}; уточните поиск.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            } else {
+                Text(
+                    "Для текущего состояния доступных диагностических переходов нет.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+internal fun ermakSchemeModelLabel(value: String): String = when (value) {
+    "2ES5K" -> "2ЭС5К"
+    "3ES5K" -> "3ЭС5К"
+    else -> value
 }
 
 @Composable
