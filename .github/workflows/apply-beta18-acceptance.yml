@@ -1,0 +1,670 @@
+name: Apply Beta18 acceptance improvements
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/apply-beta18-acceptance.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout triggering revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Ensure branch has not moved
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          remote_head="$(git rev-parse origin/dev14-integration)"
+          if [ "$remote_head" != "$GITHUB_SHA" ]; then
+            echo "dev14-integration moved to $remote_head after this workflow was queued; refusing to overwrite it."
+            exit 1
+          fi
+
+      - name: Apply acceptance improvements
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          roots = [Path("app"), Path("patch/app")]
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+
+          acceptance_repo = '''package ru.railbrake.calculator.data
+
+          import android.content.Context
+
+          enum class AcceptanceCheckState(val label: String) {
+              NOT_CHECKED("Не проверено"),
+              OK("Проверено"),
+              NOTE("Замечание"),
+              NOT_APPLICABLE("Не применяется")
+          }
+
+          data class AcceptanceSummary(
+              val total: Int,
+              val checked: Int,
+              val notes: Int,
+              val notApplicable: Int,
+              val notChecked: Int
+          ) {
+              val complete: Boolean get() = total > 0 && notChecked == 0
+              val result: String get() = when {
+                  !complete -> "Проверка не завершена"
+                  notes > 0 -> "Проверка завершена: есть замечания"
+                  else -> "Проверка завершена: замечаний нет"
+              }
+          }
+
+          fun acceptanceSummary(states: List<AcceptanceCheckState>) = AcceptanceSummary(
+              total = states.size,
+              checked = states.count { it == AcceptanceCheckState.OK },
+              notes = states.count { it == AcceptanceCheckState.NOTE },
+              notApplicable = states.count { it == AcceptanceCheckState.NOT_APPLICABLE },
+              notChecked = states.count { it == AcceptanceCheckState.NOT_CHECKED }
+          )
+
+          class AcceptanceStateRepository(context: Context) {
+              private val preferences = context.getSharedPreferences("technical_acceptance_states", Context.MODE_PRIVATE)
+
+              private fun noteKey(itemId: String) = "note:$itemId"
+
+              fun state(itemId: String): AcceptanceCheckState =
+                  preferences.getString(itemId, AcceptanceCheckState.NOT_CHECKED.name)
+                      ?.replace("BLOCKING", AcceptanceCheckState.NOTE.name)
+                      ?.let { runCatching { AcceptanceCheckState.valueOf(it) }.getOrNull() }
+                      ?: AcceptanceCheckState.NOT_CHECKED
+
+              fun setState(itemId: String, state: AcceptanceCheckState) {
+                  preferences.edit().putString(itemId, state.name).apply()
+              }
+
+              fun note(itemId: String): String =
+                  preferences.getString(noteKey(itemId), "").orEmpty()
+
+              fun setNote(itemId: String, note: String) {
+                  val normalized = note.trim()
+                  preferences.edit().apply {
+                      if (normalized.isBlank()) remove(noteKey(itemId))
+                      else putString(noteKey(itemId), normalized)
+                  }.apply()
+              }
+          }
+          '''.replace("\n          ", "\n").lstrip()
+
+          new_acceptance_choice = '''@Composable
+          private fun AcceptanceStartChoice(
+              family: TechnicalFamily,
+              onBack: () -> Unit,
+              onSelect: (String) -> Unit
+          ) {
+              val routePrefix = if (family == TechnicalFamily.ERMAK) "ER" else "VL80"
+              Column(
+                  modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                  verticalArrangement = Arrangement.spacedBy(12.dp)
+              ) {
+                  ChildBackButton("Приёмка", onBack)
+                  RailSectionHeader("Полная приёмка ${family.title}", "Выберите точку начала маршрута")
+                  Card(
+                      onClick = { onSelect("$routePrefix-ROUTE-route_from_outside") },
+                      modifier = Modifier.fillMaxWidth(),
+                      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                      shape = RoundedCornerShape(18.dp)
+                  ) {
+                      Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                          Text("Начать снаружи", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                          Text("Последовательный маршрут от наружных зон к оборудованию внутри локомотива и кабине.")
+                      }
+                  }
+                  Card(
+                      onClick = { onSelect("$routePrefix-ROUTE-route_from_cab") },
+                      modifier = Modifier.fillMaxWidth(),
+                      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                      shape = RoundedCornerShape(18.dp)
+                  ) {
+                      Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                          Text("Начать из кабины", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                          Text("Последовательный маршрут от кабины к внутренним и наружным зонам.")
+                      }
+                  }
+              }
+          }
+
+          '''.replace("\n          ", "\n").lstrip()
+
+          new_sequence_block = '''@Composable
+          private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository) {
+              val context = LocalContext.current
+              val acceptanceRepository = remember(context) { AcceptanceStateRepository(context.applicationContext) }
+              var step by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+              var stateVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
+              var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
+              var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
+              var visibleLimit by rememberSaveable(entry.id) { mutableIntStateOf(30) }
+              val currentId = entry.sequence[step.coerceIn(entry.sequence.indices)]
+              val target = repository.entry(currentId)
+              val accent = technicalSectionAccent(entry.section, entry.status)
+              val currentState = stateVersion.let { acceptanceRepository.state(currentId) }
+              val currentNote = stateVersion.let { acceptanceRepository.note(currentId) }
+              val checklistItems = entry.sequence.mapNotNull { id -> repository.entry(id)?.let { id to it } }
+              val states = stateVersion.let { entry.sequence.map(acceptanceRepository::state) }
+              val summary = acceptanceSummary(states)
+              val savedNotes = stateVersion.let {
+                  checklistItems.mapNotNull { (id, item) ->
+                      acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
+                          technicalEntryTitle(item) to note
+                      }
+                  }
+              }
+              val visibleItems = checklistItems.filter { (_, item) ->
+                  checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
+                      technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
+              }
+              Card(
+                  modifier = Modifier.fillMaxWidth(),
+                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                  border = BorderStroke(1.dp, accent.copy(alpha = .45f)),
+                  shape = RoundedCornerShape(18.dp)
+              ) {
+                  Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                      Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                      Text("${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} пунктов обработано", color = accent)
+                      if (showFullChecklist) {
+                          OutlinedTextField(
+                              value = checklistQuery,
+                              onValueChange = {
+                                  checklistQuery = it
+                                  visibleLimit = 30
+                              },
+                              modifier = Modifier.fillMaxWidth(),
+                              singleLine = true,
+                              label = { Text("Поиск по названию") }
+                          )
+                          visibleItems.take(visibleLimit).forEach { (id, item) ->
+                              val itemState = stateVersion.let { acceptanceRepository.state(id) }
+                              val itemNote = stateVersion.let { acceptanceRepository.note(id) }
+                              Card(
+                                  modifier = Modifier.fillMaxWidth(),
+                                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                  border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+                                  shape = RoundedCornerShape(14.dp)
+                              ) {
+                                  Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                      Text(technicalEntryTitle(item), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                                      technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                                      AcceptanceStatusSelector(
+                                          itemId = id,
+                                          itemTitle = technicalEntryTitle(item),
+                                          currentState = itemState,
+                                          note = itemNote,
+                                          onSelect = { option ->
+                                              acceptanceRepository.setState(id, option)
+                                              stateVersion++
+                                          },
+                                          onSaveNote = { text ->
+                                              acceptanceRepository.setNote(id, text)
+                                              acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
+                                              stateVersion++
+                                          }
+                                      )
+                                  }
+                              }
+                          }
+                          if (visibleItems.isEmpty()) {
+                              Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                          } else if (visibleItems.size > visibleLimit) {
+                              OutlinedButton(
+                                  onClick = { visibleLimit = (visibleLimit + 30).coerceAtMost(visibleItems.size) },
+                                  modifier = Modifier.fillMaxWidth()
+                              ) {
+                                  Text("Показать ещё (${visibleItems.size - visibleLimit})")
+                              }
+                          }
+                          AcceptanceResultCard(summary, savedNotes)
+                          OutlinedButton(
+                              onClick = { showFullChecklist = false },
+                              modifier = Modifier.fillMaxWidth()
+                          ) { Text("Вернуться к пошаговой проверке") }
+                      } else {
+                          Text("Шаг ${step + 1} из ${entry.sequence.size}", color = accent)
+                          Text(target?.let(::technicalEntryTitle) ?: "Пункт приёмки", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+                          target?.let { item ->
+                              technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                              item.blocks.forEach { block ->
+                                  val lines = repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).distinct()
+                                  if (lines.isNotEmpty()) {
+                                      Card(
+                                          colors = CardDefaults.cardColors(containerColor = technicalBlockContainer(item.section, block.title)),
+                                          modifier = Modifier.fillMaxWidth()
+                                      ) {
+                                          Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                              Text(block.title, fontWeight = FontWeight.Black)
+                                              lines.forEach { Text("• $it") }
+                                          }
+                                      }
+                                  }
+                              }
+                              AcceptanceStatusSelector(
+                                  itemId = currentId,
+                                  itemTitle = technicalEntryTitle(item),
+                                  currentState = currentState,
+                                  note = currentNote,
+                                  onSelect = { option ->
+                                      acceptanceRepository.setState(currentId, option)
+                                      stateVersion++
+                                  },
+                                  onSaveNote = { text ->
+                                      acceptanceRepository.setNote(currentId, text)
+                                      acceptanceRepository.setState(currentId, AcceptanceCheckState.NOTE)
+                                      stateVersion++
+                                  }
+                              )
+                          }
+                          Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                              OutlinedButton(onClick = { if (step > 0) step-- }, enabled = step > 0) { Text("Назад") }
+                              Button(
+                                  onClick = { if (step < entry.sequence.lastIndex) step++ },
+                                  enabled = step < entry.sequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED
+                              ) { Text("Далее") }
+                          }
+                          OutlinedButton(
+                              onClick = {
+                                  showFullChecklist = true
+                                  visibleLimit = 30
+                              },
+                              modifier = Modifier.fillMaxWidth()
+                          ) { Text("Открыть полную карточку") }
+                          if (summary.complete) AcceptanceResultCard(summary, savedNotes)
+                      }
+                  }
+              }
+          }
+
+          @Composable
+          private fun AcceptanceStatusSelector(
+              itemId: String,
+              itemTitle: String,
+              currentState: AcceptanceCheckState,
+              note: String,
+              onSelect: (AcceptanceCheckState) -> Unit,
+              onSaveNote: (String) -> Unit
+          ) {
+              var noteEditorVisible by rememberSaveable(itemId) { mutableStateOf(false) }
+              var draftNote by rememberSaveable(itemId) { mutableStateOf(note) }
+
+              Text("Статус: ${currentState.label}", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+              Text(itemTitle, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Black)
+              LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                  items(AcceptanceCheckState.entries) { option ->
+                      FilterChip(
+                          selected = currentState == option,
+                          onClick = {
+                              if (option == AcceptanceCheckState.NOTE) {
+                                  draftNote = note
+                                  noteEditorVisible = true
+                              } else {
+                                  onSelect(option)
+                              }
+                          },
+                          label = { Text(option.label) }
+                      )
+                  }
+              }
+
+              if (note.isNotBlank()) {
+                  Card(
+                      modifier = Modifier.fillMaxWidth(),
+                      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                      shape = RoundedCornerShape(12.dp)
+                  ) {
+                      Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                          Text("Сохранённое замечание", fontWeight = FontWeight.Black)
+                          Text(note)
+                          TextButton(onClick = {
+                              draftNote = note
+                              noteEditorVisible = true
+                          }) { Text("Изменить замечание") }
+                      }
+                  }
+              } else if (currentState == AcceptanceCheckState.NOTE) {
+                  Text(
+                      "Текст замечания не записан. Нажмите «Замечание», чтобы добавить его.",
+                      color = MaterialTheme.colorScheme.error,
+                      style = MaterialTheme.typography.bodySmall
+                  )
+              }
+
+              if (noteEditorVisible) {
+                  AlertDialog(
+                      onDismissRequest = { noteEditorVisible = false },
+                      title = { Text("Замечание: $itemTitle", fontWeight = FontWeight.Black) },
+                      text = {
+                          OutlinedTextField(
+                              value = draftNote,
+                              onValueChange = { draftNote = it },
+                              modifier = Modifier.fillMaxWidth(),
+                              minLines = 3,
+                              maxLines = 7,
+                              label = { Text("Текст замечания") },
+                              placeholder = { Text("Что обнаружено при проверке") }
+                          )
+                      },
+                      confirmButton = {
+                          TextButton(
+                              onClick = {
+                                  onSaveNote(draftNote.trim())
+                                  noteEditorVisible = false
+                              },
+                              enabled = draftNote.isNotBlank()
+                          ) { Text("Сохранить") }
+                      },
+                      dismissButton = {
+                          TextButton(onClick = { noteEditorVisible = false }) { Text("Отмена") }
+                      }
+                  )
+              }
+          }
+
+          @Composable
+          private fun AcceptanceResultCard(
+              summary: ru.railbrake.calculator.data.AcceptanceSummary,
+              notes: List<Pair<String, String>> = emptyList()
+          ) {
+              val tone = if (summary.complete && summary.notes == 0) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer
+              InfoCard(
+                  summary.result,
+                  listOf(
+                      "Проверено: ${summary.checked}",
+                      "Замечания: ${summary.notes}",
+                      "Не применяется: ${summary.notApplicable}",
+                      "Не проверено: ${summary.notChecked}"
+                  ),
+                  tone
+              )
+              if (notes.isNotEmpty()) {
+                  Card(
+                      modifier = Modifier.fillMaxWidth(),
+                      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                      shape = RoundedCornerShape(14.dp)
+                  ) {
+                      Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                          Text("Сохранённые замечания", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                          notes.forEach { (title, note) ->
+                              Text(title, fontWeight = FontWeight.Bold)
+                              Text(note)
+                              HorizontalDivider()
+                          }
+                      }
+                  }
+              }
+          }
+
+          '''.replace("\n          ", "\n").lstrip()
+
+          ermak_acceptance_function = '''    private fun loadErmakAcceptance(): List<TechnicalEntry> {
+              val equipment = loadErmakEquipment()
+              if (equipment.isEmpty()) return emptyList()
+
+              fun lines(entry: TechnicalEntry, title: String): List<String> =
+                  entry.blocks.firstOrNull { it.title.equals(title, ignoreCase = true) }?.lines.orEmpty()
+
+              fun locationText(entry: TechnicalEntry): String =
+                  lines(entry, "Расположение").joinToString(" ").lowercase()
+
+              val outsideKeywords = listOf(
+                  "наруж", "снаруж", "кры", "тележ", "подкуз", "под куз", "автосцеп",
+                  "букс", "колес", "рам", "торц", "лобов", "межсек"
+              )
+              val cabKeywords = listOf(
+                  "кабин", "пульт", "машинист", "помощник", "контроллер", "панел", "стол"
+              )
+
+              val outside = equipment.filter { item -> outsideKeywords.any { it in locationText(item) } }
+              val cabin = equipment.filter { item -> cabKeywords.any { it in locationText(item) } }
+              val middle = equipment.filterNot { it in outside || it in cabin }
+
+              fun acceptanceId(source: TechnicalEntry) = "ER-ACC-${source.id.removePrefix("ER-EQ-")}"
+              val acceptanceIdByEquipment = equipment.associate { it.id to acceptanceId(it) }
+
+              val items = equipment.map { source ->
+                  val location = lines(source, "Расположение")
+                  val normal = lines(source, "Нормальное состояние")
+                  val deviations = lines(source, "Признаки отклонения")
+                  val applicability = lines(source, "Применимость")
+                  TechnicalEntry(
+                      id = acceptanceId(source),
+                      family = TechnicalFamily.ERMAK,
+                      section = TechnicalSection.ACCEPTANCE,
+                      title = source.title,
+                      subtitle = location.firstOrNull()?.let { "Расположение: $it" } ?: source.subtitle,
+                      status = "CHECK",
+                      blocks = buildList {
+                          add(
+                              TechnicalBlock(
+                                  "Контрольный пункт",
+                                  listOf(
+                                      "Зафиксируйте фактическое состояние узла. Нормы, допуски и порядок действий сверяйте с действующей эксплуатационной документацией."
+                                  )
+                              )
+                          )
+                          if (location.isNotEmpty()) add(TechnicalBlock("Расположение", location))
+                          if (normal.isNotEmpty()) add(TechnicalBlock("Нормальное состояние", normal))
+                          if (deviations.isNotEmpty()) add(TechnicalBlock("Признаки отклонения", deviations))
+                          if (applicability.isNotEmpty()) add(TechnicalBlock("Применимость", applicability))
+                      },
+                      relatedIds = listOf(source.id),
+                      searchText = listOf(
+                          source.title,
+                          source.subtitle,
+                          location.joinToString(" "),
+                          normal.joinToString(" "),
+                          deviations.joinToString(" "),
+                          applicability.joinToString(" ")
+                      ).joinToString(" ").lowercase()
+                  )
+              }
+
+              fun routeSequence(order: List<TechnicalEntry>): List<String> =
+                  order.mapNotNull { acceptanceIdByEquipment[it.id] }.distinct()
+
+              val fromOutside = routeSequence(outside + middle + cabin)
+              val fromCab = routeSequence(cabin + middle.asReversed() + outside.asReversed())
+
+              fun route(id: String, title: String, subtitle: String, sequence: List<String>) = TechnicalEntry(
+                  id = id,
+                  family = TechnicalFamily.ERMAK,
+                  section = TechnicalSection.ACCEPTANCE,
+                  title = title,
+                  subtitle = "$subtitle • ${sequence.size} пунктов",
+                  status = "ROUTE",
+                  blocks = listOf(
+                      TechnicalBlock(
+                          "Режим",
+                          listOf(
+                              "Чек-лист построен по расположению и карточкам оборудования Ермака, уже включённым в приложение.",
+                              "Если узел отсутствует на конкретном исполнении, используйте статус «Не применяется».",
+                              "Чек-лист фиксирует результат осмотра и не заменяет действующую эксплуатационную документацию."
+                          )
+                      )
+                  ),
+                  sequence = sequence,
+                  searchText = "$title $subtitle приёмка ермак 2эс5к 3эс5к".lowercase()
+              )
+
+              val canonical = route(
+                  "ER-ROUTE-route_canonical",
+                  "Полная приёмка Ермак",
+                  "Выбор точки начала маршрута",
+                  fromOutside
+              )
+              val outsideRoute = route(
+                  "ER-ROUTE-route_from_outside",
+                  "Приёмка Ермак — начать снаружи",
+                  "От наружных зон к внутреннему оборудованию и кабине",
+                  fromOutside
+              )
+              val cabRoute = route(
+                  "ER-ROUTE-route_from_cab",
+                  "Приёмка Ермак — начать из кабины",
+                  "От кабины к внутреннему оборудованию и наружным зонам",
+                  fromCab
+              )
+
+              return listOf(canonical, outsideRoute, cabRoute) + items
+          }
+
+          '''.replace("\n          ", "\n")
+
+          for root in roots:
+              state_path = root / "src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt"
+              state_path.write_text(acceptance_repo)
+
+              data_path = root / "src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt"
+              text = data_path.read_text()
+              text = replace_once(
+                  text,
+                  "            TechnicalSection.ACCEPTANCE -> emptyList()",
+                  "            TechnicalSection.ACCEPTANCE -> loadErmakAcceptance()",
+                  f"{data_path}: Ermak acceptance loader",
+              )
+              text = replace_once(
+                  text,
+                  '        id.startsWith("ER-VARIANT-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.PROFILES)\n        id.startsWith("SYS-")',
+                  '        id.startsWith("ER-VARIANT-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.PROFILES)\n        id.startsWith("ER-ACC-") || id.startsWith("ER-ROUTE-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.ACCEPTANCE)\n        id.startsWith("SYS-")',
+                  f"{data_path}: Ermak acceptance candidate section",
+              )
+              anchor = "    private fun loadErmakSystems(): List<TechnicalEntry> {"
+              if text.count(anchor) != 1:
+                  raise SystemExit(f"{data_path}: Ermak acceptance insertion anchor mismatch")
+              text = text.replace(anchor, ermak_acceptance_function + anchor, 1)
+              data_path.write_text(text)
+
+              ui_path = root / "src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt"
+              text = ui_path.read_text()
+              text = replace_once(
+                  text,
+                  '''        AcceptanceStartChoice(\n            onBack = { acceptanceStartChoice = false },''',
+                  '''        AcceptanceStartChoice(\n            family = family,\n            onBack = { acceptanceStartChoice = false },''',
+                  f"{ui_path}: acceptance family argument",
+              )
+              text = replace_once(
+                  text,
+                  '''                            familyName = option.name\n                            val sections = repository.sections(option)\n                            if (runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull() !in sections) sectionName = sections.first().name\n                            query = ""''',
+                  '''                            familyName = option.name\n                            if (!lockSection) {\n                                val sections = repository.sections(option)\n                                if (runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull() !in sections) sectionName = sections.first().name\n                            }\n                            query = ""''',
+                  f"{ui_path}: locked section family switch",
+              )
+              text = replace_once(
+                  text,
+                  '                    if (entry.id == "VL80-ROUTE-route_canonical") acceptanceStartChoice = true',
+                  '                    if (entry.section == TechnicalSection.ACCEPTANCE && entry.id.endsWith("-ROUTE-route_canonical")) acceptanceStartChoice = true',
+                  f"{ui_path}: canonical route handling",
+              )
+              start = text.index("@Composable\nprivate fun AcceptanceStartChoice(")
+              end = text.index("@Composable\nprivate fun TechnicalEntryDetail(", start)
+              text = text[:start] + new_acceptance_choice + text[end:]
+              start = text.index("@Composable\nprivate fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRepository)")
+              end = text.index("@Composable\nprivate fun technicalBlockContainer", start)
+              text = text[:start] + new_sequence_block + text[end:]
+              ui_path.write_text(text)
+
+              app_path = root / "src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt"
+              text = app_path.read_text()
+              text = replace_once(
+                  text,
+                  '''                        lockFamily = true,\n                        lockSection = true''',
+                  '''                        lockFamily = false,\n                        lockSection = true''',
+                  f"{app_path}: acceptance family selector",
+              )
+              app_path.write_text(text)
+
+              gradle_path = root / "build.gradle.kts"
+              text = gradle_path.read_text()
+              text = replace_once(
+                  text,
+                  "// Beta17: multiline Ermak atlas labels and popup equipment details.",
+                  "// Beta18: acceptance notes and Ermak acceptance routes.",
+                  f"{gradle_path}: version comment",
+              )
+              text = replace_once(text, "versionCode = 162", "versionCode = 163", f"{gradle_path}: versionCode")
+              text = replace_once(
+                  text,
+                  'versionName = "1.2.2-dev14-beta17"',
+                  'versionName = "1.2.2-dev14-beta18"',
+                  f"{gradle_path}: versionName",
+              )
+              gradle_path.write_text(text)
+
+          workflow_path = Path(".github/workflows/dev14-safe-build-v2.yml")
+          workflow = workflow_path.read_text()
+          workflow = replace_once(
+              workflow,
+              "          cmp app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt\n",
+              "          cmp app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt\n          cmp app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt\n",
+              "safe build acceptance mirror check",
+          )
+          workflow_path.write_text(workflow)
+
+          pairs = [
+              ("build.gradle.kts",),
+              ("src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt",),
+              ("src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt",),
+              ("src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt",),
+              ("src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt",),
+          ]
+          for (relative,) in pairs:
+              left = Path("app") / relative
+              right = Path("patch/app") / relative
+              if left.read_text() != right.read_text():
+                  raise SystemExit(f"Mirror mismatch after patch: {relative}")
+
+          ui = Path("app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt").read_text()
+          data = Path("app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt").read_text()
+          state = Path("app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt").read_text()
+          app = Path("app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt").read_text()
+          assert "Сохранённое замечание" in ui
+          assert "ER-ROUTE-route_canonical" in data
+          assert "loadErmakAcceptance()" in data
+          assert "fun note(itemId: String)" in state
+          assert "lockFamily = false" in app
+          PY
+
+          git diff --check
+
+      - name: Commit source changes and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/apply-beta18-acceptance.yml
+          git add app patch .github/workflows/dev14-safe-build-v2.yml
+          git diff --cached --check
+          git config user.name "DomEnota-hub"
+          git config user.email "domenota6212@gmail.com"
+          git commit -m "Add Ermak acceptance and editable notes"
+
+      - name: Push only if branch is still ours
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          remote_head="$(git rev-parse origin/dev14-integration)"
+          if [ "$remote_head" != "$GITHUB_SHA" ]; then
+            echo "dev14-integration moved to $remote_head while patching; refusing non-fast-forward push."
+            exit 1
+          fi
+          git push origin HEAD:dev14-integration
