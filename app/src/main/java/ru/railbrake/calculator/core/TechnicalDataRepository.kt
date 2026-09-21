@@ -67,6 +67,7 @@ data class ErmakSchemeLinkContext(
 class TechnicalDataRepository(private val context: Context) {
     companion object {
         private val sharedSectionCache = mutableMapOf<Pair<TechnicalFamily, TechnicalSection>, List<TechnicalEntry>>()
+        private val sharedEntryCache = mutableMapOf<String, TechnicalEntry>()
     }
 
     private val legacyEquipmentIds by lazy {
@@ -179,10 +180,13 @@ class TechnicalDataRepository(private val context: Context) {
     fun entry(id: String): TechnicalEntry? {
         val canonicalId = legacyEquipmentIds[id.lowercase()] ?: id
         synchronized(sharedSectionCache) {
-            sharedSectionCache.values.asSequence().flatten().firstOrNull { it.id == canonicalId }?.let { return it }
+            sharedEntryCache[canonicalId]?.let { return it }
         }
         candidateSections(canonicalId).forEach { (family, section) ->
-            sectionEntries(family, section).firstOrNull { it.id == canonicalId }?.let { return it }
+            sectionEntries(family, section)
+            synchronized(sharedSectionCache) {
+                sharedEntryCache[canonicalId]?.let { return it }
+            }
         }
         return null
     }
@@ -202,9 +206,15 @@ class TechnicalDataRepository(private val context: Context) {
 
     private fun sectionEntries(family: TechnicalFamily, section: TechnicalSection): List<TechnicalEntry> {
         val key = family to section
-        synchronized(sharedSectionCache) { sharedSectionCache[key]?.let { return it } }
+        synchronized(sharedSectionCache) {
+            sharedSectionCache[key]?.let { return it }
+        }
         val loaded = loadSection(family, section)
-        synchronized(sharedSectionCache) { return sharedSectionCache.getOrPut(key) { loaded } }
+        synchronized(sharedSectionCache) {
+            val cached = sharedSectionCache.getOrPut(key) { loaded }
+            cached.forEach { entry -> sharedEntryCache.putIfAbsent(entry.id, entry) }
+            return cached
+        }
     }
 
     private fun loadSection(family: TechnicalFamily, section: TechnicalSection): List<TechnicalEntry> = when (family) {

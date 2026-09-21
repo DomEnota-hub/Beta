@@ -345,21 +345,48 @@ private fun TechnicalEntryDetail(
     onOpen: (TechnicalEntry) -> Unit
 ) {
     val accent = technicalSectionAccent(entry.section, entry.status)
-    val referencedIds = entry.blocks
-        .flatMap { repository.referencedEntries(it.lines) }
-        .map { it.id }
-        .toSet()
-    val relatedEntries = entry.relatedIds
-        .distinct()
-        .mapNotNull(repository::entry)
-        .filterNot { it.id == entry.id || it.id in referencedIds }
-        .sortedWith(
-            compareBy<TechnicalEntry> { technicalRelatedSectionOrder(it.section) }
-                .thenBy { technicalEntryTitle(it).lowercase() }
-        )
-    val relatedGroups = relatedEntries.groupBy(TechnicalEntry::section)
-        .toList()
-        .sortedBy { (section, _) -> technicalRelatedSectionOrder(section) }
+    val isErmakLayout = isErmakLayoutEntry(entry.id)
+    val detailBlocks = remember(entry.id) {
+        if (isErmakLayout) entry.blocks.filterNot { it.title == "Оборудование" } else entry.blocks
+    }
+    val referencedIds = remember(entry.id, repository) {
+        if (isErmakLayout) {
+            emptySet()
+        } else {
+            entry.blocks
+                .flatMap { repository.referencedEntries(it.lines) }
+                .map { it.id }
+                .toSet()
+        }
+    }
+    val relatedEntries = remember(entry.id, repository) {
+        if (isErmakLayout) {
+            emptyList()
+        } else {
+            entry.relatedIds
+                .distinct()
+                .mapNotNull(repository::entry)
+                .filterNot { it.id == entry.id || it.id in referencedIds }
+                .sortedWith(
+                    compareBy<TechnicalEntry> { technicalRelatedSectionOrder(it.section) }
+                        .thenBy { technicalEntryTitle(it).lowercase() }
+                )
+        }
+    }
+    val relatedGroups = remember(entry.id, repository) {
+        relatedEntries.groupBy(TechnicalEntry::section)
+            .toList()
+            .sortedBy { (section, _) -> technicalRelatedSectionOrder(section) }
+    }
+    val schemeLinkContext by produceState<ru.railbrake.calculator.core.ErmakSchemeLinkContext?>(
+        initialValue = null,
+        entry.id,
+        repository
+    ) {
+        value = withContext(Dispatchers.Default) {
+            repository.ermakSchemeLinkContext(entry.id)
+        }
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -382,14 +409,14 @@ private fun TechnicalEntryDetail(
         } else if (entry.sequence.isNotEmpty()) {
             item { TechnicalSequenceLinks(entry, repository, onOpen) }
         }
-        repository.ermakSchemeLinkContext(entry.id)
+        schemeLinkContext
             ?.takeIf { it.diagnosticLinks.isNotEmpty() }
             ?.let { linkContext ->
                 item(key = "scheme-diagnostics-${entry.id}") {
                     ErmakSchemeDiagnostics(entry, linkContext, repository, onOpen)
                 }
             }
-        items(entry.blocks, key = { it.title }) { block ->
+        items(detailBlocks, key = { it.title }) { block ->
             val displayLines = repository.displayLines(block.lines)
                 .mapNotNull(::technicalPresentationLine)
                 .distinct()
@@ -508,13 +535,32 @@ private fun ErmakInteractiveAtlas(
 ) {
     var selectedId by rememberSaveable(entry.id) { mutableStateOf(entry.hotspots.firstOrNull()?.equipmentId) }
     var query by rememberSaveable(entry.id) { mutableStateOf("") }
-    val selectedHotspot = entry.hotspots.firstOrNull { it.equipmentId == selectedId }
-    val selectedEquipment = selectedHotspot?.let { repository.entry(it.equipmentId) }
-    val visible = entry.hotspots.filter {
-        query.isBlank() || it.label.contains(query, ignoreCase = true) || it.equipmentId.contains(query, ignoreCase = true)
+    val selectedHotspot = remember(entry.id, selectedId) {
+        entry.hotspots.firstOrNull { it.equipmentId == selectedId }
     }
-    val maxX = entry.hotspots.maxOfOrNull { it.x + it.width }?.coerceAtLeast(1) ?: 1
-    val maxY = entry.hotspots.maxOfOrNull { it.y + it.height }?.coerceAtLeast(1) ?: 1
+    val selectedEquipmentState by produceState<Pair<Boolean, TechnicalEntry?>>(
+        initialValue = false to null,
+        selectedId,
+        repository
+    ) {
+        val equipmentId = selectedId
+        value = if (equipmentId == null) {
+            true to null
+        } else {
+            withContext(Dispatchers.Default) {
+                true to repository.entry(equipmentId)
+            }
+        }
+    }
+    val selectedEquipmentLoaded = selectedEquipmentState.first
+    val selectedEquipment = selectedEquipmentState.second
+    val visible = remember(entry.id, query) {
+        entry.hotspots.filter {
+            query.isBlank() || it.label.contains(query, ignoreCase = true) || it.equipmentId.contains(query, ignoreCase = true)
+        }
+    }
+    val maxX = remember(entry.id) { entry.hotspots.maxOfOrNull { it.x + it.width }?.coerceAtLeast(1) ?: 1 }
+    val maxY = remember(entry.id) { entry.hotspots.maxOfOrNull { it.y + it.height }?.coerceAtLeast(1) ?: 1 }
     val scale = 0.62f
     val mapWidth = maxX * scale
     val mapHeight = maxY * scale
@@ -591,19 +637,27 @@ private fun ErmakInteractiveAtlas(
             }
             selectedHotspot?.let { hotspot ->
                 Text(hotspot.label, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                selectedEquipment?.let { equipment ->
-                    technicalEntrySubtitle(equipment)?.let {
-                        Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                val equipment = selectedEquipment
+                when {
+                    !selectedEquipmentLoaded -> Text(
+                        "Карточка оборудования загружается…",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    equipment != null -> {
+                        technicalEntrySubtitle(equipment)?.let {
+                            Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        OutlinedButton(
+                            onClick = { onOpen(equipment) },
+                            modifier = Modifier.fillMaxWidth(),
+                            border = BorderStroke(1.dp, Color.Black)
+                        ) { Text("Подробнее") }
                     }
-                    OutlinedButton(
-                        onClick = { onOpen(equipment) },
-                        modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, Color.Black)
-                    ) { Text("Подробнее") }
-                } ?: Text(
-                    "Для выбранной зоны отдельная карточка оборудования пока отсутствует.",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    else -> Text(
+                        "Для выбранной зоны отдельная карточка оборудования пока отсутствует.",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
             if (query.isNotBlank()) {
                 Text("Результаты поиска", fontWeight = FontWeight.Bold)
