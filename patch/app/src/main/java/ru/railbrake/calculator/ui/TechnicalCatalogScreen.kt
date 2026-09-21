@@ -476,13 +476,13 @@ fun TechnicalCatalogScreen(
                     enabled = onOpenLegacyArticle != null,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer),
+                    colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer, contentColor = InteractiveSchemeOnSurface),
                     border = BorderStroke(2.dp, InteractiveSchemeAccent)
                 ) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Text("ИНТЕРАКТИВНАЯ СХЕМА", style = MaterialTheme.typography.labelSmall, color = InteractiveSchemeAccent, fontWeight = FontWeight.Black)
                         Text(shortcut.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                        Text(shortcut.subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(shortcut.subtitle, color = InteractiveSchemeMuted)
                         Text("Открыть интерактивную схему →", color = InteractiveSchemeAccent, fontWeight = FontWeight.Bold)
                     }
                 }
@@ -501,7 +501,10 @@ fun TechnicalCatalogScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = if (interactive) InteractiveSchemeContainer else technicalSectionContainer(entry.section)),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (interactive) InteractiveSchemeContainer else technicalSectionContainer(entry.section),
+                    contentColor = if (interactive) InteractiveSchemeOnSurface else MaterialTheme.colorScheme.onSurface
+                ),
                 border = BorderStroke(if (interactive) 2.dp else 1.dp, if (interactive) InteractiveSchemeAccent else accent.copy(alpha = 0.52f))
             ) {
                 Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -515,7 +518,7 @@ fun TechnicalCatalogScreen(
                         Text(
                             subtitle,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (interactive) InteractiveSchemeMuted else MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = if (entry.family == TechnicalFamily.ERMAK) 2 else Int.MAX_VALUE,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -548,6 +551,8 @@ fun TechnicalCatalogScreen(
 
 private val InteractiveSchemeContainer = Color(0xFF17363A)
 private val InteractiveSchemeAccent = Color(0xFF65E3D2)
+private val InteractiveSchemeOnSurface = Color(0xFFF0F6F5)
+private val InteractiveSchemeMuted = Color(0xFFB8CCC9)
 
 internal data class InteractiveLegacyShortcut(val articleId: String, val title: String, val subtitle: String)
 
@@ -819,7 +824,7 @@ private fun TechnicalEntryDetail(
                                 OutlinedButton(
                                     onClick = { onOpen(target) },
                                     modifier = Modifier.fillMaxWidth(),
-                                    border = BorderStroke(1.dp, Color.Black)
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                                 ) { Text("${technicalEntryTitle(target)} →") }
                             }
                         }
@@ -870,7 +875,7 @@ private fun TechnicalEntryDetail(
                                     OutlinedButton(
                                         onClick = { onOpen(target) },
                                         modifier = Modifier.fillMaxWidth(),
-                                        border = BorderStroke(1.dp, Color.Black)
+                                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                                     ) {
                                         Text("${technicalEntryTitle(target)} →")
                                     }
@@ -903,7 +908,7 @@ private fun TechnicalEntryDetail(
                         OutlinedButton(
                             onClick = { onOpen(target) },
                             modifier = Modifier.fillMaxWidth(),
-                            border = BorderStroke(1.dp, Color.Black)
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                         ) {
                             Text("${technicalEntryTitle(target)} →")
                         }
@@ -1087,7 +1092,7 @@ private fun ErmakInteractiveAtlas(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer),
+        colors = CardDefaults.cardColors(containerColor = InteractiveSchemeContainer, contentColor = InteractiveSchemeOnSurface),
         border = BorderStroke(2.dp, InteractiveSchemeAccent),
         shape = RoundedCornerShape(18.dp)
     ) {
@@ -1205,7 +1210,7 @@ private fun ErmakInteractiveAtlas(
                             detailsVisible = true
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, Color.Black)
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                     ) { Text(hotspot.label) }
                 }
                 if (visible.size > 20) Text("Показаны первые 20 из ${visible.size}", style = MaterialTheme.typography.bodySmall)
@@ -1370,7 +1375,7 @@ private fun ErmakSchemeDiagnostics(
                     OutlinedButton(
                         onClick = { onOpen(target) },
                         modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, Color.Black)
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                     ) {
                         Text("${technicalEntryTitle(target)} →")
                     }
@@ -1430,7 +1435,7 @@ private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalD
                 OutlinedButton(
                     onClick = { onOpen(target) },
                     modifier = Modifier.fillMaxWidth(),
-                    border = BorderStroke(1.dp, Color.Black)
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                 ) {
                     Text("Открыть карточку оборудования")
                 }
@@ -1457,7 +1462,7 @@ private fun TechnicalSequenceLinks(entry: TechnicalEntry, repository: TechnicalD
                         query = ""
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    border = BorderStroke(1.dp, Color.Black)
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                 ) {
                     Text(if (target == null) label else "$label →")
                 }

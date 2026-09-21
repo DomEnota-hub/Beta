@@ -83,6 +83,7 @@ import ru.railbrake.calculator.data.HistoryRecord
 import ru.railbrake.calculator.data.HistoryRepository
 import ru.railbrake.calculator.data.SecretAccessRepository
 import ru.railbrake.calculator.ui.theme.AccentPalette
+import ru.railbrake.calculator.ui.theme.AppThemeMode
 import ru.railbrake.calculator.ui.theme.Success
 import ru.railbrake.calculator.ui.theme.Warning
 import java.text.SimpleDateFormat
@@ -133,7 +134,9 @@ internal fun isDeveloperEasterEgg(massTons: Double, axleCount: Int?): Boolean =
 @Composable
 fun BrakeCalculatorApp(
     palette: AccentPalette,
-    onPaletteChange: (AccentPalette) -> Unit
+    onPaletteChange: (AccentPalette) -> Unit,
+    themeMode: AppThemeMode,
+    onThemeModeChange: (AppThemeMode) -> Unit
 ) {
     val context = LocalContext.current
     val historyRepository = remember { HistoryRepository(context) }
@@ -441,7 +444,7 @@ fun BrakeCalculatorApp(
                     }
                 ) }
                 AppScreen.SETTINGS -> ScrollPage {
-                    PaletteScreen(palette, onPaletteChange)
+                    PaletteScreen(palette, onPaletteChange, themeMode, onThemeModeChange)
                 }
                 }
             }
@@ -1440,7 +1443,9 @@ private fun LocomotiveCard(loco: LocomotiveSpec) {
 @Composable
 private fun PaletteScreen(
     palette: AccentPalette,
-    onPaletteChange: (AccentPalette) -> Unit
+    onPaletteChange: (AccentPalette) -> Unit,
+    themeMode: AppThemeMode,
+    onThemeModeChange: (AppThemeMode) -> Unit
 ) {
     val context = LocalContext.current
     val packageInfo = remember(context) {
@@ -1452,7 +1457,14 @@ private fun PaletteScreen(
         @Suppress("DEPRECATION")
         packageInfo.versionCode.toLong()
     }
-    SectionCard("Оформление", "Графитовая основа постоянна; меняется только рабочий акцент") {
+    SectionCard("Тема", "Светлая используется по умолчанию") {
+        ChoiceRow(
+            options = AppThemeMode.entries.map { it.title },
+            selectedIndex = AppThemeMode.entries.indexOf(themeMode),
+            onSelect = { index -> onThemeModeChange(AppThemeMode.entries[index]) }
+        )
+    }
+    SectionCard("Цветовой акцент", "Выбранный цвет работает независимо от светлой или тёмной темы") {
         AccentPalette.entries.forEach { option ->
             ChoiceOption(
                 title = option.title,
@@ -1468,7 +1480,7 @@ private fun PaletteScreen(
             )
         }
     }
-    RailInfoBand("Графитовая основа постоянна; выбранная палитра меняет рабочий акцент. Красный зарезервирован для опасности и ОПП.")
+    RailInfoBand("Тема и цветовой акцент настраиваются независимо. Красный по-прежнему зарезервирован для опасности и ОПП.")
     SectionCard("О приложении", "Текущая рабочая сборка") {
         Metric("Версия", "${packageInfo.versionName ?: "—"} ($actualVersionCode)")
         Metric("Профиль", "Рабочий")
