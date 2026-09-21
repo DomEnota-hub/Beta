@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta17: multiline Ermak atlas labels and popup equipment details.
+// Beta18: acceptance notes and Ermak acceptance routes.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
@@ -19,8 +19,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 162
-        versionName = "1.2.2-dev14-beta17"
+        versionCode = 163
+        versionName = "1.2.2-dev14-beta18"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

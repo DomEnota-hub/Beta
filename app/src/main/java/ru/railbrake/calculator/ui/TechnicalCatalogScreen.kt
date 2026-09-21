@@ -135,6 +135,7 @@ fun TechnicalCatalogScreen(
 
     if (acceptanceStartChoice) {
         AcceptanceStartChoice(
+            family = family,
             onBack = { acceptanceStartChoice = false },
             onSelect = { selectedId = it; navigationPath = ""; acceptanceStartChoice = false }
         )
@@ -206,8 +207,10 @@ fun TechnicalCatalogScreen(
                         selected = family == option,
                         onClick = {
                             familyName = option.name
-                            val sections = repository.sections(option)
-                            if (runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull() !in sections) sectionName = sections.first().name
+                            if (!lockSection) {
+                                val sections = repository.sections(option)
+                                if (runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull() !in sections) sectionName = sections.first().name
+                            }
                             query = ""
                         },
                         label = { Text(option.title) }
@@ -288,7 +291,7 @@ fun TechnicalCatalogScreen(
             val interactive = entry.sequence.isNotEmpty() && entry.section != TechnicalSection.ACCEPTANCE
             Card(
                 onClick = {
-                    if (entry.id == "VL80-ROUTE-route_canonical") acceptanceStartChoice = true
+                    if (entry.section == TechnicalSection.ACCEPTANCE && entry.id.endsWith("-ROUTE-route_canonical")) acceptanceStartChoice = true
                     else {
                         navigationPath = ""
                         selectedId = entry.id
@@ -347,34 +350,39 @@ internal fun interactiveLegacyShortcuts(family: TechnicalFamily, section: Techni
 }
 
 @Composable
-private fun AcceptanceStartChoice(onBack: () -> Unit, onSelect: (String) -> Unit) {
+private fun AcceptanceStartChoice(
+    family: TechnicalFamily,
+    onBack: () -> Unit,
+    onSelect: (String) -> Unit
+) {
+    val routePrefix = if (family == TechnicalFamily.ERMAK) "ER" else "VL80"
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         ChildBackButton("Приёмка", onBack)
-        RailSectionHeader("Полная приёмка", "Выберите точку начала маршрута")
+        RailSectionHeader("Полная приёмка ${family.title}", "Выберите точку начала маршрута")
         Card(
-            onClick = { onSelect("VL80-ROUTE-route_from_outside") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-            shape = RoundedCornerShape(18.dp)
+  onClick = { onSelect("$routePrefix-ROUTE-route_from_outside") },
+  modifier = Modifier.fillMaxWidth(),
+  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+  shape = RoundedCornerShape(18.dp)
         ) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                Text("Начать снаружи", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-                Text("Последовательный маршрут от наружного осмотра к кабине.")
-            }
+  Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+      Text("Начать снаружи", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+      Text("Последовательный маршрут от наружных зон к оборудованию внутри локомотива и кабине.")
+  }
         }
         Card(
-            onClick = { onSelect("VL80-ROUTE-route_from_cab") },
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
-            shape = RoundedCornerShape(18.dp)
+  onClick = { onSelect("$routePrefix-ROUTE-route_from_cab") },
+  modifier = Modifier.fillMaxWidth(),
+  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+  shape = RoundedCornerShape(18.dp)
         ) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                Text("Начать из кабины", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-                Text("Последовательный маршрут от органов управления к наружным зонам.")
-            }
+  Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+      Text("Начать из кабины", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+      Text("Последовательный маршрут от кабины к внутренним и наружным зонам.")
+  }
         }
     }
 }
@@ -1080,104 +1088,263 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
     var stateVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
     var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
     var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
-    val currentId=entry.sequence[step.coerceIn(entry.sequence.indices)]
-    val target=repository.entry(currentId)
-    val accent=technicalSectionAccent(entry.section,entry.status)
+    var visibleLimit by rememberSaveable(entry.id) { mutableIntStateOf(30) }
+    val currentId = entry.sequence[step.coerceIn(entry.sequence.indices)]
+    val target = repository.entry(currentId)
+    val accent = technicalSectionAccent(entry.section, entry.status)
     val currentState = stateVersion.let { acceptanceRepository.state(currentId) }
+    val currentNote = stateVersion.let { acceptanceRepository.note(currentId) }
     val checklistItems = entry.sequence.mapNotNull { id -> repository.entry(id)?.let { id to it } }
     val states = stateVersion.let { entry.sequence.map(acceptanceRepository::state) }
     val summary = acceptanceSummary(states)
+    val savedNotes = stateVersion.let {
+        checklistItems.mapNotNull { (id, item) ->
+  acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
+      technicalEntryTitle(item) to note
+  }
+        }
+    }
     val visibleItems = checklistItems.filter { (_, item) ->
         checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
-            technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
+  technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
     }
-    Card(modifier=Modifier.fillMaxWidth(),colors=CardDefaults.cardColors(containerColor=MaterialTheme.colorScheme.secondaryContainer),border=BorderStroke(1.dp,accent.copy(alpha=.45f)),shape=RoundedCornerShape(18.dp)) {
-        Column(Modifier.padding(16.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-            Text("Пошаговая приёмка",style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.Black)
-            Text("${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} пунктов обработано",color=accent)
-            if (showFullChecklist) {
-                OutlinedTextField(
-                    value = checklistQuery,
-                    onValueChange = { checklistQuery = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    label = { Text("Поиск по названию") }
-                )
-                visibleItems.forEach { (id, item) ->
-                    val itemState = stateVersion.let { acceptanceRepository.state(id) }
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-                        shape = RoundedCornerShape(14.dp)
-                    ) {
-                        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text(technicalEntryTitle(item), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                            technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                            AcceptanceStatusSelector(
-                                itemTitle = technicalEntryTitle(item),
-                                currentState = itemState,
-                                onSelect = { option -> acceptanceRepository.setState(id, option); stateVersion++ }
-                            )
-                        }
-                    }
-                }
-                if (visibleItems.isEmpty()) Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                AcceptanceResultCard(summary)
-                OutlinedButton(onClick = { showFullChecklist = false }, modifier = Modifier.fillMaxWidth()) { Text("Вернуться к пошаговой проверке") }
-            } else {
-                Text("Шаг ${step+1} из ${entry.sequence.size}",color=accent)
-                Text(target?.let(::technicalEntryTitle)?:"Пункт приёмки",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.Black)
-                target?.let { item ->
-                    technicalEntrySubtitle(item)?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant) }
-                    item.blocks.forEach { block ->
-                        val lines=repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).distinct()
-                        if(lines.isNotEmpty()) Card(colors=CardDefaults.cardColors(containerColor=technicalBlockContainer(item.section,block.title)),modifier=Modifier.fillMaxWidth()) {
-                            Column(Modifier.padding(12.dp),verticalArrangement=Arrangement.spacedBy(5.dp)) { Text(block.title,fontWeight=FontWeight.Black); lines.forEach { Text("• $it") } }
-                        }
-                    }
-                    AcceptanceStatusSelector(
-                        itemTitle = technicalEntryTitle(item),
-                        currentState = currentState,
-                        onSelect = { option -> acceptanceRepository.setState(currentId, option); stateVersion++ }
-                    )
-                }
-                Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick={if(step>0)step--},enabled=step>0){Text("Назад")}; Button(onClick={if(step<entry.sequence.lastIndex)step++},enabled=step<entry.sequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED){Text("Далее")} }
-                OutlinedButton(onClick={showFullChecklist=true},modifier=Modifier.fillMaxWidth()){Text("Открыть полную карточку")}
-                if (summary.complete) AcceptanceResultCard(summary)
-            }
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        border = BorderStroke(1.dp, accent.copy(alpha = .45f)),
+        shape = RoundedCornerShape(18.dp)
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+  Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+  Text("${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} пунктов обработано", color = accent)
+  if (showFullChecklist) {
+      OutlinedTextField(
+          value = checklistQuery,
+          onValueChange = {
+              checklistQuery = it
+              visibleLimit = 30
+          },
+          modifier = Modifier.fillMaxWidth(),
+          singleLine = true,
+          label = { Text("Поиск по названию") }
+      )
+      visibleItems.take(visibleLimit).forEach { (id, item) ->
+          val itemState = stateVersion.let { acceptanceRepository.state(id) }
+          val itemNote = stateVersion.let { acceptanceRepository.note(id) }
+          Card(
+              modifier = Modifier.fillMaxWidth(),
+              colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+              border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+              shape = RoundedCornerShape(14.dp)
+          ) {
+              Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                  Text(technicalEntryTitle(item), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                  technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                  AcceptanceStatusSelector(
+                      itemId = id,
+                      itemTitle = technicalEntryTitle(item),
+                      currentState = itemState,
+                      note = itemNote,
+                      onSelect = { option ->
+                          acceptanceRepository.setState(id, option)
+                          stateVersion++
+                      },
+                      onSaveNote = { text ->
+                          acceptanceRepository.setNote(id, text)
+                          acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
+                          stateVersion++
+                      }
+                  )
+              }
+          }
+      }
+      if (visibleItems.isEmpty()) {
+          Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
+      } else if (visibleItems.size > visibleLimit) {
+          OutlinedButton(
+              onClick = { visibleLimit = (visibleLimit + 30).coerceAtMost(visibleItems.size) },
+              modifier = Modifier.fillMaxWidth()
+          ) {
+              Text("Показать ещё (${visibleItems.size - visibleLimit})")
+          }
+      }
+      AcceptanceResultCard(summary, savedNotes)
+      OutlinedButton(
+          onClick = { showFullChecklist = false },
+          modifier = Modifier.fillMaxWidth()
+      ) { Text("Вернуться к пошаговой проверке") }
+  } else {
+      Text("Шаг ${step + 1} из ${entry.sequence.size}", color = accent)
+      Text(target?.let(::technicalEntryTitle) ?: "Пункт приёмки", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
+      target?.let { item ->
+          technicalEntrySubtitle(item)?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+          item.blocks.forEach { block ->
+              val lines = repository.displayLines(block.lines).mapNotNull(::technicalPresentationLine).distinct()
+              if (lines.isNotEmpty()) {
+                  Card(
+                      colors = CardDefaults.cardColors(containerColor = technicalBlockContainer(item.section, block.title)),
+                      modifier = Modifier.fillMaxWidth()
+                  ) {
+                      Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                          Text(block.title, fontWeight = FontWeight.Black)
+                          lines.forEach { Text("• $it") }
+                      }
+                  }
+              }
+          }
+          AcceptanceStatusSelector(
+              itemId = currentId,
+              itemTitle = technicalEntryTitle(item),
+              currentState = currentState,
+              note = currentNote,
+              onSelect = { option ->
+                  acceptanceRepository.setState(currentId, option)
+                  stateVersion++
+              },
+              onSaveNote = { text ->
+                  acceptanceRepository.setNote(currentId, text)
+                  acceptanceRepository.setState(currentId, AcceptanceCheckState.NOTE)
+                  stateVersion++
+              }
+          )
+      }
+      Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+          OutlinedButton(onClick = { if (step > 0) step-- }, enabled = step > 0) { Text("Назад") }
+          Button(
+              onClick = { if (step < entry.sequence.lastIndex) step++ },
+              enabled = step < entry.sequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED
+          ) { Text("Далее") }
+      }
+      OutlinedButton(
+          onClick = {
+              showFullChecklist = true
+              visibleLimit = 30
+          },
+          modifier = Modifier.fillMaxWidth()
+      ) { Text("Открыть полную карточку") }
+      if (summary.complete) AcceptanceResultCard(summary, savedNotes)
+  }
         }
     }
 }
 
 @Composable
 private fun AcceptanceStatusSelector(
+    itemId: String,
     itemTitle: String,
     currentState: AcceptanceCheckState,
-    onSelect: (AcceptanceCheckState) -> Unit
+    note: String,
+    onSelect: (AcceptanceCheckState) -> Unit,
+    onSaveNote: (String) -> Unit
 ) {
+    var noteEditorVisible by rememberSaveable(itemId) { mutableStateOf(false) }
+    var draftNote by rememberSaveable(itemId) { mutableStateOf(note) }
+
     Text("Статус: ${currentState.label}", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
     Text(itemTitle, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Black)
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(AcceptanceCheckState.entries) { option ->
-            FilterChip(selected = currentState == option, onClick = { onSelect(option) }, label = { Text(option.label) })
+  FilterChip(
+      selected = currentState == option,
+      onClick = {
+          if (option == AcceptanceCheckState.NOTE) {
+              draftNote = note
+              noteEditorVisible = true
+          } else {
+              onSelect(option)
+          }
+      },
+      label = { Text(option.label) }
+  )
         }
+    }
+
+    if (note.isNotBlank()) {
+        Card(
+  modifier = Modifier.fillMaxWidth(),
+  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+  shape = RoundedCornerShape(12.dp)
+        ) {
+  Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+      Text("Сохранённое замечание", fontWeight = FontWeight.Black)
+      Text(note)
+      TextButton(onClick = {
+          draftNote = note
+          noteEditorVisible = true
+      }) { Text("Изменить замечание") }
+  }
+        }
+    } else if (currentState == AcceptanceCheckState.NOTE) {
+        Text(
+  "Текст замечания не записан. Нажмите «Замечание», чтобы добавить его.",
+  color = MaterialTheme.colorScheme.error,
+  style = MaterialTheme.typography.bodySmall
+        )
+    }
+
+    if (noteEditorVisible) {
+        AlertDialog(
+  onDismissRequest = { noteEditorVisible = false },
+  title = { Text("Замечание: $itemTitle", fontWeight = FontWeight.Black) },
+  text = {
+      OutlinedTextField(
+          value = draftNote,
+          onValueChange = { draftNote = it },
+          modifier = Modifier.fillMaxWidth(),
+          minLines = 3,
+          maxLines = 7,
+          label = { Text("Текст замечания") },
+          placeholder = { Text("Что обнаружено при проверке") }
+      )
+  },
+  confirmButton = {
+      TextButton(
+          onClick = {
+              onSaveNote(draftNote.trim())
+              noteEditorVisible = false
+          },
+          enabled = draftNote.isNotBlank()
+      ) { Text("Сохранить") }
+  },
+  dismissButton = {
+      TextButton(onClick = { noteEditorVisible = false }) { Text("Отмена") }
+  }
+        )
     }
 }
 
 @Composable
-private fun AcceptanceResultCard(summary: ru.railbrake.calculator.data.AcceptanceSummary) {
+private fun AcceptanceResultCard(
+    summary: ru.railbrake.calculator.data.AcceptanceSummary,
+    notes: List<Pair<String, String>> = emptyList()
+) {
     val tone = if (summary.complete && summary.notes == 0) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer
     InfoCard(
         summary.result,
         listOf(
-            "Проверено: ${summary.checked}",
-            "Замечания: ${summary.notes}",
-            "Не применяется: ${summary.notApplicable}",
-            "Не проверено: ${summary.notChecked}"
+  "Проверено: ${summary.checked}",
+  "Замечания: ${summary.notes}",
+  "Не применяется: ${summary.notApplicable}",
+  "Не проверено: ${summary.notChecked}"
         ),
         tone
     )
+    if (notes.isNotEmpty()) {
+        Card(
+  modifier = Modifier.fillMaxWidth(),
+  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+  shape = RoundedCornerShape(14.dp)
+        ) {
+  Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+      Text("Сохранённые замечания", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+      notes.forEach { (title, note) ->
+          Text(title, fontWeight = FontWeight.Bold)
+          Text(note)
+          HorizontalDivider()
+      }
+  }
+        }
+    }
 }
 
 @Composable

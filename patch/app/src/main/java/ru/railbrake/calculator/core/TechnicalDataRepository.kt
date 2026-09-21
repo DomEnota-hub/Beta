@@ -237,7 +237,7 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.DIAGNOSTICS -> loadErmakDiagnostics()
             TechnicalSection.ELECTRICAL -> loadErmakSchemes().filter { it.section == TechnicalSection.ELECTRICAL }
             TechnicalSection.PNEUMATIC -> loadErmakSchemes().filter { it.section == TechnicalSection.PNEUMATIC }
-            TechnicalSection.ACCEPTANCE -> emptyList()
+            TechnicalSection.ACCEPTANCE -> loadErmakAcceptance()
             TechnicalSection.SAFETY -> loadSafety(TechnicalFamily.ERMAK)
         }
     }
@@ -249,6 +249,7 @@ class TechnicalDataRepository(private val context: Context) {
         id.startsWith("vl80-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.KNOWLEDGE)
         id.startsWith("VL-SCH-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.ELECTRICAL, TechnicalFamily.VL80S to TechnicalSection.PNEUMATIC)
         id.startsWith("ER-VARIANT-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.PROFILES)
+        id.startsWith("ER-ACC-") || id.startsWith("ER-ROUTE-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.ACCEPTANCE)
         id.startsWith("SYS-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.SYSTEMS)
         id.startsWith("ER-EQ-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.EQUIPMENT)
         id.startsWith("ER-KB-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.KNOWLEDGE)
@@ -471,6 +472,118 @@ class TechnicalDataRepository(private val context: Context) {
                 }.distinct()
             )
         }
+
+    private fun loadErmakAcceptance(): List<TechnicalEntry> {
+    val equipment = loadErmakEquipment()
+    if (equipment.isEmpty()) return emptyList()
+
+    fun lines(entry: TechnicalEntry, title: String): List<String> =
+        entry.blocks.firstOrNull { it.title.equals(title, ignoreCase = true) }?.lines.orEmpty()
+
+    fun locationText(entry: TechnicalEntry): String =
+        lines(entry, "Расположение").joinToString(" ").lowercase()
+
+    val outsideKeywords = listOf(
+        "наруж", "снаруж", "кры", "тележ", "подкуз", "под куз", "автосцеп",
+        "букс", "колес", "рам", "торц", "лобов", "межсек"
+    )
+    val cabKeywords = listOf(
+        "кабин", "пульт", "машинист", "помощник", "контроллер", "панел", "стол"
+    )
+
+    val outside = equipment.filter { item -> outsideKeywords.any { it in locationText(item) } }
+    val cabin = equipment.filter { item -> cabKeywords.any { it in locationText(item) } }
+    val middle = equipment.filterNot { it in outside || it in cabin }
+
+    fun acceptanceId(source: TechnicalEntry) = "ER-ACC-${source.id.removePrefix("ER-EQ-")}"
+    val acceptanceIdByEquipment = equipment.associate { it.id to acceptanceId(it) }
+
+    val items = equipment.map { source ->
+        val location = lines(source, "Расположение")
+        val normal = lines(source, "Нормальное состояние")
+        val deviations = lines(source, "Признаки отклонения")
+        val applicability = lines(source, "Применимость")
+        TechnicalEntry(
+  id = acceptanceId(source),
+  family = TechnicalFamily.ERMAK,
+  section = TechnicalSection.ACCEPTANCE,
+  title = source.title,
+  subtitle = location.firstOrNull()?.let { "Расположение: $it" } ?: source.subtitle,
+  status = "CHECK",
+  blocks = buildList {
+      add(
+          TechnicalBlock(
+              "Контрольный пункт",
+              listOf(
+                  "Зафиксируйте фактическое состояние узла. Нормы, допуски и порядок действий сверяйте с действующей эксплуатационной документацией."
+              )
+          )
+      )
+      if (location.isNotEmpty()) add(TechnicalBlock("Расположение", location))
+      if (normal.isNotEmpty()) add(TechnicalBlock("Нормальное состояние", normal))
+      if (deviations.isNotEmpty()) add(TechnicalBlock("Признаки отклонения", deviations))
+      if (applicability.isNotEmpty()) add(TechnicalBlock("Применимость", applicability))
+  },
+  relatedIds = listOf(source.id),
+  searchText = listOf(
+      source.title,
+      source.subtitle,
+      location.joinToString(" "),
+      normal.joinToString(" "),
+      deviations.joinToString(" "),
+      applicability.joinToString(" ")
+  ).joinToString(" ").lowercase()
+        )
+    }
+
+    fun routeSequence(order: List<TechnicalEntry>): List<String> =
+        order.mapNotNull { acceptanceIdByEquipment[it.id] }.distinct()
+
+    val fromOutside = routeSequence(outside + middle + cabin)
+    val fromCab = routeSequence(cabin + middle.asReversed() + outside.asReversed())
+
+    fun route(id: String, title: String, subtitle: String, sequence: List<String>) = TechnicalEntry(
+        id = id,
+        family = TechnicalFamily.ERMAK,
+        section = TechnicalSection.ACCEPTANCE,
+        title = title,
+        subtitle = "$subtitle • ${sequence.size} пунктов",
+        status = "ROUTE",
+        blocks = listOf(
+  TechnicalBlock(
+      "Режим",
+      listOf(
+          "Чек-лист построен по расположению и карточкам оборудования Ермака, уже включённым в приложение.",
+          "Если узел отсутствует на конкретном исполнении, используйте статус «Не применяется».",
+          "Чек-лист фиксирует результат осмотра и не заменяет действующую эксплуатационную документацию."
+      )
+  )
+        ),
+        sequence = sequence,
+        searchText = "$title $subtitle приёмка ермак 2эс5к 3эс5к".lowercase()
+    )
+
+    val canonical = route(
+        "ER-ROUTE-route_canonical",
+        "Полная приёмка Ермак",
+        "Выбор точки начала маршрута",
+        fromOutside
+    )
+    val outsideRoute = route(
+        "ER-ROUTE-route_from_outside",
+        "Приёмка Ермак — начать снаружи",
+        "От наружных зон к внутреннему оборудованию и кабине",
+        fromOutside
+    )
+    val cabRoute = route(
+        "ER-ROUTE-route_from_cab",
+        "Приёмка Ермак — начать из кабины",
+        "От кабины к внутреннему оборудованию и наружным зонам",
+        fromCab
+    )
+
+    return listOf(canonical, outsideRoute, cabRoute) + items
+}
 
     private fun loadErmakSystems(): List<TechnicalEntry> {
         val equipmentRecords = json("technical/ermak_equipment.json").array("records").objects()

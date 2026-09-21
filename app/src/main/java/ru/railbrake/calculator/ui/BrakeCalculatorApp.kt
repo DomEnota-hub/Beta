@@ -397,7 +397,7 @@ fun BrakeCalculatorApp(
                         initialSection = TechnicalSection.ACCEPTANCE,
                         sectionBackLabel = "Главная",
                         onSectionBack = { screenName = AppScreen.HOME.name },
-                        lockFamily = true,
+                        lockFamily = false,
                         lockSection = true
                     )
                 }
