@@ -1,0 +1,156 @@
+name: Wire profile-aware Ermak scheme diagnostics
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/wire-ermak-scheme-diagnostics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Capture guarded head
+        shell: bash
+        run: echo "START_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Apply profile-aware scheme diagnostics
+        run: python3 .github/scripts/wire_ermak_scheme_diagnostics.py
+
+      - name: Verify mirrors and Stage 7 gate contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          repo=Path('app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt').read_text(encoding='utf-8')
+          ui=Path('app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt').read_text(encoding='utf-8')
+          for needle in [
+              'data class ErmakSchemeDiagnosticLink(',
+              'data class ErmakSchemeLinkContext(',
+              'fun ermakSchemeLinkContext(schemeId: String)',
+              'profileGateRequired = item.optBoolean("profileGateRequired", false)',
+          ]:
+              assert needle in repo, needle
+          for needle in [
+              'private fun ErmakSchemeDiagnostics(',
+              'Подтвердить соответствие исполнения',
+              '!it.profileGateRequired || executionConfirmed',
+              'Подтверждение действует только для этой схемы',
+              'Скрыто до подтверждения',
+          ]:
+              assert needle in ui, needle
+          assert 'executionConfirmed = true' in ui
+          assert 'executionConfirmed = false' in ui
+
+          def load(name):
+              with gzip.open('app/src/main/assets/technical/'+name,'rt',encoding='utf-8') as f:return json.load(f)
+          links=load('ermak_links.json.gz')
+          diags=load('ermak_diagnostics.json.gz')
+          diag_ids={d['id'] for d in diags['scenarios']}
+          by_scheme=links['indexes']['byScheme']
+          gated=0; direct=0; mixed=[]
+          for sid,row in by_scheme.items():
+              ls=row.get('diagnosticLinks',[])
+              assert len({x['diagnosticId'] for x in ls})==len(ls),sid
+              assert all(x['diagnosticId'] in diag_ids for x in ls),sid
+              g=sum(bool(x.get('profileGateRequired')) for x in ls)
+              u=len(ls)-g
+              gated+=g; direct+=u
+              if g and u:mixed.append(sid)
+          assert gated > 0 and direct > 0
+          assert 'ER-SCH-EL-BASE-CONTROL' in mixed
+          assert 'ER-SCH-LAYOUT-2ES5K-BASE' in mixed
+          assert by_scheme['ER-SCH-EL-AXLE-MODERN']['variantRules']['selectionRequired'] is True
+          assert all(x['profileGateRequired'] for x in by_scheme['ER-SCH-EL-AXLE-MODERN']['diagnosticLinks'])
+          assert any(x['diagnosticId']=='ER-DIAG-091' and x['profileGateRequired'] for x in by_scheme['ER-SCH-PN-BRAKE-130']['diagnosticLinks'])
+          print(f'Canonical scheme diagnostic links verified: direct={direct}, gated={gated}, mixedSchemes={len(mixed)}')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit guarded runtime wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          current=$(git rev-parse origin/dev14-integration)
+          test "$current" = "$START_SHA" || { echo "Branch moved: $START_SHA -> $current"; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Add profile-aware diagnostics to Ermak schemes'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
