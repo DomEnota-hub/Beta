@@ -1,4 +1,4 @@
-name: Beta14 verification build
+name: Beta15 verification build
 
 # Final dev14 verification/build trigger after Ermak atlas ANR fix.
 on:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify Beta14 source and mirrors
+      - name: Verify Beta15 source and mirrors
         shell: bash
         run: |
           set -euo pipefail
@@ -32,8 +32,8 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
-          grep -Fq 'versionCode = 159' app/build.gradle.kts
-          grep -Fq 'versionName = "1.2.2-dev14-beta14"' app/build.gradle.kts
+          grep -Fq 'versionCode = 160' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta15"' app/build.gradle.kts
           grep -Fq 'loadForProfile(DiagnosticSessionRepository.PROFILE_VL80S)' app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
           grep -Fq 'Локальный журнал Ермака' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           grep -Fq 'Сохранить в локальную историю' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
@@ -73,8 +73,8 @@ jobs:
           mkdir buildsrc
           unzip -q RailBrakeCalculator.zip -d buildsrc
           cp -a patch/. buildsrc/RailBrakeCalculator/
-          grep -Fq 'versionCode = 159' buildsrc/RailBrakeCalculator/app/build.gradle.kts
-          grep -Fq 'versionName = "1.2.2-dev14-beta14"' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+          grep -Fq 'versionCode = 160' buildsrc/RailBrakeCalculator/app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta15"' buildsrc/RailBrakeCalculator/app/build.gradle.kts
 
       - name: Unit tests
         working-directory: buildsrc/RailBrakeCalculator
@@ -119,16 +119,16 @@ jobs:
           set -euo pipefail
           APK=buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/aapt" dump badging "$APK" | tee apk-badging.log
-          grep -Fq "package: name='ru.railbrake.calculator' versionCode='159' versionName='1.2.2-dev14-beta14'" apk-badging.log
+          grep -Fq "package: name='ru.railbrake.calculator' versionCode='160' versionName='1.2.2-dev14-beta15'" apk-badging.log
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose --print-certs "$APK" | tee signed-apksigner.log
           grep -qi "Signer #1 certificate SHA-256 digest: $EXPECTED_SIGNING_CERT_SHA256" signed-apksigner.log
           python3 qa/verify_technical_assets_in_apk.py "$APK"
           python3 qa/verify_runtime_asset_paths.py buildsrc/RailBrakeCalculator/app/src/main/java buildsrc/RailBrakeCalculator/app/src/main/assets "$APK"
 
-      - name: Upload Beta14 APK
+      - name: Upload Beta15 APK
         uses: actions/upload-artifact@v4
         with:
-          name: RailBrakeCalculator-1.2.2-dev14-beta14-release-signed
+          name: RailBrakeCalculator-1.2.2-dev14-beta15-release-signed
           path: buildsrc/RailBrakeCalculator/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 30
