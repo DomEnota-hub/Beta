@@ -44,6 +44,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -90,10 +91,43 @@ fun TechnicalCatalogScreen(
     var selectedId by rememberSaveable(initialEntryId) { mutableStateOf(initialEntryId) }
     var navigationPath by rememberSaveable(initialEntryId) { mutableStateOf("") }
     var acceptanceStartChoice by rememberSaveable { mutableStateOf(false) }
+    val acceptanceRepository = remember(context) { AcceptanceStateRepository(context.applicationContext) }
+    var acceptanceMode by rememberSaveable { mutableStateOf("ACTIVE") }
+    var acceptanceToolbarVersion by rememberSaveable { mutableIntStateOf(0) }
+    var acceptanceDisabledQuery by rememberSaveable { mutableStateOf("") }
+    var acceptanceHelpVisible by rememberSaveable { mutableStateOf(false) }
     val family = runCatching { TechnicalFamily.valueOf(familyName) }.getOrDefault(TechnicalFamily.VL80S)
     val availableSections = remember(family, lockSection, initialSection) { if (lockSection) listOf(initialSection) else repository.sections(family) }
     val selectedSection = runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull()?.takeIf(availableSections::contains)
         ?: availableSections.first()
+    val dedicatedAcceptance = lockSection && initialSection == TechnicalSection.ACCEPTANCE
+    val acceptanceFamilyKey = family.name
+    val acceptanceSaveParameters = acceptanceToolbarVersion.let { acceptanceRepository.saveParameters(acceptanceFamilyKey) }
+    val acceptanceDisabledIds = acceptanceToolbarVersion.let { acceptanceRepository.disabledIds(acceptanceFamilyKey) }
+    val acceptanceDisabledEntries by produceState<List<Pair<String, TechnicalEntry>>?>(
+        initialValue = if (dedicatedAcceptance) null else emptyList(),
+        dedicatedAcceptance,
+        family,
+        acceptanceToolbarVersion,
+        acceptanceMode,
+        acceptanceDisabledQuery,
+        repository
+    ) {
+        value = if (!dedicatedAcceptance || acceptanceMode != "DISABLED") {
+            emptyList()
+        } else {
+            withContext(Dispatchers.Default) {
+                acceptanceRepository.disabledIds(acceptanceFamilyKey)
+                    .mapNotNull { id -> repository.entry(id)?.let { id to it } }
+                    .filter { (_, item) ->
+                        acceptanceDisabledQuery.isBlank() ||
+                            technicalEntryTitle(item).contains(acceptanceDisabledQuery, ignoreCase = true) ||
+                            technicalEntrySubtitle(item)?.contains(acceptanceDisabledQuery, ignoreCase = true) == true
+                    }
+                    .sortedBy { (_, item) -> technicalEntryTitle(item) }
+            }
+        }
+    }
     val selectedState by produceState<Pair<Boolean, TechnicalEntry?>>(
         initialValue = (selectedId == null) to null,
         selectedId,
@@ -130,8 +164,14 @@ fun TechnicalCatalogScreen(
         selectedId = previousId
     }
 
-    BackHandler(enabled = selectedId != null || acceptanceStartChoice) {
-        if (selectedId != null) backFromSelected() else acceptanceStartChoice = false
+    BackHandler(
+        enabled = selectedId != null || acceptanceStartChoice || (dedicatedAcceptance && acceptanceMode == "DISABLED")
+    ) {
+        when {
+            selectedId != null -> backFromSelected()
+            acceptanceStartChoice -> acceptanceStartChoice = false
+            dedicatedAcceptance && acceptanceMode == "DISABLED" -> acceptanceMode = "ACTIVE"
+        }
     }
 
     if (acceptanceStartChoice) {
@@ -213,6 +253,7 @@ fun TechnicalCatalogScreen(
                                 if (runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull() !in sections) sectionName = sections.first().name
                             }
                             query = ""
+                            acceptanceDisabledQuery = ""
                         },
                         label = { Text(option.title) }
                     )
@@ -220,18 +261,177 @@ fun TechnicalCatalogScreen(
             }
         }
         item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(availableSections) { option ->
-                    val accent = technicalSectionAccent(option, "")
-                    FilterChip(
-                        selected = selectedSection == option,
-                        onClick = { sectionName = option.name; query = "" },
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = accent.copy(alpha = 0.22f), selectedLabelColor = accent),
-                        label = { Text(option.title, color = if (selectedSection == option) accent else MaterialTheme.colorScheme.onSurfaceVariant) }
-                    )
+            if (dedicatedAcceptance) {
+                val accent = technicalSectionAccent(TechnicalSection.ACCEPTANCE, "")
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    item {
+                        FilterChip(
+                            selected = acceptanceMode == "ACTIVE",
+                            onClick = { acceptanceMode = "ACTIVE" },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = accent.copy(alpha = 0.22f),
+                                selectedLabelColor = accent
+                            ),
+                            label = { Text("Приёмка") }
+                        )
+                    }
+                    item {
+                        FilterChip(
+                            selected = acceptanceMode == "DISABLED",
+                            onClick = { acceptanceMode = "DISABLED" },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = accent.copy(alpha = 0.22f),
+                                selectedLabelColor = accent
+                            ),
+                            label = {
+                                Text(
+                                    if (acceptanceDisabledIds.isEmpty()) "Отключено"
+                                    else "Отключено · ${acceptanceDisabledIds.size}"
+                                )
+                            }
+                        )
+                    }
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text("Сохранять", style = MaterialTheme.typography.labelMedium)
+                            Switch(
+                                checked = acceptanceSaveParameters,
+                                onCheckedChange = { enabled ->
+                                    acceptanceRepository.setSaveParameters(acceptanceFamilyKey, enabled)
+                                    acceptanceToolbarVersion++
+                                }
+                            )
+                        }
+                    }
+                    item {
+                        Card(
+                            onClick = { acceptanceHelpVisible = true },
+                            modifier = Modifier.width(44.dp).height(40.dp),
+                            shape = RoundedCornerShape(20.dp),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        ) {
+                            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text("?", fontWeight = FontWeight.Black)
+                            }
+                        }
+                    }
+                }
+            } else {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(availableSections) { option ->
+                        val accent = technicalSectionAccent(option, "")
+                        FilterChip(
+                            selected = selectedSection == option,
+                            onClick = { sectionName = option.name; query = "" },
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = accent.copy(alpha = 0.22f), selectedLabelColor = accent),
+                            label = { Text(option.title, color = if (selectedSection == option) accent else MaterialTheme.colorScheme.onSurfaceVariant) }
+                        )
+                    }
                 }
             }
         }
+        if (dedicatedAcceptance && acceptanceMode == "DISABLED") {
+            item {
+                Text(
+                    "Отключённые шаги ${family.title}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Black
+                )
+                Text(
+                    if (acceptanceSaveParameters) {
+                        "Изменения сохраняются и будут восстановлены при следующем запуске."
+                    } else {
+                        "Изменения временные и не перезаписывают ранее сохранённый набор."
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = acceptanceDisabledQuery,
+                    onValueChange = { acceptanceDisabledQuery = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Поиск в отключённых") },
+                    trailingIcon = {
+                        if (acceptanceDisabledQuery.isNotEmpty()) {
+                            IconButton(onClick = { acceptanceDisabledQuery = "" }) {
+                                Text("×", style = MaterialTheme.typography.titleLarge)
+                            }
+                        }
+                    },
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
+            if (acceptanceDisabledIds.isNotEmpty()) {
+                item {
+                    OutlinedButton(
+                        onClick = {
+                            acceptanceRepository.restoreAllDisabled(acceptanceFamilyKey)
+                            acceptanceToolbarVersion++
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Вернуть все") }
+                }
+            }
+            when {
+                acceptanceDisabledEntries == null -> item {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
+                acceptanceDisabledIds.isEmpty() -> item {
+                    InfoCard(
+                        "Отключённых шагов нет",
+                        listOf("Все пункты приёмки ${family.title} сейчас активны."),
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+                acceptanceDisabledEntries!!.isEmpty() -> item {
+                    InfoCard(
+                        "Ничего не найдено",
+                        listOf("Измените запрос в списке отключённых шагов."),
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+                else -> items(acceptanceDisabledEntries!!, key = { it.first }) { (id, item) ->
+                    val note = acceptanceRepository.note(id)
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, technicalSectionAccent(TechnicalSection.ACCEPTANCE, "").copy(alpha = 0.35f)),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                            Text(
+                                technicalEntryTitle(item),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Black
+                            )
+                            technicalEntrySubtitle(item)?.let {
+                                Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            if (note.isNotBlank()) {
+                                Text("Сохранённое замечание: $note", style = MaterialTheme.typography.bodySmall)
+                            }
+                            OutlinedButton(
+                                onClick = {
+                                    acceptanceRepository.setDisabled(acceptanceFamilyKey, id, false)
+                                    acceptanceToolbarVersion++
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) { Text("Вернуть") }
+                        }
+                    }
+                }
+            }
+        } else {
         item {
             OutlinedTextField(
                 value = query,
@@ -317,6 +517,25 @@ fun TechnicalCatalogScreen(
                 }
             }
         }
+        }
+    }
+    if (dedicatedAcceptance && acceptanceHelpVisible) {
+        AlertDialog(
+            onDismissRequest = { acceptanceHelpVisible = false },
+            title = { Text("Настройка приёмки", fontWeight = FontWeight.Black) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
+                    Text("Отключённые пункты не участвуют в пошаговой приёмке и не учитываются как непроверенные в итоговом результате.")
+                    Text("В разделе «Отключено» можно вернуть отдельный пункт или восстановить все шаги сразу.")
+                    Text("Переключатель «Сохранять»: включён — выбранные отключения сохраняются для текущего локомотива; выключен — изменения действуют временно и не изменяют ранее сохранённый набор.")
+                    Text("Настройки ВЛ80С и Ермака хранятся отдельно.")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { acceptanceHelpVisible = false }) { Text("Понятно") }
+            }
+        )
     }
 }
 
@@ -1091,11 +1310,8 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
     var settingsVersion by rememberSaveable(entry.id) { mutableIntStateOf(0) }
     var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
     var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
-    var disabledQuery by rememberSaveable(entry.id) { mutableStateOf("") }
-    var acceptanceTab by rememberSaveable(entry.id) { mutableStateOf("ACTIVE") }
     var visibleLimit by rememberSaveable(entry.id) { mutableIntStateOf(30) }
 
-    val saveParameters = settingsVersion.let { acceptanceRepository.saveParameters(familyKey) }
     val disabledIds = settingsVersion.let { acceptanceRepository.disabledIds(familyKey) }
     val disabledInRoute = entry.sequence.filter(disabledIds::contains)
     val activeSequence = entry.sequence.filterNot(disabledIds::contains)
@@ -1107,23 +1323,18 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
         ?: AcceptanceCheckState.NOT_CHECKED
     val currentNote = currentId?.let { id -> stateVersion.let { acceptanceRepository.note(id) } }.orEmpty()
     val checklistItems = activeSequence.mapNotNull { id -> repository.entry(id)?.let { id to it } }
-    val disabledItems = disabledInRoute.mapNotNull { id -> repository.entry(id)?.let { id to it } }
     val states = stateVersion.let { activeSequence.map(acceptanceRepository::state) }
     val summary = acceptanceSummary(states)
     val savedNotes = stateVersion.let {
         checklistItems.mapNotNull { (id, item) ->
-  acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
-      technicalEntryTitle(item) to note
-  }
+            acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
+                technicalEntryTitle(item) to note
+            }
         }
     }
     val visibleItems = checklistItems.filter { (_, item) ->
         checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
-  technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
-    }
-    val visibleDisabled = disabledItems.filter { (_, item) ->
-        disabledQuery.isBlank() || technicalEntryTitle(item).contains(disabledQuery, ignoreCase = true) ||
-  technicalEntrySubtitle(item)?.contains(disabledQuery, ignoreCase = true) == true
+            technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
     }
 
     Card(
@@ -1133,272 +1344,168 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
         shape = RoundedCornerShape(18.dp)
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-  Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-  Text(
-      "Активно: ${activeSequence.size} из ${entry.sequence.size} • Отключено: ${disabledInRoute.size}",
-      color = accent,
-      fontWeight = FontWeight.Bold
-  )
-  Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(12.dp)
-  ) {
-      Column(Modifier.fillMaxWidth(0.78f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-          Text("Сохранять параметры", fontWeight = FontWeight.Bold)
-          Text(
-              if (saveParameters) {
-                  "Отключённые шаги сохраняются для ${entry.family.title}."
-              } else {
-                  "Изменения действуют только до закрытия приложения; сохранённый набор не перезаписывается."
-              },
-              style = MaterialTheme.typography.bodySmall,
-              color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-      }
-      Switch(
-          checked = saveParameters,
-          onCheckedChange = { enabled ->
-              acceptanceRepository.setSaveParameters(familyKey, enabled)
-              settingsVersion++
-          }
-      )
-  }
-  LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-      item {
-          FilterChip(
-              selected = acceptanceTab == "ACTIVE",
-              onClick = { acceptanceTab = "ACTIVE" },
-              label = { Text("Проверка") }
-          )
-      }
-      item {
-          FilterChip(
-              selected = acceptanceTab == "DISABLED",
-              onClick = { acceptanceTab = "DISABLED" },
-              label = { Text("Отключено (${disabledInRoute.size})") }
-          )
-      }
-  }
+            Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text(
+                "Активно: ${activeSequence.size} из ${entry.sequence.size} • Отключено: ${disabledInRoute.size}",
+                color = accent,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                "${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} активных пунктов обработано",
+                color = accent
+            )
 
-  if (acceptanceTab == "DISABLED") {
-      if (disabledItems.isEmpty()) {
-          Text(
-              "Для ${entry.family.title} отключённых шагов нет.",
-              color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-      } else {
-          OutlinedTextField(
-              value = disabledQuery,
-              onValueChange = { disabledQuery = it },
-              modifier = Modifier.fillMaxWidth(),
-              singleLine = true,
-              label = { Text("Поиск в отключённых") }
-          )
-          OutlinedButton(
-              onClick = {
-                  acceptanceRepository.restoreAllDisabled(familyKey)
-                  settingsVersion++
-                  step = 0
-              },
-              modifier = Modifier.fillMaxWidth(),
-              border = BorderStroke(1.dp, accent)
-          ) { Text("Вернуть все") }
-
-          visibleDisabled.forEach { (id, item) ->
-              val savedNote = stateVersion.let { acceptanceRepository.note(id) }
-              Card(
-                  modifier = Modifier.fillMaxWidth(),
-                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                  border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-                  shape = RoundedCornerShape(14.dp)
-              ) {
-                  Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                      Text(
-                          technicalEntryTitle(item),
-                          style = MaterialTheme.typography.titleMedium,
-                          fontWeight = FontWeight.Black
-                      )
-                      technicalEntrySubtitle(item)?.let {
-                          Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                      }
-                      if (savedNote.isNotBlank()) {
-                          Text("Сохранённое замечание: $savedNote", style = MaterialTheme.typography.bodySmall)
-                      }
-                      OutlinedButton(
-                          onClick = {
-                              acceptanceRepository.setDisabled(familyKey, id, false)
-                              settingsVersion++
-                          },
-                          modifier = Modifier.fillMaxWidth()
-                      ) { Text("Вернуть") }
-                  }
-              }
-          }
-          if (visibleDisabled.isEmpty()) {
-              Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
-          }
-      }
-  } else {
-      Text(
-          "${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} активных пунктов обработано",
-          color = accent
-      )
-      if (activeSequence.isEmpty()) {
-          Text(
-              "Все шаги этой приёмки отключены. Верните нужные пункты во вкладке «Отключено».",
-              color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-          OutlinedButton(
-              onClick = { acceptanceTab = "DISABLED" },
-              modifier = Modifier.fillMaxWidth()
-          ) { Text("Открыть отключённые") }
-      } else if (showFullChecklist) {
-          OutlinedTextField(
-              value = checklistQuery,
-              onValueChange = {
-                  checklistQuery = it
-                  visibleLimit = 30
-              },
-              modifier = Modifier.fillMaxWidth(),
-              singleLine = true,
-              label = { Text("Поиск по названию") }
-          )
-          visibleItems.take(visibleLimit).forEach { (id, item) ->
-              val itemState = stateVersion.let { acceptanceRepository.state(id) }
-              val itemNote = stateVersion.let { acceptanceRepository.note(id) }
-              Card(
-                  modifier = Modifier.fillMaxWidth(),
-                  colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                  border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-                  shape = RoundedCornerShape(14.dp)
-              ) {
-                  Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                      Text(
-                          technicalEntryTitle(item),
-                          style = MaterialTheme.typography.titleMedium,
-                          fontWeight = FontWeight.Black
-                      )
-                      technicalEntrySubtitle(item)?.let {
-                          Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                      }
-                      AcceptanceStatusSelector(
-                          itemId = id,
-                          itemTitle = technicalEntryTitle(item),
-                          currentState = itemState,
-                          note = itemNote,
-                          onSelect = { option ->
-                              acceptanceRepository.setState(id, option)
-                              stateVersion++
-                          },
-                          onSaveNote = { text ->
-                              acceptanceRepository.setNote(id, text)
-                              acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
-                              stateVersion++
-                          }
-                      )
-                      TextButton(
-                          onClick = {
-                              acceptanceRepository.setDisabled(familyKey, id, true)
-                              settingsVersion++
-                          }
-                      ) { Text("Отключить шаг") }
-                  }
-              }
-          }
-          if (visibleItems.isEmpty()) {
-              Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
-          } else if (visibleItems.size > visibleLimit) {
-              OutlinedButton(
-                  onClick = { visibleLimit = (visibleLimit + 30).coerceAtMost(visibleItems.size) },
-                  modifier = Modifier.fillMaxWidth()
-              ) {
-                  Text("Показать ещё (${visibleItems.size - visibleLimit})")
-              }
-          }
-          AcceptanceResultCard(summary, savedNotes)
-          OutlinedButton(
-              onClick = { showFullChecklist = false },
-              modifier = Modifier.fillMaxWidth()
-          ) { Text("Вернуться к пошаговой проверке") }
-      } else {
-          Text("Шаг ${effectiveStep + 1} из ${activeSequence.size}", color = accent)
-          Text(
-              target?.let(::technicalEntryTitle) ?: "Пункт приёмки",
-              style = MaterialTheme.typography.titleLarge,
-              fontWeight = FontWeight.Black
-          )
-          target?.let { item ->
-              technicalEntrySubtitle(item)?.let {
-                  Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
-              }
-              item.blocks.forEach { block ->
-                  val lines = repository.displayLines(block.lines)
-                      .mapNotNull(::technicalPresentationLine)
-                      .distinct()
-                  if (lines.isNotEmpty()) {
-                      Card(
-                          colors = CardDefaults.cardColors(
-                              containerColor = technicalBlockContainer(item.section, block.title)
-                          ),
-                          modifier = Modifier.fillMaxWidth()
-                      ) {
-                          Column(
-                              Modifier.padding(12.dp),
-                              verticalArrangement = Arrangement.spacedBy(5.dp)
-                          ) {
-                              Text(block.title, fontWeight = FontWeight.Black)
-                              lines.forEach { Text("• $it") }
-                          }
-                      }
-                  }
-              }
-              val activeId = currentId ?: return@let
-              AcceptanceStatusSelector(
-                  itemId = activeId,
-                  itemTitle = technicalEntryTitle(item),
-                  currentState = currentState,
-                  note = currentNote,
-                  onSelect = { option ->
-                      acceptanceRepository.setState(activeId, option)
-                      stateVersion++
-                  },
-                  onSaveNote = { text ->
-                      acceptanceRepository.setNote(activeId, text)
-                      acceptanceRepository.setState(activeId, AcceptanceCheckState.NOTE)
-                      stateVersion++
-                  }
-              )
-              OutlinedButton(
-                  onClick = {
-                      acceptanceRepository.setDisabled(familyKey, activeId, true)
-                      settingsVersion++
-                      if (effectiveStep >= activeSequence.lastIndex && effectiveStep > 0) {
-                          step = effectiveStep - 1
-                      }
-                  },
-                  modifier = Modifier.fillMaxWidth()
-              ) { Text("Отключить этот шаг") }
-          }
-          Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-              OutlinedButton(
-                  onClick = { if (effectiveStep > 0) step = effectiveStep - 1 },
-                  enabled = effectiveStep > 0
-              ) { Text("Назад") }
-              Button(
-                  onClick = { if (effectiveStep < activeSequence.lastIndex) step = effectiveStep + 1 },
-                  enabled = effectiveStep < activeSequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED
-              ) { Text("Далее") }
-          }
-          OutlinedButton(
-              onClick = {
-                  showFullChecklist = true
-                  visibleLimit = 30
-              },
-              modifier = Modifier.fillMaxWidth()
-          ) { Text("Открыть полную карточку") }
-          if (summary.complete) AcceptanceResultCard(summary, savedNotes)
-      }
-  }
+            if (activeSequence.isEmpty()) {
+                Text(
+                    "Все шаги этой приёмки отключены. Вернитесь к списку и откройте раздел «Отключено».",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            } else if (showFullChecklist) {
+                OutlinedTextField(
+                    value = checklistQuery,
+                    onValueChange = {
+                        checklistQuery = it
+                        visibleLimit = 30
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Поиск по названию") }
+                )
+                visibleItems.take(visibleLimit).forEach { (id, item) ->
+                    val itemState = stateVersion.let { acceptanceRepository.state(id) }
+                    val itemNote = stateVersion.let { acceptanceRepository.note(id) }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                technicalEntryTitle(item),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Black
+                            )
+                            technicalEntrySubtitle(item)?.let {
+                                Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            AcceptanceStatusSelector(
+                                itemId = id,
+                                itemTitle = technicalEntryTitle(item),
+                                currentState = itemState,
+                                note = itemNote,
+                                onSelect = { option ->
+                                    acceptanceRepository.setState(id, option)
+                                    stateVersion++
+                                },
+                                onSaveNote = { text ->
+                                    acceptanceRepository.setNote(id, text)
+                                    acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
+                                    stateVersion++
+                                }
+                            )
+                            TextButton(
+                                onClick = {
+                                    acceptanceRepository.setDisabled(familyKey, id, true)
+                                    settingsVersion++
+                                }
+                            ) { Text("Отключить шаг") }
+                        }
+                    }
+                }
+                if (visibleItems.isEmpty()) {
+                    Text("Ничего не найдено", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                } else if (visibleItems.size > visibleLimit) {
+                    OutlinedButton(
+                        onClick = { visibleLimit = (visibleLimit + 30).coerceAtMost(visibleItems.size) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Показать ещё (${visibleItems.size - visibleLimit})")
+                    }
+                }
+                AcceptanceResultCard(summary, savedNotes)
+                OutlinedButton(
+                    onClick = { showFullChecklist = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Вернуться к пошаговой проверке") }
+            } else {
+                Text("Шаг ${effectiveStep + 1} из ${activeSequence.size}", color = accent)
+                Text(
+                    target?.let(::technicalEntryTitle) ?: "Пункт приёмки",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Black
+                )
+                target?.let { item ->
+                    technicalEntrySubtitle(item)?.let {
+                        Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    item.blocks.forEach { block ->
+                        val lines = repository.displayLines(block.lines)
+                            .mapNotNull(::technicalPresentationLine)
+                            .distinct()
+                        if (lines.isNotEmpty()) {
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = technicalBlockContainer(item.section, block.title)
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    Modifier.padding(12.dp),
+                                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                                ) {
+                                    Text(block.title, fontWeight = FontWeight.Black)
+                                    lines.forEach { Text("• $it") }
+                                }
+                            }
+                        }
+                    }
+                    val activeId = currentId ?: return@let
+                    AcceptanceStatusSelector(
+                        itemId = activeId,
+                        itemTitle = technicalEntryTitle(item),
+                        currentState = currentState,
+                        note = currentNote,
+                        onSelect = { option ->
+                            acceptanceRepository.setState(activeId, option)
+                            stateVersion++
+                        },
+                        onSaveNote = { text ->
+                            acceptanceRepository.setNote(activeId, text)
+                            acceptanceRepository.setState(activeId, AcceptanceCheckState.NOTE)
+                            stateVersion++
+                        }
+                    )
+                    OutlinedButton(
+                        onClick = {
+                            acceptanceRepository.setDisabled(familyKey, activeId, true)
+                            settingsVersion++
+                            if (effectiveStep >= activeSequence.lastIndex && effectiveStep > 0) {
+                                step = effectiveStep - 1
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Отключить этот шаг") }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(
+                        onClick = { if (effectiveStep > 0) step = effectiveStep - 1 },
+                        enabled = effectiveStep > 0
+                    ) { Text("Назад") }
+                    Button(
+                        onClick = { if (effectiveStep < activeSequence.lastIndex) step = effectiveStep + 1 },
+                        enabled = effectiveStep < activeSequence.lastIndex && currentState != AcceptanceCheckState.NOT_CHECKED
+                    ) { Text("Далее") }
+                }
+                OutlinedButton(
+                    onClick = {
+                        showFullChecklist = true
+                        visibleLimit = 30
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Открыть полную карточку") }
+                if (summary.complete) AcceptanceResultCard(summary, savedNotes)
+            }
         }
     }
 }
