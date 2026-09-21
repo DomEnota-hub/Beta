@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -581,6 +582,65 @@ internal fun ermakAtlasHitTest(
     }
     .minByOrNull { hotspot -> hotspot.width * hotspot.height }
 
+internal fun ermakAtlasWrapLabel(
+    label: String,
+    maxWidth: Float,
+    maxLines: Int,
+    measureText: (String) -> Float
+): List<String> {
+    val trimmed = label.trim()
+    if (trimmed.isEmpty() || maxWidth <= 0f || maxLines <= 0) return emptyList()
+
+    fun fittingPrefixLength(value: String, width: Float, suffix: String = ""): Int {
+        if (value.isEmpty()) return 0
+        var low = 1
+        var high = value.length
+        var best = 0
+        while (low <= high) {
+            val mid = (low + high) ushr 1
+            if (measureText(value.take(mid) + suffix) <= width) {
+                best = mid
+                low = mid + 1
+            } else {
+                high = mid - 1
+            }
+        }
+        return best
+    }
+
+    val lines = mutableListOf<String>()
+    var remaining = trimmed
+    while (remaining.isNotEmpty() && lines.size < maxLines) {
+        if (measureText(remaining) <= maxWidth) {
+            lines += remaining
+            break
+        }
+
+        val isLastLine = lines.size == maxLines - 1
+        if (isLastLine) {
+            val count = fittingPrefixLength(remaining, maxWidth, "…")
+            val visible = remaining.take(count.coerceAtLeast(1)).trimEnd()
+            lines += "$visible…"
+            break
+        }
+
+        val fitted = fittingPrefixLength(remaining, maxWidth).coerceAtLeast(1)
+        val prefix = remaining.take(fitted)
+        val preferredBreak = sequenceOf(
+            prefix.lastIndexOf(' ') + 1,
+            prefix.lastIndexOf('-') + 1,
+            prefix.lastIndexOf('/') + 1
+        )
+            .filter { it > fitted / 2 }
+            .maxOrNull()
+            ?: fitted
+
+        lines += remaining.take(preferredBreak).trim()
+        remaining = remaining.drop(preferredBreak).trimStart()
+    }
+    return lines
+}
+
 @Composable
 private fun ErmakInteractiveAtlas(
     entry: TechnicalEntry,
@@ -589,6 +649,7 @@ private fun ErmakInteractiveAtlas(
 ) {
     var selectedId by rememberSaveable(entry.id) { mutableStateOf(entry.hotspots.firstOrNull()?.equipmentId) }
     var query by rememberSaveable(entry.id) { mutableStateOf("") }
+    var detailsVisible by rememberSaveable(entry.id) { mutableStateOf(false) }
     val selectedHotspot = remember(entry.id, selectedId) {
         entry.hotspots.firstOrNull { it.equipmentId == selectedId }
     }
@@ -597,6 +658,7 @@ private fun ErmakInteractiveAtlas(
         selectedId,
         repository
     ) {
+        value = false to null
         val equipmentId = selectedId
         value = if (equipmentId == null) {
             true to null
@@ -678,12 +740,13 @@ private fun ErmakInteractiveAtlas(
                                 val sourceY = tap.y / density / scale
                                 ermakAtlasHitTest(entry.hotspots, sourceX, sourceY)?.let { hotspot ->
                                     selectedId = hotspot.equipmentId
+                                    detailsVisible = true
                                 }
                             }
                         }
                 ) {
                     val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                        textSize = 10.dp.toPx()
+                        textSize = 9.dp.toPx()
                         typeface = android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
                     }
                     entry.hotspots.forEach { hotspot ->
@@ -712,53 +775,103 @@ private fun ErmakInteractiveAtlas(
                             style = Stroke(1.dp.toPx())
                         )
                         labelPaint.color = (if (isSelected) Color(0xFF071313) else Color(0xFFE7F0F2)).toArgb()
-                        val compactLabel = hotspot.label.let { label ->
-                            if (label.length <= 21) label else label.take(20).trimEnd() + "…"
-                        }
-                        drawContext.canvas.nativeCanvas.drawText(
-                            compactLabel,
-                            left + 5.dp.toPx(),
-                            top + (height / 2f) + (labelPaint.textSize * 0.35f),
-                            labelPaint
+                        val horizontalTextPadding = 5.dp.toPx()
+                        val verticalTextPadding = 4.dp.toPx()
+                        val lineHeight = labelPaint.fontSpacing
+                        val maxTextWidth = (width - horizontalTextPadding * 2f).coerceAtLeast(1f)
+                        val maxLines = ((height - verticalTextPadding * 2f) / lineHeight)
+                            .toInt()
+                            .coerceIn(1, 5)
+                        val labelLines = ermakAtlasWrapLabel(
+                            label = hotspot.label,
+                            maxWidth = maxTextWidth,
+                            maxLines = maxLines,
+                            measureText = { value -> labelPaint.measureText(value) }
                         )
-                    }
-                }
-            }
-            selectedHotspot?.let { hotspot ->
-                Text(hotspot.label, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                val equipment = selectedEquipment
-                when {
-                    !selectedEquipmentLoaded -> Text(
-                        "Карточка оборудования загружается…",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    equipment != null -> {
-                        technicalEntrySubtitle(equipment)?.let {
-                            Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        val metrics = labelPaint.fontMetrics
+                        val textBlockHeight = lineHeight * labelLines.size
+                        val firstBaseline = top + ((height - textBlockHeight) / 2f) - metrics.ascent
+                        labelLines.forEachIndexed { index, line ->
+                            drawContext.canvas.nativeCanvas.drawText(
+                                line,
+                                left + horizontalTextPadding,
+                                firstBaseline + index * lineHeight,
+                                labelPaint
+                            )
                         }
-                        OutlinedButton(
-                            onClick = { onOpen(equipment) },
-                            modifier = Modifier.fillMaxWidth(),
-                            border = BorderStroke(1.dp, Color.Black)
-                        ) { Text("Подробнее") }
                     }
-                    else -> Text(
-                        "Для выбранной зоны отдельная карточка оборудования пока отсутствует.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
             }
             if (query.isNotBlank()) {
                 Text("Результаты поиска", fontWeight = FontWeight.Bold)
                 visible.take(20).forEach { hotspot ->
                     OutlinedButton(
-                        onClick = { selectedId = hotspot.equipmentId },
+                        onClick = {
+                            selectedId = hotspot.equipmentId
+                            detailsVisible = true
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         border = BorderStroke(1.dp, Color.Black)
                     ) { Text(hotspot.label) }
                 }
                 if (visible.size > 20) Text("Показаны первые 20 из ${visible.size}", style = MaterialTheme.typography.bodySmall)
             }
+        }
+    }
+
+    if (detailsVisible) {
+        selectedHotspot?.let { hotspot ->
+            val equipment = selectedEquipment
+            AlertDialog(
+                onDismissRequest = { detailsVisible = false },
+                title = {
+                    Text(hotspot.label, fontWeight = FontWeight.Black)
+                },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        when {
+                            !selectedEquipmentLoaded -> {
+                                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                                Text(
+                                    "Карточка оборудования загружается…",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            equipment != null -> {
+                                technicalEntrySubtitle(equipment)?.let { subtitle ->
+                                    Text(subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                } ?: Text(
+                                    "Для элемента доступна полная карточка оборудования.",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            else -> Text(
+                                "Для выбранной зоны отдельная карточка оборудования пока отсутствует.",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    if (selectedEquipmentLoaded) {
+                        equipment?.let { target ->
+                            TextButton(
+                                onClick = {
+                                    detailsVisible = false
+                                    onOpen(target)
+                                }
+                            ) {
+                                Text("Подробнее")
+                            }
+                        }
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { detailsVisible = false }) {
+                        Text("Закрыть")
+                    }
+                }
+            )
         }
     }
 }

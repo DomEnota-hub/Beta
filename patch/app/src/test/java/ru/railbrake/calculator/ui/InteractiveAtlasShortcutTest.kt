@@ -50,4 +50,27 @@ class InteractiveAtlasShortcutTest {
         assertEquals("large", ermakAtlasHitTest(listOf(large, small), 150f, 80f)?.equipmentId)
         assertEquals(null, ermakAtlasHitTest(listOf(large, small), 250f, 200f))
     }
+
+    @Test
+    fun ermakAtlasLabelWrappingUsesReadableLines() {
+        val lines = ermakAtlasWrapLabel(
+            label = "Тяговый токовый датчик",
+            maxWidth = 10f,
+            maxLines = 3
+        ) { it.length.toFloat() }
+
+        assertEquals(listOf("Тяговый", "токовый", "датчик"), lines)
+    }
+
+    @Test
+    fun ermakAtlasLabelWrappingEllipsizesAtLineBudget() {
+        val lines = ermakAtlasWrapLabel(
+            label = "Оченьдлинноеназваниеаппарата",
+            maxWidth = 8f,
+            maxLines = 2
+        ) { it.length.toFloat() }
+
+        assertEquals(2, lines.size)
+        assertTrue(lines.last().endsWith("…"))
+    }
 }
