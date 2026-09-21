@@ -1,0 +1,140 @@
+name: Refine VL80S audit fixes
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/refine-vl80s-audit-fixes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Capture guarded head
+        shell: bash
+        run: echo "BASE_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Apply VL80S audit fixes
+        run: python3 .github/scripts/refine_vl80s_audit_fixes.py
+
+      - name: Verify mirrors and audit contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+              patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          ! grep -F 'ВЛ80С • Ермак' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          ! grep -F 'ветвящиеся уточнения' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          grep -F 'private val vl80sSchemeIdsByEquipment by lazy' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -F 'block("Схемы", canonicalSchemeIds)' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          ! grep -F 'item.array("aliases").strings() + item.array("schemeNodeIds").strings()' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          python3 - <<'PY'
+          import gzip,json
+          from collections import defaultdict
+          from pathlib import Path
+          root=Path('app/src/main/assets/technical')
+          def load(n):
+              with gzip.open(root/n,'rt',encoding='utf-8') as f:return json.load(f)
+          def arr(o,k):
+              v=o.get(k,[]) if isinstance(o,dict) else []
+              return v if isinstance(v,list) else []
+          eq=arr(load('vl80s_equipment.json.gz'),'records')
+          schemes=arr(load('vl80s_electrical.json.gz'),'baseSchemes')+arr(load('vl80s_pneumatic.json.gz'),'views')
+          eqids={x.get('id') for x in eq if x.get('id')}
+          coverage=defaultdict(set)
+          for s in schemes:
+              sid=s.get('id')
+              refs=set(x for x in arr(s,'equipmentIds') if x in eqids)
+              for n in arr(s,'nodes'):
+                  if isinstance(n,dict) and n.get('equipmentId') in eqids: refs.add(n['equipmentId'])
+              for x in refs: coverage[x].add(sid)
+          assert len(eq)==89
+          assert len(schemes)==16
+          assert sum(1 for x in eqids if coverage[x])==79
+          assert 'VL-SCH-PN-MONITORING' in coverage['VL-EQ-CB-003']
+          assert 'VL-SCH-EL-HV-START-937-1260' in coverage['VL-EQ-HV-001']
+          print('VL80S canonical reverse scheme coverage verified: 79/89')
+          PY
+          expected=$(printf '%s\n' \
+            app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          git diff --check
+
+      - name: Commit guarded fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse origin/dev14-integration)" = "$BASE_HEAD"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+                  app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+                  patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
+          git diff --cached --name-only | sort > /tmp/changed.txt
+          printf '%s\n' \
+            app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt \
+            patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt | sort > /tmp/expected.txt
+          cmp /tmp/changed.txt /tmp/expected.txt
+          git commit -m 'Refine VL80S technical cross-links and home copy'
+          git push origin HEAD:dev14-integration
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Debug build
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
