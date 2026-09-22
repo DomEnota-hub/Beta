@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta30: VL80S brake-pneumatic core card enrichment.
+// Beta31: VL80S rheostatic/pneumatic brake interface enrichment.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
@@ -19,8 +19,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 175
-        versionName = "1.2.2-dev14-beta30"
+        versionCode = 176
+        versionName = "1.2.2-dev14-beta31"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
