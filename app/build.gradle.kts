@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta24: dedicated light-theme palette and semantic contrast tokens.
+// Beta24: dedicated light-theme palette and semantic contrast tokens; verification build.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
