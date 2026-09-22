@@ -1,0 +1,72 @@
+name: Audit Beta34 VL80S pressure control
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-beta34-pressure-control.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="d797e99aef9be2329c39ba3a796619213497930c"
+          parent="$(git rev-parse HEAD^)"
+          test "$parent" = "$expected" || { echo "Expected audit parent $expected, got $parent"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before audit'; exit 1; }
+      - name: Audit pressure-control candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, re
+          from pathlib import Path
+          p=Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          with gzip.open(p,'rt',encoding='utf-8') as f: root=json.load(f)
+          records=root['records']
+          assert len(records)==89
+          fields=['modelNames','quantity','location','schemeDesignations','parameters','principle','relations','normalState','deviationSigns','diagnosticScenarioIds','schemeNodeIds','notes','sourceRefs','featureRules','applicability']
+          def present(v):
+              if v is None: return False
+              if isinstance(v,(list,dict,str)): return bool(v)
+              return True
+          def depth(r): return sum(present(r.get(k)) for k in fields)
+          terms=('манометр','давлен','импульс','датчик','контрол','пневматическ','тормозн','резервуар')
+          cand=[]
+          for r in records:
+              blob=json.dumps(r,ensure_ascii=False).lower()
+              if r['id']=='VL-EQ-PN-006' or any(t in blob for t in terms):
+                  cand.append(r)
+          report={
+            'head': __import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'total':len(records),
+            'candidates':[]
+          }
+          for r in sorted(cand,key=lambda x:(depth(x),x['id'])):
+              report['candidates'].append({
+                'id':r['id'],'name':r.get('name'),'category':r.get('category'),'depth':depth(r),
+                'modelNames':r.get('modelNames'),'aliases':r.get('aliases'),'location':r.get('location'),
+                'schemeDesignations':r.get('schemeDesignations'),'parameters':r.get('parameters'),
+                'diagnosticScenarioIds':r.get('diagnosticScenarioIds'),'schemeNodeIds':r.get('schemeNodeIds'),
+                'relations':r.get('relations'),'sourceRefs':r.get('sourceRefs'),'featureRules':r.get('featureRules'),
+                'applicability':r.get('applicability')
+              })
+          Path('beta34-pressure-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta34-pressure-audit
+          path: beta34-pressure-audit.json
+          retention-days: 1
