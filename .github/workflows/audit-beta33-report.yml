@@ -1,0 +1,86 @@
+name: Audit Beta33 compact report
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-beta33-report.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="97e45d6ced29dc5fa606f27a97eec562d89b40d0"
+          parent="$(git rev-parse HEAD^)"
+          test "$parent" = "$expected" || { echo "Expected workflow parent $expected, got $parent"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before audit'; exit 1; }
+
+      - name: Build compact report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+
+          ids=['VL-EQ-PN-007','VL-EQ-PN-013','VL-EQ-PN-015','VL-EQ-PN-016','VL-EQ-PN-002']
+          with gzip.open('app/src/main/assets/technical/vl80s_equipment.json.gz','rt',encoding='utf-8') as f:
+              root=json.load(f)
+          recs=root['records']; by={r['id']:r for r in recs}
+          fields=['id','name','aliases','purpose','modelNames','quantity','location','schemeDesignations','systemIds','schemeNodeIds','diagnosticScenarioIds','relations','sourceRefs','applicability','featureRules','parameters','principle','normalState','deviationSigns','notes','profileDetailStatus','profileDetailPending']
+          out=[]
+          out.append('COUNT='+str(len(recs)))
+          out.append('=== TARGETS ===')
+          for eid in ids:
+              r=by[eid]
+              out.append('\n## '+eid)
+              for k in fields:
+                  if k in r:
+                      out.append(k+'='+json.dumps(r[k],ensure_ascii=False,separators=(',',':')))
+          out.append('\n=== INBOUND ===')
+          for r in recs:
+              for rel in r.get('relations') or []:
+                  if rel.get('targetId') in ids:
+                      out.append(r['id']+'|'+str(r.get('name'))+'|'+json.dumps(rel,ensure_ascii=False,separators=(',',':')))
+
+          terms=['вспомогательн','цепей управления','аппаратов управления','токоприемник','№245','245','ПВУ7','фильтр сжатого воздуха','резервуар цепей']
+          out.append('\n=== TECH MATCHES ===')
+          for p in sorted(Path('app/src/main/assets/technical').glob('vl80s_*.json.gz')):
+              try:
+                  with gzip.open(p,'rt',encoding='utf-8') as f: data=json.load(f)
+              except Exception: continue
+              def walk(x):
+                  if isinstance(x,dict):
+                      ident=x.get('id') or x.get('nodeId') or x.get('title') or x.get('name')
+                      blob=json.dumps(x,ensure_ascii=False,separators=(',',':'))
+                      if ident and any(t.lower() in blob.lower() for t in terms):
+                          small={k:x[k] for k in ['id','nodeId','name','title','purpose','description','summary','equipmentIds','schemeNodeIds','diagnosticScenarioIds','notes','applicability','featureRules'] if k in x}
+                          out.append(p.name+'|'+str(ident)+'|'+json.dumps(small,ensure_ascii=False,separators=(',',':')))
+                          return
+                      for v in x.values(): walk(v)
+                  elif isinstance(x,list):
+                      for v in x: walk(v)
+              walk(data)
+          Path('/tmp/beta33-audit.txt').write_text('\n'.join(out),encoding='utf-8')
+          print('report bytes',Path('/tmp/beta33-audit.txt').stat().st_size)
+          PY
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: beta33-control-air-audit
+          path: /tmp/beta33-audit.txt
+          if-no-files-found: error
+          retention-days: 1
