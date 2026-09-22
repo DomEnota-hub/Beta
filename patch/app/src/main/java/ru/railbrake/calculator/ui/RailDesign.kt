@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import ru.railbrake.calculator.ui.theme.RailMetal
+import ru.railbrake.calculator.ui.theme.RailTheme
 
 @Composable
 internal fun RailHeroCard(
@@ -165,12 +165,18 @@ internal fun RailCompactHeader(
 
 @Composable
 internal fun RailInfoBand(text: String) {
+    val colors = RailTheme.colors
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.38f),
-        border = BorderStroke(1.dp, RailMetal.copy(alpha = 0.18f))
+        color = colors.infoContainer,
+        border = BorderStroke(1.dp, colors.infoBorder)
     ) {
-        Text(text, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall)
+        Text(
+            text,
+            modifier = Modifier.padding(12.dp),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }

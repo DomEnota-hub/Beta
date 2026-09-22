@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta23: improve contrast of dark interactive atlas controls in light mode.
+// Beta24: dedicated light-theme palette and semantic contrast tokens.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
@@ -19,8 +19,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 168
-        versionName = "1.2.2-dev14-beta23"
+        versionCode = 169
+        versionName = "1.2.2-dev14-beta24"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

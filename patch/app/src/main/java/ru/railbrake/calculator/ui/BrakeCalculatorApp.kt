@@ -84,8 +84,7 @@ import ru.railbrake.calculator.data.HistoryRepository
 import ru.railbrake.calculator.data.SecretAccessRepository
 import ru.railbrake.calculator.ui.theme.AccentPalette
 import ru.railbrake.calculator.ui.theme.AppThemeMode
-import ru.railbrake.calculator.ui.theme.Success
-import ru.railbrake.calculator.ui.theme.Warning
+import ru.railbrake.calculator.ui.theme.RailTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -1434,7 +1433,7 @@ private fun LocomotiveCard(loco: LocomotiveSpec) {
                 Text("  •  ${loco.axles} ос.", fontWeight = FontWeight.SemiBold)
             }
             Text(loco.category, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            if (loco.note.isNotBlank()) Text(loco.note, style = MaterialTheme.typography.labelSmall, color = Warning, maxLines = 1)
+            if (loco.note.isNotBlank()) Text(loco.note, style = MaterialTheme.typography.labelSmall, color = RailTheme.colors.warning, maxLines = 1)
             Text("${loco.massKind} • ${loco.sourceNote}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
         }
     }
@@ -1602,54 +1601,48 @@ private fun CalculateButton(onClick: () -> Unit) {
 
 @Composable
 private fun HeroResult(title: String, subtitle: String, success: Boolean) {
-    val color = if (success) Success else Warning
+    val colors = RailTheme.colors
+    val accent = if (success) colors.success else colors.warning
+    val container = if (success) colors.successContainer else colors.warningContainer
+    val border = if (success) colors.successBorder else colors.warningBorder
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        color = color.copy(alpha = 0.10f),
-        border = BorderStroke(1.dp, color.copy(alpha = 0.42f))
+        color = container,
+        border = BorderStroke(1.dp, border)
     ) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black, color = color)
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = color)
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Text(title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black, color = accent)
+            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-    }
-}
-
-@Composable
-private fun Metric(label: String, value: String, strong: Boolean = false) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Top) {
-        Text(label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value, modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.bodyMedium, fontWeight = if (strong) FontWeight.Black else FontWeight.SemiBold)
-    }
-}
-
-@Composable
-private fun MiniMetric(label: String, value: String) {
-    Surface(shape = RoundedCornerShape(14.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.48f)) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
-@Composable
-private fun Formula(text: String) {
-    Surface(shape = RoundedCornerShape(14.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.52f)) {
-        Text(text, modifier = Modifier.fillMaxWidth().padding(12.dp), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
     }
 }
 
 @Composable
 private fun StatusText(text: String, success: Boolean) {
-    Text(text, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = if (success) Success else Warning)
+    val colors = RailTheme.colors
+    Text(
+        text,
+        style = MaterialTheme.typography.bodyMedium,
+        fontWeight = FontWeight.SemiBold,
+        color = if (success) colors.success else colors.warning
+    )
 }
 
 @Composable
 private fun WarningBox(text: String) {
-    Surface(shape = RoundedCornerShape(15.dp), color = Warning.copy(alpha = 0.08f), border = BorderStroke(1.dp, Warning.copy(alpha = 0.32f))) {
-        Text(text, modifier = Modifier.fillMaxWidth().padding(12.dp), style = MaterialTheme.typography.bodySmall, color = Warning)
+    val colors = RailTheme.colors
+    Surface(
+        shape = RoundedCornerShape(15.dp),
+        color = colors.warningContainer,
+        border = BorderStroke(1.dp, colors.warningBorder)
+    ) {
+        Text(
+            text,
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.warning
+        )
     }
 }
 
