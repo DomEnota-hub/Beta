@@ -1,3 +1,5 @@
+
+// Beta32: VL80S compressed-air supply enrichment.
 import java.util.Base64
 
 plugins {
@@ -19,8 +21,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 176
-        versionName = "1.2.2-dev14-beta31"
+        versionCode = 177
+        versionName = "1.2.2-dev14-beta32"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
