@@ -10,7 +10,7 @@ val releaseStorePassword = providers.environmentVariable("RAILBRAKE_STORE_PASSWO
 val releaseKeyAlias = providers.environmentVariable("RAILBRAKE_KEY_ALIAS").orNull
 val releaseKeyPassword = providers.environmentVariable("RAILBRAKE_KEY_PASSWORD").orNull
 
-// Beta24: dedicated light-theme palette and semantic contrast tokens; helper repair verification build.
+// Beta25: first VL80S equipment-card enrichment using the structured card standard.
 android {
     namespace = "ru.railbrake.calculator"
     compileSdk = 34
@@ -19,8 +19,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 169
-        versionName = "1.2.2-dev14-beta24"
+        versionCode = 170
+        versionName = "1.2.2-dev14-beta25"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

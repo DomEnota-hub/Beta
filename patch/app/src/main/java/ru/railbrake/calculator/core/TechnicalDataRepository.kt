@@ -302,35 +302,58 @@ class TechnicalDataRepository(private val context: Context) {
         }
     }
 
-    private fun loadVl80sEquipment(): List<TechnicalEntry> =
-        json("technical/vl80s_equipment.json").array("records").objects().map { item ->
-            val equipmentId = item.optString("id")
-            val canonicalSchemeIds = vl80sSchemeIdsByEquipment[equipmentId].orEmpty()
-            val related = buildList {
-                addAll(item.array("diagnosticScenarioIds").strings())
-                addAll(item.array("relations").objects().mapNotNull { it.optString("targetId").takeIf(String::isNotBlank) })
-                addAll(canonicalSchemeIds)
-            }.distinct()
-            entry(
-                item, TechnicalFamily.VL80S, TechnicalSection.EQUIPMENT,
-                title = item.optString("name"),
-                subtitle = item.optString("purpose"),
-                status = item.optString("evidenceStatus"),
-                blocks = listOfNotEmpty(
-                    block("Назначение", item.optString("purpose")),
-                    block("Расположение", item.obj("location").summary()),
-                    block("Функциональные связи", item.array("legacyConnections").strings()),
-                    block("Обозначения", item.array("aliases").strings()),
-                    block("Системы", item.array("systemIds").strings()),
-                    block("Схемы", canonicalSchemeIds),
-                    block("Диагностика", item.array("diagnosticScenarioIds").strings()),
-                    block("Применимость", item.obj("applicability").summary()),
-                    block("Особенности", item.array("featureRules").stringsOrSummaries()),
-                    block("Источники", item.array("sourceRefs").stringsOrSummaries())
-                ),
-                relatedIds = related
-            )
+    private fun loadVl80sEquipment(): List<TechnicalEntry> {
+        val records = json("technical/vl80s_equipment.json").array("records").objects()
+        val equipmentById = records.associateBy { it.optString("id") }
+
+        fun relatedEquipmentLine(relation: JSONObject): String? {
+  val targetId = relation.optString("targetId")
+  if (targetId.isBlank()) return null
+  val targetName = equipmentById[targetId]?.optString("name")?.takeIf(String::isNotBlank) ?: return null
+  val note = relation.optString("note").trim()
+  return if (note.isBlank()) targetName else "$targetName — $note"
         }
+
+        return records.map { item ->
+  val equipmentId = item.optString("id")
+  val canonicalSchemeIds = vl80sSchemeIdsByEquipment[equipmentId].orEmpty()
+  val relationObjects = item.array("relations").objects()
+  val related = buildList {
+      addAll(item.array("diagnosticScenarioIds").strings())
+      addAll(relationObjects.mapNotNull { it.optString("targetId").takeIf(String::isNotBlank) })
+      addAll(canonicalSchemeIds)
+  }.distinct()
+  entry(
+      item, TechnicalFamily.VL80S, TechnicalSection.EQUIPMENT,
+      title = item.optString("name"),
+      subtitle = item.optString("purpose"),
+      status = item.optString("evidenceStatus"),
+      blocks = listOfNotEmpty(
+          block("Назначение", item.optString("purpose")),
+          block("Модель / исполнение", item.array("modelNames").strings()),
+          block("Количество", item.optString("quantity")),
+          block("Расположение", item.obj("location").summary()),
+          block("Схемные обозначения", item.array("schemeDesignations").strings()),
+          block("Обозначения и алиасы", item.array("aliases").strings()),
+          block("Как работает", item.optString("principle")),
+          block("Параметры", item.array("parameters").stringsOrSummaries()),
+          block("Нормальное состояние", item.array("normalState").strings()),
+          block("Признаки отклонения", item.array("deviationSigns").strings()),
+          block("Связанное оборудование", relationObjects.mapNotNull(::relatedEquipmentLine).distinct()),
+          block("Функциональные связи", item.array("legacyConnections").strings()),
+          block("Системы", item.array("systemIds").strings()),
+          block("Схемы", canonicalSchemeIds),
+          block("Диагностика", item.array("diagnosticScenarioIds").strings()),
+          block("Применимость", item.obj("applicability").summary()),
+          block("Особенности", item.array("featureRules").stringsOrSummaries()),
+          block("Примечания", item.array("notes").stringsOrSummaries()),
+          block("Безопасность", item.array("safetyNotes").stringsOrSummaries()),
+          block("Источники", item.array("sourceRefs").stringsOrSummaries())
+      ),
+      relatedIds = related
+  )
+        }
+    }
 
     private fun loadVl80sSystems(): List<TechnicalEntry> {
         val equipment = json("technical/vl80s_equipment.json").array("records").objects()
