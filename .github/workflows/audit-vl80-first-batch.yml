@@ -30,6 +30,7 @@ jobs:
           eqroot = load('vl80s_equipment.json.gz')
           eq = eqroot.get('records', [])
           dg = load('vl80s_diagnostics.json.gz').get('scenarios', [])
+          ac = load('vl80s_acceptance.json.gz').get('items', [])
           el = load('vl80s_electrical.json.gz').get('baseSchemes', [])
           pn = load('vl80s_pneumatic.json.gz').get('views', [])
 
@@ -46,6 +47,14 @@ jobs:
               refs = set(r.get('equipmentIds', []) or []) | set(r.get('equipmentRefs', []) or [])
               if refs & ids or r.get('id') in diag_ids:
                   related_diag.append(r)
+
+          related_acceptance = []
+          for r in ac:
+              refs = set(r.get('relatedEquipmentIds', []) or [])
+              if r.get('equipmentId'):
+                  refs.add(r.get('equipmentId'))
+              if refs & ids:
+                  related_acceptance.append(r)
 
           related_schemes = []
           for r in el + pn:
@@ -69,11 +78,12 @@ jobs:
               'catalog': catalog,
               'equipment': selected,
               'diagnostics': related_diag,
+              'acceptance': related_acceptance,
               'schemes': related_schemes,
               'selectedIds': sorted(ids),
           }
           Path('vl80-first-batch-audit.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')
-          print(json.dumps({'rootKeys':list(eqroot.keys()), 'count':len(eq), 'selectedIds':sorted(ids)}, ensure_ascii=False, indent=2))
+          print(json.dumps({'count':len(eq), 'selectedIds':sorted(ids), 'acceptance':len(related_acceptance)}, ensure_ascii=False, indent=2))
           PY
       - uses: actions/upload-artifact@v4
         with:
