@@ -1,0 +1,181 @@
+name: Apply Beta33 verified VL80S corrections
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta33-verified-corrections.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="f3d8a80b2371833eec3d47b606b7e1adc8937747"
+          parent="$(git rev-parse HEAD^)"
+          test "$parent" = "$expected" || { echo "Expected workflow parent $expected, got $parent"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before verified corrections'; exit 1; }
+
+      - name: Apply source-verified corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, shutil
+          from pathlib import Path
+
+          app = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          patch = Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          with gzip.open(app, 'rt', encoding='utf-8') as f:
+              root = json.load(f)
+          records = root['records']
+          if len(records) != 89:
+              raise SystemExit(f'Expected 89 records, got {len(records)}')
+          by = {r['id']: r for r in records}
+          targets = {'VL-EQ-PN-007','VL-EQ-PN-013','VL-EQ-PN-015','VL-EQ-PN-016','VL-EQ-PN-002'}
+          if not targets <= set(by):
+              raise SystemExit('Target card missing')
+
+          # PN-007: retain the VL80S-specific KB-1V identity, add only parameters confirmed for VL80S.
+          r = by['VL-EQ-PN-007']
+          r['modelNames'] = ['КБ-1В']
+          aliases = [x for x in r.get('aliases', []) if x not in ('КБ-11',)]
+          for x in ['КБ-1В', 'МКП', 'КМ2']:
+              if x not in aliases:
+                  aliases.append(x)
+          r['aliases'] = aliases
+          r['schemeDesignations'] = ['КМ2', 'МКП']
+          r['parameters'] = [
+              'Привод: электродвигатель постоянного тока П11М.',
+              'Питание электродвигателя вспомогательного компрессора: 50 В от аккумуляторной батареи.'
+          ]
+          notes = [x for x in r.get('notes', []) if '0,037' not in x and '6,5' not in x and '7,0' not in x]
+          verified_notes = [
+              'КБ-1В — вспомогательный компрессор; его не смешивают с основным мотор-компрессором КТ6-Эл.',
+              'Назначение МКП на ВЛ80С — создать запас воздуха для подъёма токоприёмника и включения главного выключателя при недостатке/отсутствии воздуха в основной пневмосистеме.',
+              'С №2349 электродвигатель МКП включается контактором 135 через контакты ПВУ7; ПВУ7 ограничивает длительность работы по давлению. Точную уставку и фактическую послеремонтную схему сверять по документации конкретной секции.'
+          ]
+          r['notes'] = verified_notes
+          rules = r.get('featureRules') or []
+          for rule in rules:
+              if rule.get('feature') == 'aux_compressor_pvu7':
+                  rule['condition'] = 'section.variantBucket in [vl80s_2349_2653, vl80s_2654plus] unless actualEquipmentOverrides says otherwise'
+                  rule['affects'] = 'configuration'
+                  rule['confidence'] = 'confirmed_boundary'
+                  rule['note'] = 'С №2349 электродвигатель вспомогательного компрессора МКП включается контактором 135 через контакты ПВУ7; ПВУ7 отключает цепь контактора при достижении установленного давления. Фактическую уставку и послеремонтное исполнение сверять по документации секции.'
+          if not any(x.get('feature') == 'aux_compressor_pvu7' for x in rules):
+              raise SystemExit('PВU7 feature rule missing')
+
+          # PN-013: VL80S source explicitly gives two capacities; 150 L must not be universal.
+          r = by['VL-EQ-PN-013']
+          r['aliases'] = ['резервуар управления', 'РУ', 'РС5', '50 л', '150 л']
+          r['schemeDesignations'] = ['РС5']
+          r['parameters'] = [
+              'Вместимость резервуара РС5: 50 или 150 л в зависимости от исполнения ВЛ80С.'
+          ]
+          r['notes'] = [
+              'РС5 служит запасом сжатого воздуха для питания электрической аппаратуры с пневматическим приводом; в пособии по ВЛ80С указаны исполнения резервуара 50 и 150 л.',
+              'Не считать 150 л универсальным значением для всех секций: фактическую вместимость и компоновку сверять по документации конкретного исполнения.'
+          ]
+
+          # PN-015: keep the established VL80S filter identity but do not invent micron rating or throughput.
+          r = by['VL-EQ-PN-015']
+          r['modelNames'] = ['Э-114']
+          r['notes'] = [
+              'Э-114 указан в документации ВЛ80С как контакторный фильтр сжатого воздуха.',
+              'В тракте питания токоприёмника и другой электрической аппаратуры документация ВЛ80С отдельно показывает фильтр Ф5 перед редуктором КР2; не отождествлять все фильтры одной схемной ветви без проверки конкретной схемы секции.'
+          ]
+
+          # PN-016: add only pressures and consumers explicitly documented for VL80S.
+          r = by['VL-EQ-PN-016']
+          r['parameters'] = [
+              'После редуктора КР2 давление воздуха для токоприёмника и другой электрической аппаратуры: 5 кгс/см².',
+              'Минимальное давление в магистрали питания электрических аппаратов, кроме главного выключателя: 3,75 кгс/см².'
+          ]
+          r['notes'] = [
+              'Магистраль распределяет воздух; она не является источником давления.',
+              'Документация ВЛ80С подтверждает питание от этой ветви токоприёмника и других аппаратов с пневматическим приводом; отказ нескольких потребителей одновременно требует проверки общего тракта до локальных аппаратов.'
+          ]
+
+          # PN-002: exact VL80S model, scheme designation and location from VL80S documentation.
+          r = by['VL-EQ-PN-002']
+          r['modelNames'] = ['ЭВТ-54А']
+          r['schemeDesignations'] = ['245', 'КЭП6']
+          r['location'] = {'text':'Над правой входной дверью.', 'confidence':'confirmed_model_specific'}
+          r['principle'] = (
+              'Электропневматический вентиль ЭВТ-54А (245) дистанционно управляет подъёмом и опусканием токоприёмника. '
+              'При подаче команды сжатый воздух поступает к пневматическому цилиндру; при снятии питания впуск перекрывается, выпуск открывается и воздух из цилиндра выходит в атмосферу.'
+          )
+          r['parameters'] = [
+              'Пневматическое питание поступает из ветви после фильтра Ф5 и редуктора КР2; давление после КР2 — 5 кгс/см².'
+          ]
+          rels = r.get('relations', [])
+          if not any(x.get('targetId') == 'VL-EQ-PN-016' for x in rels):
+              rels.append({'type':'functional_link','targetId':'VL-EQ-PN-016','note':'получает сжатый воздух из магистрали аппаратов управления'})
+          r['relations'] = rels
+          r['notes'] = [
+              'Не считать отсутствие подъёма токоприёмника однозначным отказом вентиля 245: отдельно проверяются электрическая команда, наличие воздуха, блокировки ВВК, герметичность и механическая часть токоприёмника.'
+          ]
+
+          # Validate relations and diagnostics after correction.
+          all_ids = set(by)
+          for rec in records:
+              for rel in rec.get('relations', []):
+                  target = rel.get('targetId')
+                  if target and target not in all_ids:
+                      raise SystemExit(f'Broken relation {rec["id"]} -> {target}')
+
+          diag_path = Path('app/src/main/assets/technical/vl80s_diagnostics.json.gz')
+          with gzip.open(diag_path, 'rt', encoding='utf-8') as f:
+              droot = json.load(f)
+          diag_ids = {x['id'] for x in droot.get('scenarios', [])}
+          for tid in targets:
+              for did in by[tid].get('diagnosticScenarioIds', []):
+                  if did not in diag_ids:
+                      raise SystemExit(f'Broken diagnostic link {tid} -> {did}')
+
+          # No English implementation residue in user-visible target text.
+          target_text = json.dumps([by[x] for x in sorted(targets)], ensure_ascii=False)
+          if 'downstream' in target_text:
+              raise SystemExit('English downstream residue remains')
+
+          # Deterministic identical mirrors.
+          raw = json.dumps(root, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+          with app.open('wb') as out:
+              with gzip.GzipFile(filename='', mode='wb', fileobj=out, compresslevel=9, mtime=0) as gz:
+                  gz.write(raw)
+          shutil.copyfile(app, patch)
+          if app.read_bytes() != patch.read_bytes():
+              raise SystemExit('app/patch equipment mirrors differ')
+          PY
+
+          cmp -s app/build.gradle.kts patch/app/build.gradle.kts
+          grep -q 'versionCode = 178' app/build.gradle.kts
+          grep -q 'versionName = "1.2.2-dev14-beta33"' app/build.gradle.kts
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz | sort)"
+          test "$changed" = "$expected" || { echo 'Unexpected correction scope:'; git diff --name-only; exit 1; }
+
+      - name: Commit and push verified corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          git commit -m 'Correct Beta33 VL80S control-air details'
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before correction push'; exit 1; }
+          git push origin HEAD:dev14-integration
