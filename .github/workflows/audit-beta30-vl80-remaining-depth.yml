@@ -1,0 +1,123 @@
+name: Audit Beta30 remaining VL80S card depth
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-beta30-vl80-remaining-depth.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rank remaining VL80S cards by structured depth
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from collections import defaultdict
+          from pathlib import Path
+
+          root = Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(root / name, 'rt', encoding='utf-8') as f:
+                  return json.load(f)
+
+          eqroot = load('vl80s_equipment.json.gz')
+          records = eqroot.get('records', [])
+          diagnostics = load('vl80s_diagnostics.json.gz').get('scenarios', [])
+
+          depth_fields = [
+              'purpose','modelNames','quantity','location','schemeDesignations',
+              'parameters','principle','relations','normalState','deviationSigns',
+              'diagnosticScenarioIds','applicability','notes','safetyNotes','sourceRefs'
+          ]
+
+          recently_enriched = {
+              # Beta25
+              'VL-EQ-TR-004','VL-EQ-CT-006','VL-EQ-TR-005','VL-EQ-PN-008','VL-EQ-SF-004','VL-EQ-SF-003',
+              # Beta26
+              'VL-EQ-MC-002','VL-EQ-MC-003','VL-EQ-MC-004','VL-EQ-MC-005','VL-EQ-MC-006',
+              # Beta27
+              'VL-EQ-PR-003','VL-EQ-PR-004','VL-EQ-PR-005','VL-EQ-TR-010','VL-EQ-TR-011','VL-EQ-HV-006','VL-EQ-HV-008','VL-EQ-HV-004'
+          }
+
+          def has(r, key):
+              v = r.get(key)
+              if key == 'location':
+                  return isinstance(v, dict) and bool(v.get('text'))
+              return bool(v)
+
+          ranked=[]
+          by_system=defaultdict(list)
+          for r in records:
+              present={k:has(r,k) for k in depth_fields}
+              score=sum(present.values())
+              missing=[k for k,v in present.items() if not v]
+              row={
+                  'id':r.get('id'),'name':r.get('name'),'systemIds':r.get('systemIds') or [],
+                  'score':score,'max':len(depth_fields),'missing':missing,
+                  'recentlyEnriched':r.get('id') in recently_enriched,
+                  'diagnosticScenarioIds':r.get('diagnosticScenarioIds') or [],
+                  'schemeNodeIds':r.get('schemeNodeIds') or [],
+                  'sourceRefs':r.get('sourceRefs') or [],
+                  'featureRules':r.get('featureRules') or [],
+                  'location':r.get('location'),
+                  'record':r,
+              }
+              ranked.append(row)
+              for sid in row['systemIds'] or ['NO_SYSTEM']:
+                  by_system[sid].append(row)
+
+          ranked.sort(key=lambda x:(x['recentlyEnriched'],x['score'],x['id'] or ''))
+          candidates=[x for x in ranked if not x['recentlyEnriched'] and x['score'] <= 8]
+
+          # Compact diagnostic context for candidates.
+          cand_ids={x['id'] for x in candidates}
+          diag=[]
+          for d in diagnostics:
+              refs=set(d.get('equipmentIds') or []) | set(d.get('equipmentRefs') or [])
+              if refs & cand_ids or d.get('id') in {s for x in candidates for s in x['diagnosticScenarioIds']}:
+                  diag.append(d)
+
+          clusters={}
+          for sid, items in by_system.items():
+              weak=[x for x in items if not x['recentlyEnriched'] and x['score'] <= 8]
+              if weak:
+                  clusters[sid]=[
+                      {'id':x['id'],'name':x['name'],'score':x['score'],'missing':x['missing']}
+                      for x in sorted(weak,key=lambda y:(y['score'],y['id']))
+                  ]
+
+          out={
+              'catalogVersion':eqroot.get('catalogVersion'),
+              'equipmentCount':len(records),
+              'depthFields':depth_fields,
+              'candidateCount':len(candidates),
+              'candidates':candidates,
+              'systemClusters':clusters,
+              'diagnostics':diag,
+              'allRanking':[{
+                  'id':x['id'],'name':x['name'],'systemIds':x['systemIds'],'score':x['score'],
+                  'missing':x['missing'],'recentlyEnriched':x['recentlyEnriched']
+              } for x in ranked],
+          }
+          Path('beta30-vl80-remaining-depth.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps({
+              'equipmentCount':len(records),
+              'candidateCount':len(candidates),
+              'top20':[(x['id'],x['name'],x['score'],x['systemIds']) for x in candidates[:20]],
+              'clusters':{k:len(v) for k,v in clusters.items()}
+          },ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta30-vl80-remaining-depth
+          path: beta30-vl80-remaining-depth.json
+          retention-days: 7
+          if-no-files-found: error
