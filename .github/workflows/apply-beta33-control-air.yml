@@ -1,0 +1,287 @@
+name: Apply Beta33 VL80S control air
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta33-control-air.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="7895d5a208160ea638c3e5861960cb13690017c7"
+          parent="$(git rev-parse HEAD^)"
+          test "$parent" = "$expected" || { echo "Expected workflow parent $expected, got $parent"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before patch'; exit 1; }
+
+      - name: Enrich control-air pneumatic cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, re, shutil
+          from pathlib import Path
+
+          app = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          patch = Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          with gzip.open(app, 'rt', encoding='utf-8') as f:
+              root = json.load(f)
+          records = root['records']
+          byid = {r['id']: r for r in records}
+          target_ids = {
+              'VL-EQ-PN-007','VL-EQ-PN-013','VL-EQ-PN-015','VL-EQ-PN-016','VL-EQ-PN-002'
+          }
+          if len(records) != 89 or not target_ids <= set(byid):
+              raise SystemExit('Unexpected VL80S equipment catalog shape')
+
+          def set_fields(r, **kwargs):
+              for k, v in kwargs.items():
+                  r[k] = v
+              r['relationCoverage'] = 'documented_plus_system_text'
+
+          # Auxiliary compressor and its confirmed late-section control variant.
+          r = byid['VL-EQ-PN-007']
+          set_fields(
+              r,
+              modelNames=['КБ-1В'],
+              principle=(
+                  'Вспомогательный компрессор создаёт локальный запас сжатого воздуха для цепей управления, когда запаса основной пневмосистемы недостаточно для начальных операций. '
+                  'Воздух от компрессора используется контуром управления через резервуар и магистраль аппаратов; конкретная коммутация зависит от исполнения секции.'
+              ),
+              normalState=[
+                  'Компрессор создаёт запас воздуха в цепи управления без ненормального шума, перегрева и заметных наружных утечек.',
+                  'При исправном тракте после работы компрессора воздух сохраняется в локальном контуре и доступен потребителям управления.',
+                  'Фактическая схема включения соответствует исполнению конкретной секции.'
+              ],
+              deviationSigns=[
+                  'Компрессор работает, но запас воздуха в цепи управления не создаётся или создаётся слишком медленно: проверяют сам агрегат, обратный тракт, герметичность резервуара и магистрали.',
+                  'Компрессор не запускается при необходимости резервного наполнения: разграничивают электрическую цепь управления и пневматическую часть.',
+                  'После наполнения воздух быстро теряется: неисправность ищут не только в компрессоре, но и в резервуаре, арматуре и потребителях цепи управления.'
+              ],
+              relations=[
+                  {'type':'functional_link','targetId':'VL-EQ-PN-013','note':'создаёт воздух, который накапливается в резервуаре цепей управления'},
+                  {'type':'functional_link','targetId':'VL-EQ-PN-016','note':'обеспечивает резервное питание магистрали воздуха аппаратов управления через локальный контур'}
+              ],
+              notes=[
+                  'КБ-1В — вспомогательный компрессор; его не смешивают с основным мотор-компрессором КТ6-Эл.',
+                  'С №2349 в источниках подтверждён ПВУ7 в цепи вспомогательного компрессора. ПВУ7 не является моделью компрессора; точную коммутацию сверяют по профилю секции.'
+              ]
+          )
+          rules = r.get('featureRules') or []
+          if not any(x.get('feature') == 'aux_compressor_pvu7' and '2349' in (x.get('condition','') + x.get('note','')) for x in rules):
+              raise SystemExit('Confirmed PВУ7 boundary rule was lost')
+
+          # Local control-air reservoir.
+          r = byid['VL-EQ-PN-013']
+          set_fields(
+              r,
+              parameters=['Объём резервуара: 150 л.'],
+              principle=(
+                  'Резервуар накапливает сжатый воздух локального контура управления и служит буфером между источником воздуха и пневматическими аппаратами. '
+                  'Запас позволяет кратковременно питать цепь управления и уменьшает влияние мгновенных изменений расхода.'
+              ),
+              normalState=[
+                  'Резервуар и его соединения герметичны, запас воздуха после наполнения сохраняется.',
+                  'Из резервуара воздух устойчиво поступает в магистраль аппаратов управления.',
+                  'Нет выраженного падения давления без команды потребителей или известного расхода.'
+              ],
+              deviationSigns=[
+                  'Резервуар не набирает запас: проверяют источник воздуха, подводящий тракт и утечки.',
+                  'Запас быстро теряется после наполнения: локализуют утечку по резервуару, соединениям, арматуре и downstream-магистрали, не считая сам резервуар виновным заранее.',
+                  'Недостаточный запас проявляется нестабильной работой нескольких пневматических аппаратов управления.'
+              ],
+              relations=[
+                  {'type':'functional_link','targetId':'VL-EQ-PN-007','note':'при резервном наполнении получает воздух от вспомогательного компрессора'},
+                  {'type':'functional_link','targetId':'VL-EQ-PN-016','note':'служит локальным источником запаса для магистрали воздуха аппаратов управления'}
+              ],
+              notes=['Объём 150 л подтверждён текущим набором материалов ВЛ80С; конкретную монтажную компоновку резервуара сверяют по секции.']
+          )
+
+          # Filter for sensitive pneumatic/control branches.
+          r = byid['VL-EQ-PN-015']
+          set_fields(
+              r,
+              modelNames=['Э-114'],
+              principle=(
+                  'Фильтр пропускает сжатый воздух через фильтрующий элемент и задерживает загрязнения перед чувствительными пневматическими приборами. '
+                  'Он относится к подготовке воздуха в соответствующей приборной или управляющей ветви, а не к созданию давления.'
+              ),
+              normalState=[
+                  'Фильтр герметичен и не создаёт заметного ограничения подачи воздуха к обслуживаемой ветви.',
+                  'После фильтра сохраняется нормальная работа подключённых пневматических приборов.',
+                  'Соединения и корпус не имеют постоянной утечки.'
+              ],
+              deviationSigns=[
+                  'Загрязнение или ограничение прохода может проявляться недостаточной подачей воздуха downstream-приборам при нормальном давлении до фильтра.',
+                  'Неплотность корпуса или соединений вызывает локальную утечку сжатого воздуха.',
+                  'Повторяющиеся проблемы нескольких чувствительных приборов одной ветви требуют проверки общей подготовки воздуха, а не замены прибора по одному симптому.'
+              ],
+              relations=[
+                  {'type':'functional_link','targetId':'VL-EQ-PN-016','note':'работает в соответствующих ветвях системы воздуха управления; точное место фильтра в конкретной ветви сверяют по схеме секции'}
+              ],
+              notes=['Э-114 идентифицирован как фильтр сжатого воздуха. Точное расположение конкретного фильтра в ветвях управления/ЭПК зависит от схемы секции.']
+          )
+
+          # Prepared/control-air manifold.
+          r = byid['VL-EQ-PN-016']
+          set_fields(
+              r,
+              principle=(
+                  'Магистраль распределяет подготовленный сжатый воздух от локального запаса и подготовительного участка к пневматическим приводам аппаратов управления. '
+                  'От её герметичности и проходимости зависит сразу несколько потребителей, поэтому общий отказ нескольких аппаратов отделяют от локальной неисправности одного клапана.'
+              ),
+              normalState=[
+                  'Магистраль герметична и обеспечивает устойчивую подачу воздуха к подключённым аппаратам.',
+                  'В узле airPrep нет признаков общего ограничения, из-за которого одновременно теряют работоспособность несколько потребителей.',
+                  'После наполнения резервуара воздух доступен потребителям управления без заметного самопроизвольного падения.'
+              ],
+              deviationSigns=[
+                  'Одновременная слабая или отсутствующая работа нескольких пневмоприводов указывает на необходимость проверки общего питания магистрали и airPrep.',
+                  'Локальный отказ одного потребителя при нормальной работе остальных чаще требует проверки его ответвления, клапана и электрической команды.',
+                  'Постоянная утечка в магистрали уменьшает запас резервуара управления и может мешать подъёму токоприёмника или работе других аппаратов.'
+              ],
+              relations=[
+                  {'type':'functional_link','targetId':'VL-EQ-PN-013','note':'получает воздух из локального запаса резервуара цепей управления'},
+                  {'type':'functional_link','targetId':'VL-EQ-PN-002','note':'питает пневматическую сторону клапана токоприёмника №245'},
+                  {'type':'functional_link','targetId':'VL-EQ-PN-015','note':'в отдельных управляющих/приборных ветвях воздух дополнительно очищается фильтром; конкретную последовательность сверяют по схеме'}
+              ],
+              notes=['Не смешивать магистраль воздуха аппаратов управления с тормозной и питательной магистралями: назначение и потребители у этих трактов различаются.']
+          )
+
+          # Pantograph electro-pneumatic valve No. 245.
+          r = byid['VL-EQ-PN-002']
+          set_fields(
+              r,
+              schemeDesignations=['245'],
+              principle=(
+                  'Клапан №245 преобразует электрическую команду цепи управления в изменение пневматического тракта токоприёмника. '
+                  'При соответствующей команде он разрешает подачу воздуха к пневмоприводу; при изменении команды тракт переводится в состояние, предусмотренное схемой опускания/снятия питания.'
+              ),
+              normalState=[
+                  'При наличии исправной электрической команды и воздуха управления клапан уверенно меняет состояние и обеспечивает требуемую работу токоприёмника.',
+                  'В устойчивом состоянии отсутствует постоянная ненормальная утечка через клапан.',
+                  'Механическая часть не заедает, а реакция соответствует команде цепи управления.'
+              ],
+              deviationSigns=[
+                  'Токоприёмник не поднимается: отдельно проверяют наличие воздуха в магистрали управления, электрическую команду на клапан и сам клапан №245.',
+                  'Замедленная или неустойчивая работа может быть связана как с клапаном, так и с ограничением/утечкой пневматического тракта.',
+                  'Самопроизвольное изменение состояния или постоянная утечка требуют проверки клапана и управляющей цепи без вывода по одному признаку.'
+              ],
+              relations=[
+                  {'type':'functional_link','targetId':'VL-EQ-CT-005','note':'получает электрическую команду из цепей управления токоприёмником'},
+                  {'type':'functional_link','targetId':'VL-EQ-HV-002','note':'управляет подачей воздуха к пневмоприводу токоприёмника'},
+                  {'type':'functional_link','targetId':'VL-EQ-PN-016','note':'получает сжатый воздух из магистрали аппаратов управления'}
+              ],
+              notes=['Номер 245 — схемное/аппаратное обозначение клапана в текущем наборе ВЛ80С; точное размещение и исполнение проверяют по документации конкретной секции.']
+          )
+
+          # Keep the existing reverse pantograph relation and enrich it with a note only if absent.
+          hv = byid.get('VL-EQ-HV-002')
+          if hv:
+              rels = hv.get('relations') or []
+              found = False
+              for rel in rels:
+                  if rel.get('targetId') == 'VL-EQ-PN-002':
+                      rel.setdefault('note', 'пневмопривод токоприёмника управляется электропневматическим клапаном №245')
+                      found = True
+              if not found:
+                  rels.append({'type':'functional_link','targetId':'VL-EQ-PN-002','note':'пневмопривод токоприёмника управляется электропневматическим клапаном №245'})
+              hv['relations'] = rels
+
+          # Structural validation.
+          all_ids = set(byid)
+          for eid in target_ids:
+              rec = byid[eid]
+              for key in ('principle','normalState','deviationSigns','relations'):
+                  if not rec.get(key):
+                      raise SystemExit(f'{eid}: missing enriched field {key}')
+              for rel in rec.get('relations') or []:
+                  if rel.get('targetId') not in all_ids:
+                      raise SystemExit(f'{eid}: broken relation {rel}')
+          if byid['VL-EQ-PN-013'].get('parameters') != ['Объём резервуара: 150 л.']:
+              raise SystemExit('Control reservoir volume validation failed')
+          if byid['VL-EQ-PN-007'].get('modelNames') != ['КБ-1В']:
+              raise SystemExit('Aux compressor model validation failed')
+          if byid['VL-EQ-PN-015'].get('modelNames') != ['Э-114']:
+              raise SystemExit('Filter model validation failed')
+          if byid['VL-EQ-PN-016'].get('schemeNodeIds') != ['airPrep']:
+              raise SystemExit('airPrep binding was changed unexpectedly')
+          if byid['VL-EQ-PN-002'].get('schemeNodeIds') != ['valve245']:
+              raise SystemExit('valve245 binding was changed unexpectedly')
+
+          # Serialize once, then mirror the exact gzip bytes.
+          with gzip.open(app, 'wt', encoding='utf-8', compresslevel=9) as f:
+              json.dump(root, f, ensure_ascii=False, separators=(',', ':'))
+          shutil.copy2(app, patch)
+          if app.read_bytes() != patch.read_bytes():
+              raise SystemExit('app/patch equipment mirrors differ')
+
+          # Version bump, both mirrors.
+          for path in [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]:
+              s = path.read_text(encoding='utf-8')
+              s2 = re.sub(r'versionCode\s*=\s*177\b', 'versionCode = 178', s)
+              s2 = s2.replace('versionName = "1.2.2-dev14-beta32"', 'versionName = "1.2.2-dev14-beta33"')
+              if s2 == s:
+                  raise SystemExit(f'Version anchor not found in {path}')
+              if 'Beta33: VL80S control-air pneumatic enrichment.' not in s2:
+                  s2 = '\n// Beta33: VL80S control-air pneumatic enrichment.' + s2
+              path.write_text(s2, encoding='utf-8')
+          PY
+
+      - name: Verify exact patch scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          a=Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          p=Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          assert a.read_bytes() == p.read_bytes()
+          with gzip.open(a,'rt',encoding='utf-8') as f: root=json.load(f)
+          assert len(root['records']) == 89
+          by={r['id']:r for r in root['records']}
+          assert by['VL-EQ-PN-007']['modelNames'] == ['КБ-1В']
+          assert by['VL-EQ-PN-013']['parameters'] == ['Объём резервуара: 150 л.']
+          assert by['VL-EQ-PN-015']['modelNames'] == ['Э-114']
+          assert by['VL-EQ-PN-016']['schemeNodeIds'] == ['airPrep']
+          assert by['VL-EQ-PN-002']['schemeNodeIds'] == ['valve245']
+          assert any(x.get('feature')=='aux_compressor_pvu7' and '2349' in (x.get('condition','')+x.get('note','')) for x in by['VL-EQ-PN-007'].get('featureRules',[]))
+          PY
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            app/build.gradle.kts \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/build.gradle.kts \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz | sort)"
+          test "$changed" = "$expected" || { echo 'Unexpected patch scope:'; git diff --name-only; exit 1; }
+
+      - name: Commit and push source patch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/build.gradle.kts patch/app/build.gradle.kts \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          git commit -m 'Enrich VL80S control-air pneumatic cards'
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before source push'; exit 1; }
+          git push origin HEAD:dev14-integration
