@@ -1,0 +1,60 @@
+name: Beta36 source inspect
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/beta36-source-inspect.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard inspection base
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="4811b25e401e9391846f68054d6d0a2091ee129b"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected inspection parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta36 source inspection'; exit 1; }
+
+      - name: Search technical assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          terms = ['НБ-455А','АЭ-92-4','УПВ-5','4ТТ-63/10','мотор-вентил','маслонасос','фазорасщеп','контроль вентиляц']
+          for p in sorted(Path('app/src/main/assets/technical').glob('*.json.gz')):
+              try:
+                  with gzip.open(p,'rt',encoding='utf-8') as f:
+                      data=json.load(f)
+              except Exception as e:
+                  print('SKIP',p,e); continue
+              text=json.dumps(data,ensure_ascii=False)
+              hits=[t for t in terms if t.lower() in text.lower()]
+              if not hits:
+                  continue
+              print('\nFILE',p,'HITS',hits)
+              def walk(x,path='$'):
+                  if isinstance(x,dict):
+                      for k,v in x.items(): walk(v,f'{path}.{k}')
+                  elif isinstance(x,list):
+                      for i,v in enumerate(x): walk(v,f'{path}[{i}]')
+                  elif isinstance(x,str):
+                      low=x.lower()
+                      if any(t.lower() in low for t in terms):
+                          print(path,':',x[:1000])
+              walk(data)
+          PY
+          git diff --exit-code
