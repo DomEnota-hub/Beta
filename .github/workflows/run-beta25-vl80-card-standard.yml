@@ -1,0 +1,46 @@
+name: Run Beta25 VL80S card standard
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/run-beta25-vl80-card-standard.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Recover and run Beta25 patch script
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          source = Path('.github/workflows/apply-beta25-vl80-card-standard.yml').read_text(encoding='utf-8').splitlines()
+          start = next(i for i, line in enumerate(source) if "python3 - <<'PY'" in line) + 1
+          end = next(i for i in range(start, len(source)) if source[i].strip() == 'PY')
+          body = []
+          for line in source[start:end]:
+              body.append(line[10:] if line.startswith('          ') else line)
+          Path('/tmp/apply_beta25.py').write_text('\n'.join(body) + '\n', encoding='utf-8')
+          PY
+          python3 /tmp/apply_beta25.py
+          git diff --check
+          git status --short
+      - name: Commit Beta25 source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app patch
+          git diff --cached --quiet && { echo 'No changes to commit'; exit 0; }
+          git commit -m 'Enrich first VL80S equipment cards'
+          git pull --rebase origin dev14-integration
+          git push origin HEAD:dev14-integration
