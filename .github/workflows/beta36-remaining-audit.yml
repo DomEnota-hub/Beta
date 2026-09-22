@@ -1,0 +1,93 @@
+name: Beta36 remaining-card audit
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/beta36-remaining-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard audit base
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="6947deb777e949d288b9ad7fc4da9c00eefac993"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected audit parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta36 audit'; exit 1; }
+
+      - name: Audit remaining VL80S cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          p = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          with gzip.open(p, 'rt', encoding='utf-8') as f:
+              root = json.load(f)
+          records = root['records']
+          assert len(records) == 89
+
+          fields = [
+              'modelNames','quantity','location','schemeDesignations','parameters','principle',
+              'relations','normalState','deviationSigns','diagnosticScenarioIds','schemeNodeIds',
+              'applicability','featureRules','notes','sourceRefs'
+          ]
+          def depth(r):
+              return sum(bool(r.get(k)) for k in fields)
+          def prefix(rid):
+              parts = rid.split('-')
+              return parts[2] if len(parts) > 3 else 'OTHER'
+
+          weak = sorted([(depth(r), r['id'], r.get('name') or r.get('title') or '') for r in records if depth(r) <= 7])
+          print('TOTAL', len(records))
+          print('WEAK_LE_7', len(weak))
+          print('WEAK_LE_6', sum(1 for d,_,__ in weak if d <= 6))
+          counts = Counter(prefix(rid) for _, rid, _ in weak)
+          print('WEAK_BY_PREFIX', json.dumps(dict(sorted(counts.items())), ensure_ascii=False))
+          print('\nALL_WEAK')
+          for item in weak:
+              print(item)
+
+          byid = {r['id']: r for r in records}
+          for pref in ('AU','TR'):
+              group = [r for r in records if prefix(r['id']) == pref]
+              print(f'\n=== GROUP {pref}: {len(group)} cards ===')
+              for r in sorted(group, key=lambda x:x['id']):
+                  print('\nCARD', r['id'], 'DEPTH', depth(r))
+                  print(json.dumps(r, ensure_ascii=False, indent=2))
+
+          # Reverse relation references into AU/TR cards.
+          target_ids = {r['id'] for r in records if prefix(r['id']) in ('AU','TR')}
+          incoming = defaultdict(list)
+          for r in records:
+              for rel in r.get('relations', []) or []:
+                  tid = rel.get('targetId')
+                  if tid in target_ids:
+                      incoming[tid].append({'from':r['id'],'name':r.get('name'),'type':rel.get('type'),'note':rel.get('note')})
+          print('\n=== INCOMING RELATIONS TO AU/TR ===')
+          for tid in sorted(target_ids):
+              if incoming[tid]:
+                  print(tid, json.dumps(incoming[tid], ensure_ascii=False, indent=2))
+
+          # Discover source/scheme files relevant to these cards without changing anything.
+          print('\n=== TECHNICAL ASSET FILES ===')
+          for q in sorted(Path('app/src/main/assets/technical').glob('*')):
+              print(q)
+          PY
+
+          git diff --exit-code
