@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Dump first-batch VL80S records
+      - name: Dump first-batch VL80S records and catalog
         shell: bash
         run: |
           set -euo pipefail
@@ -27,7 +27,8 @@ jobs:
               with gzip.open(root / name, 'rt', encoding='utf-8') as f:
                   return json.load(f)
 
-          eq = load('vl80s_equipment.json.gz').get('records', [])
+          eqroot = load('vl80s_equipment.json.gz')
+          eq = eqroot.get('records', [])
           dg = load('vl80s_diagnostics.json.gz').get('scenarios', [])
           el = load('vl80s_electrical.json.gz').get('baseSchemes', [])
           pn = load('vl80s_pneumatic.json.gz').get('views', [])
@@ -36,17 +37,14 @@ jobs:
               'тифон', 'свист', 'индуктив', 'трансформатор тока',
               'помехоподав', 'сборник конденсат', 'скоростемер'
           ]
-          selected = []
-          for r in eq:
-              hay = json.dumps(r, ensure_ascii=False).lower()
-              if any(n in hay for n in needles):
-                  selected.append(r)
-
+          selected = [r for r in eq if any(n in json.dumps(r, ensure_ascii=False).lower() for n in needles)]
           ids = {r.get('id') for r in selected if r.get('id')}
+          diag_ids = {x for r in selected for x in (r.get('diagnosticScenarioIds', []) or [])}
+
           related_diag = []
           for r in dg:
               refs = set(r.get('equipmentIds', []) or []) | set(r.get('equipmentRefs', []) or [])
-              if refs & ids or set(r.get('id') for _ in [0]) & set(sum([x.get('diagnosticScenarioIds', []) or [] for x in selected], [])):
+              if refs & ids or r.get('id') in diag_ids:
                   related_diag.append(r)
 
           related_schemes = []
@@ -58,14 +56,24 @@ jobs:
               if refs & ids:
                   related_schemes.append(r)
 
+          root_meta = {k:v for k,v in eqroot.items() if k != 'records'}
+          catalog = [
+              {
+                  'id': r.get('id'), 'name': r.get('name'), 'aliases': r.get('aliases', []),
+                  'systemIds': r.get('systemIds', []), 'diagnosticScenarioIds': r.get('diagnosticScenarioIds', [])
+              }
+              for r in eq
+          ]
           out = {
+              'rootMeta': root_meta,
+              'catalog': catalog,
               'equipment': selected,
               'diagnostics': related_diag,
               'schemes': related_schemes,
               'selectedIds': sorted(ids),
           }
           Path('vl80-first-batch-audit.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')
-          print(json.dumps(out, ensure_ascii=False, indent=2))
+          print(json.dumps({'rootKeys':list(eqroot.keys()), 'count':len(eq), 'selectedIds':sorted(ids)}, ensure_ascii=False, indent=2))
           PY
       - uses: actions/upload-artifact@v4
         with:
