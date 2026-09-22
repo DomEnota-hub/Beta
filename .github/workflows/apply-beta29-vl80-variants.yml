@@ -1,0 +1,284 @@
+name: Apply Beta29 VL80S variant precision
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta29-vl80-variants.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || {
+            echo 'dev14-integration moved after this workflow was queued; aborting without source changes.' >&2
+            exit 1
+          }
+
+      - name: Apply Beta29 profile precision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, io, json, re
+          from pathlib import Path
+
+          EQ = [
+              Path('app/src/main/assets/technical/vl80s_equipment.json.gz'),
+              Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz'),
+          ]
+          VAR = [
+              Path('app/src/main/assets/technical/vl80s_variants.json.gz'),
+              Path('patch/app/src/main/assets/technical/vl80s_variants.json.gz'),
+          ]
+          BUILD = [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]
+
+          for pair, label in ((EQ, 'equipment'), (VAR, 'variants'), (BUILD, 'build')):
+              if pair[0].read_bytes() != pair[1].read_bytes():
+                  raise SystemExit(f'{label} app/patch mirrors differ before Beta29')
+
+          with gzip.open(EQ[0], 'rt', encoding='utf-8') as f:
+              root = json.load(f)
+          records = root.get('records', [])
+          if len(records) != 89:
+              raise SystemExit(f'unexpected VL80S equipment count: {len(records)}')
+          by_id = {r.get('id'): r for r in records}
+
+          required_ids = {
+              'VL-EQ-TR-001','VL-EQ-TR-003','VL-EQ-MC-001','VL-EQ-PR-001',
+              'VL-EQ-BR-005','VL-EQ-PR-002','VL-EQ-PN-004','VL-EQ-CT-002',
+              'VL-EQ-CT-003','VL-EQ-TR-008','VL-EQ-FR-002','VL-EQ-BR-009',
+              'VL-EQ-PN-005','VL-EQ-AU-005','VL-EQ-TR-009','VL-EQ-FR-001',
+              'VL-EQ-AU-001','VL-EQ-PN-007','VL-EQ-PR-003','VL-EQ-PR-004'
+          }
+          missing = required_ids - set(by_id)
+          if missing:
+              raise SystemExit(f'missing Beta29 records: {sorted(missing)}')
+
+          original_pending = [r['id'] for r in records if isinstance(r.get('location'), dict) and r['location'].get('confidence') == 'profile_detail_pending']
+          if len(original_pending) != 15:
+              raise SystemExit(f'expected 15 profile_detail_pending records before Beta29, got {len(original_pending)}: {original_pending}')
+
+          def location(eid, text, confidence):
+              rec = by_id[eid]
+              rec['location'] = {'text': text, 'confidence': confidence}
+
+          def append_note(eid, note):
+              rec = by_id[eid]
+              notes = rec.get('notes') or []
+              if note not in notes:
+                  notes.append(note)
+              rec['notes'] = notes
+
+          def upsert_rule(eid, feature, rule):
+              rec = by_id[eid]
+              rules = rec.get('featureRules') or []
+              matches = [i for i,x in enumerate(rules) if isinstance(x,dict) and x.get('feature') == feature]
+              if len(matches) > 1:
+                  raise SystemExit(f'{eid}: duplicate feature rule {feature}')
+              if matches:
+                  rules[matches[0]] = rule
+              else:
+                  rules.append(rule)
+              rec['featureRules'] = rules
+
+          # Locations directly supported by the VL80S arrangement / equipment description.
+          location('VL-EQ-TR-001', 'В блоке тягового трансформатора в ВВК; базовая компоновка подтверждена техописанием, фактическую компоновку после модернизаций сверять по конкретной секции.', 'source_confirmed')
+          location('VL-EQ-TR-003', 'В ВВК секции расположены тяговые выпрямительные установки 61 и 62; базовая компоновка подтверждена техописанием, после модернизаций возможна иная аппаратура.', 'source_confirmed')
+          location('VL-EQ-MC-001', 'Песочная система размещена у тележек; форсунки подают песок непосредственно в зону контакта бандажа с рельсом.', 'source_confirmed')
+          location('VL-EQ-PR-001', 'Аппараты защиты распределены по панелям, блокам силовых аппаратов и блоку тягового трансформатора; это группа аппаратов, а не один монтажный узел.', 'confirmed_general')
+          location('VL-EQ-PR-002', 'Реле боксования тяговых двигателей размещены в блоках силовых аппаратов соответствующих тележек; защита от юза при реостатном торможении имеет отдельную панель.', 'source_confirmed')
+          location('VL-EQ-PN-004', 'Питательная магистраль проходит по секции от группы главных резервуаров и питает тормозные, управляющие и вспомогательные пневматические потребители; точная трасса трубопровода определяется монтажом секции.', 'confirmed_general')
+          location('VL-EQ-CT-002', 'Источник питания и зарядки цепей управления расположен в распределительном щите: в базовом раннем исполнении — РЩ-34 с ТРПШ; с №2174 применён щит ЩР1 с иной схемой питания.', 'source_confirmed')
+          location('VL-EQ-CT-003', 'Релейная аппаратура цепей управления распределена по панелям ВВК; состав и размещение отдельных реле изменялись по мере выпуска и модернизаций.', 'source_confirmed')
+          location('VL-EQ-TR-008', 'Два реверсора ПКД-142 находятся в блоках силовых аппаратов: аппарат 63 — в БСА №1 для первой тележки, аппарат 64 — в БСА №2 для второй тележки.', 'source_confirmed')
+          location('VL-EQ-BR-009', 'На посту машиниста в кабине; устройство блокировки тормозов включено в пневматические и электрические цепи активной кабины.', 'source_confirmed')
+          location('VL-EQ-PN-005', 'В напорной части пневматической системы между компрессором и группой главных резервуаров; фактическую арматуру и монтаж сверять по пневмосхеме секции.', 'confirmed_general')
+          location('VL-EQ-TR-009', 'Четыре блока R11–R14 расположены в кузове секции и включены в систему принудительного охлаждения: R11/R12 связаны с каналом МВ3, R13/R14 — с МВ4.', 'source_confirmed')
+
+          # Correct an equipment-classification error discovered during Beta29 research.
+          br304 = by_id['VL-EQ-BR-005']
+          br304['name'] = 'Реле давления №304'
+          br304['purpose'] = 'Повторяет управляющее давление вспомогательного тормоза и обеспечивает наполнение тормозных цилиндров второй тележки непосредственно из питательной магистрали через редуктор №348.'
+          br304['aliases'] = list(dict.fromkeys((br304.get('aliases') or []) + ['реле-повторитель №304', 'РД №304']))
+          location('VL-EQ-BR-005', 'В пневматической тормозной системе секции: после редуктора №348 в цепи питания тормозных цилиндров второй тележки.', 'source_confirmed')
+          append_note('VL-EQ-BR-005', 'Не путать с регулятором давления АК-11Б: АК-11Б управляет работой компрессора по давлению в главных резервуарах, а №304 является пневматическим реле-повторителем тормозной системы.')
+
+          # Intentionally unresolved: exact fire-extinguishing arrangement and ventilation duct routing
+          # can change with retrofit/section layout and the available references do not justify a serial boundary.
+          location('VL-EQ-FR-002', 'Исполнительные средства пожаротушения и их размещение зависят от фактической комплектации секции; подтверждённая граница №2110 относится к пожарной сигнализации, а не автоматически к системе пожаротушения.', 'profile_detail_pending')
+          append_note('VL-EQ-FR-002', 'Beta29: profile_detail_pending сохранён осознанно. Доступные источники подтверждают внедрение пожарной сигнализации с №2110, но не дают достаточного основания переносить эту границу на конкретное исполнение системы пожаротушения.')
+
+          location('VL-EQ-AU-005', 'Воздуховоды, форкамеры, жалюзи и заслонки проходят по машинному отделению к охлаждаемым группам оборудования; точная трассировка зависит от компоновки и последующих модернизаций конкретной секции.', 'profile_detail_pending')
+          append_note('VL-EQ-AU-005', 'Beta29: profile_detail_pending сохранён осознанно. Техописание подтверждает состав и функциональные направления системы вентиляции, но отдельно предупреждает, что расположение оборудования ВЛ80С изменялось при ремонтах и модернизациях и не всегда восстанавливается до точного серийного номера.')
+
+          # New source-confirmed serial boundaries that do not justify splitting the global profile buckets.
+          upsert_rule('VL-EQ-MC-001', 'sand_control_1904', {
+              'feature':'sand_control_1904',
+              'condition':'section.serialNumber >= 1904 unless actualEquipmentOverrides says otherwise',
+              'affects':'control_configuration',
+              'sourceRefs':['VL-SRC-006'],
+              'confidence':'confirmed_boundary',
+              'note':'С №1904 ручной пневматический клапан подачи песка под 1-ю и 3-ю колёсные пары ведущей секции не применяется; введена дополнительная кнопка 219 «Песок» с электропневматическим управлением.'
+          })
+          upsert_rule('VL-EQ-CT-002', 'control_power_shr1_2174', {
+              'feature':'control_power_shr1_2174',
+              'condition':'section.serialNumber >= 2174 unless actualEquipmentOverrides says otherwise',
+              'affects':'model_location_and_configuration',
+              'sourceRefs':['VL-SRC-006','VL-SRC-008'],
+              'confidence':'confirmed_boundary',
+              'note':'С №2174 вместо РЩ-34 с ТРПШ, ТН и дросселями ДС1/ДС3 установлен щит ЩР1, питаемый от трансформатора 48; фактическое исполнение после ремонтов сверять по секции.'
+          })
+          upsert_rule('VL-EQ-CT-003', 'relay_panel_relayout_2174', {
+              'feature':'relay_panel_relayout_2174',
+              'condition':'section.serialNumber >= 2174 unless actualEquipmentOverrides says otherwise',
+              'affects':'location_and_configuration',
+              'sourceRefs':['VL-SRC-006'],
+              'confidence':'confirmed_boundary',
+              'note':'С №2174 часть аппаратов перенесена с панелей №2 и №7 на отдельную панель напротив распределительного щита; на панели №2 размещено реле пожарной сигнализации 442.'
+          })
+
+          # Strengthen existing rules where the 2006 VL80S manual gives a direct serial boundary.
+          direct_rules = [
+              ('VL-EQ-TR-003','vu_protection_rp21_22'),
+              ('VL-EQ-PR-001','vu_protection_rp21_22'),
+              ('VL-EQ-PN-007','aux_compressor_pvu7'),
+              ('VL-EQ-PR-003','vu_protection_rp21_22'),
+              ('VL-EQ-PR-004','vu_protection_rp21_22'),
+              ('VL-EQ-AU-001','fr_late_scheme'),
+          ]
+          for eid, feature in direct_rules:
+              rec = by_id[eid]
+              rule = next((x for x in (rec.get('featureRules') or []) if x.get('feature') == feature), None)
+              if rule is None:
+                  raise SystemExit(f'{eid}: expected existing feature rule {feature}')
+              rule['sourceRefs'] = list(dict.fromkeys((rule.get('sourceRefs') or []) + ['VL-SRC-006']))
+              rule['confidence'] = 'confirmed_boundary'
+
+          fire = by_id['VL-EQ-FR-001']
+          fire_rule = next((x for x in (fire.get('featureRules') or []) if x.get('feature') == 'fire_signalization_present'), None)
+          if fire_rule is None:
+              raise SystemExit('VL-EQ-FR-001: expected fire_signalization_present rule')
+          fire_rule.update({
+              'condition':'section.serialNumber >= 2110 unless actualEquipmentOverrides says otherwise',
+              'sourceRefs':list(dict.fromkeys((fire_rule.get('sourceRefs') or []) + ['VL-SRC-006'])),
+              'confidence':'confirmed_boundary',
+              'note':'С №2110 внедрена пожарная сигнализация. На секциях после ремонтов и модернизаций фактическое наличие и состав всё равно имеют приоритет над серийной границей.'
+          })
+
+          # Make the profile caution explicit without inventing new global buckets for single-apparatus changes.
+          with gzip.open(VAR[0], 'rt', encoding='utf-8') as f:
+              variants = json.load(f)
+          non_merge = variants.get('nonMergeRules') or []
+          for rule in [
+              'single_equipment_serial_boundary_does_not_require_new_global_bucket',
+              'actual_section_configuration_overrides_nominal_serial_boundary_after_repair_or_modernization',
+          ]:
+              if rule not in non_merge:
+                  non_merge.append(rule)
+          variants['nonMergeRules'] = non_merge
+          variants['auditNote'] = 'Beta29: serial boundaries 1904, 2110 and 2174 are represented as equipment feature rules rather than new global physical buckets; actual section configuration remains authoritative.'
+
+          # Verify the intended outcome: only the two genuinely unresolved location cases remain pending.
+          remaining_pending = sorted(
+              r['id'] for r in records
+              if isinstance(r.get('location'), dict) and r['location'].get('confidence') == 'profile_detail_pending'
+          )
+          if remaining_pending != ['VL-EQ-AU-005','VL-EQ-FR-002']:
+              raise SystemExit(f'unexpected remaining pending set: {remaining_pending}')
+
+          if by_id['VL-EQ-BR-005']['name'] != 'Реле давления №304':
+              raise SystemExit('No.304 classification correction did not apply')
+
+          # Do not alter experimental overrides or bucket count.
+          if len(variants.get('physicalBuckets') or []) != 9:
+              raise SystemExit('VL80S physical bucket count changed unexpectedly')
+          if len(variants.get('experimentalOverrides') or []) != 4:
+              raise SystemExit('VL80S experimental override count changed unexpectedly')
+
+          root['catalogVersion'] = 'stage2-final-v1.7-vl80-variant-precision'
+          root['generatedAt'] = '2026-09-22'
+
+          def dump_gz(obj, path):
+              raw=(json.dumps(obj,ensure_ascii=False,separators=(',',':'))+'\n').encode('utf-8')
+              buf=io.BytesIO()
+              with gzip.GzipFile(filename='',mode='wb',fileobj=buf,mtime=0,compresslevel=9) as g:
+                  g.write(raw)
+              path.write_bytes(buf.getvalue())
+
+          for path in EQ:
+              dump_gz(root, path)
+          for path in VAR:
+              dump_gz(variants, path)
+
+          for path in BUILD:
+              text=path.read_text(encoding='utf-8')
+              if text.count('// Beta28: dedicated Occupational Safety entry in the navigation drawer.') != 1:
+                  raise SystemExit(f'{path}: Beta28 comment not found exactly once')
+              if text.count('versionCode = 173') != 1 or text.count('versionName = "1.2.2-dev14-beta28"') != 1:
+                  raise SystemExit(f'{path}: Beta28 build identity not found exactly once')
+              text=text.replace('// Beta28: dedicated Occupational Safety entry in the navigation drawer.', '// Beta29: VL80S section-aware variant and profile precision.', 1)
+              text=text.replace('versionCode = 173','versionCode = 174',1)
+              text=text.replace('versionName = "1.2.2-dev14-beta28"','versionName = "1.2.2-dev14-beta29"',1)
+              path.write_text(text,encoding='utf-8')
+
+          for pair, label in ((EQ,'equipment'),(VAR,'variants'),(BUILD,'build')):
+              if pair[0].read_bytes() != pair[1].read_bytes():
+                  raise SystemExit(f'{label} app/patch mirrors differ after Beta29')
+
+          # Re-read compressed output and validate core counts/IDs.
+          with gzip.open(EQ[0], 'rt', encoding='utf-8') as f:
+              check = json.load(f)
+          if len(check.get('records', [])) != 89:
+              raise SystemExit('VL80S equipment count changed during Beta29')
+          if len({r.get('id') for r in check['records']}) != 89:
+              raise SystemExit('duplicate/missing VL80S equipment IDs after Beta29')
+          PY
+
+          git diff --check
+          git status --short
+
+      - name: Recheck branch immediately before source commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || {
+            echo 'dev14-integration moved while Beta29 patch was prepared; aborting without commit.' >&2
+            exit 1
+          }
+
+      - name: Commit Beta29 source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz \
+            app/src/main/assets/technical/vl80s_variants.json.gz \
+            patch/app/src/main/assets/technical/vl80s_variants.json.gz \
+            app/build.gradle.kts \
+            patch/app/build.gradle.kts
+          git diff --cached --quiet && { echo 'No Beta29 source changes to commit'; exit 0; }
+          git commit -m 'Refine VL80S variant and profile precision'
+          git push origin HEAD:dev14-integration
+
+      - name: Dispatch Dev14 safe build v2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run dev14-safe-build-v2.yml --repo DomEnota-hub/Beta --ref dev14-integration
