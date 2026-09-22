@@ -1,0 +1,78 @@
+name: Audit Beta30 brake context
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-beta30-brake-context.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract pneumatic/source context
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+
+          root=Path('app/src/main/assets/technical')
+          target_ids={'VL-EQ-BR-001','VL-EQ-BR-002','VL-EQ-BR-007','VL-EQ-BR-009','VL-EQ-BR-010','VL-EQ-BR-011','VL-EQ-BR-012','VL-EQ-BR-005','VL-EQ-PN-014'}
+          source_ids={'VL-SRC-001','VL-SRC-004','VL-SRC-006'}
+          out={'pneumatic':None,'sources':{},'sourceFiles':[]}
+
+          with gzip.open(root/'vl80s_pneumatic.json.gz','rt',encoding='utf-8') as f:
+              pn=json.load(f)
+          # retain compact objects that mention target equipment or expected node ids
+          node_ids={'km','kvt','ur','bt','vr','zr','impulse','rd'}
+          matches=[]
+          stack=[pn]
+          seen=set()
+          while stack:
+              obj=stack.pop()
+              if isinstance(obj,dict):
+                  s=json.dumps(obj,ensure_ascii=False)
+                  hit=bool(target_ids & set(obj.get('equipmentIds',[]) or [])) or obj.get('equipmentId') in target_ids or obj.get('id') in node_ids
+                  if hit and any(k in obj for k in ('id','title','name','equipmentId','equipmentIds','nodes','connections','parameters','label')):
+                      key=json.dumps(obj,ensure_ascii=False,sort_keys=True)
+                      if key not in seen:
+                          seen.add(key); matches.append(obj)
+                  stack.extend(obj.values())
+              elif isinstance(obj,list):
+                  stack.extend(obj)
+          out['pneumatic']={'meta':{k:v for k,v in pn.items() if k not in ('schemes','baseSchemes','nodes')},'matches':matches}
+
+          for p in root.glob('vl80s*.json.gz'):
+              try:
+                  with gzip.open(p,'rt',encoding='utf-8') as f: data=json.load(f)
+              except Exception:
+                  continue
+              txt=json.dumps(data,ensure_ascii=False)
+              if any(sid in txt for sid in source_ids):
+                  out['sourceFiles'].append(p.name)
+                  stack=[data]
+                  while stack:
+                      obj=stack.pop()
+                      if isinstance(obj,dict):
+                          oid=obj.get('id')
+                          if oid in source_ids:
+                              out['sources'][oid]=obj
+                          stack.extend(obj.values())
+                      elif isinstance(obj,list):
+                          stack.extend(obj)
+
+          Path('beta30-brake-context.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps({'pneumaticMatches':len(matches),'sourceFiles':out['sourceFiles'],'sources':sorted(out['sources'])},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta30-brake-context
+          path: beta30-brake-context.json
+          retention-days: 7
+          if-no-files-found: error
