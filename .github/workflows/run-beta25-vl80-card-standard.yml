@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Recover and run Beta25 patch script
+      - name: Recover Beta25 patch script
         shell: bash
         run: |
           set -euo pipefail
@@ -25,12 +25,30 @@ jobs:
           source = Path('.github/workflows/apply-beta25-vl80-card-standard.yml').read_text(encoding='utf-8').splitlines()
           start = next(i for i, line in enumerate(source) if "python3 - <<'PY'" in line) + 1
           end = next(i for i in range(start, len(source)) if source[i].strip() == 'PY')
-          body = []
-          for line in source[start:end]:
-              body.append(line[10:] if line.startswith('          ') else line)
+          body = [line[10:] if line.startswith('          ') else line for line in source[start:end]]
           Path('/tmp/apply_beta25.py').write_text('\n'.join(body) + '\n', encoding='utf-8')
           PY
-          python3 /tmp/apply_beta25.py
+      - name: Run Beta25 patch script
+        shell: bash
+        run: |
+          set +e
+          python3 /tmp/apply_beta25.py > beta25-patch.log 2>&1
+          status=$?
+          echo "$status" > beta25-patch.status
+          cat beta25-patch.log
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta25-patch-debug
+          path: |
+            beta25-patch.log
+            beta25-patch.status
+            /tmp/apply_beta25.py
+      - name: Validate patch execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat beta25-patch.status)" = "0"
           git diff --check
           git status --short
       - name: Commit Beta25 source changes
