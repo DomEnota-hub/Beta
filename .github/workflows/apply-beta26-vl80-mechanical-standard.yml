@@ -1,0 +1,313 @@
+name: Apply Beta26 VL80S mechanical card standard
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta26-vl80-mechanical-standard.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Refuse stale branch state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || {
+            echo 'dev14-integration moved after this workflow was queued; aborting without source changes.' >&2
+            exit 1
+          }
+
+      - name: Enrich VL80S mechanical cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip
+          import io
+          import json
+          import re
+          from pathlib import Path
+
+          APP = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          PATCH = Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          BUILD_FILES = [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]
+
+          if APP.read_bytes() != PATCH.read_bytes():
+              raise SystemExit('VL80S equipment app/patch mirrors differ before Beta26')
+
+          with gzip.open(APP, 'rt', encoding='utf-8') as f:
+              data = json.load(f)
+
+          records = data.get('records', [])
+          if len(records) != 89:
+              raise SystemExit(f'unexpected VL80S equipment count: {len(records)}')
+          by_id = {r.get('id'): r for r in records}
+          required = {
+              'VL-EQ-MC-002', 'VL-EQ-MC-003', 'VL-EQ-MC-004',
+              'VL-EQ-MC-005', 'VL-EQ-MC-006', 'VL-EQ-TR-006',
+              'VL-EQ-TR-007', 'VL-EQ-BR-006', 'VL-EQ-SF-004'
+          }
+          missing = required - set(by_id)
+          if missing:
+              raise SystemExit(f'missing equipment records: {sorted(missing)}')
+
+          def merge_sources(rec, *refs):
+              rec['sourceRefs'] = list(dict.fromkeys((rec.get('sourceRefs') or []) + list(refs)))
+
+          def set_fields(eid, **fields):
+              by_id[eid].update(fields)
+
+          # Parent mechanical card: keep it concise, but replace the unresolved textual
+          # axlebox link with explicit canonical relations to the enriched child nodes.
+          parent = by_id['VL-EQ-MC-002']
+          parent_rel = parent.get('relations') or []
+          parent_targets = {r.get('targetId') for r in parent_rel if isinstance(r, dict)}
+          for rel in [
+              {'relationType':'contains','targetId':'VL-EQ-MC-003','note':'тележка опирается на две колёсные пары'},
+              {'relationType':'contains','targetId':'VL-EQ-MC-004','note':'буксовые узлы связывают колёсные пары с рамой тележки'},
+              {'relationType':'contains','targetId':'VL-EQ-MC-005','note':'рессорное подвешивание передаёт и смягчает вертикальные нагрузки между буксами и рамой тележки'},
+          ]:
+              if rel['targetId'] not in parent_targets:
+                  parent_rel.append(rel)
+          parent['relations'] = parent_rel
+          parent['unresolvedSystemConnections'] = [
+              x for x in (parent.get('unresolvedSystemConnections') or []) if x.lower() != 'буксы'
+          ]
+          merge_sources(parent, 'VL-SRC-006')
+
+          # Wheelset.
+          set_fields(
+              'VL-EQ-MC-003',
+              quantity='4 на секцию (по 2 на каждую двухосную тележку); 8 на штатный двухсекционный ВЛ80С',
+              principle='Колёсная пара направляет электровоз по рельсовому пути, воспринимает статические и динамические нагрузки и преобразует вращающий момент тягового двигателя, переданный через тяговую передачу, в поступательное движение. Тормозное усилие передаётся на колёса через тормозную рычажную передачу.',
+              parameters=[
+                  'Состав: ось, два колёсных центра, бандажи, бандажные кольца и зубчатые колёса тяговой передачи',
+                  'Диаметр колеса по кругу катания в техническом описании ВЛ80С — 1250 мм',
+                  'Ось имеет буксовые и моторно-осевые шейки для сопряжения с буксовыми узлами и опорно-осевым тяговым приводом',
+              ],
+              normalState=[
+                  'Поверхность катания и гребень без видимых трещин, ползунов, наваров, выбоин и выщербин.',
+                  'Бандаж, бандажное кольцо и контрольные риски без признаков сдвига, ослабления или нарушения стопорения.',
+                  'При движении нет повторяющихся ударов или вибрации, синхронных с вращением колеса.',
+              ],
+              deviationSigns=[
+                  'Ритмичные удары, меняющиеся вместе со скоростью движения, либо видимый дефект поверхности катания.',
+                  'Трещины, ползуны, навары, выбоины или выщербины на доступной поверхности катания или гребне.',
+                  'Несовпадение контрольных рисок, нарушение состояния бандажного кольца или другие признаки сдвига/ослабления бандажа.',
+              ],
+              relations=[
+                  {'relationType':'supported_by','targetId':'VL-EQ-MC-004','note':'опирается на буксовые узлы по концам оси; через них нагрузки и продольные/поперечные силы передаются между колёсной парой и рамой тележки'},
+                  {'relationType':'driven_by','targetId':'VL-EQ-TR-007','note':'получает крутящий момент тягового двигателя через тяговую зубчатую передачу'},
+                  {'relationType':'braked_by','targetId':'VL-EQ-BR-006','note':'тормозное усилие передаётся на колёса через тормозную рычажную передачу'},
+                  {'relationType':'part_of','targetId':'VL-EQ-MC-002','note':'входит в состав тележки; по две колёсные пары на двухосную тележку'},
+                  {'relationType':'drives','targetId':'VL-EQ-SF-004','note':'первая колёсная пара базового механического исполнения приводит скоростемер через редуктор; после модернизаций фактический канал скорости может отличаться'},
+              ],
+              notes=[
+                  'Размерные допуски, браковочные нормы и эксплуатационные пределы не перенесены в эту карточку автоматически: их следует брать из действующей документации по колёсным парам и конкретному исполнению секции.',
+              ],
+          )
+          merge_sources(by_id['VL-EQ-MC-003'], 'VL-SRC-006', 'VL-SRC-014')
+
+          # Axlebox.
+          axlebox = by_id['VL-EQ-MC-004']
+          axlebox['aliases'] = list(dict.fromkeys((axlebox.get('aliases') or []) + ['бесчелюстная букса', 'буксовые подшипники']))
+          set_fields(
+              'VL-EQ-MC-004',
+              quantity='2 на колёсную пару; 8 на секцию; 16 на штатный двухсекционный ВЛ80С',
+              principle='Бесчелюстная двухповодковая букса опирается роликовыми подшипниками на буксовую шейку оси. Через буксы вертикальная нагрузка передаётся на колёсные пары, а тяговые, тормозные и боковые силы от колёсных пар — на раму тележки через буксовые поводки.',
+              parameters=[
+                  'Конструктивное исполнение по техническому описанию ВЛ80С — бесчелюстная двухповодковая букса с роликовыми подшипниками',
+                  'Подшипники: 3052536ЛМ и 3042536ЛМ',
+                  'Размер каждого из указанных подшипников — 320 × 180 × 86 мм',
+              ],
+              normalState=[
+                  'Корпус и крышки буксы без трещин, перекоса и повреждений; крепёж и поводки закреплены.',
+                  'Нагрев однотипных букс сопоставим, нет запаха перегрева, изменения окраски или обильного выхода смазки.',
+                  'Уплотнения и крышки находятся на месте, без явных признаков смещения или разгерметизации.',
+              ],
+              deviationSigns=[
+                  'Повышенный или заметно отличающийся от соседних букс нагрев, запах перегрева либо изменение окраски.',
+                  'Трещины корпуса или крышки, перекос, ослабление крепежа, повреждение поводков или их шарниров.',
+                  'Обильный выход смазки, повреждение уплотнений или ненормальный шум/вибрация подшипникового узла.',
+              ],
+              relations=[
+                  {'relationType':'supports','targetId':'VL-EQ-MC-003','note':'опирается на буксовые шейки оси и передаёт нагрузки между колёсной парой и рамой тележки'},
+                  {'relationType':'connects_to','targetId':'VL-EQ-MC-002','note':'передаёт тяговые, тормозные и боковые усилия на раму тележки через буксовые поводки'},
+                  {'relationType':'works_with','targetId':'VL-EQ-MC-005','note':'к нижней части буксы шарнирно подвешена листовая рессора первой ступени подвешивания'},
+              ],
+              notes=[
+                  'На правых буксах по направлению движения предусмотрены фланцы для приводов приборов; на первой колёсной паре базового исполнения установлен привод механического скоростемера.',
+                  'Ремонтные зазоры и нормы износа намеренно не перенесены сюда как универсальные эксплуатационные значения: для них приоритет имеет действующая ремонтная документация.',
+              ],
+          )
+          merge_sources(axlebox, 'VL-SRC-006', 'VL-SRC-014')
+
+          # Spring suspension. Keep first-stage spring suspension and body cradle
+          # suspension technically distinct even though the current app groups their
+          # acceptance checks under one equipment card.
+          set_fields(
+              'VL-EQ-MC-005',
+              quantity='Первая ступень — индивидуальная рессорная система на каждую буксу; элементы люлечного подвешивания образуют отдельную связь кузова с тележкой',
+              principle='В первой ступени удары от колеса передаются через буксу, листовую рессору и винтовые цилиндрические пружины, что смягчает динамические нагрузки и распределяет их между колёсами и колёсными парами. Люлечное подвешивание отдельно передаёт вертикальные и поперечные силы между кузовом и рамой тележки.',
+              parameters=[
+                  'Первая ступень: листовая рессора и винтовые цилиндрические пружины, индивидуально на каждую буксу',
+                  'Жёсткость листовой рессоры по техническому описанию ВЛ80С — 1246 Н/мм',
+                  'Жёсткость одной винтовой пружины — 2747 Н/мм',
+                  'Статический прогиб винтовой пружины — 17 мм; листовой рессоры — 68,5 мм',
+              ],
+              normalState=[
+                  'Пружины и листовые рессоры без трещин, изломов, заметного перекоса, смещения и недопустимого контакта с соседними деталями.',
+                  'Рессорные стойки, валики, гайки, шайбы, стопорные элементы и шарниры на месте и надёжно закреплены.',
+                  'Связанные элементы люлечного подвешивания и гидравлические гасители без видимых повреждений, утечек, перекоса и нарушения креплений.',
+              ],
+              deviationSigns=[
+                  'Трещина или излом листа рессоры/пружины, смещение пакета, ослабление хомута или нарушение стопорения.',
+                  'Перекос или заметно отличающаяся просадка симметричных узлов, стук или следы ненормального касания.',
+                  'Повреждение рессорных стоек, поводков, шарниров, люлечных элементов либо течь/перекос гидравлического гасителя.',
+              ],
+              relations=[
+                  {'relationType':'connects','targetId':'VL-EQ-MC-004','note':'листовая рессора первой ступени шарнирно подвешена к нижней части буксы'},
+                  {'relationType':'supports','targetId':'VL-EQ-MC-002','note':'передаёт и смягчает вертикальные нагрузки между буксами и рамой тележки; связанные люлечные элементы участвуют в связи кузова с тележкой'},
+              ],
+              notes=[
+                  'Текущая карточка приложения агрегирует проверки первой ступени рессорного подвешивания, люлечного подвешивания и гидравлических гасителей. Конструктивно это связанные, но не тождественные узлы; параметры первой ступени нельзя автоматически переносить на люлечное подвешивание.',
+                  'Браковочные размеры и ремонтные допуски оставлены за профильной действующей документацией и не дублируются в карточке без необходимости.',
+              ],
+          )
+          merge_sources(by_id['VL-EQ-MC-005'], 'VL-SRC-006', 'VL-SRC-014')
+
+          # Motor-axle bearing. Detailed dimensions are explicitly gated to NB-418K6.
+          set_fields(
+              'VL-EQ-MC-006',
+              quantity='Для базового тягового двигателя НБ-418К6 — 2 буксы моторно-осевых подшипников на двигатель; для иного ТЭД сверять фактическое исполнение',
+              principle='При опорно-осевом подвешивании тяговый двигатель одним концом опирается через моторно-осевые подшипники на ось колёсной пары. В базовом НБ-418К6 вкладыши размещены в буксах, а смазочное устройство поддерживает постоянный уровень масла.',
+              parameters=[
+                  'НБ-418К6: моторно-осевой подшипник состоит из буксы и разъёмного вкладыша; буксы не являются взаимозаменяемыми из-за совместной расточки с остовом двигателя',
+                  'НБ-418К6: вкладыши — латунь ЛКС80-3-3; внутренняя поверхность залита баббитом Б16 толщиной 3 мм',
+                  'НБ-418К6: внутренний диаметр вкладыша после расточки — 205,45 +0,09 мм с последующей подгонкой по шейке оси колёсной пары',
+                  'НБ-418К6: система смазки — с постоянным уровнем масла, контролируемым по указателю',
+              ],
+              normalState=[
+                  'Нет ненормального нагрева, стука или вибрации в зоне моторно-осевых подшипников.',
+                  'Буксы, крепления и доступные элементы узла без трещин, ослабления и следов ненормального смещения.',
+                  'Уровень смазки соответствует установленному для фактического исполнения; нет выраженной утечки и признаков разгерметизации смазочного устройства.',
+              ],
+              deviationSigns=[
+                  'Повышенный нагрев моторно-осевого подшипника, стук или вибрация колёсно-моторного блока.',
+                  'Пониженный уровень смазки, выраженная утечка либо следы нарушения герметичности смазочного устройства.',
+                  'Повреждение креплений, буксы или вкладыша, а также увеличенный зазор, выявленный при предусмотренном контроле.',
+              ],
+              relations=[
+                  {'relationType':'supports_motor_on_axle','targetId':'VL-EQ-TR-006','note':'служит опорой тягового двигателя на ось колёсной пары при опорно-осевом подвешивании'},
+                  {'relationType':'runs_on','targetId':'VL-EQ-MC-003','note':'вкладыш работает по моторно-осевой шейке оси колёсной пары'},
+                  {'relationType':'part_of_drive','targetId':'VL-EQ-TR-007','note':'входит в колёсно-моторный блок рядом с тяговой передачей; шум и вибрация требуют разграничения источника между подшипником и зубчатой передачей'},
+              ],
+              notes=[
+                  'Подробные конструктивные параметры в этой карточке относятся к базовому тяговому двигателю НБ-418К6.',
+                  'В каталоге отдельно подтверждён опытный выпуск пяти ВЛ80С 1985 года с ТЭД НБ-514; точные номера машин не установлены. Параметры МОП НБ-418К6 нельзя автоматически переносить на такое исполнение или на последующие замены ТЭД.',
+                  'Сценарий «Шум тяговой передачи» связан с карточкой МОП как диагностический контекст колёсно-моторного блока и сам по себе не доказывает неисправность подшипника.',
+              ],
+          )
+          merge_sources(by_id['VL-EQ-MC-006'], 'VL-SRC-006', 'VL-SRC-007', 'VL-SRC-014')
+
+          # No electrical/pneumatic scheme IDs are invented for these mechanical nodes.
+          for eid in ('VL-EQ-MC-003', 'VL-EQ-MC-004', 'VL-EQ-MC-005', 'VL-EQ-MC-006'):
+              rec = by_id[eid]
+              if rec.get('schemeNodeIds'):
+                  raise SystemExit(f'{eid}: unexpected pre-existing schemeNodeIds; manual review required')
+              for key in ('purpose', 'quantity', 'principle', 'parameters', 'normalState', 'deviationSigns', 'sourceRefs'):
+                  if not rec.get(key):
+                      raise SystemExit(f'{eid}: missing required enriched field {key}')
+
+          # Validate all canonical relation targets.
+          ids = set(by_id)
+          for rec in records:
+              for rel in rec.get('relations') or []:
+                  if not isinstance(rel, dict):
+                      continue
+                  target = rel.get('targetId')
+                  if isinstance(target, str) and target.startswith('VL-EQ-') and target not in ids:
+                      raise SystemExit(f"broken equipment relation: {rec.get('id')} -> {target}")
+
+          data['catalogVersion'] = 'stage2-final-v1.4-vl80-mechanical-standard'
+          data['generatedAt'] = '2026-09-22'
+          raw = (json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+
+          def write_gzip(path):
+              buf = io.BytesIO()
+              with gzip.GzipFile(filename='', mode='wb', fileobj=buf, mtime=0, compresslevel=9) as g:
+                  g.write(raw)
+              path.write_bytes(buf.getvalue())
+
+          write_gzip(APP)
+          write_gzip(PATCH)
+          if APP.read_bytes() != PATCH.read_bytes():
+              raise SystemExit('VL80S equipment app/patch mirrors differ after Beta26')
+
+          # Beta26 build identity. Keep app/patch build scripts mirrored.
+          for path in BUILD_FILES:
+              text = path.read_text(encoding='utf-8')
+              text = re.sub(
+                  r'// Beta25: first VL80S equipment-card enrichment using the structured card standard\.',
+                  '// Beta26: second VL80S equipment-card enrichment — mechanical nodes.',
+                  text,
+                  count=1,
+              )
+              text, n_code = re.subn(r'versionCode = 170\b', 'versionCode = 171', text, count=1)
+              text, n_name = re.subn(r'versionName = "1\.2\.2-dev14-beta25"', 'versionName = "1.2.2-dev14-beta26"', text, count=1)
+              if n_code != 1 or n_name != 1:
+                  raise SystemExit(f'{path}: Beta25 build identity not found exactly once')
+              path.write_text(text, encoding='utf-8')
+
+          if BUILD_FILES[0].read_bytes() != BUILD_FILES[1].read_bytes():
+              raise SystemExit('build.gradle.kts app/patch mirrors differ after Beta26')
+
+          # Re-read the result and ensure the batch remained exactly 89 records.
+          with gzip.open(APP, 'rt', encoding='utf-8') as f:
+              check = json.load(f)
+          if len(check.get('records', [])) != 89:
+              raise SystemExit('VL80S equipment count changed during Beta26')
+          check_by = {r['id']: r for r in check['records']}
+          if check_by['VL-EQ-MC-006']['sourceRefs'] != list(dict.fromkeys(check_by['VL-EQ-MC-006']['sourceRefs'])):
+              raise SystemExit('duplicate source refs in motor-axle bearing card')
+          if 'буксы' in (check_by['VL-EQ-MC-002'].get('unresolvedSystemConnections') or []):
+              raise SystemExit('resolved axlebox parent relation still left unresolved')
+          PY
+
+          git diff --check
+          git status --short
+
+      - name: Recheck branch immediately before source commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || {
+            echo 'dev14-integration moved while Beta26 patch was being prepared; aborting without commit.' >&2
+            exit 1
+          }
+
+      - name: Commit Beta26 source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz \
+            app/build.gradle.kts \
+            patch/app/build.gradle.kts
+          git diff --cached --quiet && { echo 'No Beta26 source changes to commit'; exit 0; }
+          git commit -m 'Enrich VL80S mechanical equipment cards'
+          git push origin HEAD:dev14-integration
