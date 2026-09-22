@@ -1,0 +1,123 @@
+name: Audit VL80S mechanical batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-vl80-mechanical-batch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump VL80S mechanical batch context
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+
+          root = Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(root / name, 'rt', encoding='utf-8') as f:
+                  return json.load(f)
+
+          eqroot = load('vl80s_equipment.json.gz')
+          eq = eqroot.get('records', [])
+          dgroot = load('vl80s_diagnostics.json.gz')
+          dg = dgroot.get('scenarios', [])
+          acroot = load('vl80s_acceptance.json.gz')
+          ac = acroot.get('items', [])
+          elroot = load('vl80s_electrical.json.gz')
+          pnroot = load('vl80s_pneumatic.json.gz')
+          varroot = load('vl80s_variants.json.gz')
+
+          needles = [
+              'колес', 'колёс', 'букс', 'рессор', 'подвеш',
+              'моторно-ос', 'моторно ос', 'осев', 'тяговая передача',
+              'зубчат', 'редуктор'
+          ]
+          def text(obj):
+              return json.dumps(obj, ensure_ascii=False).lower()
+          selected = [r for r in eq if any(n in text(r) for n in needles)]
+          ids = {r.get('id') for r in selected if r.get('id')}
+          diag_ids = {x for r in selected for x in (r.get('diagnosticScenarioIds', []) or [])}
+
+          related_diag = []
+          for r in dg:
+              refs = set(r.get('equipmentIds', []) or []) | set(r.get('equipmentRefs', []) or [])
+              if refs & ids or r.get('id') in diag_ids or any(n in text(r) for n in needles):
+                  related_diag.append(r)
+
+          related_acceptance = []
+          for r in ac:
+              refs = set(r.get('relatedEquipmentIds', []) or [])
+              if r.get('equipmentId'):
+                  refs.add(r.get('equipmentId'))
+              if refs & ids or any(n in text(r) for n in needles):
+                  related_acceptance.append(r)
+
+          def related_scheme_objects(root_obj):
+              out=[]
+              stack=[root_obj]
+              while stack:
+                  obj=stack.pop()
+                  if isinstance(obj, dict):
+                      s=text(obj)
+                      if any(eid in s for eid in ids) or any(n in s for n in needles):
+                          if any(k in obj for k in ('id','name','title','nodes','equipmentIds')):
+                              out.append(obj)
+                      stack.extend(obj.values())
+                  elif isinstance(obj, list):
+                      stack.extend(obj)
+              uniq=[]; seen=set()
+              for x in out:
+                  key=json.dumps(x,ensure_ascii=False,sort_keys=True)
+                  if key not in seen:
+                      seen.add(key); uniq.append(x)
+              return uniq
+
+          source_refs = sorted({s for r in selected for s in (r.get('sourceRefs', []) or [])})
+          catalog = [
+              {
+                  'id': r.get('id'), 'name': r.get('name'), 'aliases': r.get('aliases', []),
+                  'location': r.get('location'), 'systemIds': r.get('systemIds', []),
+                  'diagnosticScenarioIds': r.get('diagnosticScenarioIds', []),
+                  'sourceRefs': r.get('sourceRefs', [])
+              }
+              for r in eq
+          ]
+          out = {
+              'rootMeta': {k:v for k,v in eqroot.items() if k != 'records'},
+              'selectedIds': sorted(ids),
+              'sourceRefs': source_refs,
+              'equipment': selected,
+              'diagnostics': related_diag,
+              'acceptance': related_acceptance,
+              'electricalMatches': related_scheme_objects(elroot),
+              'pneumaticMatches': related_scheme_objects(pnroot),
+              'variants': varroot,
+              'catalog': catalog,
+          }
+          Path('vl80-mechanical-batch-audit.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps({
+              'equipmentCount': len(eq),
+              'selectedIds': sorted(ids),
+              'sourceRefs': source_refs,
+              'diagnostics': len(related_diag),
+              'acceptance': len(related_acceptance),
+              'electricalMatches': len(out['electricalMatches']),
+              'pneumaticMatches': len(out['pneumaticMatches'])
+          }, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vl80-mechanical-batch-audit
+          path: vl80-mechanical-batch-audit.json
+          if-no-files-found: error
+          retention-days: 7
