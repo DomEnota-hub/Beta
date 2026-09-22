@@ -1,0 +1,73 @@
+name: Audit VL80S first equipment batch
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-vl80-first-batch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump first-batch VL80S records
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+
+          root = Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(root / name, 'rt', encoding='utf-8') as f:
+                  return json.load(f)
+
+          eq = load('vl80s_equipment.json.gz').get('records', [])
+          dg = load('vl80s_diagnostics.json.gz').get('scenarios', [])
+          el = load('vl80s_electrical.json.gz').get('baseSchemes', [])
+          pn = load('vl80s_pneumatic.json.gz').get('views', [])
+
+          needles = [
+              'тифон', 'свист', 'индуктив', 'трансформатор тока',
+              'помехоподав', 'сборник конденсат', 'скоростемер'
+          ]
+          selected = []
+          for r in eq:
+              hay = json.dumps(r, ensure_ascii=False).lower()
+              if any(n in hay for n in needles):
+                  selected.append(r)
+
+          ids = {r.get('id') for r in selected if r.get('id')}
+          related_diag = []
+          for r in dg:
+              refs = set(r.get('equipmentIds', []) or []) | set(r.get('equipmentRefs', []) or [])
+              if refs & ids or set(r.get('id') for _ in [0]) & set(sum([x.get('diagnosticScenarioIds', []) or [] for x in selected], [])):
+                  related_diag.append(r)
+
+          related_schemes = []
+          for r in el + pn:
+              refs = set(r.get('equipmentIds', []) or [])
+              for n in r.get('nodes', []) or []:
+                  if isinstance(n, dict) and n.get('equipmentId'):
+                      refs.add(n['equipmentId'])
+              if refs & ids:
+                  related_schemes.append(r)
+
+          out = {
+              'equipment': selected,
+              'diagnostics': related_diag,
+              'schemes': related_schemes,
+              'selectedIds': sorted(ids),
+          }
+          Path('vl80-first-batch-audit.json').write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(out, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vl80-first-batch-audit
+          path: vl80-first-batch-audit.json
