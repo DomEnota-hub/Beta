@@ -1,4 +1,5 @@
 
+// Beta33: VL80S control-air pneumatic enrichment.
 // Beta32: VL80S compressed-air supply enrichment.
 import java.util.Base64
 
@@ -21,8 +22,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 177
-        versionName = "1.2.2-dev14-beta32"
+        versionCode = 178
+        versionName = "1.2.2-dev14-beta33"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
