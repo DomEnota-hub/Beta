@@ -49,78 +49,43 @@ jobs:
           for path in UI_FILES:
               text = path.read_text(encoding='utf-8')
 
-              old = '    KNOWLEDGE("Справочник"),\n    FIRST_AID("Первая помощь"),'
-              new = '    KNOWLEDGE("Справочник"),\n    SAFETY("Охрана труда"),\n    FIRST_AID("Первая помощь"),'
-              if text.count(old) != 1:
-                  raise SystemExit(f'{path}: AppScreen insertion anchor not found exactly once')
-              text = text.replace(old, new, 1)
+              replacements = [
+                  (
+                      '    KNOWLEDGE("Справочник"),\n    FIRST_AID("Первая помощь"),',
+                      '    KNOWLEDGE("Справочник"),\n    SAFETY("Охрана труда"),\n    FIRST_AID("Первая помощь"),',
+                      'AppScreen enum',
+                  ),
+                  (
+                      '    var knowledgeRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var firstAidRootVersion by rememberSaveable { mutableIntStateOf(0) }',
+                      '    var knowledgeRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var safetyRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var firstAidRootVersion by rememberSaveable { mutableIntStateOf(0) }',
+                      'safety root state',
+                  ),
+                  (
+                      '                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.FIRST_AID)',
+                      '                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.SAFETY, AppScreen.FIRST_AID)',
+                      'drawer items',
+                  ),
+                  (
+                      '                                AppScreen.FIRST_AID -> firstAidRootVersion++',
+                      '                                AppScreen.SAFETY -> {\n                                    technicalFamilyName = TechnicalFamily.VL80S.name\n                                    technicalSectionName = TechnicalSection.SAFETY.name\n                                    technicalInitialEntryId = null\n                                    safetyRootVersion++\n                                }\n                                AppScreen.FIRST_AID -> firstAidRootVersion++',
+                      'drawer click',
+                  ),
+                  (
+                      '                AppScreen.FIRST_AID -> key(firstAidRootVersion) {',
+                      '                AppScreen.SAFETY -> key(safetyRootVersion) {\n                    TechnicalCatalogScreen(\n                        initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),\n                        initialSection = TechnicalSection.SAFETY,\n                        sectionBackLabel = "Главная",\n                        onSectionBack = { screenName = AppScreen.HOME.name },\n                        lockFamily = false,\n                        lockSection = true\n                    )\n                }\n                AppScreen.FIRST_AID -> key(firstAidRootVersion) {',
+                      'safety screen',
+                  ),
+              ]
 
-              old = '    var knowledgeRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var firstAidRootVersion by rememberSaveable { mutableIntStateOf(0) }'
-              new = '    var knowledgeRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var safetyRootVersion by rememberSaveable { mutableIntStateOf(0) }\n    var firstAidRootVersion by rememberSaveable { mutableIntStateOf(0) }'
-              if text.count(old) != 1:
-                  raise SystemExit(f'{path}: safety root state anchor not found exactly once')
-              text = text.replace(old, new, 1)
+              for old, new, label in replacements:
+                  if text.count(old) != 1:
+                      raise SystemExit(f'{path}: {label} anchor count={text.count(old)}')
+                  text = text.replace(old, new, 1)
 
-              old = '                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.FIRST_AID)'
-              new = '                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.SAFETY, AppScreen.FIRST_AID)'
-              if text.count(old) != 1:
-                  raise SystemExit(f'{path}: drawer items anchor not found exactly once')
-              text = text.replace(old, new, 1)
-
-              old = '''                                AppScreen.KNOWLEDGE -> {
-                                    knowledgeStartArticleId = null
-                                    knowledgeStartQuery = null
-                                    knowledgeRootVersion++
-                                }
-                                AppScreen.FIRST_AID -> firstAidRootVersion++'''
-              new = '''                                AppScreen.KNOWLEDGE -> {
-                                    knowledgeStartArticleId = null
-                                    knowledgeStartQuery = null
-                                    knowledgeRootVersion++
-                                }
-                                AppScreen.SAFETY -> {
-                                    technicalFamilyName = TechnicalFamily.VL80S.name
-                                    technicalSectionName = TechnicalSection.SAFETY.name
-                                    technicalInitialEntryId = null
-                                    safetyRootVersion++
-                                }
-                                AppScreen.FIRST_AID -> firstAidRootVersion++'''
-              if text.count(old) != 1:
-                  raise SystemExit(f'{path}: drawer click anchor not found exactly once')
-              text = text.replace(old, new, 1)
-
-              old = '''                AppScreen.KNOWLEDGE -> key(knowledgeRootVersion) {
-                    KnowledgeBaseScreen(
-                        initialArticleId = knowledgeStartArticleId,
-                        initialQuery = knowledgeStartQuery
-                    )
-                }
-                AppScreen.FIRST_AID -> key(firstAidRootVersion) {'''
-              new = '''                AppScreen.KNOWLEDGE -> key(knowledgeRootVersion) {
-                    KnowledgeBaseScreen(
-                        initialArticleId = knowledgeStartArticleId,
-                        initialQuery = knowledgeStartQuery
-                    )
-                }
-                AppScreen.SAFETY -> key(safetyRootVersion) {
-                    TechnicalCatalogScreen(
-                        initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),
-                        initialSection = TechnicalSection.SAFETY,
-                        sectionBackLabel = "Главная",
-                        onSectionBack = { screenName = AppScreen.HOME.name },
-                        lockFamily = false,
-                        lockSection = true
-                    )
-                }
-                AppScreen.FIRST_AID -> key(firstAidRootVersion) {'''
-              if text.count(old) != 1:
-                  raise SystemExit(f'{path}: safety screen anchor not found exactly once')
-              text = text.replace(old, new, 1)
-
-              # Contract assertions for the new dedicated entry point.
               required = [
                   'SAFETY("Охрана труда")',
                   'AppScreen.KNOWLEDGE, AppScreen.SAFETY, AppScreen.FIRST_AID',
+                  'technicalSectionName = TechnicalSection.SAFETY.name',
                   'initialSection = TechnicalSection.SAFETY',
                   'lockFamily = false',
                   'lockSection = true',
@@ -135,10 +100,10 @@ jobs:
               text = path.read_text(encoding='utf-8')
               old_comment = '// Beta27: VL80S protection and power-periphery card enrichment.'
               if text.count(old_comment) != 1:
-                  raise SystemExit(f'{path}: Beta27 comment not found exactly once')
+                  raise SystemExit(f'{path}: Beta27 comment count={text.count(old_comment)}')
               text = text.replace(old_comment, '// Beta28: dedicated Occupational Safety entry in the navigation drawer.', 1)
               if text.count('versionCode = 172') != 1 or text.count('versionName = "1.2.2-dev14-beta27"') != 1:
-                  raise SystemExit(f'{path}: Beta27 build identity not found exactly once')
+                  raise SystemExit(f'{path}: Beta27 build identity is not unique')
               text = text.replace('versionCode = 172', 'versionCode = 173', 1)
               text = text.replace('versionName = "1.2.2-dev14-beta27"', 'versionName = "1.2.2-dev14-beta28"', 1)
               path.write_text(text, encoding='utf-8')
