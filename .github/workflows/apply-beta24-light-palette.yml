@@ -1,0 +1,65 @@
+name: Apply Beta24 light palette
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/apply-beta24-light-palette.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 0
+
+      - name: Verify expected base
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .github/scripts/apply_beta24_light_palette.py
+          grep -Fq 'versionName = "1.2.2-dev14-beta23"' app/build.gradle.kts
+          grep -Fq 'versionCode = 168' app/build.gradle.kts
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/RailDesign.kt patch/app/src/main/java/ru/railbrake/calculator/ui/RailDesign.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+
+      - name: Apply Beta24 palette patch
+        run: python3 .github/scripts/apply_beta24_light_palette.py
+
+      - name: Verify patch contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/RailDesign.kt patch/app/src/main/java/ru/railbrake/calculator/ui/RailDesign.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          grep -Fq 'versionName = "1.2.2-dev14-beta24"' app/build.gradle.kts
+          grep -Fq 'versionCode = 169' app/build.gradle.kts
+          grep -Fq 'data class RailSemanticColors' app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
+          grep -Fq 'warningContainer = Color(0xFFFFF0DF)' app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
+          grep -Fq 'RailTheme.colors' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          grep -Fq 'color = colors.warningContainer' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+
+      - name: Commit Beta24 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app patch
+          git rm .github/scripts/apply_beta24_light_palette.py .github/workflows/apply-beta24-light-palette.yml
+          git diff --cached --check
+          git diff --cached --quiet && { echo 'No changes'; exit 1; }
+          git commit -m "Add dedicated light-theme palette tokens"
+          git push origin HEAD:dev14-integration
