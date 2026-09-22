@@ -1,0 +1,117 @@
+name: Audit Beta32 remaining VL80S equipment
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/audit-beta32-remaining-vl80.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit remaining VL80S equipment depth and clusters
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip, json, collections
+          from pathlib import Path
+
+          root = Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(root / name, 'rt', encoding='utf-8') as f:
+                  return json.load(f)
+
+          eq = load('vl80s_equipment.json.gz').get('records', [])
+          diag = load('vl80s_diagnostics.json.gz').get('scenarios', [])
+
+          fields = [
+              'name','purpose','modelNames','quantity','location','schemeDesignations',
+              'parameters','principle','relations','normalState','deviationSigns',
+              'diagnosticScenarioIds','applicability','notes','sourceRefs'
+          ]
+
+          def score(r):
+              return sum(bool(r.get(f)) for f in fields)
+
+          # Previously enriched groups, used only to keep the shortlist focused.
+          enriched = {
+              'VL-EQ-TR-004','VL-EQ-HV-010','VL-EQ-TR-012','VL-EQ-PN-009','VL-EQ-AU-004','VL-EQ-SG-001',
+              'VL-EQ-MC-002','VL-EQ-MC-003','VL-EQ-MC-004','VL-EQ-MC-005','VL-EQ-MC-006',
+              'VL-EQ-PR-003','VL-EQ-PR-004','VL-EQ-PR-005','VL-EQ-TR-010','VL-EQ-TR-011','VL-EQ-HV-006','VL-EQ-HV-008','VL-EQ-HV-004',
+              'VL-EQ-BR-001','VL-EQ-BR-002','VL-EQ-BR-005','VL-EQ-BR-007','VL-EQ-BR-009','VL-EQ-BR-010','VL-EQ-BR-011','VL-EQ-BR-012','VL-EQ-PN-014',
+              'VL-EQ-BR-013','VL-EQ-BR-014','VL-EQ-TR-013','VL-EQ-TR-014','VL-EQ-TR-015'
+          }
+
+          rows=[]
+          for r in eq:
+              rid=r.get('id')
+              row={
+                  'id':rid,
+                  'name':r.get('name'),
+                  'score':score(r),
+                  'missing':[f for f in fields if not r.get(f)],
+                  'systemIds':r.get('systemIds') or [],
+                  'modelNames':r.get('modelNames') or [],
+                  'sourceRefs':r.get('sourceRefs') or [],
+                  'diagnosticScenarioIds':r.get('diagnosticScenarioIds') or [],
+                  'schemeNodeIds':r.get('schemeNodeIds') or [],
+                  'relations':r.get('relations') or [],
+                  'purpose':r.get('purpose'),
+                  'location':r.get('location'),
+                  'notes':r.get('notes'),
+                  'alreadyEnriched': rid in enriched,
+              }
+              rows.append(row)
+
+          remaining=[r for r in rows if not r['alreadyEnriched']]
+          weak=[r for r in remaining if r['score'] <= 8]
+          weak.sort(key=lambda x:(x['score'], x['id']))
+
+          by_system=collections.defaultdict(list)
+          for r in weak:
+              keys=r['systemIds'] or ['NO_SYSTEM']
+              for k in keys:
+                  by_system[k].append({'id':r['id'],'name':r['name'],'score':r['score'],'missing':r['missing']})
+
+          # Prefix is also useful because equipment IDs often encode functional clusters.
+          by_prefix=collections.defaultdict(list)
+          for r in weak:
+              parts=r['id'].split('-')
+              prefix='-'.join(parts[:3]) if len(parts)>=3 else r['id']
+              by_prefix[prefix].append({'id':r['id'],'name':r['name'],'score':r['score'],'missing':r['missing']})
+
+          out={
+              'equipmentCount':len(eq),
+              'remainingAfterKnownBatches':len(remaining),
+              'remainingWeakLe8':len(weak),
+              'scoreHistogram':dict(sorted(collections.Counter(r['score'] for r in remaining).items())),
+              'weakBySystem':dict(sorted(by_system.items(), key=lambda kv:(-len(kv[1]),kv[0]))),
+              'weakByPrefix':dict(sorted(by_prefix.items(), key=lambda kv:(-len(kv[1]),kv[0]))),
+              'weakCards':weak,
+              'allRemaining':sorted(remaining,key=lambda x:(x['score'],x['id'])),
+          }
+          Path('beta32-remaining-vl80-audit.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+
+          print('equipmentCount',len(eq))
+          print('remainingAfterKnownBatches',len(remaining))
+          print('remainingWeakLe8',len(weak))
+          print('scoreHistogram',out['scoreHistogram'])
+          print('\nTOP WEAK:')
+          for r in weak[:40]:
+              print(r['score'], r['id'], r['name'], 'systems=', ','.join(r['systemIds']))
+          print('\nWEAK BY PREFIX:')
+          for k,v in sorted(by_prefix.items(), key=lambda kv:(-len(kv[1]),kv[0])):
+              print(k, len(v), [(x['id'],x['score']) for x in v])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta32-remaining-vl80-audit
+          path: beta32-remaining-vl80-audit.json
+          retention-days: 7
+          if-no-files-found: error
