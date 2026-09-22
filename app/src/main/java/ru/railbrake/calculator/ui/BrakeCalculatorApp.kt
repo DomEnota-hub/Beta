@@ -98,6 +98,7 @@ private enum class AppScreen(val title: String) {
     LOCOMOTIVE_LEGACY("Локомотивы / атлас"),
     ACCEPTANCE("Приёмка"),
     KNOWLEDGE("Справочник"),
+    SAFETY("Охрана труда"),
     FIRST_AID("Первая помощь"),
     CALCULATIONS("Расчёты"),
     MASS("По массе"),
@@ -158,6 +159,7 @@ fun BrakeCalculatorApp(
     var locomotiveRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var acceptanceRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var knowledgeRootVersion by rememberSaveable { mutableIntStateOf(0) }
+    var safetyRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var firstAidRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var historyRootVersion by rememberSaveable { mutableIntStateOf(0) }
     var examRootVersion by rememberSaveable { mutableIntStateOf(0) }
@@ -190,7 +192,7 @@ fun BrakeCalculatorApp(
                     }
                 }
 
-                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.FIRST_AID)
+                val mainItems = listOf(AppScreen.HOME, AppScreen.DIAGNOSTICS, AppScreen.LOCOMOTIVES, AppScreen.ACCEPTANCE, AppScreen.KNOWLEDGE, AppScreen.SAFETY, AppScreen.FIRST_AID)
                 val toolItems = buildList {
                     add(AppScreen.CALCULATIONS)
                     add(AppScreen.HISTORY)
@@ -222,6 +224,12 @@ fun BrakeCalculatorApp(
                                     knowledgeStartArticleId = null
                                     knowledgeStartQuery = null
                                     knowledgeRootVersion++
+                                }
+                                AppScreen.SAFETY -> {
+                                    technicalFamilyName = TechnicalFamily.VL80S.name
+                                    technicalSectionName = TechnicalSection.SAFETY.name
+                                    technicalInitialEntryId = null
+                                    safetyRootVersion++
                                 }
                                 AppScreen.FIRST_AID -> firstAidRootVersion++
                                 else -> Unit
@@ -413,6 +421,16 @@ fun BrakeCalculatorApp(
                     KnowledgeBaseScreen(
                         initialArticleId = knowledgeStartArticleId,
                         initialQuery = knowledgeStartQuery
+                    )
+                }
+                AppScreen.SAFETY -> key(safetyRootVersion) {
+                    TechnicalCatalogScreen(
+                        initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),
+                        initialSection = TechnicalSection.SAFETY,
+                        sectionBackLabel = "Главная",
+                        onSectionBack = { screenName = AppScreen.HOME.name },
+                        lockFamily = false,
+                        lockSection = true
                     )
                 }
                 AppScreen.FIRST_AID -> key(firstAidRootVersion) {
