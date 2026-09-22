@@ -26,7 +26,22 @@ jobs:
           start = next(i for i, line in enumerate(source) if "python3 - <<'PY'" in line) + 1
           end = next(i for i in range(start, len(source)) if source[i].strip() == 'PY')
           body = [line[10:] if line.startswith('          ') else line for line in source[start:end]]
-          Path('/tmp/apply_beta25.py').write_text('\n'.join(body) + '\n', encoding='utf-8')
+          script = '\n'.join(body) + '\n'
+          patch_start = script.index('for path in REPO_PATHS:')
+          patch_end = script.index('for path in GRADLE_PATHS:', patch_start)
+          replacement = '\n'.join([
+              'for path in REPO_PATHS:',
+              "    text = path.read_text(encoding='utf-8')",
+              "    marker_start = '    private fun loadVl80sEquipment(): List<TechnicalEntry> ='",
+              "    marker_end = '    private fun loadVl80sSystems(): List<TechnicalEntry> {'",
+              '    start_index = text.index(marker_start)',
+              '    end_index = text.index(marker_end, start_index)',
+              "    replacement_text = new.rstrip() + '\\n\\n'",
+              "    path.write_text(text[:start_index] + replacement_text + text[end_index:], encoding='utf-8')",
+              '',
+          ])
+          script = script[:patch_start] + replacement + script[patch_end:]
+          Path('/tmp/apply_beta25.py').write_text(script, encoding='utf-8')
           PY
       - name: Run Beta25 patch script
         shell: bash
