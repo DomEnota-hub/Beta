@@ -14,60 +14,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Audit VL80S remaining equipment depth
+      - name: Audit Beta35 control-circuit candidate group
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import gzip,json,collections
-          p='app/src/main/assets/technical/vl80s_equipment.json.gz'
-          with gzip.open(p,'rt',encoding='utf-8') as f: root=json.load(f)
-          recs=root['records']
-          assert len(recs)==89, len(recs)
-
-          def nonempty(v):
-              if isinstance(v,str): return bool(v.strip())
-              if isinstance(v,list): return len(v)>0
-              if isinstance(v,dict): return any(nonempty(x) for x in v.values())
-              return v is not None
-
-          checks=[
-            ('purpose',lambda r: nonempty(r.get('purpose'))),
-            ('model',lambda r: nonempty(r.get('modelNames'))),
-            ('quantity',lambda r: nonempty(r.get('quantity'))),
-            ('location',lambda r: nonempty((r.get('location') or {}).get('text'))),
-            ('designation',lambda r: nonempty(r.get('schemeDesignations'))),
-            ('parameters',lambda r: nonempty(r.get('parameters'))),
-            ('principle',lambda r: nonempty(r.get('principle'))),
-            ('relations',lambda r: nonempty(r.get('relations'))),
-            ('normal',lambda r: nonempty(r.get('normalState'))),
-            ('deviations',lambda r: nonempty(r.get('deviationSigns'))),
-            ('diagnostics',lambda r: nonempty(r.get('diagnosticScenarioIds'))),
-            ('schemes',lambda r: nonempty(r.get('schemeNodeIds'))),
-            ('applicability',lambda r: nonempty(r.get('applicability'))),
-            ('notes',lambda r: nonempty(r.get('notes'))),
-            ('sources',lambda r: nonempty(r.get('sourceRefs'))),
-          ]
-          rows=[]
-          for r in recs:
-              yes=[k for k,fn in checks if fn(r)]
-              missing=[k for k,fn in checks if not fn(r)]
-              rid=r['id']; parts=rid.split('-'); grp='-'.join(parts[:3]) if len(parts)>=3 else rid
-              rows.append((len(yes),rid,r.get('name',''),grp,r.get('systemIds',[]),missing,r.get('modelNames',[]),r.get('quantity',''),r.get('schemeDesignations',[]),r.get('diagnosticScenarioIds',[]),r.get('relations',[])))
-
-          print('TOTAL',len(rows))
-          print('DEPTH_DISTRIBUTION',dict(sorted(collections.Counter(x[0] for x in rows).items())))
-          print('LE8',sum(1 for x in rows if x[0]<=8))
-          print('LE7',sum(1 for x in rows if x[0]<=7))
-          print('LE6',sum(1 for x in rows if x[0]<=6))
-          print('\nGROUPS_LE8')
-          cg=collections.Counter(x[3] for x in rows if x[0]<=8)
-          for k,v in sorted(cg.items(), key=lambda kv:(-kv[1],kv[0])): print(k,v)
-          print('\nSYSTEMS_LE8')
-          cs=collections.Counter(s for x in rows if x[0]<=8 for s in x[4])
-          for k,v in sorted(cs.items(), key=lambda kv:(-kv[1],kv[0])): print(k,v)
-          print('\nCARDS_LE8')
-          for score,rid,name,grp,systems,missing,models,qty,desigs,diags,rels in sorted((x for x in rows if x[0]<=8), key=lambda x:(x[0],x[3],x[1])):
-              targets=[q.get('targetId') for q in rels if isinstance(q,dict) and q.get('targetId')]
-              print(json.dumps({'score':score,'id':rid,'name':name,'group':grp,'systems':systems,'missing':missing,'models':models,'quantity':qty,'designations':desigs,'diagnostics':diags,'relationTargets':targets},ensure_ascii=False))
+          import gzip,json
+          def load(name):
+              with gzip.open(f'app/src/main/assets/technical/{name}.json.gz','rt',encoding='utf-8') as f:
+                  return json.load(f)
+          eq=load('vl80s_equipment')
+          recs=eq['records']
+          assert len(recs)==89
+          print('CT_CARDS')
+          ct=[r for r in recs if r.get('id','').startswith('VL-EQ-CT-')]
+          for r in ct:
+              keep={k:r.get(k) for k in ['id','name','purpose','modelNames','quantity','location','schemeDesignations','parameters','principle','relations','normalState','deviationSigns','diagnosticScenarioIds','schemeNodeIds','applicability','featureRules','notes','sourceRefs','legacyConnections']}
+              print(json.dumps(keep,ensure_ascii=False))
+          print('CT_COUNT',len(ct))
+          print('\nROOT_KEYS',list(eq.keys()))
+          for key in ['sources','sourceCatalog','references']:
+              if key in eq:
+                  print('\n'+key.upper())
+                  print(json.dumps(eq[key],ensure_ascii=False))
+          el=load('vl80s_electrical')
+          print('\nELECTRICAL_MATCHES')
+          terms=['50 В','50В','аккумуля','контроллер','релейн','цепей управления','автоматическ','заряд']
+          for s in el.get('baseSchemes',[]):
+              txt=json.dumps(s,ensure_ascii=False).lower()
+              if any(t.lower() in txt for t in terms):
+                  print(json.dumps(s,ensure_ascii=False))
+          dg=load('vl80s_diagnostics')
+          print('\nDIAGNOSTIC_MATCHES')
+          wanted=set(x for r in ct for x in r.get('diagnosticScenarioIds',[]))
+          def walk(v):
+              if isinstance(v,dict):
+                  if v.get('id') in wanted: print(json.dumps(v,ensure_ascii=False))
+                  for x in v.values(): walk(x)
+              elif isinstance(v,list):
+                  for x in v: walk(x)
+          walk(dg)
           PY
