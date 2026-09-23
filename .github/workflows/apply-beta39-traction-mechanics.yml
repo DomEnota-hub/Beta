@@ -1,0 +1,274 @@
+name: Apply Beta39 traction mechanics
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta39-traction-mechanics.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard Beta39 base
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="416b74641d00df0b1f1327798fbcd72d37428f47"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected workflow parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta39 apply'; exit 1; }
+
+      - name: Enrich traction gear and reverser cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+
+          python3 - <<'PY'
+          import copy, gzip, json, shutil
+          from pathlib import Path
+
+          app_eq = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          patch_eq = Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          app_diag = Path('app/src/main/assets/technical/vl80s_diagnostics.json.gz')
+
+          with gzip.open(app_eq, 'rt', encoding='utf-8') as f:
+              data = json.load(f)
+          with gzip.open(app_diag, 'rt', encoding='utf-8') as f:
+              diag = json.load(f)
+
+          records = data['records']
+          assert len(records) == 89, len(records)
+          by_id = {r['id']: r for r in records}
+          assert len(by_id) == 89
+
+          targets = {'VL-EQ-TR-007', 'VL-EQ-TR-008'}
+          assert targets <= set(by_id)
+
+          untouched = {rid: copy.deepcopy(r) for rid, r in by_id.items() if rid not in targets}
+          preserved_keys = [
+              'id','legacyId','slug','name','aliases','kind','domain','systemIds',
+              'diagnosticScenarioIds','schemeNodeIds','legacyHotspotIds','sourceRefs',
+              'evidenceStatus','applicability','migration','instances','crosslinks',
+              'featureRules','equipmentOverrides'
+          ]
+          preserved = {
+              rid: {k: copy.deepcopy(by_id[rid].get(k)) for k in preserved_keys}
+              for rid in targets
+          }
+
+          def set_card(rid, **values):
+              r = by_id[rid]
+              for k, v in values.items():
+                  r[k] = v
+
+          set_card(
+              'VL-EQ-TR-007',
+              purpose='Передаёт вращающий момент от тягового двигателя к колёсной паре, снижая частоту вращения колёсной пары относительно якоря ТЭД и увеличивая реализуемый на ободе колеса крутящий момент.',
+              quantity='4 тяговые передачи на секцию — по одной на каждый тяговый двигатель и связанную с ним колёсную пару.',
+              location={
+                  'text':'На тележках между валом каждого ТЭД и соответствующей колёсной парой; зубчатые пары закрыты защитными кожухами.',
+                  'confidence':'source_confirmed'
+              },
+              schemeDesignations=[],
+              parameters=[
+                  'Исполнение — жёсткая двусторонняя косозубая тяговая передача.',
+                  'На один тяговый двигатель работают две шестерни и два зубчатых колеса, расположенные с двух сторон моторно-колёсного узла.',
+                  'Число зубьев зубчатого колеса — 88; шестерни — 21.',
+                  'Передаточное отношение — 88:21, то есть примерно 4,19.',
+                  'Межцентровое расстояние зубчатой передачи — 604 мм.',
+                  'Зубчатые пары закрыты кожухами, которые защищают зацепление и одновременно удерживают смазочный материал.',
+                  'Для описанного базового исполнения ориентировочная масса смазки — около 4,2 кг на один кожух; это значение не переносится автоматически на изменённые или модернизированные исполнения.'
+              ],
+              principle='Вращение вала тягового двигателя передаётся через две ведущие шестерни на два зубчатых колеса, жёстко связанных с осью колёсной пары. Двусторонняя передача распределяет усилие по обеим сторонам моторно-колёсного узла. Состояние моторно-осевых подшипников и положение ТЭД относительно оси влияют на геометрию зацепления, поэтому новый шум или вибрацию необходимо разграничивать между самой зубчатой передачей, МОП, ТЭД, колёсной парой и элементами тележки.',
+              relations=[
+                  {'type':'driven_by','targetId':'VL-EQ-TR-006','note':'получает вращающий момент от соответствующего тягового двигателя'},
+                  {'type':'drives','targetId':'VL-EQ-MC-003','note':'передаёт момент на соответствующую колёсную пару'},
+                  {'type':'geometry_depends_on','targetId':'VL-EQ-MC-006','note':'состояние моторно-осевого подшипника влияет на взаимное положение ТЭД и оси и, следовательно, на условия зацепления'}
+              ],
+              normalState=[
+                  'При движении отсутствуют новые удары, периодический стук и выраженная вибрация, явно связанные со скоростью вращения и тягой.',
+                  'Кожухи зубчатых передач внешне целы и закреплены; нет заметной утечки смазки или следов выброса материала из зоны кожуха.',
+                  'Работа передачи не сопровождается признаками резкого изменения характера зацепления или локального механического перегрева.'
+              ],
+              deviationSigns=[
+                  'Новый гул, стук или вибрация, частота которых изменяется вместе со скоростью движения и/или нагрузкой ТЭД.',
+                  'Следы утечки смазки, повреждение или нарушение крепления кожуха зубчатой передачи.',
+                  'Признаки ненормального зацепления следует разграничивать с износом или неисправностью моторно-осевого подшипника, ТЭД, колёсной пары и других элементов тележки.'
+              ],
+              unresolvedSystemConnections=[],
+              relationCoverage='documented_plus_system_text',
+              notes=[
+                  'Для части ранних электровозов в источниках встречаются стеклопластиковые кожухи наряду со стальными; точная серийная граница в карточке не задаётся без однозначного подтверждения.',
+                  'Параметры передачи не переносятся автоматически на опытные или модернизированные моторно-колёсные исполнения с НБ-514/НБ-514А без отдельного источника по самой передаче.',
+                  'Сценарий traction-gear-noise существует в диагностическом реестре, но сейчас привязан к моторно-осевому подшипнику; Beta39 не меняет diagnostic assets и не подменяет отдельный integrity-pass.',
+                  'Карточка не содержит инструкций по вскрытию кожуха, регулировке зацепления или работам под электровозом вне установленной безопасной технологии.'
+              ]
+          )
+
+          set_card(
+              'VL-EQ-TR-008',
+              purpose='Изменяет направление тока в цепях возбуждения тяговых двигателей для задания направления движения и своими блокировками подтверждает, что силовая схема может собираться в выбранном направлении.',
+              modelNames=['ПКД-142'],
+              quantity='2 реверсора на секцию: аппарат 63 обслуживает первую тележку, аппарат 64 — вторую.',
+              location={
+                  'text':'Аппарат 63 расположен в БСА №1 и относится к первой тележке; аппарат 64 расположен в БСА №2 и относится ко второй тележке.',
+                  'confidence':'source_confirmed'
+              },
+              schemeDesignations=['63', '64'],
+              parameters=[
+                  'Тип — двухпозиционный кулачковый реверсор ПКД-142 с пневматическим приводом.',
+                  'Номинальное напряжение изоляции главной цепи — 3000 В.',
+                  'Длительный ток силовых контактов — 850 А.',
+                  'Количество силовых контактов — 8.',
+                  'Количество блокировочных контактов — 4.',
+                  'Номинальное давление пневматического привода — 5 кгс/см².',
+                  'Номинальный ток блокировочных контактов в карточку намеренно не внесён: доступные источники дают расходящиеся значения для разных описаний исполнения.'
+              ],
+              principle='После задания направления реверсивным валом контроллера машиниста аппараты 63 и 64 получают соответствующую команду. Пневмопривод поворачивает кулачковый вал реверсора, силовые контакты изменяют направление тока в цепях возбуждения ТЭД, а блокировочные контакты подтверждают достигнутое положение в цепях управления. До подтверждения требуемого положения обоими реверсорами секции тяговая схема не должна рассматриваться как готовая к нормальному сбору.',
+              relations=[
+                  {'type':'commanded_by','targetId':'VL-EQ-CT-004','note':'направление задаётся реверсивным валом контроллера машиниста'},
+                  {'type':'installed_in','targetId':'VL-EQ-TR-002','note':'реверсоры 63 и 64 размещены соответственно в БСА №1 и БСА №2'},
+                  {'type':'reverses_field_of','targetId':'VL-EQ-TR-006','note':'силовые контакты изменяют направление тока в цепях возбуждения соответствующей группы ТЭД'},
+                  {'type':'interlocks_traction_assembly','targetId':'VL-EQ-TR-002','note':'блокировочные контакты участвуют в разрешении цепей, связанных со сбором тяговой схемы'},
+                  {'type':'direction_signal_used_by','targetId':'VL-EQ-MC-001','note':'состояние реверсивных цепей используется в логике пескоподачи по направлению движения'}
+              ],
+              normalState=[
+                  'Аппараты 63 и 64 занимают одно и то же заданное направление, соответствующее положению реверсивного вала контроллера.',
+                  'Блокировочные контакты подтверждают достигнутое положение; отсутствует устойчивое зависание аппарата между рабочими положениями.',
+                  'Пневмопривод срабатывает без признаков недостаточного давления или выраженной утечки воздуха, а силовые и блокировочные цепи не дают признаков ненормального нагрева или подгорания.'
+              ],
+              deviationSigns=[
+                  'Один или оба реверсора не занимают либо не подтверждают заданное положение.',
+                  'Реверсоры секции оказываются в несогласованных положениях или аппарат зависает между рабочими позициями.',
+                  'При отсутствии подтверждения направления тяга не собирается; причину необходимо разграничивать между контроллером, пневмоприводом реверсора, его контактами и последующими цепями управления.',
+                  'Утечка воздуха, повторное неполное переключение или признаки ненормального нагрева требуют рассматривать аппарат как отдельный возможный источник отказа.'
+              ],
+              unresolvedSystemConnections=[],
+              relationCoverage='documented_plus_system_text',
+              notes=[
+                  'Аппараты 63 и 64 рассматриваются как самостоятельные элементы двух тележечных групп; отказ одного реверсора не следует автоматически относить к контроллеру машиниста или тяговым двигателям.',
+                  'Блокировочные цепи 63/64 участвуют не только в подтверждении направления, но и во вспомогательной логике, связанной с направлением движения; точные схемные ветви определяются по исполнению секции.',
+                  'Карточка не содержит инструкций по принудительному переводу аппарата, подаче воздуха вручную, замыканию линейных контакторов или обходу блокировок.'
+              ]
+          )
+
+          for rid, old in untouched.items():
+              assert by_id[rid] == old, rid
+          for rid in targets:
+              for key, old in preserved[rid].items():
+                  assert by_id[rid].get(key) == old, (rid, key)
+
+          assert by_id['VL-EQ-TR-007']['diagnosticScenarioIds'] == ['mechanical-noise-heating', 'persistent-wheel-slip']
+          assert by_id['VL-EQ-TR-008']['diagnosticScenarioIds'] == ['reverser-no-confirm', 'traction-no-assemble']
+          assert by_id['VL-EQ-TR-007']['schemeNodeIds'] == []
+          assert by_id['VL-EQ-TR-008']['schemeNodeIds'] == []
+
+          all_ids = set(by_id)
+          for rid in targets:
+              rels = by_id[rid].get('relations', [])
+              assert rels
+              for rel in rels:
+                  assert rel['targetId'] in all_ids, (rid, rel)
+
+          diag_ids = {s['id'] for s in diag['scenarios']}
+          for rid in targets:
+              for sid in by_id[rid]['diagnosticScenarioIds']:
+                  assert sid in diag_ids, (rid, sid)
+
+          tr7 = by_id['VL-EQ-TR-007']
+          assert '88' in ' '.join(tr7['parameters'])
+          assert '21' in ' '.join(tr7['parameters'])
+          assert '4,19' in ' '.join(tr7['parameters'])
+          assert '604 мм' in ' '.join(tr7['parameters'])
+          assert '4,2 кг' in ' '.join(tr7['parameters'])
+          assert any(r['targetId'] == 'VL-EQ-MC-006' for r in tr7['relations'])
+
+          tr8 = by_id['VL-EQ-TR-008']
+          assert tr8['modelNames'] == ['ПКД-142']
+          assert tr8['schemeDesignations'] == ['63', '64']
+          p8 = ' '.join(tr8['parameters'])
+          for needle in ['3000 В', '850 А', '8', '4', '5 кгс/см²']:
+              assert needle in p8, needle
+          assert '16 А' not in p8 and '5 А' not in p8
+
+          raw = json.dumps(data, ensure_ascii=False, indent=2, sort_keys=False).encode('utf-8')
+          with app_eq.open('wb') as fout:
+              with gzip.GzipFile(filename='', mode='wb', fileobj=fout, mtime=0) as gz:
+                  gz.write(raw)
+          shutil.copyfile(app_eq, patch_eq)
+          PY
+
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]:
+              s = p.read_text(encoding='utf-8')
+              assert 'versionCode = 183' in s
+              assert 'versionName = "1.2.2-dev14-beta38"' in s
+              s = s.replace('versionCode = 183', 'versionCode = 184')
+              s = s.replace('versionName = "1.2.2-dev14-beta38"', 'versionName = "1.2.2-dev14-beta39"')
+              p.write_text(s, encoding='utf-8')
+          PY
+
+          cmp app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          grep -Fq 'versionCode = 184' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta39"' app/build.gradle.kts
+
+          git diff --check
+          mapfile -t changed < <(git diff --name-only | sort)
+          expected=(
+            "app/build.gradle.kts"
+            "app/src/main/assets/technical/vl80s_equipment.json.gz"
+            "patch/app/build.gradle.kts"
+            "patch/app/src/main/assets/technical/vl80s_equipment.json.gz"
+          )
+          test "${#changed[@]}" -eq 4
+          for i in "${!expected[@]}"; do
+            test "${changed[$i]}" = "${expected[$i]}" || { printf 'Unexpected diff set:\n%s\n' "${changed[*]}"; exit 1; }
+          done
+
+      - name: Recheck branch immediately before source commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta39 source commit'; exit 1; }
+
+      - name: Commit and push Beta39 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/build.gradle.kts \
+            patch/app/build.gradle.kts \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          expected=(
+            "app/build.gradle.kts"
+            "app/src/main/assets/technical/vl80s_equipment.json.gz"
+            "patch/app/build.gradle.kts"
+            "patch/app/src/main/assets/technical/vl80s_equipment.json.gz"
+          )
+          test "${#staged[@]}" -eq 4
+          for i in "${!expected[@]}"; do
+            test "${staged[$i]}" = "${expected[$i]}"
+          done
+          git commit -m "Enrich VL80S traction gear and reverser cards"
+          source_sha="$(git rev-parse HEAD)"
+          git push origin HEAD:dev14-integration
+          git fetch origin dev14-integration
+          test "$source_sha" = "$(git rev-parse origin/dev14-integration)" || { echo 'Beta39 pushed SHA mismatch'; exit 1; }
