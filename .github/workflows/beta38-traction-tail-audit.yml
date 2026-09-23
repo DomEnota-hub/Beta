@@ -1,0 +1,133 @@
+name: Beta38 traction tail audit
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/beta38-traction-tail-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard Beta38 audit base
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="e40a8a540ff290d1fb877622cc293c82579041be"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected audit parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta38 audit'; exit 1; }
+
+      - name: Audit BURS and brake resistors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee beta38-audit.txt
+          import gzip, json
+          from collections import defaultdict
+          from pathlib import Path
+
+          ROOT=Path('app/src/main/assets/technical')
+          def load(name):
+              with gzip.open(ROOT/name,'rt',encoding='utf-8') as f:
+                  return json.load(f)
+
+          eq=load('vl80s_equipment.json.gz')
+          records=eq['records']
+          assert len(records)==89
+          by_id={r['id']:r for r in records}
+          targets=['VL-EQ-TR-005','VL-EQ-TR-009']
+          assert all(t in by_id for t in targets)
+          fields=['modelNames','quantity','location','schemeDesignations','parameters','principle','relations','normalState','deviationSigns','diagnosticScenarioIds','schemeNodeIds','applicability','featureRules','notes','sourceRefs']
+          depth=lambda r: sum(bool(r.get(k)) for k in fields)
+
+          print('HEAD_AUDITED')
+          print('TARGETS',targets)
+          print('RECORD_COUNT',len(records))
+          for tid in targets:
+              r=by_id[tid]
+              print('\n=== CARD',tid,'DEPTH',depth(r),'===')
+              print(json.dumps(r,ensure_ascii=False,indent=2))
+
+          incoming=defaultdict(list)
+          for r in records:
+              for rel in r.get('relations') or []:
+                  if rel.get('targetId') in targets:
+                      incoming[rel['targetId']].append({'from':r['id'],'title':r.get('title') or r.get('name'),'type':rel.get('type'),'note':rel.get('note')})
+          print('\n=== INCOMING RELATIONS ===')
+          for tid in targets:
+              print(tid,json.dumps(incoming[tid],ensure_ascii=False,indent=2))
+
+          keywords=['БУРТ','бурт','резистор','реостат','тормож','возбуждени']
+          el=load('vl80s_electrical.json.gz')
+          print('\n=== ELECTRICAL MATCHES ===')
+          for key in ['baseSchemes','modeOverlays','variantOverlays','candidateVariantFragments']:
+              for obj in el.get(key,[]) or []:
+                  blob=json.dumps(obj,ensure_ascii=False)
+                  if any(t in blob for t in targets) or any(k in blob for k in keywords):
+                      print('\n',key)
+                      print(json.dumps(obj,ensure_ascii=False,indent=2)[:18000])
+
+          dg=load('vl80s_diagnostics.json.gz')
+          wanted=set()
+          for tid in targets:
+              wanted.update(by_id[tid].get('diagnosticScenarioIds') or [])
+          print('\n=== REFERENCED DIAGNOSTICS ===')
+          for s in dg.get('scenarios',[]) or []:
+              if s.get('id') in wanted:
+                  print(json.dumps(s,ensure_ascii=False,indent=2)[:12000])
+          print('REFERENCED_IDS',sorted(wanted))
+
+          print('\n=== KEYWORD DIAGNOSTICS ===')
+          for s in dg.get('scenarios',[]) or []:
+              blob=json.dumps(s,ensure_ascii=False).lower()
+              if any(k in blob for k in ['бурт','тормозн','резистор','реостат','возбужден']):
+                  print(s.get('id'),':',s.get('title'))
+
+          print('\n=== FILTERED GLOBAL VARIANT/OVERRIDE DATA ===')
+          for k,v in eq.items():
+              if k in ('records','sourceRegistry'): continue
+              blob=json.dumps(v,ensure_ascii=False)
+              if any(t in blob for t in targets) or any(x in blob for x in keywords):
+                  print(k,json.dumps(v,ensure_ascii=False,indent=2)[:18000])
+
+          refs=set()
+          def collect_refs(x):
+              if isinstance(x,str): refs.add(x)
+              elif isinstance(x,list):
+                  for y in x: collect_refs(y)
+              elif isinstance(x,dict):
+                  for key in ['id','sourceId','ref','sourceRef']:
+                      if isinstance(x.get(key),str): refs.add(x[key])
+          for tid in targets:
+              collect_refs(by_id[tid].get('sourceRefs') or [])
+          registry=eq.get('sourceRegistry',{})
+          print('\n=== TARGET SOURCE REFS ===')
+          print(sorted(refs))
+          print('\n=== SOURCE REGISTRY MATCHES ===')
+          if isinstance(registry,dict):
+              for key,val in registry.items():
+                  if key in refs or any(r in json.dumps(val,ensure_ascii=False) for r in refs):
+                      print(key,json.dumps(val,ensure_ascii=False,indent=2))
+          else:
+              for val in registry or []:
+                  blob=json.dumps(val,ensure_ascii=False)
+                  if any(r in blob for r in refs): print(blob)
+          PY
+          git diff --exit-code
+
+      - name: Upload Beta38 audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: beta38-traction-tail-audit
+          path: beta38-audit.txt
+          if-no-files-found: error
