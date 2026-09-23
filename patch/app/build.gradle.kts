@@ -22,8 +22,8 @@ android {
         applicationId = "ru.railbrake.calculator"
         minSdk = 26
         targetSdk = 34
-        versionCode = 187
-        versionName = "1.2.2-dev14-beta42"
+        versionCode = 188
+        versionName = "1.2.2-dev14-beta43"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
