@@ -593,7 +593,7 @@ private fun AcceptanceStartChoice(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         ChildBackButton("Приёмка", onBack)
-        RailSectionHeader("Полная приёмка ${family.title}", "Выберите точку начала маршрута")
+        RailSectionHeader("Полный осмотр ${family.title}", "Обязательные пункты сохраняют уже отмеченное состояние")
         Card(
   onClick = { onSelect("$routePrefix-ROUTE-route_from_outside") },
   modifier = Modifier.fillMaxWidth(),
@@ -602,7 +602,7 @@ private fun AcceptanceStartChoice(
         ) {
   Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
       Text("Начать снаружи", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-      Text("Последовательный маршрут от наружных зон к оборудованию внутри локомотива и кабине.")
+      Text("Обязательные пункты, затем расширенный маршрут от наружных зон к оборудованию внутри локомотива и кабине.")
   }
         }
         Card(
@@ -613,7 +613,7 @@ private fun AcceptanceStartChoice(
         ) {
   Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
       Text("Начать из кабины", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
-      Text("Последовательный маршрут от кабины к внутренним и наружным зонам.")
+      Text("Обязательные пункты, затем расширенный маршрут от кабины к внутренним и наружным зонам.")
   }
         }
     }
@@ -1533,7 +1533,7 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
         shape = RoundedCornerShape(18.dp)
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text("Пошаговая приёмка", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text(entry.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
             Text(
                 "Активно: ${activeSequence.size} из ${entry.sequence.size} • Отключено: ${disabledInRoute.size}",
                 color = accent,

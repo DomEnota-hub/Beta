@@ -28,7 +28,7 @@ P3 — cosmetic.
 | Ermak acceptance | Every one of 111 equipment records becomes a daily-looking checklist item | Checklist is generated mechanically from the Atlas, not from the operating manual | P0 | Build the mandatory route from RE7/TO-1; retain equipment-derived checks only in clearly labelled full inspection |
 | Acceptance state | No explicit contract proves that mandatory items retain their state in full inspection | Routes are independent lists, although state is stored by item ID | P1 | Place the exact mandatory IDs at the start of full routes and add a repository/unit contract |
 | Full acceptance start | Start point choice is hard-coded for any acceptance route | Clicking any route with a sequence opens the same “full acceptance” chooser | P1 | Show the chooser only for the full route; mandatory route opens directly |
-| Knowledge empty search | Empty search has no explanatory state | List simply renders no cards | P2 | Add an explicit no-results card and reset action |
+| Knowledge empty search | The no-results message has no recovery action | Filters remain active and must be cleared separately | P2 | Add a reset action for query, category and favourites |
 | Technical cards | Long subtitles and source text can make neighbouring cards uneven | Content-driven height, no truncation policy | P3 | Keep adaptive height; constrain only compact grid cards and preserve full text in details |
 | All themes/palettes | Semantic error/warning cards use theme colours correctly, but runtime contrast is unverified | Static Compose review cannot measure the rendered device result | P2 | Verify every palette in the signed build on-device; capture any palette-specific defect |
 | Navigation | Atlas deep links rely on global article lookup; filtering the Base naively would break them | Listing and direct lookup currently share one collection | P1 | Split “list/searchable general content” from “all content addressable by ID” |
@@ -112,4 +112,3 @@ or local document rather than inference from TO-1.
   equipment-specific diagnostics for a selected locomotive family.
 - Direct article lookup remains available for Atlas navigation, but locomotive articles are not
   listed or searched from the Knowledge Base.
-

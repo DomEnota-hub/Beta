@@ -78,7 +78,7 @@ object KnowledgeRepository {
             tags = listOf("ВЛ80", "ВЛ80С", "оборудование", "кузов", "схема", "БСА", "ВВК", "трансформатор"),
             source = KnowledgeSource(
                 title = "«Расположение оборудования на электровозе ВЛ 80С», учебная методическая разработка, Воронеж, 2019",
-                note = "Материал встроен в справочник."
+                note = "Материал встроен в атлас ВЛ80С."
             ),
             hasInteractiveDiagram = true,
             relatedArticleIds = listOf("vl80-pneumatic-groups", "vl80-pneumatic-simulator", "vl80-electrical-simulator")
@@ -475,15 +475,120 @@ object KnowledgeRepository {
         }
     }
 
-    val allArticles: List<KnowledgeArticle> get() = articles + diagramDetailArticles
+    private val safetySource = KnowledgeSource(
+        title = "ТК РФ, статьи 214–215; приказы Минтруда России №903н и №860н; ГОСТ 12.0.003-2015",
+        note = "Общие требования. Для конкретной работы применяются действующие документы работодателя и установленный порядок допуска."
+    )
 
-    val categories: List<String> get() = listOf("Все") + allArticles.map { it.category }.distinct()
+    val safetyArticles: List<KnowledgeArticle> = listOf(
+        KnowledgeArticle(
+            id = "safety-factors",
+            title = "Опасные и вредные производственные факторы",
+            category = "Охрана труда",
+            status = "Нормативная памятка",
+            summary = "Физические, химические, биологические и психофизиологические факторы на рабочем месте.",
+            body = listOf(
+                "Для железнодорожной среды учитывают движущийся подвижной состав, механизмы, электрическое напряжение и дугу, шум, вибрацию, микроклимат, освещённость, химические вещества и рабочую нагрузку.",
+                "Фактический перечень опасностей определяется для конкретного рабочего места, операции и оценки профессиональных рисков работодателя."
+            ),
+            tags = listOf("охрана труда", "опасности", "профессиональный риск"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-risk",
+            title = "Выявление опасностей и оценка риска",
+            category = "Охрана труда",
+            status = "Нормативная памятка",
+            summary = "Что проверить до начала действия и при изменении условий.",
+            body = listOf(
+                "Уточните операцию, место и границы безопасного выполнения; проверьте опасности именно этой операции и рабочего места.",
+                "Сверьте технологическую документацию, местные инструкции и порядок допуска. При изменении условий повторно оцените ситуацию."
+            ),
+            tags = listOf("охрана труда", "риск", "допуск"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-protection",
+            title = "Меры защиты и СИЗ",
+            category = "Охрана труда",
+            status = "Нормативная памятка",
+            summary = "Технические, организационные меры и средства индивидуальной защиты.",
+            body = listOf(
+                "Используйте предусмотренные ограждения, блокировки, сигнализацию и средства коллективной защиты; не обходите их ради ускорения работы.",
+                "Соблюдайте технологию и порядок допуска. Применяйте исправные выданные СИЗ по назначению; СИЗ не отменяют технические и организационные меры."
+            ),
+            tags = listOf("охрана труда", "СИЗ", "защита"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-electrical",
+            title = "Электробезопасность и границы допуска",
+            category = "Охрана труда",
+            status = "Требует внимания",
+            summary = "Справочная информация не является разрешением на работу в электроустановке.",
+            body = listOf(
+                "Работы и обслуживание электроустановок выполняют только работники с установленными обучением, группой и допуском.",
+                "Наличие схемы или описания в приложении не даёт права открывать оборудование, выполнять переключения или работать под напряжением."
+            ),
+            tags = listOf("охрана труда", "электробезопасность", "допуск"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-rolling-stock",
+            title = "Безопасность рядом с подвижным составом и на путях",
+            category = "Охрана труда",
+            status = "Требует внимания",
+            summary = "Риски движения, маневров и технического обслуживания.",
+            body = listOf(
+                "Перемещение, осмотр и обслуживание выполняют по установленным безопасным маршрутам и технологическому порядку.",
+                "Маневровая работа, ограждение и закрепление подвижного состава выполняются по установленным правилам с учётом местных условий."
+            ),
+            tags = listOf("охрана труда", "подвижной состав", "пути", "маневры"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-stop-report",
+            title = "Когда работу нужно прекратить и сообщить",
+            category = "Охрана труда",
+            status = "Остановить и доложить",
+            summary = "Неисправность, нарушение технологии или угроза жизни и здоровью.",
+            body = listOf(
+                "При выявленной неисправности оборудования или инструмента либо нарушении технологии сообщите непосредственному руководителю и приостановите работу до устранения.",
+                "Немедленно сообщите об известной угрозе жизни и здоровью, несчастном случае или ухудшении состояния здоровья."
+            ),
+            tags = listOf("охрана труда", "остановка работы", "доклад"),
+            source = safetySource
+        ),
+        KnowledgeArticle(
+            id = "safety-training",
+            title = "Обучение, инструктаж и первая помощь",
+            category = "Охрана труда",
+            status = "Нормативная памятка",
+            summary = "Допуск к работе начинается с установленного обучения.",
+            body = listOf(
+                "Работник проходит установленное обучение безопасным методам работы, первой помощи и применению СИЗ, а также инструктаж, стажировку и проверку знаний, когда они требуются.",
+                "Работодатель не допускает к обязанностям работников, не прошедших обязательное обучение и предусмотренные медицинские осмотры."
+            ),
+            tags = listOf("охрана труда", "обучение", "инструктаж", "первая помощь"),
+            source = safetySource
+        )
+    )
+
+    val allArticles: List<KnowledgeArticle> get() = articles + diagramDetailArticles + safetyArticles
+
+    val generalArticles: List<KnowledgeArticle>
+        get() = allArticles.filterNot { article ->
+            article.category.contains("ВЛ80", ignoreCase = true) ||
+                article.tags.any { it.contains("ВЛ80", ignoreCase = true) }
+        }
+
+    val categories: List<String> get() = listOf("Все") + generalArticles.map { it.category }.distinct()
 
     fun articleById(id: String): KnowledgeArticle? = allArticles.firstOrNull { it.id == id }
 
     fun search(query: String, category: String): List<KnowledgeArticle> {
         val q = query.trim().lowercase()
-        return allArticles.filter { article ->
+        return generalArticles.filter { article ->
             val categoryMatches = category == "Все" || article.category == category
             val textMatches = q.isBlank() || listOf(
                 article.title, article.summary, article.category, article.status,

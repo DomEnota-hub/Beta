@@ -107,9 +107,9 @@ private fun HandbookNavCard(
     ) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
             HandbookIcon()
-            Text("Справочник", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text("База знаний", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
             Text(
-                "Статьи, нормы и связанные материалы",
+                "Нормы, безопасность и общие материалы",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

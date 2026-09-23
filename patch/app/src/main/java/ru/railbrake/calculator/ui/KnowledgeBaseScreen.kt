@@ -71,6 +71,7 @@ import kotlin.math.sqrt
 fun KnowledgeBaseScreen(
     initialArticleId: String? = null,
     initialQuery: String? = null,
+    initialCategory: String = "Все",
     sectionBackLabel: String? = null,
     onSectionBack: (() -> Unit)? = null
 ) {
@@ -98,6 +99,7 @@ fun KnowledgeBaseScreen(
     if (article == null) {
         KnowledgeHome(
             initialQuery = initialQuery,
+            initialCategory = initialCategory,
             sectionBackLabel = sectionBackLabel,
             onSectionBack = onSectionBack,
             favoriteIds = favoriteIds,
@@ -120,6 +122,7 @@ fun KnowledgeBaseScreen(
 @Composable
 private fun KnowledgeHome(
     initialQuery: String?,
+    initialCategory: String,
     sectionBackLabel: String?,
     onSectionBack: (() -> Unit)?,
     favoriteIds: Set<String>,
@@ -129,7 +132,7 @@ private fun KnowledgeHome(
     onToggleFavorite: (String) -> Unit
 ) {
     var query by rememberSaveable(initialQuery) { mutableStateOf(initialQuery.orEmpty()) }
-    var category by rememberSaveable { mutableStateOf("Все") }
+    var category by rememberSaveable(initialCategory) { mutableStateOf(initialCategory) }
     var onlyFavorites by rememberSaveable { mutableStateOf(false) }
     val results = remember(query, category, onlyFavorites, favoriteIds) {
         KnowledgeRepository.search(query, category).filter { !onlyFavorites || it.id in favoriteIds }
@@ -162,14 +165,14 @@ private fun KnowledgeHome(
             }
         }
         RailSectionHeader(
-            "Справочник",
-            "Материалы, нормы, схемы и связанные рабочие сведения"
+            "База знаний",
+            "Нормы, безопасность и общие справочные материалы"
         )
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Поиск по справочнику") },
+            label = { Text("Поиск по базе знаний") },
             singleLine = true,
             trailingIcon = {
                 if (query.isNotEmpty()) {
@@ -249,7 +252,13 @@ private fun KnowledgeHome(
             if (results.isEmpty() && thematicFacts.isEmpty()) {
                 item {
                     Card(shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth()) {
-                        Text("Ничего не найдено. Попробуйте другой запрос.", modifier = Modifier.padding(18.dp))
+                        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text("Ничего не найдено", fontWeight = FontWeight.Bold)
+                            Text("Измените запрос или выберите другую категорию.")
+                            TextButton(onClick = { query = ""; category = "Все"; onlyFavorites = false }) {
+                                Text("Сбросить фильтры")
+                            }
+                        }
                     }
                 }
             }
@@ -292,7 +301,7 @@ private fun KnowledgeArticleScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            TextButton(onClick = onBack) { Text("← К справочнику") }
+            TextButton(onClick = onBack) { Text("← К базе знаний") }
         }
         item {
             Row(verticalAlignment = Alignment.Top) {

@@ -68,4 +68,13 @@ class TechnicalPresentationTest {
         assertEquals("Имеет пневматический привод от", technicalPresentationLine("pneumatically_operated_by"))
         assertEquals("В", technicalPresentationLine("V"))
     }
+
+    @Test
+    fun fullInspectionReusesMandatoryItemIds() {
+        val required = listOf("REQ-01", "REQ-02")
+        val full = fullAcceptanceSequence(required, listOf("FULL-01", "REQ-02"))
+
+        assertEquals(listOf("REQ-01", "REQ-02", "FULL-01"), full)
+        assertEquals(required, full.take(required.size))
+    }
 }

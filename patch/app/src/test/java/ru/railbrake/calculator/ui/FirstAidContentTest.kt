@@ -29,4 +29,38 @@ class FirstAidContentTest {
         assertTrue(frostbite.dont.any { it.contains("Не растирайте") })
         assertTrue(frostbite.dont.any { it.contains("повторного замерзания") })
     }
+
+    @Test
+    fun cprMakesAirwayCheckExplicitWithoutDelayingCompressions() {
+        val cpr = firstAidTopics.single { it.id == "cpr" }
+        val text = (cpr.actions + cpr.dont).joinToString(" ")
+
+        assertTrue(text.contains("маску"))
+        assertTrue(text.contains("шарф"))
+        assertTrue(text.contains("не более 10 секунд"))
+        assertTrue(text.contains("видимое"))
+        assertTrue(text.contains("слепое"))
+        assertTrue(text.contains("100–120"))
+        assertTrue(text.contains("5–6 см"))
+        assertTrue(text.contains("Не откладывайте СЛР"))
+    }
+
+    @Test
+    fun chokingCoversPregnancyObesityAndLossOfConsciousness() {
+        val airway = firstAidTopics.single { it.id == "airway" }
+        val text = (airway.actions + airway.dont).joinToString(" ")
+
+        assertTrue(text.contains("Беременной"))
+        assertTrue(text.contains("ожирением"))
+        assertTrue(text.contains("грудной клетки"))
+        assertTrue(text.contains("потере сознания"))
+        assertTrue(text.contains("СЛР"))
+    }
+
+    @Test
+    fun poisoningAndChemicalExposureAreSeparateSourcedTopics() {
+        assertTrue(firstAidTopics.any { it.id == "poisoning" && it.title == "Отравление" })
+        assertTrue(firstAidTopics.any { it.id == "chemical" && it.title == "Химическое поражение" })
+        assertTrue(firstAidTopics.all { it.source.contains("Минздрава России") && it.source.contains("2025") })
+    }
 }

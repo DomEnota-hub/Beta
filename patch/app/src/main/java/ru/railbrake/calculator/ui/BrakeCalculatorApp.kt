@@ -97,7 +97,7 @@ private enum class AppScreen(val title: String) {
     LOCOMOTIVE_MATERIAL("Локомотивы / атлас"),
     LOCOMOTIVE_LEGACY("Локомотивы / атлас"),
     ACCEPTANCE("Приёмка"),
-    KNOWLEDGE("Справочник"),
+    KNOWLEDGE("База знаний"),
     SAFETY("Охрана труда"),
     FIRST_AID("Первая помощь"),
     CALCULATIONS("Расчёты"),
@@ -226,9 +226,6 @@ fun BrakeCalculatorApp(
                                     knowledgeRootVersion++
                                 }
                                 AppScreen.SAFETY -> {
-                                    technicalFamilyName = TechnicalFamily.VL80S.name
-                                    technicalSectionName = TechnicalSection.SAFETY.name
-                                    technicalInitialEntryId = null
                                     safetyRootVersion++
                                 }
                                 AppScreen.FIRST_AID -> firstAidRootVersion++
@@ -424,13 +421,10 @@ fun BrakeCalculatorApp(
                     )
                 }
                 AppScreen.SAFETY -> key(safetyRootVersion) {
-                    TechnicalCatalogScreen(
-                        initialFamily = runCatching { TechnicalFamily.valueOf(technicalFamilyName) }.getOrDefault(TechnicalFamily.VL80S),
-                        initialSection = TechnicalSection.SAFETY,
+                    KnowledgeBaseScreen(
+                        initialCategory = "Охрана труда",
                         sectionBackLabel = "Главная",
-                        onSectionBack = { screenName = AppScreen.HOME.name },
-                        lockFamily = false,
-                        lockSection = true
+                        onSectionBack = { screenName = AppScreen.HOME.name }
                     )
                 }
                 AppScreen.FIRST_AID -> key(firstAidRootVersion) {

@@ -13,6 +13,89 @@ private val hiddenMetadata = setOf(
     "pass"
 )
 
+private val technicalLocationLabels = mapOf(
+    "each_section" to "на каждой секции",
+    "head_sections" to "в головных секциях",
+    "locomotive" to "на локомотиве",
+    "train" to "по локомотиву и составу",
+    "head" to "головная секция",
+    "booster" to "бустерная секция",
+    "active_cab_and_distributed_equipment" to "рабочая кабина и распределённое оборудование",
+    "between_body_and_bogies" to "между кузовом и тележками",
+    "body_and_underfloor_ducts" to "кузов и подкузовные каналы",
+    "body_center" to "средняя часть кузова",
+    "body_center_hvc" to "средняя часть кузова, высоковольтная камера",
+    "body_sandboxes_and_bogie_nozzles" to "песочницы кузова и форсунки тележек",
+    "body_to_bogie_linkage" to "связь кузова с тележкой",
+    "body_transverse" to "поперёк кузова",
+    "body_ventilation_blocks" to "вентиляционные блоки кузова",
+    "bogie" to "тележка",
+    "bogie_and_control_block" to "тележка и блок управления",
+    "bogie_wheelset_ends" to "торцы колёсных пар тележки",
+    "bogies" to "тележки",
+    "bogies_wheel_motor_blocks" to "колёсно-моторные блоки тележек",
+    "brake_equipment" to "тормозное оборудование",
+    "brake_equipment_block" to "блок тормозного оборудования",
+    "cab" to "кабина",
+    "cab_and_driver_wearable_interface" to "кабина и носимый интерфейс машиниста",
+    "cab_console" to "пульт кабины",
+    "cab_console_pedestal" to "тумба пульта кабины",
+    "cab_cross_wall" to "поперечная стенка кабины",
+    "cab_front" to "лобовая часть кабины",
+    "cab_or_brake_equipment" to "кабина или блок тормозного оборудования",
+    "cab_roof_front" to "передняя часть крыши кабины",
+    "cab_workplaces" to "рабочие места в кабине",
+    "compressor_discharge_line" to "нагнетательная линия компрессора",
+    "control_cabinet" to "шкаф управления",
+    "converter_circuits" to "цепи преобразователя",
+    "distributed_section_system" to "распределённая система секции",
+    "head_section_cab" to "кабина головной секции",
+    "head_section_cab_and_attic" to "кабина и чердачная зона головной секции",
+    "head_section_cab_and_brake_block" to "кабина и блок тормозного оборудования головной секции",
+    "head_section_cab_and_roof" to "кабина и крыша головной секции",
+    "head_section_pneumatic_equipment" to "пневматическое оборудование головной секции",
+    "hvc" to "высоковольтная камера",
+    "hvc_and_control_interface" to "высоковольтная камера и интерфейс управления",
+    "hvc_and_corridor" to "высоковольтная камера и коридор",
+    "hvc_control_panels" to "панели управления высоковольтной камеры",
+    "hvc_doors_and_cab_control" to "двери высоковольтной камеры и управление из кабины",
+    "hvc_or_machine_room" to "высоковольтная камера или машинное отделение",
+    "hvc_roof_hatches_and_body" to "люки крыши высоковольтной камеры и кузов",
+    "hvc_transverse" to "поперечная зона высоковольтной камеры",
+    "hvc_under_walkway" to "под проходом высоковольтной камеры",
+    "inter_section_connectors" to "межсекционные соединения",
+    "main_breaker_assembly" to "узел главного выключателя",
+    "msud_software_and_sensors" to "МСУД, программное обеспечение и датчики",
+    "near_ballast_resistor" to "возле балластного резистора",
+    "pneumatic_block" to "пневматический блок",
+    "pneumatic_block_or_roof_line" to "пневматический блок или линия на крыше",
+    "pneumatic_block_to_roof" to "от пневматического блока к крыше",
+    "pneumatic_lines" to "пневматические магистрали",
+    "power_apparatus_blocks" to "блоки силовой аппаратуры",
+    "reservoir_and_separator_drains" to "сливы резервуаров и влагомаслоотделителей",
+    "reservoir_group" to "группа резервуаров",
+    "roof" to "крыша",
+    "roof_and_hvc" to "крыша и высоковольтная камера",
+    "roof_to_cab" to "от крыши к кабине",
+    "section_control_and_power_equipment" to "управляющее и силовое оборудование секции",
+    "section_control_cabinets" to "шкафы управления секции",
+    "section_control_cabinets_and_cab_display" to "шкафы управления секции и дисплей кабины",
+    "section_ends" to "торцы секции",
+    "section_equipment" to "оборудование секции",
+    "throughout_locomotive_and_train" to "по всему локомотиву и составу",
+    "throughout_section_and_intersection" to "по секции и межсекционным соединениям",
+    "traction_transformer" to "тяговый трансформатор",
+    "underframe" to "под рамой кузова",
+    "underframe_battery_boxes" to "подкузовные аккумуляторные ящики",
+    "underframe_front_bogies" to "под рамой у передних тележек",
+    "underframe_near_bogies" to "под рамой возле тележек",
+    "underframe_or_pneumatic_block" to "под рамой или в пневматическом блоке",
+    "wheel_motor_unit" to "колёсно-моторный блок",
+    "wheelsets" to "колёсные пары"
+)
+
+internal fun technicalLocationLabel(value: String): String? = technicalLocationLabels[value.trim().lowercase()]
+
 private val exactLabels = mapOf(
     "local_procedure" to "Действовать по местной инструкции и установленному технологическому процессу",
     "stop_and_report" to "Остановить проверку и доложить установленным порядком",
@@ -234,6 +317,7 @@ internal fun technicalStatusPresentation(status: String): String? = when (status
     "RESTRICT_OPERATION" -> "Ограничить эксплуатацию"
     "STOP_AND_REPORT" -> "Остановиться и доложить"
     "REQUIRED" -> "Обязательный параметр"
+    "MANDATORY_CHECK" -> "Обязательная проверка"
     "PROFILE_REQUIRED" -> "Требуется выбрать исполнение"
     "CONFLICT" -> "Требует уточнения"
     "FALLBACK" -> "Исполнение не определено"

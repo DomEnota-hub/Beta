@@ -2,6 +2,7 @@ package ru.railbrake.calculator.core
 
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -47,5 +48,32 @@ class TechnicalDataAssetTest {
             assertEquals(ids.size, ids.toSet().size)
             assertTrue(ids.all { it.startsWith(prefix) })
         }
+    }
+
+    @Test
+    fun everyErmakLocationTokenHasOneReadableRussianLabel() {
+        val records = asset("ermak_equipment.json").getJSONArray("records")
+        val tokens = buildSet<String> {
+            for (index in 0 until records.length()) {
+                val location = records.getJSONObject(index).optJSONObject("location") ?: continue
+                listOf("sectionScope", "zone").forEach { key ->
+                    location.optString(key).takeIf(String::isNotBlank)?.let(::add)
+                }
+                val sectionKinds = location.optJSONArray("sectionKinds")
+                if (sectionKinds != null) {
+                    for (kindIndex in 0 until sectionKinds.length()) add(sectionKinds.getString(kindIndex))
+                }
+            }
+        }
+
+        assertEquals(78, tokens.size)
+        tokens.forEach { token ->
+            val label = technicalLocationLabel(token)
+            assertTrue("Нет отображаемого названия для $token", !label.isNullOrBlank())
+            assertFalse("В UI остался внутренний ID $token", label.orEmpty().contains('_'))
+        }
+        assertEquals("пневматический блок", technicalLocationLabel("pneumatic_block"))
+        assertEquals("группа резервуаров", technicalLocationLabel("reservoir_group"))
+        assertEquals("нагнетательная линия компрессора", technicalLocationLabel("compressor_discharge_line"))
     }
 }

@@ -64,6 +64,9 @@ data class ErmakSchemeLinkContext(
     val diagnosticLinks: List<ErmakSchemeDiagnosticLink>
 )
 
+internal fun fullAcceptanceSequence(requiredIds: List<String>, expandedIds: List<String>): List<String> =
+    (requiredIds + expandedIds).distinct()
+
 class TechnicalDataRepository(private val context: Context) {
     companion object {
         private val sharedSectionCache = mutableMapOf<Pair<TechnicalFamily, TechnicalSection>, List<TechnicalEntry>>()
@@ -158,7 +161,6 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.EQUIPMENT,
             TechnicalSection.SYSTEMS,
             TechnicalSection.KNOWLEDGE,
-            TechnicalSection.SAFETY,
             TechnicalSection.ELECTRICAL,
             TechnicalSection.PNEUMATIC
         )
@@ -166,7 +168,6 @@ class TechnicalDataRepository(private val context: Context) {
             TechnicalSection.SYSTEMS,
             TechnicalSection.EQUIPMENT,
             TechnicalSection.KNOWLEDGE,
-            TechnicalSection.SAFETY,
             TechnicalSection.ELECTRICAL,
             TechnicalSection.PNEUMATIC
         )
@@ -243,13 +244,13 @@ class TechnicalDataRepository(private val context: Context) {
     }
 
     private fun candidateSections(id: String): List<Pair<TechnicalFamily, TechnicalSection>> = when {
-        id.startsWith("VL80-ACC-") || id.startsWith("VL80-ROUTE-") || id.startsWith("route_") -> listOf(TechnicalFamily.VL80S to TechnicalSection.ACCEPTANCE)
+        id.startsWith("VL80-ACC-") || id.startsWith("VL80-REQ-") || id.startsWith("VL80-ROUTE-") || id.startsWith("route_") -> listOf(TechnicalFamily.VL80S to TechnicalSection.ACCEPTANCE)
         id.startsWith("VL-EQ-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.EQUIPMENT)
         id.startsWith("VL-SYS-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.SYSTEMS)
         id.startsWith("vl80-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.KNOWLEDGE)
         id.startsWith("VL-SCH-") -> listOf(TechnicalFamily.VL80S to TechnicalSection.ELECTRICAL, TechnicalFamily.VL80S to TechnicalSection.PNEUMATIC)
         id.startsWith("ER-VARIANT-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.PROFILES)
-        id.startsWith("ER-ACC-") || id.startsWith("ER-ROUTE-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.ACCEPTANCE)
+        id.startsWith("ER-ACC-") || id.startsWith("ER-REQ-") || id.startsWith("ER-ROUTE-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.ACCEPTANCE)
         id.startsWith("SYS-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.SYSTEMS)
         id.startsWith("ER-EQ-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.EQUIPMENT)
         id.startsWith("ER-KB-") -> listOf(TechnicalFamily.ERMAK to TechnicalSection.KNOWLEDGE)
@@ -417,6 +418,27 @@ class TechnicalDataRepository(private val context: Context) {
             )
         }
 
+    private fun requiredAcceptanceEntries(
+        family: TechnicalFamily,
+        prefix: String,
+        source: String,
+        requirements: List<Pair<String, String>>
+    ): List<TechnicalEntry> = requirements.mapIndexed { index, (title, check) ->
+        TechnicalEntry(
+            id = "$prefix-${(index + 1).toString().padStart(2, '0')}",
+            family = family,
+            section = TechnicalSection.ACCEPTANCE,
+            title = title,
+            subtitle = check,
+            status = "MANDATORY_CHECK",
+            blocks = listOf(
+                TechnicalBlock("Обязательная проверка", listOf(check)),
+                TechnicalBlock("Источник", listOf(source))
+            ),
+            searchText = "$title $check $source обязательная приёмка".lowercase()
+        )
+    }
+
     private fun loadVl80sAcceptance(): List<TechnicalEntry> {
         val root = json("technical/vl80s_acceptance.json")
         val items = root.array("items").objects().map { item ->
@@ -441,22 +463,58 @@ class TechnicalDataRepository(private val context: Context) {
                 }.distinct()
             )
         }
+        val requiredItems = requiredAcceptanceEntries(
+            family = TechnicalFamily.VL80S,
+            prefix = "VL80-REQ",
+            source = "ВЛ80С. Руководство по эксплуатации: приёмка в депо и ТО-1 локомотивными бригадами",
+            requirements = listOf(
+                "Документы и передача замечаний" to "Проверить записи в журнале технического состояния, получить сведения о замечаниях и выполненных работах.",
+                "Механическая часть" to "Осмотреть доступные узлы механической части в объёме ТО-1; выявленные неисправности зафиксировать установленным порядком.",
+                "Крышевое оборудование и токоприёмник" to "Осмотреть с земли крышевое оборудование и проверить токоприёмник в установленном безопасном порядке.",
+                "Тяговые двигатели и вспомогательные машины" to "Осмотреть доступное внешнее состояние тяговых двигателей и вспомогательных машин.",
+                "Вентиляция и форкамеры" to "Проверить доступное состояние вентиляции, воздухозаборов и форкамер.",
+                "Электрическое и пневматическое управление" to "Проверить аппаратуру управления и работу вспомогательных машин в предусмотренном руководством порядке.",
+                "Освещение и сигнализация" to "Проверить освещение, звуковые и световые сигналы.",
+                "Песок и пескоподача" to "Проверить наличие песка и работу устройств пескоподачи.",
+                "Масло тягового трансформатора" to "Проверить уровень масла тягового трансформатора.",
+                "Конденсат и утечки воздуха" to "Удалить конденсат из предусмотренных сборников и проверить отсутствие недопустимых утечек воздуха.",
+                "Приборы и показания" to "Проверить предусмотренные контрольно-измерительные приборы и сигнализацию.",
+                "Запас воды" to "Проверить предусмотренный запас воды.",
+                "Инструмент, СИЗ и схемы" to "Проверить комплектность инструмента, защитных средств, противопожарного имущества и необходимых схем.",
+                "Стеклоочистители" to "Проверить работу стеклоочистителей.",
+                "Тормозное оборудование" to "Проверить тормозное оборудование по действующей инструкции по техническому обслуживанию тормозов."
+            )
+        )
+        val requiredIds = requiredItems.map(TechnicalEntry::id)
+        val requiredRoute = TechnicalEntry(
+            id = "VL80-ROUTE-required",
+            family = TechnicalFamily.VL80S,
+            section = TechnicalSection.ACCEPTANCE,
+            title = "Обязательная приёмка",
+            subtitle = "Минимальный подтверждённый объём ТО-1 • ${requiredIds.size} пунктов",
+            status = "ROUTE",
+            blocks = listOf(TechnicalBlock("Основание", listOf("Составлено по разделам приёмки в депо и ТО-1 руководства по эксплуатации ВЛ80С."))),
+            sequence = requiredIds,
+            searchText = "обязательная приёмка ВЛ80С ТО-1".lowercase()
+        )
         val routes = root.array("routes").objects().map { route ->
             val ids=route.array("itemIds").strings()
             val mode=when(route.optString("mode")){"step_by_step"->"пошагово";"checklist"->"контрольный список";"route"->"маршрут";"area"->"по зоне";else->"маршрут"}
             TechnicalEntry(
                 id="VL80-ROUTE-${route.optString("id")}", family=TechnicalFamily.VL80S, section=TechnicalSection.ACCEPTANCE,
-                title=route.optString("title"), subtitle="${ids.size} пунктов • $mode", status="ROUTE",
+                title=if (route.optString("id") == "route_canonical") "Полный осмотр" else route.optString("title"),
+                subtitle="${requiredIds.size + ids.size} пунктов • $mode",
+                status=if (route.optString("id") == "route_canonical") "ROUTE" else "ROUTE_VARIANT",
                 blocks=listOf(TechnicalBlock("Режим",listOf("Последовательное прохождение пунктов приёмки с отметками «проверено» и «замечание»."))),
-                sequence=ids, searchText=(route.optString("title")+" "+mode).lowercase()
+                sequence=fullAcceptanceSequence(requiredIds, ids), searchText=(route.optString("title")+" "+mode).lowercase()
             )
         }
         val effectiveRoutes=if(routes.isNotEmpty()) routes else listOf(TechnicalEntry(
             id="VL80-ROUTE-fallback", family=TechnicalFamily.VL80S, section=TechnicalSection.ACCEPTANCE,
             title="Полная приёмка", subtitle="${items.size} пунктов • пошагово", status="ROUTE", blocks=emptyList(),
-            sequence=items.map(TechnicalEntry::id), searchText="полная приёмка пошагово"
+            sequence=fullAcceptanceSequence(requiredIds, items.map(TechnicalEntry::id)), searchText="полная приёмка пошагово"
         ))
-        return effectiveRoutes + items
+        return listOf(requiredRoute) + effectiveRoutes + requiredItems + items
     }
 
     private fun loadVl80sElectrical(): List<TechnicalEntry> =
@@ -499,6 +557,33 @@ class TechnicalDataRepository(private val context: Context) {
     private fun loadErmakAcceptance(): List<TechnicalEntry> {
     val equipment = loadErmakEquipment()
     if (equipment.isEmpty()) return emptyList()
+
+    val requiredItems = requiredAcceptanceEntries(
+        family = TechnicalFamily.ERMAK,
+        prefix = "ER-REQ",
+        source = "ИДМБ.661142.009РЭ7 (3ТС.001.012РЭ7), раздел 3.10 «Техническое обслуживание ТО-1»",
+        requirements = listOf(
+            "Инструмент, СИЗ, огнетушители и схемы" to "Проверить наличие и исправность инструмента, принадлежностей, защитных средств, огнетушителей и схем электрических и пневматических цепей.",
+            "Механическая часть" to "Осмотреть механическую часть: крепления, предохранительные устройства, подвешивание, буксы, колёсные пары и рычажную тормозную систему.",
+            "Гребнесмазыватели" to "Выполнить обслуживание гребнесмазывателей по инструкции изготовителя.",
+            "Течи масла и смазки" to "Убедиться в отсутствии течи масла демпферов и смазки из кожухов зубчатых передач.",
+            "Тяговые двигатели и вспомогательные машины" to "Осмотреть внешнее состояние тяговых двигателей и вспомогательных машин, проверить отсутствие течи смазки.",
+            "Система вентиляции" to "Осмотреть воздухозаборные жалюзи и парусиновые патрубки, убедиться в отсутствии повреждений.",
+            "Масло тягового трансформатора" to "Проверить уровень масла в тяговом трансформаторе.",
+            "Запас воды" to "Проверить уровень воды в баках умывальника и санузла.",
+            "Песок и пескоподача" to "Проверить наличие песка в бункерах и работу устройств пескоподачи.",
+            "Стеклоочистители" to "Проверить работу стеклоочистителей.",
+            "Пневматические соединения" to "Проверить герметичность соединений трубопроводов пневматической системы.",
+            "Удаление конденсата" to "Удалить конденсат из резервуаров, влагосборников и маслоотделителей.",
+            "Крыша и токоприёмники" to "Осмотреть с земли крышевое оборудование и проверить токоприёмники в установленном безопасном порядке.",
+            "Освещение и сигнализация" to "Проверить освещение, звуковые и световые сигналы.",
+            "МСУД и силовые режимы" to "Проверить работу МСУД и сбор тяговой и тормозной схем в установленном руководством порядке.",
+            "Приборы и индикаторы" to "Проверить контрольно-измерительные приборы, индикаторы и предусмотренную сигнализацию.",
+            "Кассеты регистрации" to "Проверить наличие и установленное состояние кассет регистрации.",
+            "Тормозное оборудование" to "Проверить тормозное оборудование по действующей инструкции по техническому обслуживанию тормозов."
+        )
+    )
+    val requiredIds = requiredItems.map(TechnicalEntry::id)
 
     fun lines(entry: TechnicalEntry, title: String): List<String> =
         entry.blocks.firstOrNull { it.title.equals(title, ignoreCase = true) }?.lines.orEmpty()
@@ -565,18 +650,19 @@ class TechnicalDataRepository(private val context: Context) {
     val fromOutside = routeSequence(outside + middle + cabin)
     val fromCab = routeSequence(cabin + middle.asReversed() + outside.asReversed())
 
-    fun route(id: String, title: String, subtitle: String, sequence: List<String>) = TechnicalEntry(
+    fun route(id: String, title: String, subtitle: String, sequence: List<String>, status: String = "ROUTE_VARIANT") = TechnicalEntry(
         id = id,
         family = TechnicalFamily.ERMAK,
         section = TechnicalSection.ACCEPTANCE,
         title = title,
         subtitle = "$subtitle • ${sequence.size} пунктов",
-        status = "ROUTE",
+        status = status,
         blocks = listOf(
   TechnicalBlock(
       "Режим",
       listOf(
-          "Чек-лист построен по расположению и карточкам оборудования Ермака, уже включённым в приложение.",
+          "Расширенная часть чек-листа построена по расположению и карточкам оборудования Ермака, уже включённым в приложение.",
+          "Она не является подтверждённой нормативной последовательностью ежедневной приёмки.",
           "Если узел отсутствует на конкретном исполнении, используйте статус «Не применяется».",
           "Чек-лист фиксирует результат осмотра и не заменяет действующую эксплуатационную документацию."
       )
@@ -588,24 +674,40 @@ class TechnicalDataRepository(private val context: Context) {
 
     val canonical = route(
         "ER-ROUTE-route_canonical",
-        "Полная приёмка Ермак",
-        "Выбор точки начала маршрута",
-        fromOutside
+        "Полный осмотр",
+        "Расширенная проверка с выбором точки начала",
+        fullAcceptanceSequence(requiredIds, fromOutside),
+        status = "ROUTE"
     )
     val outsideRoute = route(
         "ER-ROUTE-route_from_outside",
         "Приёмка Ермак — начать снаружи",
         "От наружных зон к внутреннему оборудованию и кабине",
-        fromOutside
+        fullAcceptanceSequence(requiredIds, fromOutside)
     )
     val cabRoute = route(
         "ER-ROUTE-route_from_cab",
         "Приёмка Ермак — начать из кабины",
         "От кабины к внутреннему оборудованию и наружным зонам",
-        fromCab
+        fullAcceptanceSequence(requiredIds, fromCab)
     )
 
-    return listOf(canonical, outsideRoute, cabRoute) + items
+    val requiredRoute = route(
+        "ER-ROUTE-required",
+        "Обязательная приёмка",
+        "Подтверждённый объём ТО-1",
+        requiredIds,
+        status = "ROUTE"
+    ).copy(
+        blocks = listOf(
+            TechnicalBlock(
+                "Основание",
+                listOf("Составлено по ИДМБ.661142.009РЭ7, раздел 3.10 «Техническое обслуживание ТО-1».")
+            )
+        )
+    )
+
+    return listOf(requiredRoute, canonical, outsideRoute, cabRoute) + requiredItems + items
 }
 
     private fun loadErmakSystems(): List<TechnicalEntry> {
@@ -702,7 +804,7 @@ class TechnicalDataRepository(private val context: Context) {
                 blocks = listOfNotEmpty(
                     block("Назначение", item.optString("purpose")),
                     block("Как работает", knowledge?.optString("principle").orEmpty()),
-                    block("Расположение", item.obj("location").summary()),
+                    block("Расположение", item.obj("location").locationSummary()),
                     block("Количество", item.optString("quantity")),
                     block("Обозначения", item.array("schemeDesignations").strings() + item.array("modelNames").strings()),
                     block("Параметры", item.array("parameters").stringsOrSummaries()),
@@ -1185,6 +1287,12 @@ class TechnicalDataRepository(private val context: Context) {
 
 private fun JSONObject.array(key: String): JSONArray = optJSONArray(key) ?: JSONArray()
 private fun JSONObject.obj(key: String): JSONObject = optJSONObject(key) ?: JSONObject()
+
+private fun JSONObject.locationSummary(): String = buildList {
+    optString("sectionScope").takeIf(String::isNotBlank)?.let(::technicalLocationLabel)?.let(::add)
+    array("sectionKinds").strings().mapNotNull(::technicalLocationLabel).forEach(::add)
+    optString("zone").takeIf(String::isNotBlank)?.let(::technicalLocationLabel)?.let(::add)
+}.distinct().joinToString(" • ")
 
 private fun JSONArray.objects(): List<JSONObject> = buildList {
     for (index in 0 until length()) optJSONObject(index)?.let(::add)
