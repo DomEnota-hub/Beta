@@ -1,0 +1,279 @@
+name: Apply Beta38 rheostatic tail
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/apply-beta38-rheostatic-tail.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard Beta38 base
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="06c48e9fc2ae6b1799271139b8d73a935066cd98"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected workflow parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta38 apply'; exit 1; }
+
+      - name: Enrich BURS and brake-resistor cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          python3 - <<'PY'
+          import copy, gzip, json, shutil
+          from pathlib import Path
+
+          app_eq = Path('app/src/main/assets/technical/vl80s_equipment.json.gz')
+          patch_eq = Path('patch/app/src/main/assets/technical/vl80s_equipment.json.gz')
+          with gzip.open(app_eq, 'rt', encoding='utf-8') as f:
+              data = json.load(f)
+          records = data['records']
+          assert len(records) == 89
+          by_id = {r['id']: r for r in records}
+          targets = {'VL-EQ-TR-005', 'VL-EQ-TR-009'}
+          assert targets <= set(by_id)
+
+          before_targets = {rid: copy.deepcopy(by_id[rid]) for rid in targets}
+          untouched = {rid: copy.deepcopy(r) for rid, r in by_id.items() if rid not in targets}
+          common_preserved = ['id','legacyId','slug','name','aliases','kind','domain','systemIds','diagnosticScenarioIds','schemeNodeIds','legacyHotspotIds','sourceRefs','evidenceStatus','applicability','migration','instances','crosslinks','equipmentOverrides']
+          preserved = {rid: {k: copy.deepcopy(by_id[rid].get(k)) for k in common_preserved} for rid in targets}
+          tr005_feature_rules = copy.deepcopy(by_id['VL-EQ-TR-005'].get('featureRules'))
+
+          def set_card(rid, **values):
+              r = by_id[rid]
+              for k, v in values.items():
+                  r[k] = v
+
+          set_card('VL-EQ-TR-005',
+              purpose='Автоматически регулирует реостатное торможение: принимает задание машиниста и сигналы обратной связи, формирует управление возбуждением ТЭД через ВУВ и координирует аппараты тормозного режима.',
+              modelNames=['БУРТ-125', 'БУРТ-16'],
+              quantity='В базовом исполнении блок БУРТ установлен только в первой секции электровоза; фактическое исполнение после модернизаций определяется по документации конкретных секций.',
+              location={
+                  'text':'В базовом исполнении БУРТ-125 — первая секция, аппаратная зона. Для БУРТ-16 и модернизированных машин расположение и состав подтверждают по секционной документации.',
+                  'confidence':'source_confirmed'
+              },
+              schemeDesignations=['БА — блок управления реостатным торможением'],
+              parameters=[
+                  'БУРТ-125 включает функциональные блоки БОТ, ФП-РУ, ФР-УИ, БСС, БРП, БСП и БПА.',
+                  'Система использует задание тормозной силы/скорости и обратную связь по токам и скорости для автоматического регулирования тормозного усилия.',
+                  'В базовой системе БУРТ-125 панель реле переключения участвует в изменении сопротивления тормозной цепи примерно с 1 до 0,54 Ом для расширения рабочей области реостатного торможения.',
+                  'С №2319 предусмотрено исполнение БУРТ-16; оно не должно трактоваться как электрически совместимое с БУРТ-125 при работе по СМЕ.'
+              ],
+              principle='Команда от тормозных органов контроллера поступает в систему БУРТ. Блок сопоставляет заданный режим с сигналами токов и скорости, формирует управляющее воздействие на ВУВ и тем самым изменяет ток возбуждения ТЭД, работающих генераторами. Одновременно система координирует переключение аппаратов тормозного режима и расширенной зоны. Отказ торможения не следует автоматически относить к БУРТ: необходимо разграничивать командную цепь, обратную связь, ВУВ, переключатели тяга/торможение, силовую цепь ТЭД, резисторы и охлаждение.',
+              relations=[
+                  {'type':'commanded_by','targetId':'VL-EQ-CT-004','note':'тормозные органы контроллера задают требуемый режим реостатного торможения'},
+                  {'type':'controls','targetId':'VL-EQ-TR-013','note':'формирует управляющее воздействие для ВУВ, регулирующей ток возбуждения ТЭД'},
+                  {'type':'works_with','targetId':'VL-EQ-TR-014','note':'координирует переход силовой схемы между тяговым и тормозным режимами'},
+                  {'type':'receives_feedback_from','targetId':'VL-EQ-TR-015','note':'использует измерительную информацию о токе в контуре автоматического регулирования'},
+                  {'type':'coordinates','targetId':'VL-EQ-TR-009','note':'участвует в управлении расширенной зоной торможения и переключением эффективного сопротивления тормозной цепи'},
+                  {'type':'interlocked_with','targetId':'VL-EQ-BR-014','note':'пневматические выключатели участвуют в разрешении и контроле тормозного режима'},
+                  {'type':'works_with_protection','targetId':'VL-EQ-PR-004','note':'действие силовой токовой защиты необходимо отличать от неисправности самого регулятора БУРТ'}
+              ],
+              normalState=[
+                  'После разрешения тормозного режима система формирует и устойчиво удерживает заданное тормозное усилие без самопроизвольного срыва режима.',
+                  'Сигналы обратной связи по току и скорости согласованы с заданием; регулирование возбуждения происходит без устойчивых колебаний и необъяснимой асимметрии.',
+                  'При исправной электрической части не возникает необоснованного перехода на пневматическое замещение из-за потери электрического торможения.'
+              ],
+              deviationSigns=[
+                  'Реостатное торможение не собирается, срывается либо тормозная сила заметно не соответствует заданию.',
+                  'Регулирование становится неустойчивым, возникают устойчивые колебания показаний или признаки потери корректной обратной связи.',
+                  'Переход на пневматическое замещение требует разграничить неисправность БУРТ и отказ ВУВ, переключателей, датчиков, силовой цепи либо охлаждения.'
+              ],
+              unresolvedSystemConnections=[],
+              notes=[
+                  'Базовая схема VL-SCH-EL-RHEO-CONTROL-BURT125 относится к БУРТ-125 и не является универсальной для БУРТ-16.',
+                  'С №2319 сохранена вариантная граница БУРТ-16; при этом из схемы исключён ТПТЯ5. Feature rule burt16 и actualEquipmentOverrides имеют приоритет над общей карточкой.',
+                  'БУРТ-125 и БУРТ-16 имеют различающиеся системы управления реостатным торможением и не должны описываться как взаимозаменяемые исполнения для СМЕ.',
+                  'Карточка не содержит процедур настройки кассет, принудительного включения аппаратов, обхода блокировок или работ в ВВК под напряжением.'
+              ])
+
+          set_card('VL-EQ-TR-009',
+              purpose='Рассеивают в виде тепла электрическую энергию, вырабатываемую тяговыми двигателями в генераторном режиме реостатного торможения.',
+              modelNames=['БТР-135', 'БТР-171'],
+              quantity='4 блока на секцию — R11, R12, R13 и R14.',
+              schemeDesignations=['R11', 'R12', 'R13', 'R14'],
+              parameters=[
+                  'Для БТР-171: номинальный ток — 830 А.',
+                  'Для БТР-171: номинальное напряжение изоляции — 2000 В.',
+                  'Для БТР-171: сопротивление между выводами 1–2 — 0,98 Ом; между выводами 1–3 — 0,53 Ом.',
+                  'Для БТР-171: расход охлаждающего воздуха — 206 м³/мин.',
+                  'Для БТР-171: температура воздуха на выходе из блока — не более 210 °C.',
+                  'В режиме расширенной зоны торможения эффективное сопротивление тормозной цепи переключается примерно с 1 до 0,54 Ом; это характеристика схемного режима, а не универсальный паспортный параметр всех исполнений блока.'
+              ],
+              principle='В режиме реостатного торможения переключатели тяга/торможение отключают ТЭД от тягового питания и подключают якоря двигателей к индивидуальным тормозным резисторам. ТЭД работают генераторами, а энергия движения преобразуется в электрическую и затем в тепло на резисторах. Для сохранения тормозного эффекта в соответствующей области скоростей силовая коммутация изменяет эффективное сопротивление тормозной цепи. Отвод тепла обеспечивается принудительным воздушным потоком.',
+              relations=[
+                  {'type':'dissipates_energy_from','targetId':'VL-EQ-TR-006','note':'при генераторном режиме каждого ТЭД электрическая энергия рассеивается в соответствующем тормозном резисторе'},
+                  {'type':'connected_by','targetId':'VL-EQ-TR-014','note':'переключатели тяга/торможение подключают якорные цепи ТЭД к тормозным резисторам'},
+                  {'type':'controlled_in_mode_by','targetId':'VL-EQ-TR-005','note':'БУРТ участвует в регулировании тормозного режима и переключении расширенной зоны'},
+                  {'type':'cooled_by','targetId':'VL-EQ-AU-002','note':'мотор-вентиляторы обеспечивают принудительный воздушный поток для охлаждения блоков'},
+                  {'type':'cooled_via','targetId':'VL-EQ-AU-005','note':'воздуховоды и переключение воздушного потока подводят охлаждающий воздух к блокам R11–R14'},
+                  {'type':'works_with','targetId':'VL-EQ-TR-002','note':'часть силовой коммутации тормозного режима связана с аппаратурой БСА; точный аппаратный состав зависит от исполнения секции'}
+              ],
+              normalState=[
+                  'При реостатном торможении все четыре блока имеют штатный принудительный обдув; R11/R12 относятся к каналу МВ3, R13/R14 — к каналу МВ4.',
+                  'Нагрев резисторов в тормозном режиме является рабочим процессом, но отсутствуют дым, запах повреждённой изоляции и признаки ненормального локального перегрева.',
+                  'Переключение расширенной зоны не вызывает устойчивого срыва тормозного режима или повторного действия защит.'
+              ],
+              deviationSigns=[
+                  'Перегрев, дым или запах повреждённых материалов при работе реостатного торможения.',
+                  'Недостаточный воздушный поток через одну группу блоков либо одновременные признаки отказа соответствующего мотор-вентилятора/воздуховода.',
+                  'Срыв или заметное изменение тормозного эффекта при переключении сопротивления требует разграничить сам блок резисторов, силовую коммутацию, БУРТ и цепи ТЭД.',
+                  'Перегрев тормозного резистора не является автоматическим доказательством неисправности БТР: причиной может быть потеря охлаждения или нарушение переключения воздушного потока.'
+              ],
+              featureRules=[
+                  {
+                      'feature':'brake_resistor_btr135_early',
+                      'condition':'section.number < 1670 unless actualEquipmentOverrides says otherwise',
+                      'affects':'configuration',
+                      'sourceRefs':['VL-SRC-001'],
+                      'confidence':'source_confirmed_with_section_check',
+                      'note':'На ВЛ80С до №1670 применялись блоки БТР-135. Численные параметры БТР-171 на них не переносить.'
+                  },
+                  {
+                      'feature':'brake_resistor_btr171_late',
+                      'condition':'section.number >= 1670 unless actualEquipmentOverrides says otherwise',
+                      'affects':'configuration',
+                      'sourceRefs':['VL-SRC-001'],
+                      'confidence':'source_confirmed_with_section_check',
+                      'note':'Для ВЛ80С с №1670 базовым подтверждённым исполнением считается БТР-171; после ремонтов и замен приоритет имеет actualEquipmentOverrides.'
+                  }
+              ],
+              unresolvedSystemConnections=[],
+              notes=[
+                  'На ВЛ80С до №1670 применялись БТР-135; параметры БТР-171 из этой карточки к БТР-135 не относятся.',
+                  'Для БТР-171 подтверждены 830 А, изоляция 2000 В, 0,98/0,53 Ом, расход воздуха 206 м³/мин и температура выходящего воздуха не более 210 °C.',
+                  'Четыре блока обозначаются R11–R14; охлаждение R11/R12 связано с МВ3, R13/R14 — с МВ4.',
+                  'ActualEquipmentOverrides имеет приоритет при секциях после ремонта, модернизации или рекомплектации.'
+              ])
+
+          # No non-target equipment record may change.
+          for rid, old in untouched.items():
+              assert by_id[rid] == old, f'Unexpected equipment change: {rid}'
+
+          # Preserve structural and linkage fields agreed to remain unchanged.
+          for rid in targets:
+              for k, v in preserved[rid].items():
+                  assert by_id[rid].get(k) == v, f'Preserved field changed: {rid}.{k}'
+          assert by_id['VL-EQ-TR-005'].get('featureRules') == tr005_feature_rules
+          changed = {rid for rid in targets if by_id[rid] != before_targets[rid]}
+          assert changed == targets, changed
+
+          # Boundary and anti-transfer guards.
+          tr5 = by_id['VL-EQ-TR-005']
+          tr9 = by_id['VL-EQ-TR-009']
+          assert any('2319' in x for x in tr5['notes'])
+          assert any('БУРТ-16' in x for x in tr5['notes'])
+          assert any('1670' in x for x in tr9['notes'])
+          assert all('БТР-135' not in x for x in tr9['parameters'])
+          assert all(('БТР-171' in x) or ('расширенной зоны' in x) for x in tr9['parameters'])
+
+          # Validate relation targets and preserve diagnostic references.
+          all_ids = set(by_id)
+          with gzip.open('app/src/main/assets/technical/vl80s_diagnostics.json.gz','rt',encoding='utf-8') as f:
+              dg = json.load(f)
+          scenario_ids = {s['id'] for s in dg.get('scenarios',[])}
+          for rid in targets:
+              for rel in by_id[rid].get('relations') or []:
+                  assert rel.get('targetId') in all_ids, (rid, rel)
+              assert by_id[rid].get('diagnosticScenarioIds') == before_targets[rid].get('diagnosticScenarioIds')
+              for sid in by_id[rid].get('diagnosticScenarioIds') or []:
+                  assert sid in scenario_ids, (rid, sid)
+
+          # Validate the existing rheostatic scheme assets and legacy node links without changing them.
+          with gzip.open('app/src/main/assets/technical/vl80s_electrical.json.gz','rt',encoding='utf-8') as f:
+              el = json.load(f)
+          base_ids = {s.get('id') for s in el.get('baseSchemes',[]) or []}
+          overlay_ids = {s.get('id') for s in el.get('variantOverlays',[]) or []}
+          assert 'VL-SCH-EL-RHEO-CONTROL-BURT125' in base_ids
+          assert 'VL-SCH-EL-RHEO-POWER-937-1260' in base_ids
+          assert 'VL-OVL-EL-BURT16-2319' in overlay_ids
+          assert 'VL-OVL-EL-THIRD-SECTION-RHEO-GATE' in overlay_ids
+          legacy_nodes = set()
+          for s in el.get('baseSchemes',[]) or []:
+              for n in s.get('nodes',[]) or []:
+                  legacy_nodes.update(n.get('legacySchemeNodeIds') or [])
+          for rid in targets:
+              for node in by_id[rid].get('schemeNodeIds') or []:
+                  assert node in legacy_nodes, (rid, node)
+
+          # Serialize deterministically and mirror exactly.
+          raw = json.dumps(data, ensure_ascii=False, separators=(',',':')).encode('utf-8')
+          with app_eq.open('wb') as fout:
+              with gzip.GzipFile(fileobj=fout, mode='wb', mtime=0) as gz:
+                  gz.write(raw)
+          shutil.copyfile(app_eq, patch_eq)
+
+          for path in [Path('app/build.gradle.kts'), Path('patch/app/build.gradle.kts')]:
+              text = path.read_text(encoding='utf-8')
+              assert 'versionCode = 182' in text
+              assert 'versionName = "1.2.2-dev14-beta37"' in text
+              text = text.replace('versionCode = 182', 'versionCode = 183', 1)
+              text = text.replace('versionName = "1.2.2-dev14-beta37"', 'versionName = "1.2.2-dev14-beta38"', 1)
+              path.write_text(text, encoding='utf-8')
+
+          fields=['modelNames','quantity','location','schemeDesignations','parameters','principle','relations','normalState','deviationSigns','diagnosticScenarioIds','schemeNodeIds','applicability','featureRules','notes','sourceRefs']
+          depth=lambda r: sum(bool(r.get(k)) for k in fields)
+          print('RECORD_COUNT', len(records))
+          for rid in sorted(targets):
+              print(rid, 'DEPTH', depth(by_id[rid]))
+          PY
+
+          cmp app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          git diff --check
+
+          python3 - <<'PY'
+          import gzip, json
+          from pathlib import Path
+          with gzip.open('app/src/main/assets/technical/vl80s_equipment.json.gz','rt',encoding='utf-8') as f:
+              d=json.load(f)
+          assert len(d['records']) == 89
+          by_id={r['id']:r for r in d['records']}
+          assert '2319' in json.dumps(by_id['VL-EQ-TR-005'],ensure_ascii=False)
+          assert '1670' in json.dumps(by_id['VL-EQ-TR-009'],ensure_ascii=False)
+          assert 'БТР-135' in json.dumps(by_id['VL-EQ-TR-009'],ensure_ascii=False)
+          assert 'БТР-171' in json.dumps(by_id['VL-EQ-TR-009'],ensure_ascii=False)
+          txt=Path('app/build.gradle.kts').read_text(encoding='utf-8')
+          assert 'versionCode = 183' in txt and 'versionName = "1.2.2-dev14-beta38"' in txt
+          print('Beta38 validation OK: 89 records; exactly two target cards enriched; boundaries 1670/2319 preserved')
+          PY
+
+      - name: Commit Beta38 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta38 source commit'; exit 1; }
+          git config user.name 'DomEnota-hub'
+          git config user.email 'domenota6212@gmail.com'
+          git add app/build.gradle.kts patch/app/build.gradle.kts \
+            app/src/main/assets/technical/vl80s_equipment.json.gz \
+            patch/app/src/main/assets/technical/vl80s_equipment.json.gz
+          test "$(git diff --cached --name-only | wc -l)" -eq 4
+          test "$(git diff --cached --name-only | sort | tr '\n' ' ')" = "app/build.gradle.kts app/src/main/assets/technical/vl80s_equipment.json.gz patch/app/build.gradle.kts patch/app/src/main/assets/technical/vl80s_equipment.json.gz "
+          git diff --cached --name-only
+          git commit -m 'Enrich VL80S rheostatic control and resistor cards'
+          git push origin HEAD:dev14-integration
+          echo "SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Verify pushed source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$SOURCE_SHA" = "$(git rev-parse origin/dev14-integration)"
+          echo "Beta38 source: $SOURCE_SHA"
