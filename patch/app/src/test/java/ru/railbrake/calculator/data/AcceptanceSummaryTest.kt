@@ -27,4 +27,23 @@ class AcceptanceSummaryTest {
         val summary = acceptanceSummary(listOf(AcceptanceCheckState.OK, AcceptanceCheckState.OK))
         assertEquals("Проверка завершена: замечаний нет", summary.result)
     }
+
+    @Test
+    fun reportContainsSessionSummaryAndNotes() {
+        val report = acceptanceReportText(
+            familyTitle = "ВЛ80С",
+            routeTitle = "Обязательная приёмка",
+            startedAt = "23.09.2026 10:00",
+            updatedAt = "23.09.2026 10:15",
+            summary = acceptanceSummary(
+                listOf(AcceptanceCheckState.OK, AcceptanceCheckState.NOTE, AcceptanceCheckState.NOT_CHECKED)
+            ),
+            notes = listOf("Тормозное оборудование" to "Утечка воздуха")
+        )
+
+        assertTrue(report.contains("Приёмка: ВЛ80С"))
+        assertTrue(report.contains("Режим: Обязательная приёмка"))
+        assertTrue(report.contains("Не проверено: 1"))
+        assertTrue(report.contains("Тормозное оборудование: Утечка воздуха"))
+    }
 }

@@ -1,6 +1,10 @@
 package ru.railbrake.calculator.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Paint
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
@@ -70,7 +74,11 @@ import ru.railbrake.calculator.core.technicalPresentationLine
 import ru.railbrake.calculator.core.technicalStatusPresentation
 import ru.railbrake.calculator.data.AcceptanceCheckState
 import ru.railbrake.calculator.data.AcceptanceStateRepository
+import ru.railbrake.calculator.data.acceptanceReportText
 import ru.railbrake.calculator.data.acceptanceSummary
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TechnicalCatalogScreen(
@@ -165,6 +173,18 @@ fun TechnicalCatalogScreen(
         selectedId = previousId
     }
 
+    fun openAcceptanceRoute(routeId: String) {
+        val route = repository.entry(routeId)
+        acceptanceRepository.startOrContinueSession(
+            familyKey = family.name,
+            routeId = routeId,
+            routeTitle = route?.title ?: "Приёмка"
+        )
+        navigationPath = ""
+        selectedId = routeId
+        acceptanceToolbarVersion++
+    }
+
     BackHandler(
         enabled = selectedId != null || acceptanceStartChoice || (dedicatedAcceptance && acceptanceMode == "DISABLED")
     ) {
@@ -179,7 +199,10 @@ fun TechnicalCatalogScreen(
         AcceptanceStartChoice(
             family = family,
             onBack = { acceptanceStartChoice = false },
-            onSelect = { selectedId = it; navigationPath = ""; acceptanceStartChoice = false }
+            onSelect = {
+                openAcceptanceRoute(it)
+                acceptanceStartChoice = false
+            }
         )
         return
     }
@@ -494,7 +517,9 @@ fun TechnicalCatalogScreen(
             Card(
                 onClick = {
                     if (entry.section == TechnicalSection.ACCEPTANCE && entry.id.endsWith("-ROUTE-route_canonical")) acceptanceStartChoice = true
-                    else {
+                    else if (entry.section == TechnicalSection.ACCEPTANCE) {
+                        openAcceptanceRoute(entry.id)
+                    } else {
                         navigationPath = ""
                         selectedId = entry.id
                     }
@@ -523,7 +548,29 @@ fun TechnicalCatalogScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                    Text(if (interactive) "Открыть интерактивную схему →" else "Открыть карточку →", color = if (interactive) InteractiveSchemeAccent else accent, fontWeight = FontWeight.Bold)
+                    if (entry.section == TechnicalSection.ACCEPTANCE && entry.sequence.isNotEmpty()) {
+                        val activeIds = entry.sequence.filterNot(acceptanceDisabledIds::contains)
+                        val routeSummary = acceptanceSummary(activeIds.map(acceptanceRepository::state))
+                        val handled = routeSummary.total - routeSummary.notChecked
+                        if (routeSummary.total > 0) {
+                            LinearProgressIndicator(
+                                progress = handled.toFloat() / routeSummary.total,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Text(
+                                "$handled из ${routeSummary.total} пунктов обработано",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Text(
+                            if (handled > 0) "Продолжить →" else "Начать →",
+                            color = accent,
+                            fontWeight = FontWeight.Bold
+                        )
+                    } else {
+                        Text(if (interactive) "Открыть интерактивную схему →" else "Открыть карточку →", color = if (interactive) InteractiveSchemeAccent else accent, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -538,6 +585,9 @@ fun TechnicalCatalogScreen(
                     Text("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
                     Text("Отключённые пункты не участвуют в пошаговой приёмке и не учитываются как непроверенные в итоговом результате.")
                     Text("В разделе «Отключено» можно вернуть отдельный пункт или восстановить все шаги сразу.")
+                    Text("Незавершённая приёмка сохраняется на устройстве: на карточке маршрута виден прогресс и можно продолжить с прежними отметками.")
+                    Text("Обязательная часть и полный осмотр используют общие отметки для одинаковых пунктов — повторно отмечать их не нужно.")
+                    Text("Кнопка «Начать новую приёмку» удаляет отметки и замечания текущего сеанса, но сохраняет настройку отключённых шагов.")
                     Text("Переключатель «Сохранять»: включён — выбранные отключения сохраняются для текущего локомотива; выключен — изменения действуют временно и не изменяют ранее сохранённый набор.")
                     Text("Настройки ВЛ80С и Ермака хранятся отдельно.")
                 }
@@ -1500,6 +1550,7 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
     var showFullChecklist by rememberSaveable(entry.id) { mutableStateOf(false) }
     var checklistQuery by rememberSaveable(entry.id) { mutableStateOf("") }
     var visibleLimit by rememberSaveable(entry.id) { mutableIntStateOf(30) }
+    var resetConfirmationVisible by rememberSaveable(entry.id) { mutableStateOf(false) }
 
     val disabledIds = settingsVersion.let { acceptanceRepository.disabledIds(familyKey) }
     val disabledInRoute = entry.sequence.filter(disabledIds::contains)
@@ -1516,14 +1567,46 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
     val summary = acceptanceSummary(states)
     val savedNotes = stateVersion.let {
         checklistItems.mapNotNull { (id, item) ->
-            acceptanceRepository.note(id).takeIf(String::isNotBlank)?.let { note ->
-                technicalEntryTitle(item) to note
-            }
+            if (acceptanceRepository.state(id) == AcceptanceCheckState.NOTE) {
+                technicalEntryTitle(item) to acceptanceRepository.note(id)
+            } else null
         }
+    }
+    val openedSession = remember(entry.id) {
+        acceptanceRepository.startOrContinueSession(familyKey, entry.id, entry.title)
+    }
+    val session = stateVersion.let { acceptanceRepository.session(familyKey) } ?: openedSession
+    val allAcceptanceItemIds = remember(entry.family) {
+        repository.entries(entry.family, TechnicalSection.ACCEPTANCE, "")
+            .filter { it.sequence.isEmpty() }
+            .map(TechnicalEntry::id)
+            .distinct()
     }
     val visibleItems = checklistItems.filter { (_, item) ->
         checklistQuery.isBlank() || technicalEntryTitle(item).contains(checklistQuery, ignoreCase = true) ||
             technicalEntrySubtitle(item)?.contains(checklistQuery, ignoreCase = true) == true
+    }
+
+    fun updateItemState(itemId: String, option: AcceptanceCheckState) {
+        acceptanceRepository.setState(itemId, option)
+        val nextStates = activeSequence.map { id ->
+            if (id == itemId) option else acceptanceRepository.state(id)
+        }
+        acceptanceRepository.updateSession(familyKey, acceptanceSummary(nextStates).complete)
+        stateVersion++
+    }
+
+    fun saveItemNote(itemId: String, text: String) {
+        acceptanceRepository.setNote(itemId, text)
+        updateItemState(itemId, AcceptanceCheckState.NOTE)
+    }
+
+    fun disableItem(itemId: String) {
+        acceptanceRepository.setDisabled(familyKey, itemId, true)
+        val nextStates = activeSequence.filterNot { it == itemId }.map(acceptanceRepository::state)
+        acceptanceRepository.updateSession(familyKey, acceptanceSummary(nextStates).complete)
+        settingsVersion++
+        stateVersion++
     }
 
     Card(
@@ -1542,6 +1625,17 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
             Text(
                 "${summary.checked + summary.notes + summary.notApplicable} из ${summary.total} активных пунктов обработано",
                 color = accent
+            )
+            if (summary.total > 0) {
+                LinearProgressIndicator(
+                    progress = (summary.total - summary.notChecked).toFloat() / summary.total,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Text(
+                "Сеанс начат ${formatAcceptanceTime(session.startedAtMillis)} • изменения сохраняются на устройстве",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             if (activeSequence.isEmpty()) {
@@ -1583,20 +1677,12 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
                                 itemTitle = technicalEntryTitle(item),
                                 currentState = itemState,
                                 note = itemNote,
-                                onSelect = { option ->
-                                    acceptanceRepository.setState(id, option)
-                                    stateVersion++
-                                },
-                                onSaveNote = { text ->
-                                    acceptanceRepository.setNote(id, text)
-                                    acceptanceRepository.setState(id, AcceptanceCheckState.NOTE)
-                                    stateVersion++
-                                }
+                                onSelect = { option -> updateItemState(id, option) },
+                                onSaveNote = { text -> saveItemNote(id, text) }
                             )
                             TextButton(
                                 onClick = {
-                                    acceptanceRepository.setDisabled(familyKey, id, true)
-                                    settingsVersion++
+                                    disableItem(id)
                                 }
                             ) { Text("Отключить шаг") }
                         }
@@ -1612,7 +1698,7 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
                         Text("Показать ещё (${visibleItems.size - visibleLimit})")
                     }
                 }
-                AcceptanceResultCard(summary, savedNotes)
+                AcceptanceResultCard(entry.family.title, entry.title, session, summary, savedNotes)
                 OutlinedButton(
                     onClick = { showFullChecklist = false },
                     modifier = Modifier.fillMaxWidth()
@@ -1655,20 +1741,12 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
                         itemTitle = technicalEntryTitle(item),
                         currentState = currentState,
                         note = currentNote,
-                        onSelect = { option ->
-                            acceptanceRepository.setState(activeId, option)
-                            stateVersion++
-                        },
-                        onSaveNote = { text ->
-                            acceptanceRepository.setNote(activeId, text)
-                            acceptanceRepository.setState(activeId, AcceptanceCheckState.NOTE)
-                            stateVersion++
-                        }
+                        onSelect = { option -> updateItemState(activeId, option) },
+                        onSaveNote = { text -> saveItemNote(activeId, text) }
                     )
                     OutlinedButton(
                         onClick = {
-                            acceptanceRepository.setDisabled(familyKey, activeId, true)
-                            settingsVersion++
+                            disableItem(activeId)
                             if (effectiveStep >= activeSequence.lastIndex && effectiveStep > 0) {
                                 step = effectiveStep - 1
                             }
@@ -1693,9 +1771,40 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) { Text("Открыть полную карточку") }
-                if (summary.complete) AcceptanceResultCard(summary, savedNotes)
+                if (summary.complete) {
+                    AcceptanceResultCard(entry.family.title, entry.title, session, summary, savedNotes)
+                }
             }
+            TextButton(
+                onClick = { resetConfirmationVisible = true },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("Начать новую приёмку") }
         }
+    }
+    if (resetConfirmationVisible) {
+        AlertDialog(
+            onDismissRequest = { resetConfirmationVisible = false },
+            title = { Text("Начать новую приёмку?", fontWeight = FontWeight.Black) },
+            text = {
+                Text("Отметки и замечания текущего сеанса ${entry.family.title} будут удалены. Настройки отключённых шагов сохранятся.")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        acceptanceRepository.resetSession(familyKey, allAcceptanceItemIds)
+                        acceptanceRepository.startOrContinueSession(familyKey, entry.id, entry.title)
+                        step = 0
+                        showFullChecklist = false
+                        checklistQuery = ""
+                        stateVersion++
+                        resetConfirmationVisible = false
+                    }
+                ) { Text("Начать заново") }
+            },
+            dismissButton = {
+                TextButton(onClick = { resetConfirmationVisible = false }) { Text("Отмена") }
+            }
+        )
     }
 }
 
@@ -1786,9 +1895,21 @@ private fun AcceptanceStatusSelector(
 
 @Composable
 private fun AcceptanceResultCard(
+    familyTitle: String,
+    routeTitle: String,
+    session: ru.railbrake.calculator.data.AcceptanceSession,
     summary: ru.railbrake.calculator.data.AcceptanceSummary,
     notes: List<Pair<String, String>> = emptyList()
 ) {
+    val context = LocalContext.current
+    val report = acceptanceReportText(
+        familyTitle = familyTitle,
+        routeTitle = routeTitle,
+        startedAt = formatAcceptanceTime(session.startedAtMillis),
+        updatedAt = formatAcceptanceTime(session.updatedAtMillis),
+        summary = summary,
+        notes = notes
+    )
     val tone = if (summary.complete && summary.notes == 0) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer
     InfoCard(
         summary.result,
@@ -1800,6 +1921,14 @@ private fun AcceptanceResultCard(
         ),
         tone
     )
+    OutlinedButton(
+        onClick = {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(ClipData.newPlainText("Отчёт о приёмке", report))
+            Toast.makeText(context, "Отчёт скопирован", Toast.LENGTH_SHORT).show()
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) { Text("Скопировать отчёт") }
     if (notes.isNotEmpty()) {
         Card(
   modifier = Modifier.fillMaxWidth(),
@@ -1810,13 +1939,16 @@ private fun AcceptanceResultCard(
       Text("Сохранённые замечания", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
       notes.forEach { (title, note) ->
           Text(title, fontWeight = FontWeight.Bold)
-          Text(note)
+          Text(note.ifBlank { "Без описания" })
           HorizontalDivider()
       }
   }
         }
     }
 }
+
+private fun formatAcceptanceTime(timestampMillis: Long): String =
+    SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(Date(timestampMillis))
 
 @Composable
 private fun technicalBlockContainer(section: TechnicalSection,title:String):Color=when {

@@ -49,6 +49,7 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt
           cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/ExamDisplayPreferences.kt patch/app/src/main/java/ru/railbrake/calculator/data/ExamDisplayPreferences.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
@@ -59,6 +60,7 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/ui/SafetyScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/SafetyScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          cmp app/src/test/java/ru/railbrake/calculator/data/AcceptanceSummaryTest.kt patch/app/src/test/java/ru/railbrake/calculator/data/AcceptanceSummaryTest.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           expected=(
             ermak_diagnostics ermak_equipment ermak_knowledge ermak_links ermak_schemes ermak_system_map
@@ -91,6 +93,10 @@ jobs:
           grep -Fq 'Локальный журнал Ермака' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           grep -Fq 'profileId = DiagnosticSessionRepository.PROFILE_ERMAK' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           grep -Fq 'loadForProfile(DiagnosticSessionRepository.PROFILE_VL80S)' app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
+          grep -Fq 'fun startOrContinueSession(' app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt
+          grep -Fq 'Text("Скопировать отчёт")' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'Расширенный маршрут систематизирует карточки оборудования' app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          grep -Fq 'reportContainsSessionSummaryAndNotes' app/src/test/java/ru/railbrake/calculator/data/AcceptanceSummaryTest.kt
           python3 qa/verify_runtime_asset_paths.py app/src/main/java app/src/main/assets
           python3 qa/verify_diagnostic_graphs.py app/src/main/assets
           python3 qa/verify_ermak_atlas.py app/src/main/assets

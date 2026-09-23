@@ -466,7 +466,7 @@ class TechnicalDataRepository(private val context: Context) {
         val requiredItems = requiredAcceptanceEntries(
             family = TechnicalFamily.VL80S,
             prefix = "VL80-REQ",
-            source = "ВЛ80С. Руководство по эксплуатации: приёмка в депо и ТО-1 локомотивными бригадами",
+            source = "ВЛ80С. Руководство по эксплуатации: раздел IV «Техническое обслуживание ТО-1 электровоза локомотивными бригадами» и раздел «Приёмка электровоза в депо»",
             requirements = listOf(
                 "Документы и передача замечаний" to "Проверить записи в журнале технического состояния, получить сведения о замечаниях и выполненных работах.",
                 "Механическая часть" to "Осмотреть доступные узлы механической части в объёме ТО-1; выявленные неисправности зафиксировать установленным порядком.",
@@ -491,9 +491,17 @@ class TechnicalDataRepository(private val context: Context) {
             family = TechnicalFamily.VL80S,
             section = TechnicalSection.ACCEPTANCE,
             title = "Обязательная приёмка",
-            subtitle = "Минимальный подтверждённый объём ТО-1 • ${requiredIds.size} пунктов",
+            subtitle = "Подтверждённый базовый объём ТО-1 • ${requiredIds.size} пунктов",
             status = "ROUTE",
-            blocks = listOf(TechnicalBlock("Основание", listOf("Составлено по разделам приёмки в депо и ТО-1 руководства по эксплуатации ВЛ80С."))),
+            blocks = listOf(
+                TechnicalBlock(
+                    "Основание",
+                    listOf(
+                        "Составлено по разделам приёмки в депо и ТО-1 руководства по эксплуатации ВЛ80С.",
+                        "Фактический обязательный объём уточняется утверждённым перечнем депо и действующими местными инструкциями."
+                    )
+                )
+            ),
             sequence = requiredIds,
             searchText = "обязательная приёмка ВЛ80С ТО-1".lowercase()
         )
@@ -502,10 +510,23 @@ class TechnicalDataRepository(private val context: Context) {
             val mode=when(route.optString("mode")){"step_by_step"->"пошагово";"checklist"->"контрольный список";"route"->"маршрут";"area"->"по зоне";else->"маршрут"}
             TechnicalEntry(
                 id="VL80-ROUTE-${route.optString("id")}", family=TechnicalFamily.VL80S, section=TechnicalSection.ACCEPTANCE,
-                title=if (route.optString("id") == "route_canonical") "Полный осмотр" else route.optString("title"),
+                title=when (route.optString("id")) {
+                    "route_canonical" -> "Полный осмотр"
+                    "route_from_outside" -> "Полный осмотр — начать снаружи"
+                    "route_from_cab" -> "Полный осмотр — начать из кабины"
+                    else -> route.optString("title")
+                },
                 subtitle="${requiredIds.size + ids.size} пунктов • $mode",
                 status=if (route.optString("id") == "route_canonical") "ROUTE" else "ROUTE_VARIANT",
-                blocks=listOf(TechnicalBlock("Режим",listOf("Последовательное прохождение пунктов приёмки с отметками «проверено» и «замечание»."))),
+                blocks=listOf(
+                    TechnicalBlock(
+                        "Режим",
+                        listOf(
+                            "Последовательное прохождение пунктов приёмки с отметками «проверено» и «замечание».",
+                            "Расширенный маршрут систематизирует карточки оборудования и не объявляет все пункты обязательными при каждой приёмке."
+                        )
+                    )
+                ),
                 sequence=fullAcceptanceSequence(requiredIds, ids), searchText=(route.optString("title")+" "+mode).lowercase()
             )
         }
@@ -681,13 +702,13 @@ class TechnicalDataRepository(private val context: Context) {
     )
     val outsideRoute = route(
         "ER-ROUTE-route_from_outside",
-        "Приёмка Ермак — начать снаружи",
+        "Полный осмотр Ермак — начать снаружи",
         "От наружных зон к внутреннему оборудованию и кабине",
         fullAcceptanceSequence(requiredIds, fromOutside)
     )
     val cabRoute = route(
         "ER-ROUTE-route_from_cab",
-        "Приёмка Ермак — начать из кабины",
+        "Полный осмотр Ермак — начать из кабины",
         "От кабины к внутреннему оборудованию и наружным зонам",
         fullAcceptanceSequence(requiredIds, fromCab)
     )
@@ -702,7 +723,11 @@ class TechnicalDataRepository(private val context: Context) {
         blocks = listOf(
             TechnicalBlock(
                 "Основание",
-                listOf("Составлено по ИДМБ.661142.009РЭ7, раздел 3.10 «Техническое обслуживание ТО-1».")
+                listOf(
+                    "Составлено по ИДМБ.661142.009РЭ7, раздел 3.10 «Техническое обслуживание ТО-1».",
+                    "Механическую часть и тяговые двигатели осматривать при заторможенном электровозе и опущенном токоприёмнике.",
+                    "Фактический обязательный объём уточняется действующими местными инструкциями и исполнением локомотива."
+                )
             )
         )
     )
