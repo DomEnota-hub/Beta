@@ -4,6 +4,7 @@ import os
 import re
 import subprocess
 import time
+import atexit
 import xml.etree.ElementTree as ET
 
 PACKAGE = "ru.railbrake.calculator"
@@ -76,6 +77,9 @@ def screenshot(name):
 
 apk = os.environ["APK"]
 subprocess.run(["adb", "install", "-r", apk], check=True)
+original_font_scale = adb("shell", "settings", "get", "system", "font_scale").decode().strip() or "1.0"
+atexit.register(lambda: adb("shell", "settings", "put", "system", "font_scale", original_font_scale))
+adb("shell", "settings", "put", "system", "font_scale", "1.3")
 adb("logcat", "-c")
 adb("shell", "am", "force-stop", PACKAGE)
 adb("shell", "monkey", "-p", PACKAGE, "1")
@@ -110,9 +114,17 @@ wait_for("Не дышит / СЛР")
 wait_for("Что делать")
 screenshot("first-aid-search-cpr")
 
+open_screen("Локомотивы / атлас")
+wait_for("Техническая база ВЛ80С")
+tap("Главный выключатель")
+wait_for("ВЛ80С / Оборудование")
+tap("ВЛ80С / Оборудование")
+wait_for("Недавние материалы")
+screenshot("atlas-breadcrumbs-recents-large-font")
+
 log = adb("logcat", "-d").decode("utf-8", "replace")
 with open(os.path.join(OUT, "logcat.txt"), "w", encoding="utf-8") as output:
     output.write(log)
 if "FATAL EXCEPTION" in log:
     raise AssertionError("Android crash in logcat")
-print("PASS dev14 acceptance state, family switching and first-aid keyword search")
+print("PASS dev14 acceptance, first-aid search, Atlas breadcrumbs/recents and 1.3x font scale")

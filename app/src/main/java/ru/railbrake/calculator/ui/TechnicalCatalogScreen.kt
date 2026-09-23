@@ -41,6 +41,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -74,6 +75,7 @@ import ru.railbrake.calculator.core.technicalPresentationLine
 import ru.railbrake.calculator.core.technicalStatusPresentation
 import ru.railbrake.calculator.data.AcceptanceCheckState
 import ru.railbrake.calculator.data.AcceptanceStateRepository
+import ru.railbrake.calculator.data.TechnicalRecentRepository
 import ru.railbrake.calculator.data.acceptanceReportText
 import ru.railbrake.calculator.data.acceptanceSummary
 import java.text.SimpleDateFormat
@@ -94,6 +96,7 @@ fun TechnicalCatalogScreen(
 ) {
     val context = LocalContext.current
     val repository = remember { TechnicalDataRepository(context.applicationContext) }
+    val recentRepository = remember { TechnicalRecentRepository(context.applicationContext) }
     var familyName by rememberSaveable { mutableStateOf(initialFamily.name) }
     var sectionName by rememberSaveable { mutableStateOf(initialSection.name) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -105,6 +108,7 @@ fun TechnicalCatalogScreen(
     var acceptanceToolbarVersion by rememberSaveable { mutableIntStateOf(0) }
     var acceptanceDisabledQuery by rememberSaveable { mutableStateOf("") }
     var acceptanceHelpVisible by rememberSaveable { mutableStateOf(false) }
+    var recentVersion by rememberSaveable { mutableIntStateOf(0) }
     val family = runCatching { TechnicalFamily.valueOf(familyName) }.getOrDefault(TechnicalFamily.VL80S)
     val availableSections = remember(family, lockSection, initialSection) { if (lockSection) listOf(initialSection) else repository.sections(family) }
     val selectedSection = runCatching { TechnicalSection.valueOf(sectionName) }.getOrNull()?.takeIf(availableSections::contains)
@@ -151,6 +155,20 @@ fun TechnicalCatalogScreen(
     }
     val selectedLoaded = selectedState.first
     val selected = selectedState.second?.takeIf { it.id == selectedId }
+    val recentEntries = recentVersion.let {
+        recentRepository.ids(family.name)
+            .mapNotNull(repository::entry)
+            .filter { entry -> entry.family == family && entry.section != TechnicalSection.ACCEPTANCE }
+    }
+
+    LaunchedEffect(selected?.id) {
+        selected
+            ?.takeIf { it.section != TechnicalSection.ACCEPTANCE }
+            ?.let { entry ->
+                recentRepository.record(entry.family.name, entry.id)
+                recentVersion++
+            }
+    }
 
     fun openTarget(target: TechnicalEntry) {
         val source = selected
@@ -220,11 +238,26 @@ fun TechnicalCatalogScreen(
     }
 
     if (selected != null) {
+        val breadcrumbEntries = technicalNavigationIds(navigationPath)
+            .mapNotNull(repository::entry) + selected
         TechnicalEntryDetail(
             entry = selected,
             repository = repository,
             backLabel = if (navigationPath.isBlank()) selected.section.title else "Назад",
             onBack = ::backFromSelected,
+            breadcrumbs = breadcrumbEntries,
+            onOpenBreadcrumb = { targetId ->
+                if (targetId == null) {
+                    sectionName = selected.section.name
+                    navigationPath = ""
+                    selectedId = null
+                } else {
+                    technicalBreadcrumbSelection(navigationPath, selected.id, targetId)?.let { (target, remainingPath) ->
+                        selectedId = target
+                        navigationPath = remainingPath
+                    }
+                }
+            },
             onOpen = ::openTarget
         )
         return
@@ -356,6 +389,38 @@ fun TechnicalCatalogScreen(
                             onClick = { sectionName = option.name; query = "" },
                             colors = FilterChipDefaults.filterChipColors(selectedContainerColor = accent.copy(alpha = 0.22f), selectedLabelColor = accent),
                             label = { Text(option.title, color = if (selectedSection == option) accent else MaterialTheme.colorScheme.onSurfaceVariant) }
+                        )
+                    }
+                }
+            }
+        }
+        if (!lockSection && recentEntries.isNotEmpty()) {
+            item {
+                Text("Недавние материалы", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                Text(
+                    "Последние открытые карточки для ${family.title}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            item {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(recentEntries, key = { "recent-${it.id}" }) { entry ->
+                        FilterChip(
+                            selected = false,
+                            onClick = {
+                                sectionName = entry.section.name
+                                query = ""
+                                navigationPath = ""
+                                selectedId = entry.id
+                            },
+                            label = {
+                                Text(
+                                    "${entry.section.title}: ${technicalEntryTitle(entry)}",
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         )
                     }
                 }
@@ -675,6 +740,8 @@ private fun TechnicalEntryDetail(
     repository: TechnicalDataRepository,
     backLabel: String,
     onBack: () -> Unit,
+    breadcrumbs: List<TechnicalEntry>,
+    onOpenBreadcrumb: (String?) -> Unit,
     onOpen: (TechnicalEntry) -> Unit
 ) {
     val accent = technicalSectionAccent(entry.section, entry.status)
@@ -748,6 +815,7 @@ private fun TechnicalEntryDetail(
     ) {
         item {
             ChildBackButton(backLabel, onBack)
+            TechnicalBreadcrumbs(entry, breadcrumbs, onOpenBreadcrumb)
             Text(technicalEntryTitle(entry), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
             technicalEntrySubtitle(entry)?.let { subtitle ->
                 Text(
@@ -969,6 +1037,44 @@ private fun TechnicalEntryDetail(
     }
 }
 
+@Composable
+private fun TechnicalBreadcrumbs(
+    current: TechnicalEntry,
+    entries: List<TechnicalEntry>,
+    onOpen: (String?) -> Unit
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        item {
+            TextButton(onClick = { onOpen(null) }) {
+                Text("${current.family.title} / ${current.section.title}", maxLines = 1)
+            }
+        }
+        entries.forEachIndexed { index, entry ->
+            item(key = "breadcrumb-separator-$index-${entry.id}") {
+                Text("›", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            item(key = "breadcrumb-$index-${entry.id}") {
+                if (index == entries.lastIndex) {
+                    Text(
+                        technicalEntryTitle(entry),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
+                    )
+                } else {
+                    TextButton(onClick = { onOpen(entry.id) }) {
+                        Text(technicalEntryTitle(entry), maxLines = 1)
+                    }
+                }
+            }
+        }
+    }
+}
+
 internal fun ermakCompactBlockStartsExpanded(title: String): Boolean {
     val normalized = title.trim().lowercase()
     return normalized.startsWith("назнач") ||
@@ -998,6 +1104,17 @@ internal fun technicalNavigationPush(path: String, currentId: String): String =
 internal fun technicalNavigationPop(path: String): Pair<String?, String> {
     val ids = technicalNavigationIds(path)
     return ids.lastOrNull() to ids.dropLast(1).joinToString("\n")
+}
+
+internal fun technicalBreadcrumbSelection(
+    path: String,
+    currentId: String,
+    targetId: String
+): Pair<String, String>? {
+    val chain = technicalNavigationIds(path) + currentId
+    val targetIndex = chain.indexOf(targetId)
+    if (targetIndex < 0) return null
+    return targetId to chain.take(targetIndex).joinToString("\n")
 }
 
 internal fun technicalRelatedSectionOrder(section: TechnicalSection): Int = when (section) {

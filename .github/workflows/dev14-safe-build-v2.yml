@@ -51,6 +51,7 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/DiagnosticSessionRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/AcceptanceStateRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/ExamDisplayPreferences.kt patch/app/src/main/java/ru/railbrake/calculator/data/ExamDisplayPreferences.kt
+          cmp app/src/main/java/ru/railbrake/calculator/data/TechnicalRecentRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/TechnicalRecentRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt patch/app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
@@ -63,7 +64,10 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
           cmp app/src/test/java/ru/railbrake/calculator/data/AcceptanceSummaryTest.kt patch/app/src/test/java/ru/railbrake/calculator/data/AcceptanceSummaryTest.kt
           cmp app/src/test/java/ru/railbrake/calculator/core/TechnicalPresentationTest.kt patch/app/src/test/java/ru/railbrake/calculator/core/TechnicalPresentationTest.kt
+          cmp app/src/test/java/ru/railbrake/calculator/data/TechnicalRecentRepositoryTest.kt patch/app/src/test/java/ru/railbrake/calculator/data/TechnicalRecentRepositoryTest.kt
+          cmp app/src/test/java/ru/railbrake/calculator/ui/ExamQuestionReadingModeTest.kt patch/app/src/test/java/ru/railbrake/calculator/ui/ExamQuestionReadingModeTest.kt
           cmp app/src/test/java/ru/railbrake/calculator/ui/FirstAidContentTest.kt patch/app/src/test/java/ru/railbrake/calculator/ui/FirstAidContentTest.kt
+          cmp app/src/test/java/ru/railbrake/calculator/ui/TechnicalCatalogNavigationTest.kt patch/app/src/test/java/ru/railbrake/calculator/ui/TechnicalCatalogNavigationTest.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           expected=(
             ermak_diagnostics ermak_equipment ermak_knowledge ermak_links ermak_schemes ermak_system_map
@@ -100,7 +104,13 @@ jobs:
           grep -Fq 'Тормоза, сигналы, нормы и общие материалы' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
           grep -Fq 'Показывать материалы в Базе знаний' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           grep -Fq 'Text("Режим чтения")' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          grep -Fq 'EXAM_READING_EXIT_LABEL = "Выйти"' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          grep -Fq 'Text(EXAM_READING_EXIT_LABEL)' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           grep -Fq 'Switch(checked = showLinks' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
+          grep -Fq 'Text("Недавние материалы"' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'fun technicalBreadcrumbSelection' app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
+          grep -Fq 'class TechnicalRecentRepository' app/src/main/java/ru/railbrake/calculator/data/TechnicalRecentRepository.kt
+          grep -Fq 'font_scale", "1.3"' qa/dev14_android_smoke.py
           grep -Fq 'KEY_SHOW_IN_KNOWLEDGE' app/src/main/java/ru/railbrake/calculator/data/SecretAccessRepository.kt
           grep -Fq 'getSharedPreferences("calculation_inputs"' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
           grep -Fq 'Локальный журнал Ермака' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
