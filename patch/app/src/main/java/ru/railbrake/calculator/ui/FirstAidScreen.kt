@@ -363,8 +363,8 @@ internal fun firstAidTopicSearchScore(topic: FirstAidTopic, query: String): Int 
     val whenToUse = topic.whenToUse.joinToString(" ").lowercase().replace('ё', 'е')
     val actions = topic.actions.joinToString(" ").lowercase().replace('ё', 'е')
     val dont = topic.dont.joinToString(" ").lowercase().replace('ё', 'е')
-    return tokens.sumOf { token ->
-        when {
+    return tokens.fold(0) { score, token ->
+        score + when {
             token in title -> 6
             token in keywords -> 5
             token in whenToUse -> 3
