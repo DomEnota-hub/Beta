@@ -44,6 +44,7 @@ jobs:
           set -euo pipefail
           cmp app/build.gradle.kts patch/app/build.gradle.kts
           cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/core/KnowledgeRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/KnowledgeRepository.kt
           cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalAssetReader.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalAssetReader.kt
           cmp app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt
           cmp app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt patch/app/src/main/java/ru/railbrake/calculator/core/TechnicalPresentation.kt
@@ -53,7 +54,9 @@ jobs:
           cmp app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/DiagnosticScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt patch/app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/SafetyScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/SafetyScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/TechnicalCatalogScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt patch/app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
@@ -75,6 +78,11 @@ jobs:
           grep -Fq 'BLUE("Холодный синий", Color(0xFF82A9FF), Color(0xFF182947))' app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           grep -Fq 'AMBER("Янтарный", RailAmber, RailAmberSoft)' app/src/main/java/ru/railbrake/calculator/ui/theme/Theme.kt
           grep -Fq 'IconButton(onClick = { query = "" })' app/src/main/java/ru/railbrake/calculator/ui/KnowledgeBaseScreen.kt
+          grep -Fq 'SafetyScreen(onBack = { screenName = AppScreen.HOME.name })' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          ! grep -Fq 'initialCategory = "Охрана труда"' app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt
+          grep -Fq 'fun searchSafety(query: String, category: String)' app/src/main/java/ru/railbrake/calculator/core/KnowledgeRepository.kt
+          grep -Fq 'id = "safety-ppe-testing"' app/src/main/java/ru/railbrake/calculator/core/KnowledgeRepository.kt
+          grep -Fq 'Тормоза, сигналы, нормы и общие материалы' app/src/main/java/ru/railbrake/calculator/ui/HomeScreen.kt
           grep -Fq 'Показывать материалы в Базе знаний' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           grep -Fq 'Text("Режим чтения")' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt
           grep -Fq 'Switch(checked = showLinks' app/src/main/java/ru/railbrake/calculator/ui/ExamQuestionScreen.kt

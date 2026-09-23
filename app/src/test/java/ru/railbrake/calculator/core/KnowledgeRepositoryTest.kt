@@ -17,12 +17,38 @@ class KnowledgeRepositoryTest {
     }
 
     @Test
-    fun commonSafetyLivesInKnowledgeBaseWithoutSeriesCopies() {
-        val results = KnowledgeRepository.search("", "Охрана труда")
+    fun occupationalSafetyIsIndependentFromKnowledgeBaseAndSeries() {
+        val knowledgeResults = KnowledgeRepository.search("", "Все")
+        val safetyResults = KnowledgeRepository.searchSafety("", "Все")
 
-        assertEquals(7, results.size)
-        assertTrue(results.all { it.id.startsWith("safety-") })
-        assertTrue(results.none { it.title.contains("ВЛ80") || it.title.contains("Ермак") })
+        assertTrue(knowledgeResults.none { it.id.startsWith("safety-") })
+        assertFalse(KnowledgeRepository.categories.contains("Охрана труда"))
+        assertTrue(safetyResults.size >= 12)
+        assertTrue(safetyResults.all { it.id.startsWith("safety-") })
+        assertTrue(safetyResults.none { it.title.contains("ВЛ80") || it.title.contains("Ермак") })
+    }
+
+    @Test
+    fun knowledgeSectionsHaveContentAndDoNotLookLikeAtlasCategories() {
+        assertTrue(KnowledgeRepository.knowledgeArticles.size >= 9)
+        KnowledgeRepository.knowledgeSections.forEach { section ->
+            assertTrue(
+                "Empty knowledge section ${section.category}",
+                KnowledgeRepository.search("", section.category).isNotEmpty()
+            )
+        }
+        assertTrue(KnowledgeRepository.categories.none { it.contains("ВЛ80") || it.contains("Ермак") })
+    }
+
+    @Test
+    fun ppeTestingArticleUsesCurrentSourceLogicInsteadOfCancelledUniversalTable() {
+        val article = KnowledgeRepository.articleById("safety-ppe-testing")!!
+        val text = article.body.joinToString(" ")
+
+        assertTrue(text.contains("приказом Минтруда России №766н"))
+        assertTrue(text.contains("отменён"))
+        assertTrue(text.contains("паспорту изготовителя"))
+        assertTrue(article.source.note.orEmpty().contains("№1105"))
     }
 
     @Test

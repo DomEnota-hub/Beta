@@ -166,7 +166,7 @@ private fun KnowledgeHome(
         }
         RailSectionHeader(
             "База знаний",
-            "Нормы, безопасность и общие справочные материалы"
+            "Тормоза, сигналы, нормы и общие справочные материалы"
         )
         OutlinedTextField(
             value = query,
@@ -198,6 +198,31 @@ private fun KnowledgeHome(
                     onClick = { category = item },
                     label = { Text(item) }
                 )
+            }
+        }
+
+        if (query.isBlank() && category == "Все" && !onlyFavorites) {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                items(KnowledgeRepository.knowledgeSections, key = { it.category }) { section ->
+                    val articleCount = KnowledgeRepository.knowledgeArticles.count { it.category == section.category }
+                    Card(
+                        onClick = { category = section.category },
+                        modifier = Modifier.width(220.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                    ) {
+                        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text(section.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                            Text(section.summary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(
+                                "$articleCount ${knowledgeMaterialWord(articleCount)} →",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -266,6 +291,17 @@ private fun KnowledgeHome(
     }
 }
 
+internal fun knowledgeMaterialWord(count: Int): String {
+    val mod100 = count % 100
+    val mod10 = count % 10
+    return when {
+        mod100 in 11..14 -> "материалов"
+        mod10 == 1 -> "материал"
+        mod10 in 2..4 -> "материала"
+        else -> "материалов"
+    }
+}
+
 @Composable
 private fun ThematicFactCard(item: ExamQuestion) {
     Card(
@@ -288,12 +324,13 @@ private fun ThematicFactCard(item: ExamQuestion) {
 }
 
 @Composable
-private fun KnowledgeArticleScreen(
+internal fun KnowledgeArticleScreen(
     article: KnowledgeArticle,
     favoriteIds: Set<String>,
     onBack: () -> Unit,
     onOpenArticle: (KnowledgeArticle) -> Unit,
-    onToggleFavorite: (String) -> Unit
+    onToggleFavorite: (String) -> Unit,
+    backLabel: String = "К базе знаний"
 ) {
     val context = LocalContext.current
     LazyColumn(
@@ -301,7 +338,7 @@ private fun KnowledgeArticleScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            TextButton(onClick = onBack) { Text("← К базе знаний") }
+            TextButton(onClick = onBack) { Text("← $backLabel") }
         }
         item {
             Row(verticalAlignment = Alignment.Top) {

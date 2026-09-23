@@ -109,7 +109,7 @@ private fun HandbookNavCard(
             HandbookIcon()
             Text("База знаний", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
             Text(
-                "Нормы, безопасность и общие материалы",
+                "Тормоза, сигналы, нормы и общие материалы",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

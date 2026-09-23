@@ -421,11 +421,7 @@ fun BrakeCalculatorApp(
                     )
                 }
                 AppScreen.SAFETY -> key(safetyRootVersion) {
-                    KnowledgeBaseScreen(
-                        initialCategory = "Охрана труда",
-                        sectionBackLabel = "Главная",
-                        onSectionBack = { screenName = AppScreen.HOME.name }
-                    )
+                    SafetyScreen(onBack = { screenName = AppScreen.HOME.name })
                 }
                 AppScreen.FIRST_AID -> key(firstAidRootVersion) {
                     FirstAidScreen(onBack = { screenName = AppScreen.HOME.name })
