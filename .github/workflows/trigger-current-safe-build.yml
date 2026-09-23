@@ -1,0 +1,37 @@
+name: Trigger current safe build
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/trigger-current-safe-build.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout guarded source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Verify source and dispatch Dev14 safe build v2
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SOURCE_HEAD: 41ae17b15f05dd0463555d95f5b9c9eeddb661c0
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_SOURCE_HEAD"
+          git fetch origin dev14-integration --depth=1
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+          grep -Fq 'versionCode = 196' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta50"' app/build.gradle.kts
+          grep -Fq 'versionCode = 196' patch/app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta50"' patch/app/build.gradle.kts
+          gh workflow run dev14-safe-build-v2.yml --ref dev14-integration
