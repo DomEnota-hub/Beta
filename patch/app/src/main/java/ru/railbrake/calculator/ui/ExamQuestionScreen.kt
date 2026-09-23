@@ -57,6 +57,8 @@ internal fun examActiveFilterLabel(query: String, block: String?, category: Stri
     category?.let(::add)
 }.joinToString(" • ").takeIf(String::isNotBlank)
 
+internal const val EXAM_READING_EXIT_LABEL = "Выйти"
+
 @Composable
 fun ExamQuestionScreen(
     onHide: () -> Unit,
@@ -103,23 +105,42 @@ fun ExamQuestionScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 shape = RoundedCornerShape(14.dp)
             ) {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("Найдено: ${results.size}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         Text(
-                            activeFilter ?: "Все вопросы",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1
+                            "Режим чтения",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Black
                         )
+                        TextButton(onClick = { setReadingMode(false) }) {
+                            Text(EXAM_READING_EXIT_LABEL)
+                        }
                     }
-                    Text("Ссылки", style = MaterialTheme.typography.labelMedium)
-                    Switch(checked = showLinks, onCheckedChange = ::setShowLinks)
-                    TextButton(onClick = { setReadingMode(false) }) { Text("Панель") }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text("Найдено: ${results.size}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                activeFilter ?: "Все вопросы",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1
+                            )
+                        }
+                        Text("Ссылки", style = MaterialTheme.typography.labelMedium)
+                        Switch(checked = showLinks, onCheckedChange = ::setShowLinks)
+                    }
                 }
             }
         } else {
@@ -156,16 +177,21 @@ fun ExamQuestionScreen(
                     )
                 }
             }
-            Row(
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                OutlinedButton(onClick = { setReadingMode(true) }, modifier = Modifier.weight(1f)) {
+                OutlinedButton(onClick = { setReadingMode(true) }, modifier = Modifier.fillMaxWidth()) {
                     Text("Режим чтения")
                 }
-                Text("Показывать ссылки", style = MaterialTheme.typography.labelMedium)
-                Switch(checked = showLinks, onCheckedChange = ::setShowLinks)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Показывать ссылки", style = MaterialTheme.typography.labelMedium)
+                    Switch(checked = showLinks, onCheckedChange = ::setShowLinks)
+                }
             }
             OutlinedTextField(
                 value = query,

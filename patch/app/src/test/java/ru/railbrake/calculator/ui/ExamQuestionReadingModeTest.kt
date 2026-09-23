@@ -33,4 +33,9 @@ class ExamQuestionReadingModeTest {
         assertTrue(label.orEmpty().endsWith("…»"))
         assertTrue(label.orEmpty().length < 40)
     }
+
+    @Test
+    fun readingModeKeepsAnExplicitExitAction() {
+        assertEquals("Выйти", EXAM_READING_EXIT_LABEL)
+    }
 }
