@@ -65,6 +65,27 @@ def tap(value):
     adb("shell", "input", "tap", str((nums[0] + nums[2]) // 2), str((nums[1] + nums[3]) // 2))
     time.sleep(.6)
 
+def swipe_up_in_scrollable(value):
+    root = tree()
+    parents = {child: parent for parent in root.iter() for child in parent}
+    node = next((node for node in root.iter("node") if text(node) == value), None)
+    if node is None:
+        raise AssertionError(f"Missing scroll content: {value}")
+    while node.get("scrollable") != "true" and node in parents:
+        node = parents[node]
+    if node.get("scrollable") != "true":
+        raise AssertionError(f"No scrollable ancestor: {value}")
+    nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
+    x = (nums[0] + nums[2]) // 2
+    height = nums[3] - nums[1]
+    adb(
+        "shell", "input", "swipe",
+        str(x), str(nums[3] - height // 5),
+        str(x), str(nums[1] + height // 5),
+        "450"
+    )
+    time.sleep(.8)
+
 def open_screen(title):
     tap("☰")
     wait_for(title)
@@ -86,6 +107,14 @@ adb("shell", "monkey", "-p", PACKAGE, "1")
 wait_for("Железнодорожный помощник")
 
 open_screen("Приёмка")
+wait_for("Полный осмотр")
+tap("?")
+wait_for("Настройка приёмки")
+screenshot("acceptance-help-large-font-before-scroll")
+swipe_up_in_scrollable("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
+wait_for("Настройки ВЛ80С и Ермака хранятся отдельно.")
+screenshot("acceptance-help-large-font-after-scroll")
+tap("Понятно")
 wait_for("Полный осмотр")
 tap("Полный осмотр")
 wait_for("Начать снаружи")
@@ -127,4 +156,4 @@ with open(os.path.join(OUT, "logcat.txt"), "w", encoding="utf-8") as output:
     output.write(log)
 if "FATAL EXCEPTION" in log:
     raise AssertionError("Android crash in logcat")
-print("PASS dev14 acceptance, first-aid search, Atlas breadcrumbs/recents and 1.3x font scale")
+print("PASS dev14 scrollable acceptance help, acceptance, first-aid search, Atlas breadcrumbs/recents and 1.3x font scale")
