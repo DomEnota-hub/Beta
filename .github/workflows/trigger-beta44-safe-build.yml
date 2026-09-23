@@ -1,0 +1,39 @@
+name: Trigger Beta44 safe build
+
+on:
+  push:
+    branches: [dev14-integration]
+    paths:
+      - '.github/workflows/trigger-beta44-safe-build.yml'
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  trigger:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev14-integration
+
+      - name: Guard Beta44 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="a6da974d31b5f550d6baaa053e8ec375d2726ac6"
+          test "$(git rev-parse HEAD^)" = "$expected" || { echo "Unexpected trigger parent: $(git rev-parse HEAD^)"; exit 1; }
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)" || { echo 'Branch moved before Beta44 build trigger'; exit 1; }
+          grep -Fq 'versionCode = 189' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta44"' app/build.gradle.kts
+
+      - name: Dispatch Dev14 safe build v2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh workflow run dev14-safe-build-v2.yml --ref dev14-integration
