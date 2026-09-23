@@ -1,0 +1,39 @@
+name: Trigger current safe build
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/trigger-current-safe-build.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout guarded branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Guard source and dispatch safe build
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          expected_source="e752f9e6b92ed2dcc1963988ce406e158fce9988"
+          test "$(git rev-parse HEAD^)" = "$expected_source"
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+          grep -Fq 'versionCode = 195' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta49"' app/build.gradle.kts
+          cmp app/build.gradle.kts patch/app/build.gradle.kts
+          cmp app/src/main/java/ru/railbrake/calculator/ui/FirstAidScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/FirstAidScreen.kt
+          cmp app/src/test/java/ru/railbrake/calculator/ui/FirstAidContentTest.kt patch/app/src/test/java/ru/railbrake/calculator/ui/FirstAidContentTest.kt
+          gh workflow run dev14-safe-build-v2.yml --ref dev14-integration
