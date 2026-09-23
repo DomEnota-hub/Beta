@@ -98,4 +98,32 @@ class FirstAidContentTest {
         assertTrue(burn.actions.any { it.contains("не менее 20 минут") })
         assertTrue(burn.actions.any { it.contains("комнатной температуры") })
     }
+
+    @Test
+    fun searchUnderstandsEverydayKeywordsAndYoVariants() {
+        assertTrue(firstAidTopicMatches(firstAidTopics.single { it.id == "unconscious" }, "обморок"))
+        assertTrue(firstAidTopicMatches(firstAidTopics.single { it.id == "electric" }, "удар током"))
+        assertTrue(firstAidTopicMatches(firstAidTopics.single { it.id == "hypothermia" }, "замёрз"))
+        assertTrue(firstAidTopicMatches(firstAidTopics.single { it.id == "frostbite" }, "отморозил пальцы"))
+        assertTrue(firstAidTopicMatches(firstAidTopics.single { it.id == "cpr" }, "cpr"))
+    }
+
+    @Test
+    fun searchIncludesInstructionsButRanksDirectTopicHigher() {
+        val bleeding = firstAidTopics.single { it.id == "bleeding" }
+        val trauma = firstAidTopics.single { it.id == "trauma" }
+        val cpr = firstAidTopics.single { it.id == "cpr" }
+
+        assertTrue(firstAidTopicMatches(cpr, "твёрдую поверхность"))
+        assertTrue(firstAidTopicMatches(bleeding, "рана"))
+        assertTrue(firstAidTopicSearchScore(bleeding, "рана") > firstAidTopicSearchScore(trauma, "рана"))
+        assertFalse(firstAidTopicMatches(bleeding, "змея"))
+    }
+
+    @Test
+    fun firstAidKitParticipatesInSearch() {
+        assertTrue(firstAidKitMatches("перчатки"))
+        assertTrue(firstAidKitMatches("бинт пластырь"))
+        assertFalse(firstAidKitMatches("электроудар"))
+    }
 }

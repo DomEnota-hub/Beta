@@ -19,11 +19,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -310,6 +313,78 @@ internal val firstAidTopics = listOf(
     )
 )
 
+private val firstAidSearchKeywords = mapOf(
+    "unconscious" to listOf("обморок", "без сознания", "не отвечает", "потерял сознание"),
+    "cpr" to listOf("слр", "cpr", "реанимация", "остановка сердца", "нет дыхания", "редкие вдохи"),
+    "bleeding" to listOf("кровь", "порез", "рана", "кровопотеря", "жгут", "давящая повязка"),
+    "nosebleed" to listOf("нос", "кровь из носа", "носовое кровотечение"),
+    "airway" to listOf("удушье", "инородное тело", "подавился", "не может говорить", "еда в горле"),
+    "trauma" to listOf("перелом", "вывих", "ушиб", "отек", "отёк", "боль", "шина"),
+    "chest_abdomen" to listOf("рана груди", "рана живота", "проникающая рана", "выпали органы"),
+    "burn" to listOf("ожог", "кипяток", "пламя", "пар", "горячая поверхность"),
+    "heat" to listOf("тепловой удар", "перегрев", "жара", "солнечный удар"),
+    "electric" to listOf("ток", "удар током", "электричество", "контактная сеть", "напряжение", "электроудар"),
+    "poisoning" to listOf("яд", "газ", "таблетки", "отравился", "пары"),
+    "chemical" to listOf("кислота", "щелочь", "химия", "в глаза", "химический ожог"),
+    "hypothermia" to listOf("замерз", "замёрз", "холод", "дрожь", "переохладился"),
+    "frostbite" to listOf("отморозил", "обморозил", "онемение", "пальцы", "белая кожа"),
+    "bites" to listOf("змея", "укус", "ужалила", "насекомое", "клещ"),
+    "stress" to listOf("паника", "страх", "плач", "шок", "истерика"),
+    "seizure" to listOf("эпилепсия", "судороги", "приступ", "трясет", "трясёт")
+)
+
+private val firstAidSearchSeparators = Regex("[^\\p{L}\\p{N}]+")
+
+internal fun firstAidSearchTokens(query: String): List<String> = query
+    .lowercase()
+    .replace('ё', 'е')
+    .split(firstAidSearchSeparators)
+    .filter(String::isNotBlank)
+
+internal fun firstAidTopicMatches(topic: FirstAidTopic, query: String): Boolean {
+    val tokens = firstAidSearchTokens(query)
+    if (tokens.isEmpty()) return true
+    val searchable = buildList {
+        add(topic.title)
+        addAll(topic.whenToUse)
+        addAll(topic.actions)
+        addAll(topic.dont)
+        topic.note?.let(::add)
+        addAll(firstAidSearchKeywords[topic.id].orEmpty())
+    }.joinToString(" ").lowercase().replace('ё', 'е')
+    return tokens.all(searchable::contains)
+}
+
+internal fun firstAidTopicSearchScore(topic: FirstAidTopic, query: String): Int {
+    val tokens = firstAidSearchTokens(query)
+    if (tokens.isEmpty()) return 0
+    val title = topic.title.lowercase().replace('ё', 'е')
+    val keywords = firstAidSearchKeywords[topic.id].orEmpty().joinToString(" ").lowercase().replace('ё', 'е')
+    val whenToUse = topic.whenToUse.joinToString(" ").lowercase().replace('ё', 'е')
+    val actions = topic.actions.joinToString(" ").lowercase().replace('ё', 'е')
+    val dont = topic.dont.joinToString(" ").lowercase().replace('ё', 'е')
+    return tokens.sumOf { token ->
+        when {
+            token in title -> 6
+            token in keywords -> 5
+            token in whenToUse -> 3
+            token in actions -> 2
+            token in dont -> 1
+            else -> 0
+        }
+    }
+}
+
+internal fun firstAidKitMatches(query: String): Boolean {
+    val tokens = firstAidSearchTokens(query)
+    if (tokens.isEmpty()) return true
+    val searchable = (listOf(
+        "аптечка", "бинт", "жгут", "перчатки", "маска", "салфетки", "пластырь",
+        "ножницы", "покрывало", "средства первой помощи"
+    ) + workerKitLines).joinToString(" ").lowercase().replace('ё', 'е')
+    return tokens.all(searchable::contains)
+}
+
 private val workerKitLines = listOf(
     "2 одноразовые медицинские маски и не менее 2 пар медицинских перчаток.",
     "2 устройства для искусственного дыхания «Рот-Устройство-Рот».",
@@ -327,7 +402,23 @@ private val workerKitLines = listOf(
 fun FirstAidScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     var selectedId by rememberSaveable { mutableStateOf("unconscious") }
-    val selected = firstAidTopics.firstOrNull { it.id == selectedId }
+    var query by rememberSaveable { mutableStateOf("") }
+    val visibleTopics = firstAidTopics
+        .filter { firstAidTopicMatches(it, query) }
+        .let { topics ->
+            if (query.isBlank()) topics else topics.sortedByDescending { firstAidTopicSearchScore(it, query) }
+        }
+    val kitVisible = firstAidKitMatches(query)
+    val visibleIds = visibleTopics.mapTo(mutableSetOf()) { it.id }
+    val hasResults = visibleTopics.isNotEmpty() || kitVisible
+
+    LaunchedEffect(query, visibleIds, kitVisible) {
+        if (selectedId !in visibleIds && !(selectedId == "kit" && kitVisible)) {
+            selectedId = visibleTopics.firstOrNull()?.id ?: if (kitVisible) "kit" else ""
+        }
+    }
+
+    val selected = visibleTopics.firstOrNull { it.id == selectedId }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -396,17 +487,50 @@ fun FirstAidScreen(onBack: () -> Unit) {
             Text("Быстрый выбор", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
         }
         item {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                label = { Text("Найти по симптому или действию") },
+                placeholder = { Text("Например: кровь, ток, замёрз") },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }) {
+                            Text("×", style = MaterialTheme.typography.titleLarge)
+                        }
+                    }
+                },
+                shape = RoundedCornerShape(16.dp)
+            )
+        }
+        item {
+            Text(
+                if (query.isBlank()) "Все ситуации" else "Найдено: ${visibleTopics.size + if (kitVisible) 1 else 0}",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        if (hasResults) item {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(firstAidTopics, key = { it.id }) { topic ->
+                items(visibleTopics, key = { it.id }) { topic ->
                     FilterChip(selected = selectedId == topic.id, onClick = { selectedId = topic.id }, label = { Text(topic.title) })
                 }
-                item {
+                if (kitVisible) item {
                     FilterChip(selected = selectedId == "kit", onClick = { selectedId = "kit" }, label = { Text("Аптечка") })
                 }
             }
         }
 
-        if (selectedId == "kit") {
+        if (!hasResults) {
+            item {
+                FirstAidInfoCard(
+                    title = "Ничего не найдено",
+                    lines = listOf("Попробуйте название состояния, симптом или действие: «обморок», «кровь», «ожог», «ток», «замёрз», «судороги»."),
+                    tone = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
+        } else if (selectedId == "kit" && kitVisible) {
             item {
                 FirstAidInfoCard(
                     title = "Аптечка работника по приказу Минздрава №262н",
