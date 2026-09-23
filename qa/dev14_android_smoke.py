@@ -100,9 +100,16 @@ tap("ВЛ80С")
 wait_for("Диагностика ВЛ80С")
 screenshot("diagnostics-family-roundtrip")
 
+open_screen("Первая помощь")
+wait_for("Оказание первой помощи")
+wait_for("Общий порядок действий")
+tap("Не дышит / СЛР")
+wait_for("Что делать")
+screenshot("first-aid-cpr")
+
 log = adb("logcat", "-d").decode("utf-8", "replace")
 with open(os.path.join(OUT, "logcat.txt"), "w", encoding="utf-8") as output:
     output.write(log)
 if "FATAL EXCEPTION" in log:
     raise AssertionError("Android crash in logcat")
-print("PASS dev14 acceptance state and family switching")
+print("PASS dev14 acceptance state, family switching and first-aid CPR")

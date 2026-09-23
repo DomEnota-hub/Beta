@@ -38,11 +38,13 @@ class FirstAidContentTest {
         assertTrue(text.contains("маску"))
         assertTrue(text.contains("шарф"))
         assertTrue(text.contains("не более 10 секунд"))
+        assertTrue(text.contains("судорожные вдохи"))
         assertTrue(text.contains("видимое"))
         assertTrue(text.contains("слепое"))
         assertTrue(text.contains("100–120"))
         assertTrue(text.contains("5–6 см"))
         assertTrue(text.contains("Не откладывайте СЛР"))
+        assertTrue(text.contains("дефибриллятор"))
     }
 
     @Test
@@ -59,8 +61,41 @@ class FirstAidContentTest {
 
     @Test
     fun poisoningAndChemicalExposureAreSeparateSourcedTopics() {
-        assertTrue(firstAidTopics.any { it.id == "poisoning" && it.title == "Отравление" })
-        assertTrue(firstAidTopics.any { it.id == "chemical" && it.title == "Химическое поражение" })
+        val poisoning = firstAidTopics.single { it.id == "poisoning" && it.title == "Отравление" }
+        val chemical = firstAidTopics.single { it.id == "chemical" && it.title == "Химическое поражение" }
+
+        assertTrue(poisoning.actions.any { it.contains("не едким") })
+        assertTrue(poisoning.dont.any { it.contains("неизвестного вещества") })
+        assertTrue(chemical.actions.any { it.contains("не менее 20 минут") })
         assertTrue(firstAidTopics.all { it.source.contains("Минздрава России") && it.source.contains("2025") })
+    }
+
+    @Test
+    fun auditedTopicsCoverOrder220nCriticalConditions() {
+        val ids = firstAidTopics.map { it.id }.toSet()
+
+        assertTrue("heat" in ids)
+        assertTrue("nosebleed" in ids)
+        assertTrue("chest_abdomen" in ids)
+        assertTrue(firstAidTopics.single { it.id == "seizure" }.actions.any { it.contains("вызовите 112/103") })
+        assertTrue(firstAidTopics.single { it.id == "bites" }.dont.any { it.contains("не отсасывайте") })
+    }
+
+    @Test
+    fun bleedingKeepsOrder220nTourniquetRules() {
+        val bleeding = firstAidTopics.single { it.id == "bleeding" }
+        val text = (bleeding.actions + bleeding.dont).joinToString(" ")
+
+        assertTrue(text.contains("5–7 см выше раны"))
+        assertTrue(text.contains("не на сустав"))
+        assertTrue(text.contains("точное время"))
+        assertTrue(text.contains("не ослабляйте"))
+    }
+
+    @Test
+    fun thermalBurnUsesVerifiedCoolingDuration() {
+        val burn = firstAidTopics.single { it.id == "burn" }
+        assertTrue(burn.actions.any { it.contains("не менее 20 минут") })
+        assertTrue(burn.actions.any { it.contains("комнатной температуры") })
     }
 }
