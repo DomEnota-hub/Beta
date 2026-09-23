@@ -67,6 +67,17 @@ data class ErmakSchemeLinkContext(
 internal fun fullAcceptanceSequence(requiredIds: List<String>, expandedIds: List<String>): List<String> =
     (requiredIds + expandedIds).distinct()
 
+internal const val VL80S_REQUIRED_ACCEPTANCE_COUNT = 15
+internal const val ERMAK_REQUIRED_ACCEPTANCE_COUNT = 18
+
+internal fun verifiedRequiredAcceptanceIds(entries: List<TechnicalEntry>, expectedCount: Int): List<String> {
+    require(entries.size == expectedCount) { "Unexpected mandatory acceptance count: ${entries.size}, expected $expectedCount" }
+    val ids = entries.map(TechnicalEntry::id)
+    require(ids.size == ids.distinct().size) { "Mandatory acceptance IDs must be unique" }
+    require(entries.all { it.status == "MANDATORY_CHECK" }) { "Mandatory route contains a non-mandatory entry" }
+    return ids
+}
+
 class TechnicalDataRepository(private val context: Context) {
     companion object {
         private val sharedSectionCache = mutableMapOf<Pair<TechnicalFamily, TechnicalSection>, List<TechnicalEntry>>()
@@ -485,13 +496,13 @@ class TechnicalDataRepository(private val context: Context) {
                 "Тормозное оборудование" to "Проверить тормозное оборудование по действующей инструкции по техническому обслуживанию тормозов."
             )
         )
-        val requiredIds = requiredItems.map(TechnicalEntry::id)
+        val requiredIds = verifiedRequiredAcceptanceIds(requiredItems, VL80S_REQUIRED_ACCEPTANCE_COUNT)
         val requiredRoute = TechnicalEntry(
             id = "VL80-ROUTE-required",
             family = TechnicalFamily.VL80S,
             section = TechnicalSection.ACCEPTANCE,
             title = "Обязательная приёмка",
-            subtitle = "Подтверждённый базовый объём ТО-1 • ${requiredIds.size} пунктов",
+            subtitle = "Базовый объём по руководству • ${requiredIds.size} пунктов",
             status = "ROUTE",
             blocks = listOf(
                 TechnicalBlock(
@@ -604,7 +615,7 @@ class TechnicalDataRepository(private val context: Context) {
             "Тормозное оборудование" to "Проверить тормозное оборудование по действующей инструкции по техническому обслуживанию тормозов."
         )
     )
-    val requiredIds = requiredItems.map(TechnicalEntry::id)
+    val requiredIds = verifiedRequiredAcceptanceIds(requiredItems, ERMAK_REQUIRED_ACCEPTANCE_COUNT)
 
     fun lines(entry: TechnicalEntry, title: String): List<String> =
         entry.blocks.firstOrNull { it.title.equals(title, ignoreCase = true) }?.lines.orEmpty()
@@ -716,7 +727,7 @@ class TechnicalDataRepository(private val context: Context) {
     val requiredRoute = route(
         "ER-ROUTE-required",
         "Обязательная приёмка",
-        "Подтверждённый объём ТО-1",
+        "Базовый объём по руководству",
         requiredIds,
         status = "ROUTE"
     ).copy(

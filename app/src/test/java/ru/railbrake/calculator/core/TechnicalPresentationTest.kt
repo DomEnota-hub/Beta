@@ -77,4 +77,25 @@ class TechnicalPresentationTest {
         assertEquals(listOf("REQ-01", "REQ-02", "FULL-01"), full)
         assertEquals(required, full.take(required.size))
     }
+
+    @Test
+    fun mandatoryAcceptanceContractRejectsWrongCountsAndStatuses() {
+        fun entry(id: String, status: String = "MANDATORY_CHECK") = TechnicalEntry(
+            id = id,
+            family = TechnicalFamily.VL80S,
+            section = TechnicalSection.ACCEPTANCE,
+            title = id,
+            subtitle = "Проверка",
+            status = status,
+            blocks = emptyList(),
+            searchText = id.lowercase()
+        )
+
+        assertEquals(listOf("REQ-01", "REQ-02"), verifiedRequiredAcceptanceIds(listOf(entry("REQ-01"), entry("REQ-02")), 2))
+        assertTrue(runCatching { verifiedRequiredAcceptanceIds(listOf(entry("REQ-01")), 2) }.isFailure)
+        assertTrue(runCatching { verifiedRequiredAcceptanceIds(listOf(entry("REQ-01"), entry("REQ-01")), 2) }.isFailure)
+        assertTrue(runCatching { verifiedRequiredAcceptanceIds(listOf(entry("REQ-01", "CHECK")), 1) }.isFailure)
+        assertEquals(15, VL80S_REQUIRED_ACCEPTANCE_COUNT)
+        assertEquals(18, ERMAK_REQUIRED_ACCEPTANCE_COUNT)
+    }
 }
