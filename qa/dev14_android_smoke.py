@@ -65,18 +65,26 @@ def wait_for(value, timeout=55):
     raise AssertionError(f"Missing UI text: {value}")
 
 def tap(value):
-    root = tree()
-    parents = {child: parent for parent in root.iter() for child in parent}
-    node = next((node for node in root.iter("node") if text(node) == value), None)
-    if node is None:
-        raise AssertionError(f"Missing tap target: {value}")
-    while node.get("clickable") != "true" and node in parents:
-        node = parents[node]
-    if node.get("clickable") != "true":
-        raise AssertionError(f"No clickable ancestor: {value}")
-    nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
-    adb("shell", "input", "tap", str((nums[0] + nums[2]) // 2), str((nums[1] + nums[3]) // 2))
-    time.sleep(.6)
+    for _ in range(4):
+        root = tree()
+        current_labels = labels(root)
+        if value != "Wait" and any(label.endswith("isn't responding") for label in current_labels) and "Wait" in current_labels:
+            tap("Wait")
+            time.sleep(3)
+            continue
+        parents = {child: parent for parent in root.iter() for child in parent}
+        node = next((node for node in root.iter("node") if text(node) == value), None)
+        if node is None:
+            raise AssertionError(f"Missing tap target: {value}")
+        while node.get("clickable") != "true" and node in parents:
+            node = parents[node]
+        if node.get("clickable") != "true":
+            raise AssertionError(f"No clickable ancestor: {value}")
+        nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
+        adb("shell", "input", "tap", str((nums[0] + nums[2]) // 2), str((nums[1] + nums[3]) // 2))
+        time.sleep(.6)
+        return
+    raise AssertionError(f"System dialog repeatedly blocked tap target: {value}")
 
 def scrollable_ancestor(root, value):
     parents = {child: parent for parent in root.iter() for child in parent}
