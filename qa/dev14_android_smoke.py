@@ -207,8 +207,10 @@ scroll_up_until_visible("Общий порядок действий", "Найт�
 tap("Найти по симптому или действию")
 adb("shell", "input", "text", "cpr")
 wait_for("Найдено: 1")
-wait_for("Не дышит / СЛР")
-scroll_up_until_visible("Найдено: 1", "Что делать")
+adb("shell", "input", "keyevent", "4")
+time.sleep(.5)
+scroll_up_until_visible("Найдено: 1", "Не дышит / СЛР")
+scroll_up_until_visible("Не дышит / СЛР", "Что делать")
 screenshot("first-aid-search-cpr")
 
 open_screen("Локомотивы / атлас")
