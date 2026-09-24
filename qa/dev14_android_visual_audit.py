@@ -199,10 +199,10 @@ def write_appearance_preferences(theme, palette):
     )
     encoded = base64.b64encode(xml.encode("utf-8")).decode("ascii")
     command = (
-        "mkdir -p shared_prefs && "
-        f"echo {encoded} | base64 -d > shared_prefs/calculation_inputs.xml"
+        f"run-as {PACKAGE} sh -c 'mkdir -p shared_prefs && "
+        f"echo {encoded} | base64 -d > shared_prefs/calculation_inputs.xml'"
     )
-    subprocess.run(["adb", "shell", "run-as", PACKAGE, "sh", "-c", command], check=True)
+    subprocess.run(["adb", "shell", command], check=True)
 
 
 def restart_app(font_scale, theme="LIGHT", palette="BLUE"):
