@@ -7,6 +7,7 @@ on:
       - dev14-integration
     paths:
       - .github/workflows/dev14-emulator-smoke.yml
+      - qa/run_emulator_smoke_ci.sh
 
 permissions:
   contents: read
@@ -85,17 +86,7 @@ jobs:
           emulator-options: >-
             -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
             -camera-back none -camera-front none
-          script: |
-            set +e
-            APK="$GITHUB_WORKSPACE/buildsrc/RailBrakeCalculator/app/build/outputs/apk/debug/app-debug.apk" \
-              QA_OUT="$GITHUB_WORKSPACE/qa-evidence" \
-              python3 "$GITHUB_WORKSPACE/qa/dev14_android_smoke.py"
-            smoke_status=$?
-            adb shell wm size > "$GITHUB_WORKSPACE/qa-evidence/device.txt" 2>&1
-            adb shell wm density >> "$GITHUB_WORKSPACE/qa-evidence/device.txt" 2>&1
-            adb shell settings get system font_scale >> "$GITHUB_WORKSPACE/qa-evidence/device.txt" 2>&1
-            adb logcat -d > "$GITHUB_WORKSPACE/qa-evidence/logcat-final.txt" 2>&1
-            exit "$smoke_status"
+          script: bash "$GITHUB_WORKSPACE/qa/run_emulator_smoke_ci.sh"
 
       - name: Upload emulator evidence
         if: always()
