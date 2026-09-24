@@ -17,12 +17,25 @@ def adb(*args):
 
 def tree():
     global snapshot_number
-    data = adb("exec-out", "uiautomator", "dump", "/dev/tty")
-    # Some adb versions append "UI hierarchy dumped" after the XML payload.
-    # Parse only the document, while retaining the unmodified fresh dump as evidence.
+    data = b""
+    diagnostic = b""
+    for _ in range(8):
+        dump = subprocess.run(
+            ["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/qa-window.xml"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT
+        )
+        diagnostic = dump.stdout
+        if dump.returncode == 0:
+            data = adb("exec-out", "cat", "/sdcard/qa-window.xml")
+            if b"</hierarchy>" in data:
+                break
+        time.sleep(.75)
     xml_end = data.find(b"</hierarchy>")
     if xml_end < 0:
-        raise AssertionError("uiautomator did not return a hierarchy document")
+        with open(os.path.join(OUT, "ui-dump-error.txt"), "ab") as output:
+            output.write(diagnostic + b"\n")
+        raise AssertionError("uiautomator did not return a hierarchy document after retries")
     document = data[:xml_end + len(b"</hierarchy>")]
     snapshot_number += 1
     with open(os.path.join(OUT, f"ui-{snapshot_number:02d}.xml"), "wb") as output:
@@ -98,12 +111,23 @@ def screenshot(name):
 
 apk = os.environ["APK"]
 subprocess.run(["adb", "install", "-r", apk], check=True)
-original_font_scale = adb("shell", "settings", "get", "system", "font_scale").decode().strip() or "1.0"
-atexit.register(lambda: adb("shell", "settings", "put", "system", "font_scale", original_font_scale))
+font_scale_value = adb("shell", "settings", "get", "system", "font_scale").decode().strip()
+original_font_scale = font_scale_value if font_scale_value not in {"", "null"} else "1.0"
+atexit.register(
+    lambda: subprocess.run(
+        ["adb", "shell", "settings", "put", "system", "font_scale", original_font_scale],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+)
 adb("shell", "settings", "put", "system", "font_scale", "1.3")
 adb("logcat", "-c")
 adb("shell", "am", "force-stop", PACKAGE)
-adb("shell", "monkey", "-p", PACKAGE, "1")
+launch_activity = adb("shell", "cmd", "package", "resolve-activity", "--brief", PACKAGE).decode().strip()
+if "/" not in launch_activity:
+    raise AssertionError(f"Unable to resolve launch activity: {launch_activity}")
+adb("shell", "am", "start", "-W", "-n", launch_activity)
 wait_for("Железнодорожный помощник")
 
 open_screen("Приёмка")
