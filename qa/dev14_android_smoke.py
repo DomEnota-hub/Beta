@@ -53,8 +53,8 @@ def wait_for(value, timeout=55):
     while time.monotonic() < deadline:
         root = tree()
         current_labels = labels(root)
-        if "System UI isn't responding" in current_labels and "Wait" in current_labels:
-            # API 29 can show this transient dialog immediately after a cold boot.
+        if any(label.endswith("isn't responding") for label in current_labels) and "Wait" in current_labels:
+            # A cold emulator can briefly report System UI or Pixel Launcher as unresponsive.
             # It belongs to the emulator, not to the application under test.
             tap("Wait")
             time.sleep(3)
