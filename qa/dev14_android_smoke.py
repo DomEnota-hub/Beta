@@ -78,16 +78,18 @@ def tap(value):
     adb("shell", "input", "tap", str((nums[0] + nums[2]) // 2), str((nums[1] + nums[3]) // 2))
     time.sleep(.6)
 
-def swipe_up_in_scrollable(value):
-    root = tree()
+def scrollable_ancestor(root, value):
     parents = {child: parent for parent in root.iter() for child in parent}
-    node = next((node for node in root.iter("node") if text(node) == value), None)
-    if node is None:
-        raise AssertionError(f"Missing scroll content: {value}")
-    while node.get("scrollable") != "true" and node in parents:
-        node = parents[node]
-    if node.get("scrollable") != "true":
-        raise AssertionError(f"No scrollable ancestor: {value}")
+    for candidate in (node for node in root.iter("node") if text(node) == value):
+        node = candidate
+        while node.get("scrollable") != "true" and node in parents:
+            node = parents[node]
+        if node.get("scrollable") == "true":
+            return node
+    raise AssertionError(f"No scrollable ancestor: {value}")
+
+def swipe_up_in_scrollable(value):
+    node = scrollable_ancestor(tree(), value)
     nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
     x = (nums[0] + nums[2]) // 2
     height = nums[3] - nums[1]
@@ -95,6 +97,19 @@ def swipe_up_in_scrollable(value):
         "shell", "input", "swipe",
         str(x), str(nums[3] - height // 5),
         str(x), str(nums[1] + height // 5),
+        "450"
+    )
+    time.sleep(.8)
+
+def swipe_left_in_scrollable(value):
+    node = scrollable_ancestor(tree(), value)
+    nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
+    y = (nums[1] + nums[3]) // 2
+    width = nums[2] - nums[0]
+    adb(
+        "shell", "input", "swipe",
+        str(nums[2] - width // 5), str(y),
+        str(nums[0] + width // 5), str(y),
         "450"
     )
     time.sleep(.8)
@@ -140,6 +155,9 @@ wait_for("Железнодорожный помощник")
 
 open_screen("Приёмка")
 wait_for("Полный осмотр")
+screenshot("acceptance-toolbar-large-font-before-scroll")
+swipe_left_in_scrollable("Отключено")
+wait_for("?")
 tap("?")
 wait_for("Настройка приёмки")
 screenshot("acceptance-help-large-font-before-scroll")
