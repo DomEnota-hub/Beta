@@ -1,0 +1,39 @@
+name: Trigger current emulator visual audit
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/trigger-current-emulator-visual-audit.yml
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout guarded source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Guard source and version
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_source="fbb56d4922735e5b32faf09eb7a2e254a3991977"
+          test "$(git rev-parse HEAD^)" = "$expected_source"
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+          grep -F 'versionCode = 199' app/build.gradle.kts
+          grep -F 'versionName = "1.2.2-dev14-beta50.3"' app/build.gradle.kts
+          grep -F 'versionCode = 199' patch/app/build.gradle.kts
+          grep -F 'versionName = "1.2.2-dev14-beta50.3"' patch/app/build.gradle.kts
+
+      - name: Dispatch visual audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run dev14-emulator-visual-audit.yml --ref dev14-integration
