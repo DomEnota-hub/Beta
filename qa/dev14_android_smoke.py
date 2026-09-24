@@ -193,7 +193,7 @@ screenshot("diagnostics-family-roundtrip")
 
 open_screen("Первая помощь")
 wait_for("Оказание первой помощи")
-wait_for("Общий порядок действий")
+scroll_up_until_visible("Оказание первой помощи", "Общий порядок действий")
 scroll_up_until_visible("Общий порядок действий", "Найти по симптому или действию")
 tap("Найти по симптому или действию")
 adb("shell", "input", "text", "cpr")
