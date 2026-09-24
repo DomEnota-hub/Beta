@@ -214,6 +214,8 @@ scroll_up_until_visible("Не дышит / СЛР", "Что делать")
 screenshot("first-aid-search-cpr")
 
 open_screen("Локомотивы / атлас")
+wait_for("Выберите серию и тип материала")
+tap("Оборудование")
 wait_for("Техническая база ВЛ80С")
 scroll_up_until_visible("Техническая база ВЛ80С", "Главный выключатель")
 tap("Главный выключатель")
