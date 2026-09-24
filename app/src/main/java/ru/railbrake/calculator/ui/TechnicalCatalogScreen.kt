@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -39,6 +38,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -65,6 +65,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.railbrake.calculator.core.TechnicalDataRepository
@@ -644,30 +645,52 @@ fun TechnicalCatalogScreen(
         }
     }
     if (dedicatedAcceptance && acceptanceHelpVisible) {
-        AlertDialog(
-            onDismissRequest = { acceptanceHelpVisible = false },
-            title = { Text("Настройка приёмки", fontWeight = FontWeight.Black) },
-            text = {
-                Column(
-                    modifier = Modifier
-                        .heightIn(max = 360.dp)
-                        .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Text("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
-                    Text("Отключённые пункты не участвуют в пошаговой приёмке и не учитываются как непроверенные в итоговом результате.")
-                    Text("В разделе «Отключено» можно вернуть отдельный пункт или восстановить все шаги сразу.")
-                    Text("Незавершённая приёмка сохраняется на устройстве: на карточке маршрута виден прогресс и можно продолжить с прежними отметками.")
-                    Text("Обязательная часть и полный осмотр используют общие отметки для одинаковых пунктов — повторно отмечать их не нужно.")
-                    Text("Кнопка «Начать новую приёмку» удаляет отметки и замечания текущего сеанса, но сохраняет настройку отключённых шагов.")
-                    Text("Переключатель «Сохранять»: включён — выбранные отключения сохраняются для текущего локомотива; выключен — изменения действуют временно и не изменяют ранее сохранённый набор.")
-                    Text("Настройки ВЛ80С и Ермака хранятся отдельно.")
+        AcceptanceHelpDialog(onDismiss = { acceptanceHelpVisible = false })
+    }
+}
+
+@Composable
+private fun AcceptanceHelpDialog(onDismiss: () -> Unit) {
+    Dialog(onDismissRequest = onDismiss) {
+        Box(modifier = Modifier.padding(vertical = 24.dp)) {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(28.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                tonalElevation = 6.dp
+            ) {
+                Column(modifier = Modifier.fillMaxWidth().padding(24.dp)) {
+                    Text(
+                        "Настройка приёмки",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Black
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .weight(1f, fill = false)
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Text("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
+                        Text("Отключённые пункты не участвуют в пошаговой приёмке и не учитываются как непроверенные в итоговом результате.")
+                        Text("В разделе «Отключено» можно вернуть отдельный пункт или восстановить все шаги сразу.")
+                        Text("Незавершённая приёмка сохраняется на устройстве: на карточке маршрута виден прогресс и можно продолжить с прежними отметками.")
+                        Text("Обязательная часть и полный осмотр используют общие отметки для одинаковых пунктов — повторно отмечать их не нужно.")
+                        Text("Кнопка «Начать новую приёмку» удаляет отметки и замечания текущего сеанса, но сохраняет настройку отключённых шагов.")
+                        Text("Переключатель «Сохранять»: включён — выбранные отключения сохраняются для текущего локомотива; выключен — изменения действуют временно и не изменяют ранее сохранённый набор.")
+                        Text("Настройки ВЛ80С и Ермака хранятся отдельно.")
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = onDismiss) { Text("Понятно") }
+                    }
                 }
-            },
-            confirmButton = {
-                TextButton(onClick = { acceptanceHelpVisible = false }) { Text("Понятно") }
             }
-        )
+        }
     }
 }
 
