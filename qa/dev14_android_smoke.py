@@ -124,9 +124,17 @@ atexit.register(
 adb("shell", "settings", "put", "system", "font_scale", "1.3")
 adb("logcat", "-c")
 adb("shell", "am", "force-stop", PACKAGE)
-launch_activity = adb("shell", "cmd", "package", "resolve-activity", "--brief", PACKAGE).decode().strip()
-if "/" not in launch_activity:
-    raise AssertionError(f"Unable to resolve launch activity: {launch_activity}")
+resolved_activity = adb("shell", "cmd", "package", "resolve-activity", "--brief", PACKAGE).decode().strip()
+launch_activity = next(
+    (
+        line.strip()
+        for line in reversed(resolved_activity.splitlines())
+        if re.fullmatch(r"[A-Za-z0-9_.]+/[A-Za-z0-9_.$]+", line.strip())
+    ),
+    ""
+)
+if not launch_activity:
+    raise AssertionError(f"Unable to resolve launch activity: {resolved_activity}")
 adb("shell", "am", "start", "-W", "-n", launch_activity)
 wait_for("Железнодорожный помощник")
 
