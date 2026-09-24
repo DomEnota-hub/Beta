@@ -88,18 +88,24 @@ def scrollable_ancestor(root, value):
             return node
     raise AssertionError(f"No scrollable ancestor: {value}")
 
-def swipe_up_in_scrollable(value):
-    node = scrollable_ancestor(tree(), value)
+def scroll_up_until_visible(anchor, target, max_swipes=4):
+    root = tree()
+    node = scrollable_ancestor(root, anchor)
     nums = [int(n) for n in re.findall(r"\d+", node.get("bounds", ""))]
     x = (nums[0] + nums[2]) // 2
     height = nums[3] - nums[1]
-    adb(
-        "shell", "input", "swipe",
-        str(x), str(nums[3] - height // 5),
-        str(x), str(nums[1] + height // 5),
-        "450"
-    )
-    time.sleep(.8)
+    for _ in range(max_swipes):
+        if target in labels(root):
+            return root
+        adb(
+            "shell", "input", "swipe",
+            str(x), str(nums[3] - height // 5),
+            str(x), str(nums[1] + height // 5),
+            "450"
+        )
+        time.sleep(.8)
+        root = tree()
+    raise AssertionError(f"Missing UI text after scrolling: {target}")
 
 def swipe_left_in_scrollable(value):
     node = scrollable_ancestor(tree(), value)
@@ -161,8 +167,10 @@ wait_for("?")
 tap("?")
 wait_for("Настройка приёмки")
 screenshot("acceptance-help-large-font-before-scroll")
-swipe_up_in_scrollable("Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.")
-wait_for("Настройки ВЛ80С и Ермака хранятся отдельно.")
+scroll_up_until_visible(
+    "Вы можете отключать отдельные шаги проверки, если они не требуются по местным инструкциям.",
+    "Настройки ВЛ80С и Ермака хранятся отдельно."
+)
 screenshot("acceptance-help-large-font-after-scroll")
 tap("Понятно")
 wait_for("Полный осмотр")
