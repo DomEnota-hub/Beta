@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inspect VL80S canonical oil-pump candidates
+      - name: Inspect oil-pump runtime source and canonical neighbors
         shell: bash
         run: |
           set -euo pipefail
@@ -27,21 +27,21 @@ jobs:
           import gzip, json, re
           from pathlib import Path
 
-          path = Path('app/src/main/assets/technical/vl80s_diagnostics.json.gz')
-          with gzip.open(path, 'rt', encoding='utf-8') as f:
+          source = Path('app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt').read_text(encoding='utf-8')
+          marker = 'id = "oil-pump-failure"'
+          pos = source.index(marker)
+          start = source.rfind('        scenario(', 0, pos)
+          end = source.find('\n        scenario(', pos)
+          if end < 0:
+              end = source.find('\n    )', pos)
+          print('--- oil-pump-failure runtime block ---')
+          print(source[start:end])
+
+          with gzip.open('app/src/main/assets/technical/vl80s_diagnostics.json.gz', 'rt', encoding='utf-8') as f:
               root = json.load(f)
-
-          pattern = re.compile(r'(oil|pump|масл|насос)', re.I)
-          print('scenario_count=', len(root.get('scenarios', [])))
-          print('--- matching canonical scenarios ---')
+          ids = {'aux-machine-single-trip', 'transformer-oil-signs', 'aux-machines'}
+          print('--- canonical neighbor records ---')
           for s in root.get('scenarios', []):
-              hay = json.dumps(s, ensure_ascii=False)
-              if pattern.search(hay):
+              if s.get('id') in ids:
                   print(json.dumps(s, ensure_ascii=False, sort_keys=True))
-
-          print('--- matching edges ---')
-          for e in root.get('edges', []):
-              hay = json.dumps(e, ensure_ascii=False)
-              if pattern.search(hay):
-                  print(json.dumps(e, ensure_ascii=False, sort_keys=True))
           PY
