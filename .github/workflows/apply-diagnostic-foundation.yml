@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_PARENT='db63adb63e3fa3edb8167dc76d93fe68dd17cb55'
+          EXPECTED_PARENT='0d9b87862e760571323acb75b5eca86e7ab808b4'
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
           git fetch origin dev14-integration
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
@@ -115,10 +115,11 @@ jobs:
         working-directory: buildsrc/RailBrakeCalculator
         run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
 
-      - name: Remove temporary trigger files
+      - name: Remove temporary build and trigger files
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf buildsrc
           rm .github/scripts/apply_diagnostic_foundation.py
           rm .github/workflows/apply-diagnostic-foundation.yml
 
