@@ -207,14 +207,20 @@ private fun DiagnosticCatalog(
             )
         }
         if (catalogMode == "scenarios") item {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                DiagnosticRepository.categories.forEach { item ->
-                    FilterChip(
-                        selected = category == item,
-                        onClick = { category = item },
-                        label = { Text(item) }
-                    )
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                LazyRow(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(DiagnosticRepository.categories) { item ->
+                        FilterChip(
+                            selected = category == item,
+                            onClick = { category = item },
+                            label = { Text(item) }
+                        )
+                    }
                 }
+                Text("→", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
         }
         if (catalogMode == "history") {

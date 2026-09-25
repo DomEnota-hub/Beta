@@ -4,8 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -72,7 +70,6 @@ fun SafetyScreen(onBack: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SafetyHome(
     favoriteIds: Set<String>,
@@ -124,19 +121,27 @@ private fun SafetyHome(
             },
             shape = RoundedCornerShape(16.dp)
         )
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            FilterChip(
-                selected = onlyFavorites,
-                onClick = { onlyFavorites = !onlyFavorites },
-                label = { Text("★ Избранное") }
-            )
-            KnowledgeRepository.safetyCategories.forEach { item ->
-                FilterChip(
-                    selected = category == item,
-                    onClick = { category = item },
-                    label = { Text(item) }
-                )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            LazyRow(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    FilterChip(
+                        selected = onlyFavorites,
+                        onClick = { onlyFavorites = !onlyFavorites },
+                        label = { Text("★ Избранное") }
+                    )
+                }
+                items(KnowledgeRepository.safetyCategories) { item ->
+                    FilterChip(
+                        selected = category == item,
+                        onClick = { category = item },
+                        label = { Text(item) }
+                    )
+                }
             }
+            Text("→", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }
         LazyColumn(
             modifier = Modifier.weight(1f),
