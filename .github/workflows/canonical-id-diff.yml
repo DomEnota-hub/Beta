@@ -14,45 +14,34 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Install Android SDK 34
+      - name: Inspect VL80S canonical oil-pump candidates
         shell: bash
         run: |
           set -euo pipefail
-          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
-          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+          python3 - <<'PY'
+          import gzip, json, re
+          from pathlib import Path
 
-      - name: Set up Gradle 8.7
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
+          path = Path('app/src/main/assets/technical/vl80s_diagnostics.json.gz')
+          with gzip.open(path, 'rt', encoding='utf-8') as f:
+              root = json.load(f)
 
-      - name: Extract source
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf buildsrc
-          mkdir buildsrc
-          unzip -q RailBrakeCalculator.zip -d buildsrc
-          cp -a patch/. buildsrc/RailBrakeCalculator/
+          pattern = re.compile(r'(oil|pump|масл|насос)', re.I)
+          print('scenario_count=', len(root.get('scenarios', [])))
+          print('--- matching canonical scenarios ---')
+          for s in root.get('scenarios', []):
+              hay = json.dumps(s, ensure_ascii=False)
+              if pattern.search(hay):
+                  print(json.dumps(s, ensure_ascii=False, sort_keys=True))
 
-      - name: Run canonical ID contract and print failure XML
-        working-directory: buildsrc/RailBrakeCalculator
-        shell: bash
-        run: |
-          set +e
-          timeout --signal=TERM 10m gradle :app:testDebugUnitTest --tests 'ru.railbrake.calculator.core.DiagnosticCanonicalRuntimeContractTest' --console=plain
-          status=$?
-          echo '--- canonical runtime contract failure details ---'
-          find app/build/test-results/testDebugUnitTest -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
-          exit "$status"
+          print('--- matching edges ---')
+          for e in root.get('edges', []):
+              hay = json.dumps(e, ensure_ascii=False)
+              if pattern.search(hay):
+                  print(json.dumps(e, ensure_ascii=False, sort_keys=True))
+          PY
