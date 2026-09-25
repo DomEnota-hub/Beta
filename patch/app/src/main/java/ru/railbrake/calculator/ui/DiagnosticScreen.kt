@@ -4,6 +4,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -106,6 +108,7 @@ fun DiagnosticScreen(initialScenarioId: String? = null, initialEquipmentId: Stri
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DiagnosticCatalog(
     onOpen: (DiagnosticScenario) -> Unit,
@@ -158,29 +161,23 @@ private fun DiagnosticCatalog(
         }
         item { DiagnosticSafetyNotice() }
         item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                item {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 FilterChip(
                     selected = catalogMode == "scenarios",
                     onClick = { catalogMode = "scenarios" },
                     label = { Text("Неисправность") }
                 )
-                }
-                item {
                 FilterChip(
                     selected = catalogMode == "observations",
                     onClick = { catalogMode = "observations" },
                     label = { Text("Что я вижу?") }
                 )
-                }
-                item {
                 FilterChip(
                     selected = catalogMode == "quick",
                     onClick = { catalogMode = "quick" },
                     label = { Text("В пути") }
                 )
-                }
-                item { FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") }) }
+                FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") })
             }
         }
         if (catalogMode == "scenarios" || catalogMode == "observations" || catalogMode == "quick") item {
@@ -210,8 +207,8 @@ private fun DiagnosticCatalog(
             )
         }
         if (catalogMode == "scenarios") item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(DiagnosticRepository.categories) { item ->
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                DiagnosticRepository.categories.forEach { item ->
                     FilterChip(
                         selected = category == item,
                         onClick = { category = item },

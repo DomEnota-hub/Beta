@@ -15,6 +15,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,6 +87,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TechnicalCatalogScreen(
     initialFamily: TechnicalFamily = TechnicalFamily.VL80S,
@@ -323,12 +326,11 @@ fun TechnicalCatalogScreen(
         item {
             if (dedicatedAcceptance) {
                 val accent = technicalSectionAccent(TechnicalSection.ACCEPTANCE, "")
-                LazyRow(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    item {
-                        FilterChip(
+                    FilterChip(
                             selected = acceptanceMode == "ACTIVE",
                             onClick = { acceptanceMode = "ACTIVE" },
                             colors = FilterChipDefaults.filterChipColors(
@@ -337,9 +339,7 @@ fun TechnicalCatalogScreen(
                             ),
                             label = { Text("Приёмка") }
                         )
-                    }
-                    item {
-                        FilterChip(
+                    FilterChip(
                             selected = acceptanceMode == "DISABLED",
                             onClick = { acceptanceMode = "DISABLED" },
                             colors = FilterChipDefaults.filterChipColors(
@@ -353,9 +353,7 @@ fun TechnicalCatalogScreen(
                                 )
                             }
                         )
-                    }
-                    item {
-                        Row(
+                    Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
@@ -368,9 +366,7 @@ fun TechnicalCatalogScreen(
                                 }
                             )
                         }
-                    }
-                    item {
-                        Card(
+                    Card(
                             onClick = { acceptanceHelpVisible = true },
                             modifier = Modifier.width(44.dp).height(40.dp),
                             shape = RoundedCornerShape(20.dp),
@@ -381,7 +377,6 @@ fun TechnicalCatalogScreen(
                                 Text("?", fontWeight = FontWeight.Black)
                             }
                         }
-                    }
                 }
             } else {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1955,6 +1950,7 @@ private fun TechnicalSequence(entry: TechnicalEntry, repository: TechnicalDataRe
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AcceptanceStatusSelector(
     itemId: String,
@@ -1969,8 +1965,8 @@ private fun AcceptanceStatusSelector(
 
     Text("Статус: ${currentState.label}", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
     Text(itemTitle, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Black)
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(AcceptanceCheckState.entries) { option ->
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        AcceptanceCheckState.entries.forEach { option ->
   FilterChip(
       selected = currentState == option,
       onClick = {

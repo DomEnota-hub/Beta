@@ -17,7 +17,7 @@ class TechnicalDataAssetTest {
         assertEquals(15, asset("ermak_system_map.json").getJSONArray("systems").length())
         assertEquals(111, asset("ermak_equipment.json").getJSONArray("records").length())
         assertEquals(138, asset("ermak_knowledge.json").getJSONArray("articles").length())
-        assertEquals(135, asset("ermak_diagnostics.json").getJSONArray("scenarios").length())
+        assertEquals(136, asset("ermak_diagnostics.json").getJSONArray("scenarios").length())
         assertEquals(22, asset("ermak_schemes.json").getJSONArray("schemes").length())
         assertTrue(asset("ermak_links.json").getString("status").contains("PASS"))
     }
@@ -28,7 +28,7 @@ class TechnicalDataAssetTest {
         assertEquals(66, asset("vl80s_acceptance.json").getJSONArray("items").length())
         assertEquals(8, asset("vl80s_electrical.json").getJSONArray("baseSchemes").length())
         assertEquals(8, asset("vl80s_pneumatic.json").getJSONArray("views").length())
-        assertEquals(93, asset("vl80s_diagnostics.json").getJSONArray("scenarios").length())
+        assertEquals(94, asset("vl80s_diagnostics.json").getJSONArray("scenarios").length())
     }
 
     @Test

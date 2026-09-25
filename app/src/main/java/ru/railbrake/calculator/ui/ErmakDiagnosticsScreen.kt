@@ -4,6 +4,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -112,6 +114,7 @@ private fun ermakQuickCandidate(scenario: ErmakDiagnosticScenario): Boolean {
         )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId: String? = null) {
     val context = LocalContext.current
@@ -153,11 +156,11 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
         item {
             RailSectionHeader("Диагностика Ермак", "Выберите неисправность или наблюдаемый симптом")
             DiagnosticSafetyNotice()
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                item { FilterChip(catalogMode == "scenarios", { catalogMode = "scenarios" }, label = { Text("Неисправность") }) }
-                item { FilterChip(catalogMode == "observations", { catalogMode = "observations" }, label = { Text("Что я вижу?") }) }
-                item { FilterChip(catalogMode == "quick", { catalogMode = "quick" }, label = { Text("В пути") }) }
-                item { FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") }) }
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                FilterChip(catalogMode == "scenarios", { catalogMode = "scenarios" }, label = { Text("Неисправность") })
+                FilterChip(catalogMode == "observations", { catalogMode = "observations" }, label = { Text("Что я вижу?") })
+                FilterChip(catalogMode == "quick", { catalogMode = "quick" }, label = { Text("В пути") })
+                FilterChip(catalogMode == "history", { catalogMode = "history" }, label = { Text("Журнал") })
             }
             if (catalogMode != "history") {
                 OutlinedTextField(
@@ -181,8 +184,8 @@ fun ErmakDiagnosticsScreen(initialScenarioId: String? = null, initialEquipmentId
 
         if (catalogMode == "scenarios") {
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(ermakDiagnosticCategories) { item ->
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    ermakDiagnosticCategories.forEach { item ->
                         FilterChip(
                             selected = category == item,
                             onClick = { category = item },

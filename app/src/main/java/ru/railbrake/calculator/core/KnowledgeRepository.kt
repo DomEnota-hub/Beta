@@ -808,15 +808,15 @@ object KnowledgeRepository {
             tags = listOf("охрана труда", "обучение", "инструктаж", "первая помощь"),
             source = safetySource
         )
-    )
+    ) + KnowledgeFirstWave.safetyArticles
 
-    val allArticles: List<KnowledgeArticle> get() = articles + diagramDetailArticles + safetyArticles
+    val allArticles: List<KnowledgeArticle> get() = articles + KnowledgeFirstWave.knowledgeArticles + diagramDetailArticles + safetyArticles
 
     val knowledgeArticles: List<KnowledgeArticle>
         get() = articles.filterNot { article ->
             article.category.contains("ВЛ80", ignoreCase = true) ||
                 article.tags.any { it.contains("ВЛ80", ignoreCase = true) }
-        }
+        } + KnowledgeFirstWave.knowledgeArticles
 
     val knowledgeSections = listOf(
         KnowledgeSection("Тормоза", "Тормоза", "Общие принципы, режимы и нормативные таблицы"),

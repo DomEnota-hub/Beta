@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -1326,6 +1328,7 @@ private fun HistoryScreen(repository: HistoryRepository, version: Int, onCleared
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LocomotiveReferenceScreen(
     onOpenTechnical: (TechnicalFamily, TechnicalSection) -> Unit,
@@ -1366,8 +1369,8 @@ private fun LocomotiveReferenceScreen(
             add("Электросхемы" to { onOpenTechnical(family, TechnicalSection.ELECTRICAL) })
             add("Пневмосхемы" to { onOpenTechnical(family, TechnicalSection.PNEUMATIC) })
         }
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(materials, key = { it.first }) { (label, action) ->
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            materials.forEach { (label, action) ->
                 FilterChip(
                     selected = false,
                     onClick = action,
@@ -1441,8 +1444,8 @@ private fun LocomotiveCard(loco: LocomotiveSpec) {
                 Text("  •  ${loco.axles} ос.", fontWeight = FontWeight.SemiBold)
             }
             Text(loco.category, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            if (loco.note.isNotBlank()) Text(loco.note, style = MaterialTheme.typography.labelSmall, color = RailTheme.colors.warning, maxLines = 1)
-            Text("${loco.massKind} • ${loco.sourceNote}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+            if (loco.note.isNotBlank()) Text(loco.note, style = MaterialTheme.typography.labelSmall, color = RailTheme.colors.warning)
+            Text("${loco.massKind} • ${loco.sourceNote}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
