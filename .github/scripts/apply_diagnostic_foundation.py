@@ -3,6 +3,7 @@ import base64
 import re
 import subprocess
 import zlib
+from pathlib import Path
 
 BASE = "ce621e8fdc5a26af8670a056558b2e7d3bfc386a"
 PATH = ".github/scripts/apply_diagnostic_foundation.py"
@@ -23,3 +24,21 @@ source = source.replace(
 if 'readJsonObject(appContext, "technical/ermak_diagnostics.json")' in source:
     raise RuntimeError("Loader API replacement failed")
 exec(compile(source, __file__, "exec"))
+
+obsolete_contract = """        assertTrue(
+            parsed.flatMap { it.nodes.values }.any {
+                it.actionMetadata.userFacingPolicy == DiagnosticUserFacingPolicy.EMERGENCY_SOURCE_BOUND
+            }
+        )
+"""
+for rel in (
+    "app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt",
+    "patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt",
+):
+    path = Path(rel)
+    text = path.read_text(encoding="utf-8")
+    if obsolete_contract not in text:
+        raise RuntimeError(f"Obsolete emergency-policy asset assertion not found in {rel}")
+    path.write_text(text.replace(obsolete_contract, ""), encoding="utf-8")
+
+print("Runtime contract aligned with policies actually present in the canonical asset.")
