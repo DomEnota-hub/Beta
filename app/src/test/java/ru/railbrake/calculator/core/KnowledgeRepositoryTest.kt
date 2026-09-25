@@ -60,6 +60,36 @@ class KnowledgeRepositoryTest {
     }
 
     @Test
+    fun brakeTestingArticlesExplainAllThreeKindsAndTheirBoundaries() {
+        val overview = KnowledgeRepository.articleById("brakes-test-overview")!!
+        val full = KnowledgeRepository.articleById("brakes-full-test")!!
+        val short = KnowledgeRepository.articleById("brakes-short-test")!!
+        val technological = KnowledgeRepository.articleById("brakes-technological-test")!!
+
+        assertTrue(overview.body.joinToString(" ").contains("Полное опробование"))
+        assertTrue(overview.body.joinToString(" ").contains("Сокращённое опробование"))
+        assertTrue(overview.body.joinToString(" ").contains("Технологическое опробование"))
+        assertTrue(full.body.size >= 5)
+        assertTrue(short.body.size >= 5)
+        assertTrue(short.tags.contains("частичное опробование"))
+        assertTrue(technological.body.joinToString(" ").contains("грузовых поездов"))
+        assertTrue(technological.body.joinToString(" ").contains("не используют для пассажирского поезда"))
+    }
+
+    @Test
+    fun minuteReadinessCoversTriggerChecksAndStopCondition() {
+        val article = KnowledgeRepository.articleById("movement-minute-readiness")!!
+        val text = article.body.joinToString(" ")
+
+        assertEquals("ИДП", article.category)
+        assertTrue(text.contains("промежуточной станции"))
+        assertTrue(text.contains("после остановки на перегоне"))
+        assertTrue(text.contains("тормозной и питательной магистралях"))
+        assertTrue(text.contains("Отправление откладывают"))
+        assertTrue(article.tags.contains("минута готовности"))
+    }
+
+    @Test
     fun diagramHotspotsUseValidNormalizedBounds() {
         assertTrue(KnowledgeRepository.vl80LayoutHotspots.size >= 15)
         KnowledgeRepository.vl80LayoutHotspots.forEach { hotspot ->
