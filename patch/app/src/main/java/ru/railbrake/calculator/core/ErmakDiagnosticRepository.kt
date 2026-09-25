@@ -19,6 +19,9 @@ data class ErmakDiagnosticNode(
     val actionMetadata: DiagnosticActionMetadata = DiagnosticActionMetadata()
 )
 
+fun ErmakDiagnosticNode.requiresPolicyEvaluation(): Boolean =
+    type == "source_action" || type == "emergency_action"
+
 data class ErmakDiagnosticScenario(
     val id: String,
     val title: String,

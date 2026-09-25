@@ -85,6 +85,22 @@ class ErmakDiagnosticRuntimeContractTest {
     }
 
     @Test
+    fun allSourceBoundActionNodeKindsAreClassifiedForRuntimePolicyEvaluation() {
+        val protected = parseErmakDiagnostics(asset())
+            .flatMap { it.nodes.values }
+            .filter {
+                it.actionMetadata.userFacingPolicy in setOf(
+                    DiagnosticUserFacingPolicy.SOURCE_AND_PROFILE_REQUIRED,
+                    DiagnosticUserFacingPolicy.SAFETY_GATE_REQUIRED
+                )
+            }
+
+        assertTrue(protected.any { it.type == "source_action" })
+        assertTrue(protected.any { it.type == "emergency_action" })
+        assertTrue(protected.all { it.requiresPolicyEvaluation() })
+    }
+
+    @Test
     fun knownProfileMetadataSurvivesProjection() {
         val scenarios = parseErmakDiagnostics(asset())
 

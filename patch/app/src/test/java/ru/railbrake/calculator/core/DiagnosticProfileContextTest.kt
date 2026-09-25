@@ -12,6 +12,13 @@ class DiagnosticProfileContextTest {
         sourceBound = true
     )
 
+    private fun decision(applicability: DiagnosticApplicability, context: DiagnosticProfileContext) =
+        DiagnosticPolicyEngine.evaluate(
+            applicability,
+            profileAction,
+            context.toPolicyContext(applicability)
+        )
+
     @Test
     fun unknownProfileStaysBlocked() {
         val applicability = DiagnosticApplicability(
@@ -24,47 +31,34 @@ class DiagnosticProfileContextTest {
             confirmed = false
         )
 
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                context.toPolicyContext(applicability)
-            ).allowed
-        )
+        assertFalse(decision(applicability, context).allowed)
     }
 
     @Test
-    fun compatibleProfilePassesAndIncompatibleProfileDoesNot() {
+    fun explicitBaseEarlyProfilePassesOnlyCompatibleFamilyAndProfile() {
         val applicability = DiagnosticApplicability(
-            families = setOf("2ES5K", "3ES5K"),
+            families = setOf("2ES5K"),
             profiles = setOf("base_early"),
             variantSelectionRequired = true
         )
         val compatible = DiagnosticProfileContext(
             family = DiagnosticLocomotiveFamily.ERMAK_2ES5K,
-            legacyProfileIds = setOf("base_early"),
+            ermakAtlasProfile = ErmakAtlasProfile.BASE_EARLY,
             confirmed = true
         )
-        val incompatible = compatible.copy(legacyProfileIds = setOf("other_profile"))
+        val wrongFamily = compatible.copy(family = DiagnosticLocomotiveFamily.ERMAK_3ES5K)
+        val wrongProfile = compatible.copy(
+            ermakAtlasProfile = null,
+            ermakBrakeProfile = ErmakBrakeProfile.CRANE_395
+        )
 
-        assertTrue(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                compatible.toPolicyContext(applicability)
-            ).allowed
-        )
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                incompatible.toPolicyContext(applicability)
-            ).allowed
-        )
+        assertTrue(decision(applicability, compatible).allowed)
+        assertFalse(decision(applicability, wrongFamily).allowed)
+        assertFalse(decision(applicability, wrongProfile).allowed)
     }
 
     @Test
-    fun brakeProfilesDoNotCrossMatch() {
+    fun brakeProfilesNeverCrossMatch() {
         val needs130 = DiagnosticApplicability(
             families = setOf("2ES5K", "3ES5K"),
             profiles = setOf(ErmakBrakeProfile.CRANE_130_UKTOL.policyId),
@@ -76,82 +70,93 @@ class DiagnosticProfileContextTest {
             confirmed = true
         )
         val profile130 = profile395.copy(ermakBrakeProfile = ErmakBrakeProfile.CRANE_130_UKTOL)
+        val profile130_2 = profile395.copy(ermakBrakeProfile = ErmakBrakeProfile.CRANE_130_2)
 
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                needs130,
-                profileAction,
-                profile395.toPolicyContext(needs130)
-            ).allowed
-        )
-        assertTrue(
-            DiagnosticPolicyEngine.evaluate(
-                needs130,
-                profileAction,
-                profile130.toPolicyContext(needs130)
-            ).allowed
-        )
+        assertFalse(decision(needs130, profile395).allowed)
+        assertTrue(decision(needs130, profile130).allowed)
+        assertFalse(decision(needs130, profile130_2).allowed)
 
         val needs395 = needs130.copy(profiles = setOf(ErmakBrakeProfile.CRANE_395.policyId))
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                needs395,
-                profileAction,
-                profile130.toPolicyContext(needs395)
-            ).allowed
-        )
+        assertFalse(decision(needs395, profile130).allowed)
+        assertFalse(decision(needs395, profile130_2).allowed)
     }
 
     @Test
-    fun safetyProfilesDoNotCrossMatch() {
-        val safetyAId = DiagnosticProfileContext.safetyTrait("safety-a")
-        val applicability = DiagnosticApplicability(
+    fun safetyProfilesDoNotTransferBetweenExecutions() {
+        val needsBlok = DiagnosticApplicability(
             families = setOf("2ES5K", "3ES5K"),
-            profiles = setOf(safetyAId),
+            profiles = setOf(ErmakSafetySystemProfile.BLOK_2ES5K.policyId),
             variantSelectionRequired = true
         )
-        val safetyA = DiagnosticProfileContext(
-            family = DiagnosticLocomotiveFamily.ERMAK_3ES5K,
-            safetySystemProfileId = "safety-a",
+        val blok2es5k = DiagnosticProfileContext(
+            family = DiagnosticLocomotiveFamily.ERMAK_2ES5K,
+            ermakSafetySystemProfile = ErmakSafetySystemProfile.BLOK_2ES5K,
             confirmed = true
         )
-        val safetyB = safetyA.copy(safetySystemProfileId = "safety-b")
+        val baseSafety = blok2es5k.copy(
+            ermakSafetySystemProfile = ErmakSafetySystemProfile.KLUB_U_SAUT_TSKBM
+        )
+        val invalid3es5k = blok2es5k.copy(family = DiagnosticLocomotiveFamily.ERMAK_3ES5K)
 
-        assertTrue(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                safetyA.toPolicyContext(applicability)
-            ).allowed
-        )
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                safetyB.toPolicyContext(applicability)
-            ).allowed
-        )
+        assertTrue(decision(needsBlok, blok2es5k).allowed)
+        assertFalse(decision(needsBlok, baseSafety).allowed)
+        assertFalse(invalid3es5k.canConfirm())
+        assertFalse(decision(needsBlok, invalid3es5k).allowed)
     }
 
     @Test
-    fun familyMismatchStillFailsClosed() {
+    fun profileRequiredAcceptsExplicitConfirmedCanonicalProfile() {
         val applicability = DiagnosticApplicability(
             families = setOf("2ES5K", "3ES5K"),
-            profiles = setOf("base_early"),
+            profiles = setOf("profile_required"),
             variantSelectionRequired = true
         )
         val context = DiagnosticProfileContext(
-            family = DiagnosticLocomotiveFamily.VL80S,
-            legacyProfileIds = setOf("base_early"),
+            family = DiagnosticLocomotiveFamily.ERMAK_3ES5K,
+            ermakBrakeProfile = ErmakBrakeProfile.CRANE_130_2,
             confirmed = true
         )
 
-        assertFalse(
-            DiagnosticPolicyEngine.evaluate(
-                applicability,
-                profileAction,
-                context.toPolicyContext(applicability)
-            ).allowed
+        assertTrue(decision(applicability, context).allowed)
+    }
+
+    @Test
+    fun arbitraryLegacyTokenAndFireTextCannotUnlockPolicy() {
+        val applicability = DiagnosticApplicability(
+            families = setOf("2ES5K", "3ES5K"),
+            profiles = setOf("future_untrusted_profile"),
+            variantSelectionRequired = true
         )
+        val context = DiagnosticProfileContext(
+            family = DiagnosticLocomotiveFamily.ERMAK_2ES5K,
+            fireSuppressionProfileId = "future_untrusted_profile",
+            legacyProfileIds = setOf("future_untrusted_profile"),
+            confirmed = true
+        )
+
+        assertTrue(context.hasSourceFireProfile())
+        assertFalse(context.canConfirm())
+        assertFalse(decision(applicability, context).allowed)
+    }
+
+    @Test
+    fun knownConflictsFailClosed() {
+        val earlyLateConflict = DiagnosticProfileContext(
+            family = DiagnosticLocomotiveFamily.ERMAK_2ES5K,
+            ermakAtlasProfile = ErmakAtlasProfile.BASE_EARLY,
+            ermakControlSystem = ErmakControlSystemProfile.MSUD_015,
+            confirmed = true
+        )
+        val booster2es5k = DiagnosticProfileContext(
+            family = DiagnosticLocomotiveFamily.ERMAK_2ES5K,
+            ermakSection = ErmakSectionProfile.BOOSTER,
+            ermakBrakeProfile = ErmakBrakeProfile.CRANE_395,
+            confirmed = true
+        )
+
+        assertFalse(earlyLateConflict.canConfirm())
+        assertTrue(earlyLateConflict.confirmedPolicyIds().isEmpty())
+        assertFalse(booster2es5k.canConfirm())
+        assertTrue(booster2es5k.confirmedPolicyIds().isEmpty())
     }
 }

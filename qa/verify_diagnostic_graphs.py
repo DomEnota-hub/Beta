@@ -9,6 +9,19 @@ import sys
 from pathlib import Path
 
 
+PROFILE_MIRRORS = (
+    "src/main/java/ru/railbrake/calculator/core/LocomotiveProfile.kt",
+    "src/main/java/ru/railbrake/calculator/data/LocomotiveProfileRepository.kt",
+    "src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt",
+    "src/main/java/ru/railbrake/calculator/core/DiagnosticProfileContext.kt",
+    "src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt",
+    "src/main/java/ru/railbrake/calculator/ui/ErmakProfileContextCard.kt",
+    "src/test/java/ru/railbrake/calculator/core/LocomotiveProfileTest.kt",
+    "src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt",
+    "src/test/java/ru/railbrake/calculator/core/DiagnosticProfileContextTest.kt",
+)
+
+
 def load_json(assets: Path, name: str) -> dict:
     plain = assets / "technical" / f"{name}.json"
     packed = assets / "technical" / f"{name}.json.gz"
@@ -16,6 +29,27 @@ def load_json(assets: Path, name: str) -> dict:
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "rt", encoding="utf-8") as source:
         return json.load(source)
+
+
+def validate_profile_mirrors(repo_root: Path) -> list[str]:
+    app_root = repo_root / "app"
+    patch_root = repo_root / "patch" / "app"
+    if not patch_root.is_dir():
+        return []
+
+    errors: list[str] = []
+    for relative in PROFILE_MIRRORS:
+        app_file = app_root / relative
+        patch_file = patch_root / relative
+        if not app_file.is_file():
+            errors.append(f"profile mirror: отсутствует {app_file.as_posix()}")
+            continue
+        if not patch_file.is_file():
+            errors.append(f"profile mirror: отсутствует {patch_file.as_posix()}")
+            continue
+        if app_file.read_bytes() != patch_file.read_bytes():
+            errors.append(f"profile mirror: app/patch различаются для {relative}")
+    return errors
 
 
 def validate_ermak(assets: Path) -> tuple[int, list[str]]:
@@ -64,11 +98,12 @@ def validate_ermak(assets: Path) -> tuple[int, list[str]]:
 def main() -> int:
     assets = Path(sys.argv[1] if len(sys.argv) > 1 else "app/src/main/assets")
     count, errors = validate_ermak(assets)
+    errors.extend(validate_profile_mirrors(Path.cwd()))
     if errors:
         print("DIAGNOSTIC GRAPH CONTRACT FAIL")
         print("\n".join(f" - {error}" for error in errors))
         return 1
-    print(f"DIAGNOSTIC GRAPH CONTRACT PASS: {count} Ermak scenarios")
+    print(f"DIAGNOSTIC GRAPH CONTRACT PASS: {count} Ermak scenarios; profile mirrors OK")
     return 0
 
 

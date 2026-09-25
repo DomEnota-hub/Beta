@@ -39,13 +39,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.railbrake.calculator.core.DiagnosticPolicyContext
 import ru.railbrake.calculator.core.DiagnosticPolicyEngine
+import ru.railbrake.calculator.core.DiagnosticProfileContext
 import ru.railbrake.calculator.core.DiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticScenario
+import ru.railbrake.calculator.core.requiresPolicyEvaluation
 import ru.railbrake.calculator.data.DiagnosticSessionRecord
 import ru.railbrake.calculator.data.DiagnosticSessionRepository
+import ru.railbrake.calculator.data.LocomotiveProfileRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -361,12 +363,14 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
     var savedLocally by rememberSaveable(scenario.id) { mutableStateOf(false) }
     val context = LocalContext.current
     val sessionRepository = remember { DiagnosticSessionRepository(context) }
+    val profileRepository = remember { LocomotiveProfileRepository(context.applicationContext) }
+    var profileContext by remember(scenario.id) { mutableStateOf(profileRepository.diagnosticContext()) }
     val node = scenario.nodes[nodeId]
-    val policyDecision = node?.takeIf { it.type == "source_action" }?.let {
+    val policyDecision = node?.takeIf { it.requiresPolicyEvaluation() }?.let {
         DiagnosticPolicyEngine.evaluate(
             applicability = scenario.applicability,
             action = it.actionMetadata,
-            context = DiagnosticPolicyContext()
+            context = profileContext.toPolicyContext(scenario.applicability)
         )
     }
 
@@ -382,10 +386,31 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
         item {
             InfoCard("Сначала", scenario.immediateActions.ifEmpty { listOf("Зафиксируйте наблюдаемые признаки до дальнейшей проверки.") }, MaterialTheme.colorScheme.tertiaryContainer)
         }
-        if (scenario.applicability.variantSelectionRequired) item {
+        item {
+            ErmakProfileContextCard(
+                profile = profileContext,
+                applicability = scenario.applicability,
+                onChange = { updated ->
+                    profileContext = updated
+                    profileRepository.saveDiagnosticContext(updated)
+                },
+                onConfirm = {
+                    if (profileContext.canConfirm()) {
+                        val confirmed = profileContext.copy(confirmed = true)
+                        profileContext = confirmed
+                        profileRepository.saveDiagnosticContext(confirmed)
+                    }
+                },
+                onReset = {
+                    profileRepository.clearDiagnosticContext()
+                    profileContext = DiagnosticProfileContext()
+                }
+            )
+        }
+        if (scenario.applicability.variantSelectionRequired && !profileContext.toPolicyContext(scenario.applicability).profileConfirmed) item {
             InfoCard(
                 "Требуется подтверждение исполнения",
-                listOf("Сценарий зависит от профиля оборудования. Профильные и опасные действия скрыты до явного подтверждения исполнения."),
+                listOf("Сценарий зависит от профиля оборудования. Профильные и опасные действия скрыты до явного подтверждения совместимого исполнения."),
                 MaterialTheme.colorScheme.primaryContainer
             )
         }
@@ -484,7 +509,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                             }
                         }
                     }
-                } else if (node.type == "source_action" && policyDecision?.allowed == false) {
+                } else if (policyDecision?.allowed == false) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
@@ -492,7 +517,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                     ) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             Text("Действие скрыто", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
-                            Text(policyDecision?.message.orEmpty().ifBlank { "Действие требует дополнительного подтверждения безопасности." })
+                            Text(policyDecision.message.ifBlank { "Действие требует дополнительного подтверждения безопасности." })
                             Text("Текст заблокированного действия не показывается и не считается выполненным.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Button(
                                 onClick = {
@@ -515,7 +540,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                             Text(
                                 when (node.type) {
                                     "finding" -> "Выявленный признак"
-                                    "source_action" -> "Подтверждённое действие"
+                                    "source_action", "emergency_action" -> "Подтверждённое действие"
                                     "terminal" -> "Результат"
                                     else -> "Шаг диагностики"
                                 },
