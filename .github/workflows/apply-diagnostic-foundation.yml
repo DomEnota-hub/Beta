@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_PARENT='54658ddd12dca6093901ec259810bd5bcba849e0'
+          EXPECTED_PARENT='932d4d9f23aa09aef1b9860323a4364b79c59e6a'
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
           git fetch origin dev14-integration
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
@@ -77,6 +77,12 @@ jobs:
           assert not missing, f'Expected changes missing: {sorted(missing)}'
           print('Scoped diff verified:', len(changed), 'files')
           PY
+
+      - name: Preview runtime contract assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          nl -ba app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt | sed -n '48,66p'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
