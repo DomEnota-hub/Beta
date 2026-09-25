@@ -15,12 +15,14 @@ PROFILE_MIRRORS = (
     "src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt",
     "src/main/java/ru/railbrake/calculator/core/DiagnosticProfileContext.kt",
     "src/main/java/ru/railbrake/calculator/core/DiagnosticSourceModel.kt",
+    "src/main/java/ru/railbrake/calculator/core/DiagnosticCanonicalGraph.kt",
     "src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt",
     "src/main/java/ru/railbrake/calculator/ui/ErmakProfileContextCard.kt",
     "src/test/java/ru/railbrake/calculator/core/LocomotiveProfileTest.kt",
     "src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt",
     "src/test/java/ru/railbrake/calculator/core/DiagnosticProfileContextTest.kt",
     "src/test/java/ru/railbrake/calculator/core/DiagnosticSourceModelTest.kt",
+    "src/test/java/ru/railbrake/calculator/core/DiagnosticCanonicalGraphTest.kt",
 )
 
 
@@ -52,6 +54,36 @@ def validate_profile_mirrors(repo_root: Path) -> list[str]:
         if app_file.read_bytes() != patch_file.read_bytes():
             errors.append(f"profile mirror: app/patch различаются для {relative}")
     return errors
+
+
+def validate_vl80s(assets: Path) -> tuple[int, int, list[str]]:
+    root = load_json(assets, "vl80s_diagnostics")
+    scenarios = root.get("scenarios", [])
+    edges = root.get("edges", [])
+    errors: list[str] = []
+    ids = [item.get("id") for item in scenarios]
+    id_set = {item for item in ids if item}
+
+    if any(not item for item in ids):
+        errors.append("VL80S: canonical scenario with blank id")
+    if len(id_set) != len(ids):
+        errors.append("VL80S: canonical scenario IDs are not unique")
+
+    for scenario in scenarios:
+        scenario_id = scenario.get("id", "<без id>")
+        if not str(scenario.get("title", "")).strip():
+            errors.append(f"{scenario_id}: пустой заголовок canonical scenario")
+        for related in scenario.get("relatedScenarioIds", []):
+            if related not in id_set:
+                errors.append(f"{scenario_id}: отсутствует связанный canonical scenario {related}")
+
+    for index, edge in enumerate(edges):
+        if not str(edge.get("from", "")).strip() or not str(edge.get("to", "")).strip():
+            errors.append(f"VL80S edge #{index}: blank endpoint")
+        if not str(edge.get("type", "")).strip():
+            errors.append(f"VL80S edge #{index}: blank type")
+
+    return len(scenarios), len(edges), errors
 
 
 def validate_ermak(assets: Path) -> tuple[int, list[str]]:
@@ -99,13 +131,19 @@ def validate_ermak(assets: Path) -> tuple[int, list[str]]:
 
 def main() -> int:
     assets = Path(sys.argv[1] if len(sys.argv) > 1 else "app/src/main/assets")
-    count, errors = validate_ermak(assets)
+    vl_count, vl_edges, vl_errors = validate_vl80s(assets)
+    ermak_count, ermak_errors = validate_ermak(assets)
+    errors = vl_errors + ermak_errors
     errors.extend(validate_profile_mirrors(Path.cwd()))
     if errors:
         print("DIAGNOSTIC GRAPH CONTRACT FAIL")
         print("\n".join(f" - {error}" for error in errors))
         return 1
-    print(f"DIAGNOSTIC GRAPH CONTRACT PASS: {count} Ermak scenarios; profile mirrors OK")
+    print(
+        "DIAGNOSTIC GRAPH CONTRACT PASS: "
+        f"{vl_count} VL80S canonical scenarios / {vl_edges} edges; "
+        f"{ermak_count} Ermak scenarios; profile mirrors OK"
+    )
     return 0
 
 
