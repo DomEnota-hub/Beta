@@ -126,9 +126,15 @@ object DiagnosticPolicyEngine {
             return false
         }
 
-        return applicability.profiles.isEmpty() ||
-            "all_confirmed_profiles" in applicability.profiles ||
-            selectedProfile in applicability.profiles
+        val requestedProfiles = applicability.profiles
+            .map { it.trim().lowercase() }
+            .toSet()
+        val selectedProfileKey = selectedProfile.trim().lowercase()
+
+        return requestedProfiles.isEmpty() ||
+            "all_confirmed_profiles" in requestedProfiles ||
+            "profile_required" in requestedProfiles ||
+            selectedProfileKey in requestedProfiles
     }
 
     private fun allowed() = DiagnosticPolicyDecision(
