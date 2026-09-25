@@ -1,0 +1,163 @@
+name: Apply diagnostic policy foundation
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/scripts/apply_diagnostic_foundation.py
+      - .github/workflows/apply-diagnostic-foundation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-verify-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev14-integration
+          fetch-depth: 2
+
+      - name: Guard trigger baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_PARENT='2dbd94ee8eed9cb2d2ab9f0e4ad32966ece6917e'
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+
+      - name: Apply diagnostic foundation
+        run: python3 .github/scripts/apply_diagnostic_foundation.py
+
+      - name: Verify scoped diff and mirrors
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt
+          cmp app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt patch/app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt
+          cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          cmp app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt patch/app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt
+          cmp app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt
+          git diff --check
+          python3 - <<'PY'
+          from pathlib import Path
+          allowed = {
+              'app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
+              'app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt',
+              'app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt',
+              'patch/app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
+              'patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
+              '.github/workflows/dev14-safe-build-v2.yml',
+          }
+          import subprocess
+          changed = set(subprocess.check_output(
+              ['git', 'diff', '--name-only', 'HEAD'], text=True
+          ).splitlines())
+          extra = changed - allowed
+          missing = {
+              'app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
+              'app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt',
+              'app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
+          } - changed
+          assert not extra, f'Unexpected changed files: {sorted(extra)}'
+          assert not missing, f'Expected changes missing: {sorted(missing)}'
+          print('Scoped diff verified:', len(changed), 'files')
+          PY
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: true
+
+      - name: Extract base and overlay patched sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          test -f buildsrc/RailBrakeCalculator/settings.gradle.kts
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Remove temporary trigger files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/scripts/apply_diagnostic_foundation.py
+          rm .github/workflows/apply-diagnostic-foundation.yml
+
+      - name: Re-check branch before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+
+      - name: Commit verified foundation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          python3 - <<'PY'
+          import subprocess
+          changed = set(subprocess.check_output(
+              ['git', 'diff', '--cached', '--name-only'], text=True
+          ).splitlines())
+          allowed = {
+              'app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
+              'app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt',
+              'app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt',
+              'patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt',
+              'patch/app/src/test/java/ru/railbrake/calculator/core/DiagnosticPolicyEngineTest.kt',
+              'app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
+              'patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
+              '.github/workflows/dev14-safe-build-v2.yml',
+              '.github/scripts/apply_diagnostic_foundation.py',
+              '.github/workflows/apply-diagnostic-foundation.yml',
+          }
+          extra = changed - allowed
+          assert not extra, f'Unexpected staged files: {sorted(extra)}'
+          print('Final staged scope verified')
+          PY
+          git diff --cached --check
+          git commit -m 'feat: add diagnostic safety policy foundation'
+          git push origin HEAD:dev14-integration
