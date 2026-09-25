@@ -80,11 +80,22 @@ def validate_vl80s(assets: Path) -> tuple[int, int, list[str]]:
             if related not in id_set:
                 errors.append(f"{scenario_id}: отсутствует связанный canonical scenario {related}")
 
+    edge_keys: set[tuple[str, str, str]] = set()
     for index, edge in enumerate(edges):
-        if not str(edge.get("from", "")).strip() or not str(edge.get("to", "")).strip():
+        from_id = str(edge.get("from", "")).strip()
+        to_id = str(edge.get("to", "")).strip()
+        edge_type = str(edge.get("type", "")).strip()
+        if not from_id or not to_id:
             errors.append(f"VL80S edge #{index}: blank endpoint")
-        if not str(edge.get("type", "")).strip():
+        if not edge_type:
             errors.append(f"VL80S edge #{index}: blank type")
+        if from_id and to_id and edge_type:
+            key = (from_id, to_id, edge_type)
+            if key in edge_keys:
+                errors.append(
+                    f"VL80S edge #{index}: duplicate edge {from_id} -> {to_id} ({edge_type})"
+                )
+            edge_keys.add(key)
 
     return len(scenarios), len(edges), errors
 
