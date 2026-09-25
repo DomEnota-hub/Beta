@@ -34,10 +34,11 @@ class DiagnosticCanonicalRuntimeContractTest {
 
         val missingInRuntime = (canonicalIds - runtimeIds).sorted()
         val extraInRuntime = (runtimeIds - canonicalIds).sorted()
-        fail(
+        val details =
             "$label runtime/canonical scenario IDs differ; " +
                 "missingInRuntime=$missingInRuntime; extraInRuntime=$extraInRuntime"
-        )
+        println("CANONICAL_RUNTIME_ID_DIFF: $details")
+        fail(details)
     }
 
     private fun loadTechnicalJson(baseName: String): JSONObject {
