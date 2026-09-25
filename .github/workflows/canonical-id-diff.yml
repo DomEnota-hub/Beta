@@ -19,29 +19,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inspect oil-pump runtime source and canonical neighbors
+      - name: Inspect VL80S canonical edge conventions
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import gzip, json, re
-          from pathlib import Path
-
-          source = Path('app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt').read_text(encoding='utf-8')
-          marker = 'id = "oil-pump-failure"'
-          pos = source.index(marker)
-          start = source.rfind('        scenario(', 0, pos)
-          end = source.find('\n        scenario(', pos)
-          if end < 0:
-              end = source.find('\n    )', pos)
-          print('--- oil-pump-failure runtime block ---')
-          print(source[start:end])
+          import gzip, json
 
           with gzip.open('app/src/main/assets/technical/vl80s_diagnostics.json.gz', 'rt', encoding='utf-8') as f:
               root = json.load(f)
+
           ids = {'aux-machine-single-trip', 'transformer-oil-signs', 'aux-machines'}
-          print('--- canonical neighbor records ---')
-          for s in root.get('scenarios', []):
-              if s.get('id') in ids:
-                  print(json.dumps(s, ensure_ascii=False, sort_keys=True))
+          print('--- outgoing/incoming edges for canonical neighbors ---')
+          for edge in root.get('edges', []):
+              if edge.get('from') in ids or edge.get('to') in ids:
+                  print(json.dumps(edge, ensure_ascii=False, sort_keys=True))
           PY
