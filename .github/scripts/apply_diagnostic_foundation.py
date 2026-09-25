@@ -14,7 +14,7 @@ if not match:
 source = zlib.decompress(base64.b64decode(match.group(1))).decode("utf-8")
 source = source.replace(
     'TechnicalAssetReader.readJsonObject(appContext, "technical/ermak_diagnostics.json")',
-    'TechnicalAssetReader.readTechnicalJson(appContext, "ermak_diagnostics.json")',
+    'TechnicalAssetReader.json(appContext, "technical/ermak_diagnostics.json")',
 )
 source = source.replace(
     'Text(policyDecision.message.ifBlank {',
