@@ -1,0 +1,58 @@
+name: Canonical runtime ID diff
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/canonical-id-diff.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Run canonical ID contract and print failure XML
+        working-directory: buildsrc/RailBrakeCalculator
+        shell: bash
+        run: |
+          set +e
+          timeout --signal=TERM 10m gradle :app:testDebugUnitTest --tests 'ru.railbrake.calculator.core.DiagnosticCanonicalRuntimeContractTest' --console=plain
+          status=$?
+          echo '--- canonical runtime contract failure details ---'
+          find app/build/test-results/testDebugUnitTest -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
+          exit "$status"
