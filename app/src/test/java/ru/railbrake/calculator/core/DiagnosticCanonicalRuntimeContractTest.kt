@@ -5,6 +5,7 @@ import java.io.FileInputStream
 import java.util.zip.GZIPInputStream
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Test
 
 class DiagnosticCanonicalRuntimeContractTest {
@@ -15,7 +16,7 @@ class DiagnosticCanonicalRuntimeContractTest {
         val runtimeIds = DiagnosticRepository.scenarios.map { it.id }
 
         assertEquals("VL80S runtime scenario IDs must be unique", runtimeIds.size, runtimeIds.toSet().size)
-        assertEquals("VL80S runtime/canonical scenario IDs differ", canonical.scenarioIds, runtimeIds.toSet())
+        assertExactIds("VL80S", canonical.scenarioIds, runtimeIds.toSet())
     }
 
     @Test
@@ -25,7 +26,18 @@ class DiagnosticCanonicalRuntimeContractTest {
         val runtimeIds = parseErmakDiagnostics(root).map { it.id }
 
         assertEquals("Ermak runtime scenario IDs must be unique", runtimeIds.size, runtimeIds.toSet().size)
-        assertEquals("Ermak runtime/canonical scenario IDs differ", canonical.scenarioIds, runtimeIds.toSet())
+        assertExactIds("Ermak", canonical.scenarioIds, runtimeIds.toSet())
+    }
+
+    private fun assertExactIds(label: String, canonicalIds: Set<String>, runtimeIds: Set<String>) {
+        if (canonicalIds == runtimeIds) return
+
+        val missingInRuntime = (canonicalIds - runtimeIds).sorted()
+        val extraInRuntime = (runtimeIds - canonicalIds).sorted()
+        fail(
+            "$label runtime/canonical scenario IDs differ; " +
+                "missingInRuntime=$missingInRuntime; extraInRuntime=$extraInRuntime"
+        )
     }
 
     private fun loadTechnicalJson(baseName: String): JSONObject {
