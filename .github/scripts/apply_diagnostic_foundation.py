@@ -41,4 +41,13 @@ for rel in (
         raise RuntimeError(f"Obsolete emergency-policy asset assertion not found in {rel}")
     path.write_text(text.replace(obsolete_contract, ""), encoding="utf-8")
 
+# The Actions GITHUB_TOKEN cannot update workflow files. Keep the normal build
+# workflow unchanged in this guarded commit; its mirror checks will be updated
+# separately through the GitHub connector after the foundation lands.
+subprocess.run(
+    ["git", "restore", "--source=HEAD", "--", ".github/workflows/dev14-safe-build-v2.yml"],
+    check=True,
+)
+
 print("Runtime contract aligned with policies actually present in the canonical asset.")
+print("Normal build workflow intentionally left unchanged for this Actions-authored commit.")
