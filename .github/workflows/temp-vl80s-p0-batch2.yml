@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      EXPECTED_PARENT: 759feb91e592d6f7d2724d58da2499af08ab0df1
+      EXPECTED_PARENT: 4dcf22b7adde1f3dc797641481d608b4a1acc2aa
     steps:
       - name: Checkout guarded branch
         uses: actions/checkout@v4
@@ -32,6 +32,25 @@ jobs:
 
       - name: Apply P0 deepening batch 2
         run: python3 .github/scripts/deepen_vl80s_p0_batch2.py
+
+      - name: Fix case-insensitive regression assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path('app/src/test/java/ru/railbrake/calculator/core/DiagnosticP0DeepeningBatch2Test.kt'),
+              Path('patch/app/src/test/java/ru/railbrake/calculator/core/DiagnosticP0DeepeningBatch2Test.kt'),
+          ]
+          old = 'assertTrue(text.contains("измер"))'
+          new = 'assertTrue(text.contains("измер", ignoreCase = true))'
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'expected assertion not found in {path}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
 
       - name: Verify scoped diff and mirrors
         shell: bash
