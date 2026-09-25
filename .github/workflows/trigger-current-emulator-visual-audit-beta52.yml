@@ -1,0 +1,34 @@
+name: Trigger current emulator visual audit Beta 52
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/trigger-current-emulator-visual-audit-beta52.yml
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Verify exact Beta 52 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "7fd90ff821ff395db9520f977b45be4785dcad1b"
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+          grep -Fq 'versionCode = 201' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta52"' app/build.gradle.kts
+          grep -Fq 'article("movement-minute-readiness"' app/src/main/java/ru/railbrake/calculator/core/KnowledgeFirstWave.kt
+          grep -Fq 'article("brakes-test-overview"' app/src/main/java/ru/railbrake/calculator/core/KnowledgeFirstWave.kt
+
+  audit:
+    needs: guard
+    uses: ./.github/workflows/dev14-emulator-visual-audit.yml
