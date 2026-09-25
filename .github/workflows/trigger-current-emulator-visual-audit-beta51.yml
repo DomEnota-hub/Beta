@@ -1,0 +1,32 @@
+name: Trigger current emulator visual audit
+
+on:
+  push:
+    branches:
+      - dev14-integration
+    paths:
+      - .github/workflows/trigger-current-emulator-visual-audit-beta51.yml
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Verify exact Beta 51 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "7d8814fa36422b280e60e5122367547d53f22498"
+          git fetch origin dev14-integration
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
+          grep -Fq 'versionCode = 200' app/build.gradle.kts
+          grep -Fq 'versionName = "1.2.2-dev14-beta51"' app/build.gradle.kts
+
+  audit:
+    needs: guard
+    uses: ./.github/workflows/dev14-emulator-visual-audit.yml
