@@ -11,7 +11,9 @@ data class DiagnosticSourceReference(
     val sourceId: String = "",
     val document: String = "",
     val locator: String = "",
-    val role: String = ""
+    val role: String = "",
+    val kind: DiagnosticSourceKind = DiagnosticSourceKind.UNKNOWN,
+    val version: DiagnosticSourceVersion = DiagnosticSourceVersion()
 )
 
 enum class DiagnosticUserFacingPolicy {

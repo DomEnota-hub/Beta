@@ -167,12 +167,56 @@ private fun JSONArray?.sourceReferences(): List<DiagnosticSourceReference> {
                     sourceId = item.optString("sourceId").trim(),
                     document = item.optString("document").trim(),
                     locator = item.optString("locator").trim(),
-                    role = item.optString("role").trim()
+                    role = item.optString("role").trim(),
+                    kind = DiagnosticSourceKind.parse(
+                        firstNonBlank(
+                            item.stringValue("sourceKind"),
+                            item.stringValue("kind")
+                        )
+                    ),
+                    version = item.sourceVersion()
                 )
             )
         }
     }
 }
+
+private fun JSONObject.sourceVersion(): DiagnosticSourceVersion {
+    val nested = optJSONObject("version")
+    return DiagnosticSourceVersion(
+        versionLabel = firstNonBlank(
+            nested?.stringValue("label").orEmpty(),
+            nested?.stringValue("versionLabel").orEmpty(),
+            stringValue("versionLabel"),
+            stringValue("version")
+        ),
+        revision = firstNonBlank(
+            nested?.stringValue("revision").orEmpty(),
+            stringValue("revision")
+        ),
+        effectiveFrom = firstNonBlank(
+            nested?.stringValue("effectiveFrom").orEmpty(),
+            stringValue("effectiveFrom")
+        ),
+        effectiveTo = firstNonBlank(
+            nested?.stringValue("effectiveTo").orEmpty(),
+            stringValue("effectiveTo")
+        ),
+        verifiedAt = firstNonBlank(
+            nested?.stringValue("verifiedAt").orEmpty(),
+            stringValue("verifiedAt")
+        ),
+        status = DiagnosticSourceVersionStatus.parse(
+            firstNonBlank(
+                nested?.stringValue("status").orEmpty(),
+                stringValue("versionStatus")
+            )
+        )
+    )
+}
+
+private fun JSONObject.stringValue(key: String): String =
+    (opt(key) as? String).orEmpty().trim()
 
 private fun firstNonBlank(vararg values: String): String =
     values.firstOrNull { it.isNotBlank() }.orEmpty().trim()
