@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_PARENT='2dbd94ee8eed9cb2d2ab9f0e4ad32966ece6917e'
+          EXPECTED_PARENT='c72df70327013c8851c018d6ec55f980d6492f9d'
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
           git fetch origin dev14-integration
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
@@ -62,6 +62,9 @@ jobs:
           import subprocess
           changed = set(subprocess.check_output(
               ['git', 'diff', '--name-only', 'HEAD'], text=True
+          ).splitlines())
+          changed.update(subprocess.check_output(
+              ['git', 'ls-files', '--others', '--exclude-standard'], text=True
           ).splitlines())
           extra = changed - allowed
           missing = {
