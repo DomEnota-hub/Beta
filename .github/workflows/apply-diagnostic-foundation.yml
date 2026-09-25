@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_PARENT='c72df70327013c8851c018d6ec55f980d6492f9d'
+          EXPECTED_PARENT='75300ce6b9292ede6138c99ecc3324154427ecba'
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
           git fetch origin dev14-integration
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/dev14-integration)"
@@ -45,7 +45,7 @@ jobs:
           cmp app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt
           git diff --check
           python3 - <<'PY'
-          from pathlib import Path
+          import subprocess
           allowed = {
               'app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
               'patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticPolicyEngine.kt',
@@ -59,7 +59,6 @@ jobs:
               'patch/app/src/test/java/ru/railbrake/calculator/core/ErmakDiagnosticRuntimeContractTest.kt',
               '.github/workflows/dev14-safe-build-v2.yml',
           }
-          import subprocess
           changed = set(subprocess.check_output(
               ['git', 'diff', '--name-only', 'HEAD'], text=True
           ).splitlines())
