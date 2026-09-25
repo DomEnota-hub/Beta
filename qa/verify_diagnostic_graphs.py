@@ -16,6 +16,8 @@ PROFILE_MIRRORS = (
     "src/main/java/ru/railbrake/calculator/core/DiagnosticProfileContext.kt",
     "src/main/java/ru/railbrake/calculator/core/DiagnosticSourceModel.kt",
     "src/main/java/ru/railbrake/calculator/core/DiagnosticCanonicalGraph.kt",
+    "src/main/java/ru/railbrake/calculator/core/DiagnosticCanonicalPromotion.kt",
+    "src/main/java/ru/railbrake/calculator/core/DiagnosticResearchIntegration.kt",
     "src/main/java/ru/railbrake/calculator/core/ErmakDiagnosticRepository.kt",
     "src/main/java/ru/railbrake/calculator/ui/ErmakProfileContextCard.kt",
     "src/test/java/ru/railbrake/calculator/core/LocomotiveProfileTest.kt",
@@ -23,6 +25,7 @@ PROFILE_MIRRORS = (
     "src/test/java/ru/railbrake/calculator/core/DiagnosticProfileContextTest.kt",
     "src/test/java/ru/railbrake/calculator/core/DiagnosticSourceModelTest.kt",
     "src/test/java/ru/railbrake/calculator/core/DiagnosticCanonicalGraphTest.kt",
+    "src/test/java/ru/railbrake/calculator/core/DiagnosticCanonicalRuntimeContractTest.kt",
 )
 
 
