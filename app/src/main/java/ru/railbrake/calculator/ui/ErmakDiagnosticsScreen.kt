@@ -39,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.railbrake.calculator.core.DiagnosticPolicyContext
+import ru.railbrake.calculator.core.DiagnosticPolicyEngine
 import ru.railbrake.calculator.core.DiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticRepository
 import ru.railbrake.calculator.core.ErmakDiagnosticScenario
@@ -360,6 +362,13 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
     val context = LocalContext.current
     val sessionRepository = remember { DiagnosticSessionRepository(context) }
     val node = scenario.nodes[nodeId]
+    val policyDecision = node?.takeIf { it.type == "source_action" }?.let {
+        DiagnosticPolicyEngine.evaluate(
+            applicability = scenario.applicability,
+            action = it.actionMetadata,
+            context = DiagnosticPolicyContext()
+        )
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -372,6 +381,13 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
         }
         item {
             InfoCard("Сначала", scenario.immediateActions.ifEmpty { listOf("Зафиксируйте наблюдаемые признаки до дальнейшей проверки.") }, MaterialTheme.colorScheme.tertiaryContainer)
+        }
+        if (scenario.applicability.variantSelectionRequired) item {
+            InfoCard(
+                "Требуется подтверждение исполнения",
+                listOf("Сценарий зависит от профиля оборудования. Профильные и опасные действия скрыты до явного подтверждения исполнения."),
+                MaterialTheme.colorScheme.primaryContainer
+            )
         }
         if (scenario.dangerSigns.isNotEmpty()) item {
             InfoCard("Опасные признаки", scenario.dangerSigns, MaterialTheme.colorScheme.errorContainer)
@@ -466,6 +482,25 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                             history.filter { " — " in it }.forEach {
                                 Text("• $it", style = MaterialTheme.typography.bodySmall)
                             }
+                        }
+                    }
+                } else if (node.type == "source_action" && policyDecision?.allowed == false) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                        shape = RoundedCornerShape(18.dp)
+                    ) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text("Действие скрыто", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+                            Text(policyDecision?.message.orEmpty().ifBlank { "Действие требует дополнительного подтверждения безопасности." })
+                            Text("Текст заблокированного действия не показывается и не считается выполненным.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Button(
+                                onClick = {
+                                    history = history + "Действие заблокировано политикой безопасности"
+                                    uncertain = true
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) { Text("Записать и завершить") }
                         }
                     }
                 } else {
