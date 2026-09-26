@@ -7,10 +7,12 @@ class DiagnosticGenericRouteRegressionTest {
     @Test
     fun strictGenericRoutesStayBelowReworkCheckpoint() {
         val genericRoot = "Признак относится только к одной секции, тележке или группе?"
-        val strictGeneric = DiagnosticRepository.scenarios.count { scenario ->
+        val strictGeneric = DiagnosticRepository.scenarios.filter { scenario ->
             scenario.questions.firstOrNull()?.text == genericRoot
         }
-        println("VL80S_STRICT_GENERIC_ROUTES=$strictGeneric")
-        assertTrue("strict generic routes regressed: $strictGeneric", strictGeneric <= 9)
+        val ids = strictGeneric.map { it.id }.sorted()
+        println("VL80S_STRICT_GENERIC_IDS=" + ids.joinToString(","))
+        println("VL80S_STRICT_GENERIC_ROUTES=" + ids.size)
+        assertTrue("strict generic routes regressed: ${ids.size}: $ids", ids.size <= 4)
     }
 }
