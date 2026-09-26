@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
-      EXPECTED_PARENT: 3fa6d3ff7637bf6f68621693eec9de4df9d42f4d
+      EXPECTED_PARENT: af8e2789b3aff850e651bd20778623b92f80a632
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
@@ -32,7 +32,10 @@ jobs:
 
       - name: Apply legacy batch A
         shell: bash
-        run: python3 tools/deepen_ermak_legacy_batchA.py
+        run: |
+          set -euo pipefail
+          python3 tools/deepen_ermak_legacy_batchA.py
+          python3 tools/patch_ermak_legacy_batchA_safety_gate.py
 
       - name: Verify scoped asset diff
         shell: bash
