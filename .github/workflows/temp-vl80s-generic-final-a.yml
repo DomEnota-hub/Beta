@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      EXPECTED_PARENT: 243c1245266a01ef61bbf5a6ff8937a58a46ef98
+      EXPECTED_PARENT: 88d2de54b90afbee6bc694c1d10a037c98bf2298
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
@@ -32,6 +32,25 @@ jobs:
 
       - name: Apply VL80S generic cleanup batch A
         run: python3 .github/scripts/apply_vl80s_generic_final_a.py
+
+      - name: Remove invalid provisional sand link
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path('app/src/main/java/ru/railbrake/calculator/core/DiagnosticDeepening.kt'),
+              Path('patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticDeepening.kt'),
+          ]
+          old = 'related = listOf("wheel-slip-protection", "traction-current-surge", "feed-line-leak", "traction-one-section-low", "wheel-flat-impact")'
+          new = 'related = listOf("traction-current-surge", "feed-line-leak", "traction-one-section-low", "wheel-flat-impact")'
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'provisional sand link marker missing in {path}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
 
       - name: Verify scoped diff and mirrors
         shell: bash
