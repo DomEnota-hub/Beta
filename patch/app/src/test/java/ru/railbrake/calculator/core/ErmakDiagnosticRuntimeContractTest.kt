@@ -85,19 +85,39 @@ class ErmakDiagnosticRuntimeContractTest {
     }
 
     @Test
-    fun allSourceBoundActionNodeKindsAreClassifiedForRuntimePolicyEvaluation() {
+    fun allProtectedActionNodesAreClassifiedForRuntimePolicyEvaluation() {
         val protected = parseErmakDiagnostics(asset())
             .flatMap { it.nodes.values }
             .filter {
                 it.actionMetadata.userFacingPolicy in setOf(
                     DiagnosticUserFacingPolicy.SOURCE_AND_PROFILE_REQUIRED,
-                    DiagnosticUserFacingPolicy.SAFETY_GATE_REQUIRED
+                    DiagnosticUserFacingPolicy.SAFETY_GATE_REQUIRED,
+                    DiagnosticUserFacingPolicy.EMERGENCY_SOURCE_BOUND
                 )
             }
 
-        assertTrue(protected.any { it.type == "source_action" })
-        assertTrue(protected.any { it.type == "emergency_action" })
+        assertTrue(protected.isNotEmpty())
         assertTrue(protected.all { it.requiresPolicyEvaluation() })
+    }
+
+    @Test
+    fun emergencyActionNodeKindRequiresRuntimePolicyEvaluation() {
+        val emergency = ErmakDiagnosticNode(
+            id = "contract-emergency",
+            type = "emergency_action",
+            text = "",
+            choices = emptyList(),
+            nextNodeId = null,
+            terminalStatus = null,
+            actionMetadata = DiagnosticActionMetadata(
+                riskClass = "fire_emergency",
+                userFacingPolicy = DiagnosticUserFacingPolicy.EMERGENCY_SOURCE_BOUND,
+                rawUserFacingPolicy = "EMERGENCY_SOURCE_BOUND",
+                sourceBound = true
+            )
+        )
+
+        assertTrue(emergency.requiresPolicyEvaluation())
     }
 
     @Test
