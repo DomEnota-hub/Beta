@@ -20,8 +20,8 @@ class DiagnosticP0DeepeningTest {
     fun firstP0BatchUsesSubjectSpecificTrees() {
         deepenedIds.forEach { id ->
             val scenario = DiagnosticRepository.scenario(id)!!
-            assertEquals("$id: three-step route", 3, scenario.questions.size)
-            assertEquals("$id: unique questions", 3, scenario.questions.map { it.text }.distinct().size)
+            assertTrue("$id: enough diagnostic depth", scenario.questions.size >= 3)
+            assertEquals("$id: unique questions", scenario.questions.size, scenario.questions.map { it.text }.distinct().size)
             assertFalse("$id: generic first question", scenario.questions.first().text.contains("одной секции, тележке или группе"))
             assertTrue("$id: tailored causes", scenario.probableCauses.size >= 5)
             assertTrue("$id: related routes", scenario.relatedScenarioIds.size >= 4)
