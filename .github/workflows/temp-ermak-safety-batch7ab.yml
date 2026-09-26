@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
-      EXPECTED_PARENT: ec49571a18d14d68dc2d41a420871c955324c500
+      EXPECTED_PARENT: 28a97e70ea0fc9a295ca8d7b50935025a42cf174
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
@@ -28,10 +28,10 @@ jobs:
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
       - name: Apply safety batch7a
         run: python3 tools/deepen_ermak_p0_safety_batch7a.py
-      - name: Prune unreachable batch7a terminals
-        run: python3 tools/patch_ermak_safety_batch7a_reachability.py
       - name: Apply brake safety batch7b
         run: python3 tools/deepen_ermak_p0_brake_safety_batch7b.py
+      - name: Prune unreachable batch7 terminals
+        run: python3 tools/patch_ermak_safety_batch7a_reachability.py
       - name: Verify scoped asset diff
         shell: bash
         run: |
