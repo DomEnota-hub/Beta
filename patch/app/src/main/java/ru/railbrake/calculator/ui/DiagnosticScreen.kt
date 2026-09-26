@@ -375,6 +375,7 @@ private fun DiagnosticDetails(
     var feedbackNote by rememberSaveable(scenario.id) { mutableStateOf("") }
     var candidateScores by remember(scenario.id) { mutableStateOf(emptyMap<String, Int>()) }
     var currentAssessment by rememberSaveable(scenario.id) { mutableStateOf("") }
+    var ordinaryRouteStopped by rememberSaveable(scenario.id) { mutableStateOf(false) }
     val clipboard = LocalClipboardManager.current
     val context = LocalContext.current
     val sessionRepository = remember { DiagnosticSessionRepository(context) }
@@ -436,6 +437,13 @@ private fun DiagnosticDetails(
                     val question = scenario.questions.first { it.key == currentQuestionKey }
                     val meaning = DiagnosticRepository.meaning(question, response)
                     currentAssessment = meaning
+                    val explicitNext = when (response) {
+                        DiagnosticResponse.YES -> question.yesNextKey
+                        DiagnosticResponse.NO -> question.noNextKey
+                        DiagnosticResponse.UNKNOWN -> question.unknownNextKey
+                    }
+                    ordinaryRouteStopped = explicitNext == DiagnosticRepository.END_OF_FLOW &&
+                        (response == DiagnosticResponse.UNKNOWN || scenario.questions.lastOrNull()?.key != question.key)
                     answers = answers + "${question.text} — ${response.title}. $meaning"
                     candidateScores = candidateScores.toMutableMap().also { scores ->
                         DiagnosticRepository.candidateCauseIds(question, response).forEach { causeId ->
@@ -448,6 +456,7 @@ private fun DiagnosticDetails(
                     answers = emptyList()
                     candidateScores = emptyMap()
                     currentAssessment = ""
+                    ordinaryRouteStopped = false
                     currentQuestionKey = scenario.questions.firstOrNull()?.key
                 }
             )
@@ -460,6 +469,7 @@ private fun DiagnosticDetails(
                     buildList {
                         add(currentAssessment)
                         if (nextQuestion != null) add("Следующее уточнение: ${nextQuestion.text}")
+                        else if (ordinaryRouteStopped) add("Обычное уточнение прекращено. Выполните указанный безопасный порядок; не переходите к следующим проверкам ради подтверждения догадки.")
                         else add("Вопросы этого маршрута пройдены. Сопоставьте вывод с признаками, проверками и условиями прекращения диагностики ниже.")
                     },
                     MaterialTheme.colorScheme.primaryContainer

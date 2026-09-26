@@ -7,6 +7,27 @@ import org.junit.Test
 
 class DiagnosticRepositoryTest {
     @Test
+    fun sourceSpecificRoutes_stopOnUnconfirmedOrDangerousEvidence() {
+        val roof = DiagnosticRepository.scenario("substation-protection-roof")!!
+        assertEquals(null, DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.YES))
+        assertEquals("sr-section", DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.NO)?.key)
+        assertEquals(null, DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.UNKNOWN))
+
+        val rectifier = DiagnosticRepository.scenario("rectifier-differential-trip")!!
+        assertEquals("rd-damage", DiagnosticRepository.nextQuestion(rectifier, "rd-combined", DiagnosticResponse.YES)?.key)
+        assertEquals(null, DiagnosticRepository.nextQuestion(rectifier, "rd-combined", DiagnosticResponse.UNKNOWN))
+
+        val drive = DiagnosticRepository.scenario("ekg-drive-disconnected")!!
+        assertEquals("ed-other", DiagnosticRepository.nextQuestion(drive, "ed-motion", DiagnosticResponse.YES)?.key)
+        assertEquals(null, DiagnosticRepository.nextQuestion(drive, "ed-motion", DiagnosticResponse.UNKNOWN))
+
+        val braking = DiagnosticRepository.scenario("rheostatic-rpt-trip")!!
+        assertEquals(null, DiagnosticRepository.nextQuestion(braking, "rpt-effect", DiagnosticResponse.NO))
+        assertEquals("rpt-damage", DiagnosticRepository.nextQuestion(braking, "rpt-effect", DiagnosticResponse.YES)?.key)
+        assertTrue(DiagnosticRepository.scenario("battery-no-voltage")!!.questions.first().key == "bv-source")
+    }
+
+    @Test
     fun scenarios_haveUniqueIdsAndCompleteSafetyContent() {
         val scenarios = DiagnosticRepository.scenarios
 
@@ -177,7 +198,7 @@ class DiagnosticRepositoryTest {
 
         priorityIds.forEach { id ->
             val scenario = DiagnosticRepository.scenario(id)!!
-            assertEquals("$id: question depth", 3, scenario.questions.size)
+            assertTrue("$id: question depth", scenario.questions.size >= 3)
             assertTrue("$id: authorized boundary", scenario.checks.any { it.level == DiagnosticActionLevel.AUTHORIZED_ONLY })
             assertTrue("$id: tailored causes", scenario.probableCauses.size >= 5)
             assertTrue("$id: related routes", scenario.relatedScenarioIds.size >= 4)
