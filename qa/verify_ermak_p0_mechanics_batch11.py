@@ -58,10 +58,12 @@ for sid in ('ER-DIAG-104','ER-DIAG-105','ER-DIAG-106','ER-DIAG-107','ER-DIAG-108
     assert refs['ER-AUDIT-NORM-PTE250-MECH-B11']['version']['status']=='CURRENT_CONFIRMED',sid
 
 # >80C is a hard PTE stop for axlebox/MOP/reducer support bearings.
+# Accept both normative wording styles used in the graph: "запрещено" and
+# the hard-stop terminal's equivalent "не разрешается".
 for sid in ('ER-DIAG-104','ER-DIAG-105','ER-DIAG-106','ER-DIAG-107'):
     t=json.dumps(by[sid],ensure_ascii=False).lower()
     assert '>80 °c' in t or 'свыше 80 °c' in t,(sid,'80C stop')
-    assert 'запрещ' in t,(sid,'operational prohibition')
+    assert ('запрещ' in t or 'не разреш' in t),(sid,'operational prohibition')
 
 # Exact locomotive flat ranges from PTE p.155; do not mix wagon limits.
 t108=json.dumps(by['ER-DIAG-108'],ensure_ascii=False).lower()
