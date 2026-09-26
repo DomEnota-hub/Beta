@@ -18,6 +18,14 @@ def main() -> None:
     flashover.setdefault("display", {})["emergencyPriority"] = True
     flashover.setdefault("vl80sUiProjection", {})["severity"] = "STOP_AND_REPORT"
 
+    # В ER-DIAG-102 старт сознательно разводит реальное боксование и сомнительный
+    # канал скорости; общего выхода "это не тот сценарий" в графе нет. Убираем
+    # общий служебный terminal, чтобы граф содержал только достижимые узлы.
+    anti_slip = by_id["ER-DIAG-102"]
+    anti_slip["graph"]["nodes"] = [
+        node for node in anti_slip["graph"]["nodes"] if node.get("id") != "not-this-scenario"
+    ]
+
     if len(transformed.get("scenarios", [])) != 136:
         raise SystemExit("Ermak scenario count changed")
 
