@@ -1,0 +1,103 @@
+name: Temp Ermak P0 deepening batch 2
+
+on:
+  push:
+    branches:
+      - diagnostic-rework
+    paths:
+      - .github/workflows/temp-ermak-p0-batch2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  deepen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      EXPECTED_PARENT: e80bdc439b64b54133b48f20aebec87893c91ce5
+    steps:
+      - name: Checkout guarded branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Guard baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = "diagnostic-rework"
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
+
+      - name: Apply Ermak P0 deepening batch 2
+        run: PYTHONPATH=tools python3 tools/deepen_ermak_p0_batch2.py
+
+      - name: Verify scoped diff and diagnostic contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git status --porcelain --untracked-files=all | cut -c4- | sort -u)
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = "app/src/main/assets/technical/ermak_diagnostics.json.gz"
+          test "${changed[1]}" = "patch/app/src/main/assets/technical/ermak_diagnostics.json.gz"
+          cmp app/src/main/assets/technical/ermak_diagnostics.json.gz patch/app/src/main/assets/technical/ermak_diagnostics.json.gz
+          python3 qa/verify_ermak_p0_deepening.py
+          python3 qa/verify_ermak_p0_batch2.py
+          python3 qa/verify_diagnostic_graphs.py app/src/main/assets
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK 34
+        shell: bash
+        run: |
+          set -euo pipefail
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-34' 'build-tools;34.0.0'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract base and overlay candidate source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf buildsrc
+          mkdir buildsrc
+          unzip -q RailBrakeCalculator.zip -d buildsrc
+          test -f buildsrc/RailBrakeCalculator/settings.gradle.kts
+          cp -a patch/. buildsrc/RailBrakeCalculator/
+
+      - name: Run unit tests
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:testDebugUnitTest --stacktrace --console=plain
+
+      - name: Run Android lint
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
+
+      - name: Recheck branch before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin diagnostic-rework
+          test "$(git rev-parse origin/diagnostic-rework)" = "$GITHUB_SHA"
+
+      - name: Commit guarded Ermak diagnostic batch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/src/main/assets/technical/ermak_diagnostics.json.gz \
+            patch/app/src/main/assets/technical/ermak_diagnostics.json.gz
+          mapfile -t staged < <(git diff --cached --name-only | sort -u)
+          test "${#staged[@]}" -eq 2
+          git commit -m "feat: deepen second Ermak P0 diagnostic routes"
+          git push origin HEAD:diagnostic-rework
