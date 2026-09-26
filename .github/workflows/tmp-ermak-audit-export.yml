@@ -1,0 +1,28 @@
+name: Temporary Ermak audit source export
+
+on:
+  push:
+    branches:
+      - tmp/ermak-audit-export-20260926
+    paths:
+      - .github/workflows/tmp-ermak-audit-export.yml
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pack source
+        shell: bash
+        run: |
+          tar --exclude=.git --exclude='./.github/workflows/tmp-ermak-audit-export.yml' -czf /tmp/beta-ermak-audit-source.tar.gz .
+          mv /tmp/beta-ermak-audit-source.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beta-ermak-audit-source
+          path: beta-ermak-audit-source.tar.gz
+          if-no-files-found: error
+          retention-days: 1
