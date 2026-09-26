@@ -2,7 +2,7 @@
 from collections import deque
 from deepen_ermak_p0_batch1 import APP_ASSET, PATCH_ASSET, load, dump
 
-TARGETS={'ER-DIAG-089','ER-DIAG-093','ER-DIAG-094','ER-DIAG-095','ER-DIAG-096','ER-DIAG-097'}
+TARGETS={f'ER-DIAG-{i:03d}' for i in range(89,98)}
 
 def reach(nodes,start='start'):
     by={n['id']:n for n in nodes}; q=deque([start]); seen=set()
@@ -20,7 +20,7 @@ def main():
     if app!=patch: raise SystemExit('app/patch differ before reachability patch')
     by={s['id']:s for s in app['scenarios']}
     removed=[]
-    for sid in TARGETS:
+    for sid in sorted(TARGETS):
         nodes=by[sid]['graph']['nodes']; seen=reach(nodes,by[sid]['graph']['startNodeId'])
         unreachable=[n for n in nodes if n['id'] not in seen]
         bad=[n['id'] for n in unreachable if n.get('type')!='terminal']
@@ -32,6 +32,6 @@ def main():
             pr['questions']=[q for q in pr.get('questions',[]) if q.get('key') in seen]
     dump(APP_ASSET,app); dump(PATCH_ASSET,app)
     if APP_ASSET.read_bytes()!=PATCH_ASSET.read_bytes(): raise SystemExit('app/patch differ after reachability patch')
-    print('ERMAK_BATCH7A_PRUNED_UNREACHABLE='+(','.join(removed) if removed else 'none'))
+    print('ERMAK_BATCH7_PRUNED_UNREACHABLE='+(','.join(removed) if removed else 'none'))
 
 if __name__=='__main__': main()
