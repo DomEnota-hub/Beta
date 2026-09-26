@@ -87,10 +87,19 @@ assert "прямодейств" in p085 and "автоматичес" in p085 and
 p086 = " ".join(signatures["ER-DIAG-086"]).lower()
 assert "тормозной магистрал" in p086 and "тц" in p086 and "прямодейств" in p086
 
-# Profile-sensitive brake scenarios must remain gated; do not collapse 395/130/130-2.
+# Profile-sensitive brake scenarios must remain structurally fail-closed.
+# Validate the actual route edge to profile-required instead of depending on wording.
 for sid in ("ER-DIAG-081", "ER-DIAG-082", "ER-DIAG-084", "ER-DIAG-085", "ER-DIAG-086"):
-    profile_text = " ".join(signatures[sid]).lower()
-    assert "профил" in profile_text or "№395" in " ".join(signatures[sid]), sid
+    nodes = by_id[sid]["graph"]["nodes"]
+    profile_node = next((n for n in nodes if n.get("id") == "profile"), None)
+    assert profile_node is not None and profile_node.get("type") == "question", sid
+    targets = {choice.get("nextNodeId") for choice in profile_node.get("choices", [])}
+    assert "profile-required" in targets, (sid, targets)
+    assert "reassess" in targets, (sid, targets)
+
+# The two most execution-sensitive routes must explicitly distinguish brake equipment families.
+assert all(token in " ".join(signatures["ER-DIAG-086"]) for token in ("№395", "№130", "№130-2"))
+assert "исполн" in " ".join(signatures["ER-DIAG-085"]).lower()
 
 strict_generic = sum(
     any(n.get("prompt") == GENERIC for n in s.get("graph", {}).get("nodes", []))
