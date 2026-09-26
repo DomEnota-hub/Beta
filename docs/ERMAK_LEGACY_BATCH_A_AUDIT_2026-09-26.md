@@ -33,9 +33,11 @@ Re-audited and deepened 24 scenarios that already had separate trees but still e
 
 ## Safety changes
 
-All 24 target graphs remove `source_action`. They now separate symptom scope, confirmed execution profile, command/power/protection/actuator/indication evidence, and safe terminal outcomes. Historical recovery operations remain traceable in source metadata but are not diagnostic tests.
+21 of the 24 target graphs remove `source_action` completely. `ER-DIAG-012`, `ER-DIAG-013` and `ER-DIAG-014` retain exactly one historical `source_action` node each solely to preserve runtime coverage of the application's `SAFETY_GATE_REQUIRED` policy. These nodes explicitly state that the 2010 manual-QT1 procedure is **not a currently permitted user action**, are marked `manual_power_apparatus`, remain source-bound, and lead only to a safe reassessment terminal.
 
-The canonical action policy for these routes is `TRIAGE_ONLY_NO_REPAIR` until a current source and exact profile authorize a further action.
+All 24 routes now separate symptom scope, confirmed execution profile, command/power/protection/actuator/indication evidence, and safe terminal outcomes. Historical recovery operations remain traceable but are not used as ordinary diagnostic tests.
+
+The canonical action policy for all 24 routes is `TRIAGE_ONLY_NO_REPAIR` until a current source and exact profile authorize a further action.
 
 ## QA contract
 
@@ -43,11 +45,12 @@ The canonical action policy for these routes is `TRIAGE_ONLY_NO_REPAIR` until a 
 
 - 136 scenarios preserved;
 - app/patch mirrors identical;
-- no `source_action` in the 24 routes;
+- 21 routes contain no `source_action`;
+- `ER-DIAG-012…014` each contain exactly one explicitly historical, blocked `SAFETY_GATE_REQUIRED` node;
 - no old generic prompt in those routes;
 - at least four distinct questions, three checks and three prohibitions per route;
 - full graph reachability;
 - required apparatus tokens remain present;
 - old №671r reference is historical;
 - current №996/r cross-check reference exists;
-- dangerous legacy phrases are absent from user graph/actions.
+- dangerous legacy phrases are absent from the canonical user graph/actions.
