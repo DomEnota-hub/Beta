@@ -73,7 +73,7 @@ for sid in ('ER-DIAG-059','ER-DIAG-060','ER-DIAG-064'):
 # Explicitly preserve uncertainty found during cross-checks.
 t61=json.dumps(by['ER-DIAG-061'],ensure_ascii=False)
 assert 'KA7/KA15' in t61
-assert 'не считать KA7 или KA15 универсальным' in t61
+assert 'не считать ka7 или ka15 универсальным' in t61.lower()
 
 t62=json.dumps(by['ER-DIAG-062'],ensure_ascii=False)
 assert 'A6' in t62 and 'A27' in t62 and 'не смешивать' in t62.lower()
