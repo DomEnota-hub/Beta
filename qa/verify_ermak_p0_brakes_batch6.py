@@ -63,7 +63,7 @@ for sid in sorted(TARGETS):
 assert len(set(signatures.values())) == len(TARGETS), "batch6 contains duplicate question trees"
 
 p081 = " ".join(signatures["ER-DIAG-081"]).lower()
-assert "тормоз" in p081 and "давлен" in p081 and ("механ" in p081 or "тц" in p081)
+assert "тормоз" in p081 and "давлен" in p081 and ("цилиндр" in p081 or "тц" in p081)
 
 p082 = " ".join(signatures["ER-DIAG-082"]).lower()
 assert "одна тележ" in p082 and "давлен" in p082
