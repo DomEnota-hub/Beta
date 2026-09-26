@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      EXPECTED_PARENT: 86bfdfd86d81df307771a308b724f96088cd1536
+      EXPECTED_PARENT: 2e245b84c31ead6060a5a2f39ea93faab79e64df
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
@@ -30,6 +30,21 @@ jobs:
           test "${GITHUB_REF_NAME}" = "diagnostic-rework"
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
 
+      - name: Fix ER-DIAG-136 route reachability in permanent transformer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('tools/deepen_ermak_p0_batch2.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'q("start","При одинаковой команде секции реально развивают разную тягу/токи?",[("Да","profile"),("Нет / только показания","measurement")]),'
+          new = 'q("start","При одинаковой команде секции реально развивают разную тягу/токи?",[("Да","profile"),("Только показания различаются","measurement"),("Нет / другой симптом","not-this-scenario")]),'
+          if old not in text:
+              raise SystemExit('ER-DIAG-136 start route marker not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
       - name: Apply Ermak P0 deepening batch 2
         run: PYTHONPATH=tools python3 tools/deepen_ermak_p0_batch2.py
 
@@ -39,9 +54,10 @@ jobs:
           set -euo pipefail
           rm -rf tools/__pycache__
           mapfile -t changed < <(git status --porcelain --untracked-files=all | cut -c4- | sort -u)
-          test "${#changed[@]}" -eq 2
-          test "${changed[0]}" = "app/src/main/assets/technical/ermak_diagnostics.json.gz"
-          test "${changed[1]}" = "patch/app/src/main/assets/technical/ermak_diagnostics.json.gz"
+          test "${#changed[@]}" -eq 3
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'app/src/main/assets/technical/ermak_diagnostics.json.gz'
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'patch/app/src/main/assets/technical/ermak_diagnostics.json.gz'
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'tools/deepen_ermak_p0_batch2.py'
           cmp app/src/main/assets/technical/ermak_diagnostics.json.gz patch/app/src/main/assets/technical/ermak_diagnostics.json.gz
           python3 -u qa/verify_ermak_p0_deepening.py
           python3 -u qa/verify_ermak_p0_batch2.py
@@ -98,8 +114,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             app/src/main/assets/technical/ermak_diagnostics.json.gz \
-            patch/app/src/main/assets/technical/ermak_diagnostics.json.gz
+            patch/app/src/main/assets/technical/ermak_diagnostics.json.gz \
+            tools/deepen_ermak_p0_batch2.py
           mapfile -t staged < <(git diff --cached --name-only | sort -u)
-          test "${#staged[@]}" -eq 2
+          test "${#staged[@]}" -eq 3
           git commit -m "feat: deepen second Ermak P0 diagnostic routes"
           git push origin HEAD:diagnostic-rework
