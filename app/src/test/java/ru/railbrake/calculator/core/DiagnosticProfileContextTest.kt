@@ -5,6 +5,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DiagnosticProfileContextTest {
+    private val currentSource = DiagnosticSourceReference(
+        sourceId = "TEST-NORM",
+        document = "Действующий тестовый нормативный источник",
+        kind = DiagnosticSourceKind.NORMATIVE,
+        version = DiagnosticSourceVersion(
+            versionLabel = "test-version",
+            status = DiagnosticSourceVersionStatus.CURRENT_CONFIRMED
+        )
+    )
+
     private val profileAction = DiagnosticActionMetadata(
         riskClass = "normal",
         userFacingPolicy = DiagnosticUserFacingPolicy.SOURCE_AND_PROFILE_REQUIRED,
@@ -16,7 +26,8 @@ class DiagnosticProfileContextTest {
         DiagnosticPolicyEngine.evaluate(
             applicability,
             profileAction,
-            context.toPolicyContext(applicability)
+            context.toPolicyContext(applicability),
+            listOf(currentSource)
         )
 
     @Test
