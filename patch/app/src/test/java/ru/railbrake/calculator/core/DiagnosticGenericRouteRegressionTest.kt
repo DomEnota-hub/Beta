@@ -11,6 +11,6 @@ class DiagnosticGenericRouteRegressionTest {
             scenario.questions.firstOrNull()?.text == genericRoot
         }
         println("VL80S_STRICT_GENERIC_ROUTES=$strictGeneric")
-        assertTrue("strict generic routes regressed: $strictGeneric", strictGeneric <= 30)
+        assertTrue("strict generic routes regressed: $strictGeneric", strictGeneric <= 9)
     }
 }
