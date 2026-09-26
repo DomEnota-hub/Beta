@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
-      EXPECTED_PARENT: 796e498b813beedeb5935b1c5a670dace42a808e
+      EXPECTED_PARENT: 6187a0c25cca69c68a834260eb7e914615919ee3
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
@@ -28,6 +28,8 @@ jobs:
           test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
       - name: Apply recuperation batch9
         run: python3 tools/deepen_ermak_p0_recuperation_batch9.py
+      - name: Prune unreachable batch9 terminals
+        run: python3 tools/patch_ermak_recuperation_batch9_reachability.py
       - name: Verify scoped asset diff
         shell: bash
         run: |
