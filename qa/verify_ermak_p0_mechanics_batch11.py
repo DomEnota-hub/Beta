@@ -32,6 +32,17 @@ def reachable(s):
         q.extend(c['nextNodeId'] for c in n.get('choices',[]))
     return seen
 
+def assert_acyclic(s):
+    nodes={n['id']:n for n in s['graph']['nodes']}; state={}
+    def visit(node_id):
+        assert state.get(node_id)!=1,(s['id'],'cycle',node_id)
+        if state.get(node_id)==2:return
+        state[node_id]=1; node=nodes[node_id]
+        targets=([node['nextNodeId']] if node.get('nextNodeId') else [])+[c['nextNodeId'] for c in node.get('choices',[])]
+        for target in targets: visit(target)
+        state[node_id]=2
+    visit(s['graph']['startNodeId'])
+
 app=load(APP); patch=load(PATCH)
 assert app==patch
 assert len(app['scenarios'])==136
@@ -39,6 +50,7 @@ by={s['id']:s for s in app['scenarios']}; assert TARGETS<=by.keys()
 for sid in sorted(TARGETS):
     s=by[sid]; ids={n['id'] for n in s['graph']['nodes']}
     assert reachable(s)==ids,(sid,sorted(ids-reachable(s)))
+    assert_acyclic(s)
     prompts=[n.get('prompt','') for n in s['graph']['nodes'] if n.get('type')=='question']
     assert GENERIC not in prompts,sid
     assert len(set(prompts))>=3,(sid,prompts)

@@ -370,7 +370,8 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
         DiagnosticPolicyEngine.evaluate(
             applicability = scenario.applicability,
             action = it.actionMetadata,
-            context = profileContext.toPolicyContext(scenario.applicability)
+            context = profileContext.toPolicyContext(scenario.applicability),
+            sourceRefs = scenario.sourceRefs
         )
     }
 

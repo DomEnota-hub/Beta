@@ -56,7 +56,8 @@ object DiagnosticPolicyEngine {
     fun evaluate(
         applicability: DiagnosticApplicability,
         action: DiagnosticActionMetadata,
-        context: DiagnosticPolicyContext
+        context: DiagnosticPolicyContext,
+        sourceRefs: List<DiagnosticSourceReference> = emptyList()
     ): DiagnosticPolicyDecision {
         val policy = action.userFacingPolicy
 
@@ -80,6 +81,8 @@ object DiagnosticPolicyEngine {
                 when {
                     !action.sourceBound ->
                         blocked("Действие не привязано к подтверждённому источнику.")
+                    !DiagnosticSourcePolicy.evaluateAny(sourceRefs).usableForSourceBoundAction ->
+                        blocked("Для действия нет подтверждённой актуальной нормативной или заводской версии источника.")
                     !profileCompatible(applicability, context) ->
                         blocked("Действие зависит от исполнения локомотива. Сначала подтвердите профиль оборудования.")
                     else -> allowed()
@@ -90,6 +93,8 @@ object DiagnosticPolicyEngine {
                 when {
                     !action.sourceBound ->
                         blocked("Опасное действие не привязано к подтверждённому источнику.")
+                    !DiagnosticSourcePolicy.evaluateAny(sourceRefs).usableForSourceBoundAction ->
+                        blocked("Для опасного действия нет подтверждённой актуальной нормативной или заводской версии источника.")
                     !profileCompatible(applicability, context) ->
                         blocked("Опасное действие зависит от исполнения локомотива. Сначала подтвердите профиль оборудования.")
                     !context.safetyGateConfirmed ->
@@ -102,6 +107,8 @@ object DiagnosticPolicyEngine {
                 when {
                     !action.sourceBound ->
                         blocked("Аварийное действие не привязано к подтверждённому источнику.")
+                    !DiagnosticSourcePolicy.evaluateAny(sourceRefs).usableForSourceBoundAction ->
+                        blocked("Для аварийного действия нет подтверждённой актуальной нормативной версии источника.")
                     applicability.variantSelectionRequired && !profileCompatible(applicability, context) ->
                         blocked("Аварийный порядок зависит от исполнения. Требуется подтверждённый профиль.")
                     else -> allowed()

@@ -95,6 +95,11 @@ jobs:
         working-directory: buildsrc/RailBrakeCalculator
         run: timeout --signal=TERM 15m gradle :app:lintDebug --stacktrace --console=plain
 
+      - name: Assemble Android debug APK
+        if: steps.audit_job.outputs.run_android == 'true'
+        working-directory: buildsrc/RailBrakeCalculator
+        run: timeout --signal=TERM 15m gradle :app:assembleDebug --stacktrace --console=plain
+
       - name: Guard branch before asset commit
         if: steps.audit_job.outputs.mode == 'apply_and_commit'
         shell: bash

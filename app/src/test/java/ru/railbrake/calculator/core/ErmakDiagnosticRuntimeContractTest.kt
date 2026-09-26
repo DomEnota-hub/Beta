@@ -88,16 +88,42 @@ class ErmakDiagnosticRuntimeContractTest {
     fun allProtectedActionNodesAreClassifiedForRuntimePolicyEvaluation() {
         val protected = parseErmakDiagnostics(asset())
             .flatMap { it.nodes.values }
-            .filter {
+            .filter { it.type == "source_action" || it.type == "emergency_action" }
+
+        assertTrue(protected.isNotEmpty())
+        assertTrue(protected.all { it.requiresPolicyEvaluation() })
+        assertTrue(
+            protected.all {
                 it.actionMetadata.userFacingPolicy in setOf(
                     DiagnosticUserFacingPolicy.SOURCE_AND_PROFILE_REQUIRED,
                     DiagnosticUserFacingPolicy.SAFETY_GATE_REQUIRED,
                     DiagnosticUserFacingPolicy.EMERGENCY_SOURCE_BOUND
                 )
             }
+        )
+        assertTrue(protected.all { it.actionMetadata.sourceBound })
+    }
 
-        assertTrue(protected.isNotEmpty())
-        assertTrue(protected.all { it.requiresPolicyEvaluation() })
+    @Test
+    fun everyRuntimeActionFailsClosedWithoutSourceProvenance() {
+        val scenarios = parseErmakDiagnostics(asset())
+        val actions = scenarios.flatMap { scenario ->
+            scenario.nodes.values
+                .filter { it.requiresPolicyEvaluation() }
+                .map { scenario to it }
+        }
+
+        assertTrue(actions.isNotEmpty())
+        assertTrue(
+            actions.all { (scenario, action) ->
+                !DiagnosticPolicyEngine.evaluate(
+                    scenario.applicability,
+                    action.actionMetadata,
+                    DiagnosticPolicyContext(),
+                    emptyList()
+                ).allowed
+            }
+        )
     }
 
     @Test

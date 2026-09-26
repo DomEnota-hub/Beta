@@ -5,6 +5,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DiagnosticPolicyEngineTest {
+    private val currentSource = DiagnosticSourceReference(
+        sourceId = "TEST-NORM",
+        document = "Действующий нормативный документ",
+        kind = DiagnosticSourceKind.NORMATIVE,
+        version = DiagnosticSourceVersion(
+            versionLabel = "test-version",
+            status = DiagnosticSourceVersionStatus.CURRENT_CONFIRMED
+        )
+    )
+
     private val profileSpecific = DiagnosticApplicability(
         families = setOf("2ES5K", "3ES5K"),
         profiles = setOf("base_early"),
@@ -24,7 +34,8 @@ class DiagnosticPolicyEngineTest {
             DiagnosticPolicyEngine.evaluate(
                 profileSpecific,
                 action,
-                DiagnosticPolicyContext()
+                DiagnosticPolicyContext(),
+                listOf(currentSource)
             ).allowed
         )
 
@@ -37,7 +48,8 @@ class DiagnosticPolicyEngineTest {
                     selectedProfileId = "base_early",
                     profileConfirmed = true,
                     safetyGateConfirmed = false
-                )
+                ),
+                listOf(currentSource)
             ).allowed
         )
 
@@ -50,7 +62,8 @@ class DiagnosticPolicyEngineTest {
                     selectedProfileId = "base_early",
                     profileConfirmed = true,
                     safetyGateConfirmed = true
-                )
+                ),
+                listOf(currentSource)
             ).allowed
         )
     }
@@ -68,10 +81,28 @@ class DiagnosticPolicyEngineTest {
                 rawUserFacingPolicy = "EMERGENCY_SOURCE_BOUND",
                 sourceBound = true
             ),
-            DiagnosticPolicyContext()
+            DiagnosticPolicyContext(),
+            listOf(currentSource)
         )
 
         assertTrue(decision.allowed)
+    }
+
+    @Test
+    fun sourceBoundActionFailsClosedWithoutCurrentSource() {
+        val decision = DiagnosticPolicyEngine.evaluate(
+            DiagnosticApplicability(profiles = setOf("all_confirmed_profiles")),
+            DiagnosticActionMetadata(
+                riskClass = "fire_emergency",
+                userFacingPolicy = DiagnosticUserFacingPolicy.EMERGENCY_SOURCE_BOUND,
+                rawUserFacingPolicy = "EMERGENCY_SOURCE_BOUND",
+                sourceBound = true
+            ),
+            DiagnosticPolicyContext(),
+            emptyList()
+        )
+
+        assertFalse(decision.allowed)
     }
 
     @Test

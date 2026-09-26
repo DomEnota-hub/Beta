@@ -53,6 +53,8 @@ assert ('зарядн' in p91 or 'сверхзаряд' in p91) and ('ур' in p
 
 p92=' '.join(n.get('prompt','')+' '+n.get('text','') for n in by['ER-DIAG-092']['graph']['nodes']).lower()
 assert 'рукав' in p92 and ('давлен' in p92 or 'кран' in p92) and ('провер' in p92 or 'опробован' in p92)
+assert not any(n.get('userFacingPolicy')=='SAFETY_FIRST' for n in by['ER-DIAG-092']['graph']['nodes'])
+assert next(n for n in by['ER-DIAG-092']['graph']['nodes'] if n['id']=='safety-stop')['type']=='info'
 assert any(r.get('sourceId')=='ER-AUDIT-SAFETY-2961R' for r in by['ER-DIAG-092']['sourceRefs'])
 assert any(r.get('sourceId')=='ER-AUDIT-NORM-PTE-250' for r in by['ER-DIAG-092']['sourceRefs'])
 
