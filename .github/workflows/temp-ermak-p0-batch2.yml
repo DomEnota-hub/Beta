@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      EXPECTED_PARENT: f1927017a01d1825ac950cd186f150c7c43f22ed
+      EXPECTED_PARENT: 86bfdfd86d81df307771a308b724f96088cd1536
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout guarded branch
         uses: actions/checkout@v4
@@ -36,16 +37,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf tools/__pycache__
           mapfile -t changed < <(git status --porcelain --untracked-files=all | cut -c4- | sort -u)
           test "${#changed[@]}" -eq 2
           test "${changed[0]}" = "app/src/main/assets/technical/ermak_diagnostics.json.gz"
           test "${changed[1]}" = "patch/app/src/main/assets/technical/ermak_diagnostics.json.gz"
           cmp app/src/main/assets/technical/ermak_diagnostics.json.gz patch/app/src/main/assets/technical/ermak_diagnostics.json.gz
-          echo "== batch1 contract =="
           python3 -u qa/verify_ermak_p0_deepening.py
-          echo "== batch2 contract =="
           python3 -u qa/verify_ermak_p0_batch2.py
-          echo "== global graph contract =="
           python3 -u qa/verify_diagnostic_graphs.py app/src/main/assets
 
       - name: Set up JDK 17
