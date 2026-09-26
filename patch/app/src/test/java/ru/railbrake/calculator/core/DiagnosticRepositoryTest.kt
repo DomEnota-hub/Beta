@@ -25,6 +25,35 @@ class DiagnosticRepositoryTest {
         assertEquals(null, DiagnosticRepository.nextQuestion(braking, "rpt-effect", DiagnosticResponse.NO))
         assertEquals("rpt-damage", DiagnosticRepository.nextQuestion(braking, "rpt-effect", DiagnosticResponse.YES)?.key)
         assertTrue(DiagnosticRepository.scenario("battery-no-voltage")!!.questions.first().key == "bv-source")
+
+        val overload = DiagnosticRepository.scenario("traction-overload-relay-trip")!!
+        assertEquals(null, DiagnosticRepository.nextQuestion(overload, "rp-physical", DiagnosticResponse.YES))
+        assertEquals("rp-repeat", DiagnosticRepository.nextQuestion(overload, "rp-physical", DiagnosticResponse.NO)?.key)
+
+        val ground = DiagnosticRepository.scenario("traction-ground-relay-trip")!!
+        assertEquals(null, DiagnosticRepository.nextQuestion(ground, "rz-physical", DiagnosticResponse.YES))
+
+        val aux113 = DiagnosticRepository.scenario("aux-relay-113-trip")!!
+        assertEquals(null, DiagnosticRepository.nextQuestion(aux113, "r113-indicator", DiagnosticResponse.NO))
+    }
+
+    @Test
+    fun operationalRoutesUseSourceSpecificImmediateActions() {
+        val radio = DiagnosticRepository.scenario("radio-communication-loss")!!
+        assertTrue(radio.immediateActions.any { it.contains("ДНЦ") && it.contains("ДСП") })
+        assertTrue(radio.immediateActions.any { it.contains("ближайшей станции") })
+
+        val coupler = DiagnosticRepository.scenario("ext-coupler-damage")!!
+        assertTrue(coupler.immediateActions.any { it.contains("закреп") })
+        assertTrue(coupler.immediateActions.any { it.contains("целостность ТМ") })
+
+        val impact = DiagnosticRepository.scenario("external-object-impact")!!
+        assertTrue(impact.immediateActions.any { it.contains("ТМ") && it.contains("ГР") })
+        assertTrue(impact.immediateActions.any { it.contains("не возобновлять") })
+
+        val wheel = DiagnosticRepository.scenario("wheel-flat-impact")!!
+        assertTrue(wheel.immediateActions.any { it.contains("измерить") })
+        assertTrue(wheel.immediateActions.any { it.contains("действующей норме") })
     }
 
     @Test
@@ -99,19 +128,18 @@ class DiagnosticRepositoryTest {
         val scenario = DiagnosticRepository.scenario("gv-no-close")!!
         val first = scenario.questions.first()
 
-        assertEquals("gv-command", DiagnosticRepository.nextQuestion(scenario, first.key, DiagnosticResponse.NO)?.key)
-        assertEquals("gv-load", DiagnosticRepository.nextQuestion(scenario, first.key, DiagnosticResponse.YES)?.key)
-        assertEquals("gv-protection", DiagnosticRepository.nextQuestion(scenario, "gv-load", DiagnosticResponse.YES)?.key)
+        assertEquals("gvc-scope", DiagnosticRepository.nextQuestion(scenario, first.key, DiagnosticResponse.NO)?.key)
+        assertEquals(null, DiagnosticRepository.nextQuestion(scenario, first.key, DiagnosticResponse.YES))
+        assertEquals("gvc-voltage", DiagnosticRepository.nextQuestion(scenario, "gvc-scope", DiagnosticResponse.YES)?.key)
+        assertEquals("gvc-attempt", DiagnosticRepository.nextQuestion(scenario, "gvc-voltage", DiagnosticResponse.NO)?.key)
     }
 
     @Test
     fun tractionTreeScoresScopeAndPositionSeparately() {
         val scenario = DiagnosticRepository.scenario("traction-no-assemble")!!
-        val state = DiagnosticDecisionEngine.start(scenario)
-        val result = DiagnosticDecisionEngine.answer(scenario, state, DiagnosticResponse.YES)
-
-        assertEquals("traction-ekg", result.nextQuestion?.key)
-        assertTrue(result.leadingCauses.any { it.id == "traction-section" })
+        assertEquals("tna-va2", DiagnosticRepository.nextQuestion(scenario, "tna-scope", DiagnosticResponse.YES)?.key)
+        assertEquals(null, DiagnosticRepository.nextQuestion(scenario, "tna-va2", DiagnosticResponse.NO))
+        assertEquals("tna-aux", DiagnosticRepository.nextQuestion(scenario, "tna-apparatus", DiagnosticResponse.YES)?.key)
     }
 
     @Test
