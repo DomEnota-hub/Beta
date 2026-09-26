@@ -91,7 +91,14 @@ for sid in ('ER-DIAG-127','ER-DIAG-128'):
     s=by[sid]; text=json.dumps(s,ensure_ascii=False).lower()
     assert 'fire-terminal' in {n['id'] for n in s['graph']['nodes']},sid
     assert '№247/р' in text,sid
-    assert 'пробн' in text and 'огнетушащ' in text,sid
+
+# Detection fault and suppression fault are deliberately different contracts.
+text127=json.dumps(by['ER-DIAG-127'],ensure_ascii=False).lower()
+assert 'шлейф' in text127 and 'датчик' in text127
+assert 'дым' in text127 and 'огонь' in text127
+text128=json.dumps(by['ER-DIAG-128'],ensure_ascii=False).lower()
+assert 'пробн' in text128 and 'огнетушащ' in text128
+assert 'пожаротуш' in text128 and 'пуск' in text128
 
 # High-voltage/electronic granular routes stay triage-only and profile-gated.
 for sid in ('ER-DIAG-131','ER-DIAG-132','ER-DIAG-133','ER-DIAG-134','ER-DIAG-135'):
