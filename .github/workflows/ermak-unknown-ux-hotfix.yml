@@ -32,8 +32,7 @@ jobs:
               Path('patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt'),
           ]
 
-          helper_marker = '''@Composable
-          private fun ErmakQuestionAnswers('''
+          helper_marker = '@Composable\nprivate fun ErmakQuestionAnswers('
           helper_replacement = '''private fun ErmakDiagnosticScenario.resolveUnknownPresentationTarget(startNodeId: String): String {
               var current = startNodeId
               val visited = mutableSetOf<String>()
@@ -48,82 +47,36 @@ jobs:
           @Composable
           private fun ErmakQuestionAnswers('''
 
-          old_unknown = '''                                        navigate(
-                                              uncertaintyChoice.nextNodeId,
-                                              "${node.text} — Не знаю",
-                                              incrementsQuestion = true
-                                          )'''
-          new_unknown = '''                                        navigate(
-                                              scenario.resolveUnknownPresentationTarget(uncertaintyChoice.nextNodeId),
-                                              "${node.text} — Не знаю",
-                                              incrementsQuestion = true
-                                          )'''
+          unknown_marker = 'uncertaintyChoice.nextNodeId,'
+          unknown_replacement = 'scenario.resolveUnknownPresentationTarget(uncertaintyChoice.nextNodeId),'
 
-          old_result_buttons = '''                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                      OutlinedButton(onClick = {
-                          nodeId = scenario.startNodeId
-                          history = emptyList()
-                          uncertain = false
-                          questionNumber = 1
-                          savedLocally = false
-                          pathNodeIds = emptyList()
-                          pathHistorySizes = emptyList()
-                          pathQuestionNumbers = emptyList()
-                          pathUncertainStates = emptyList()
-                      }) { Text("Начать заново") }
-                      Button(onClick = onBack) { Text("К списку неисправностей") }
-                  }'''
-          new_result_buttons = '''                Row(
-                      Modifier.fillMaxWidth(),
-                      horizontalArrangement = Arrangement.spacedBy(8.dp),
-                      verticalAlignment = Alignment.CenterVertically
-                  ) {
-                      if (pathNodeIds.isNotEmpty()) {
-                          OutlinedButton(
-                              onClick = { navigateBack() },
-                              modifier = Modifier.weight(1f)
-                          ) { Text("Назад на шаг") }
-                      }
-                      OutlinedButton(
-                          onClick = {
-                              nodeId = scenario.startNodeId
-                              history = emptyList()
-                              uncertain = false
-                              questionNumber = 1
-                              savedLocally = false
-                              pathNodeIds = emptyList()
-                              pathHistorySizes = emptyList()
-                              pathQuestionNumbers = emptyList()
-                              pathUncertainStates = emptyList()
-                          },
-                          modifier = Modifier.weight(1f)
-                      ) { Text("Начать заново") }
+          result_row_marker = '                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {\n                    OutlinedButton(onClick = {'
+          result_row_replacement = '''                if (pathNodeIds.isNotEmpty()) {
+                      TextButton(onClick = { navigateBack() }) { Text("Назад на шаг") }
                   }
-                  Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
-                      Text("К списку неисправностей")
-                  }'''
+                  Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                      OutlinedButton(onClick = {'''
 
           for path in paths:
               text = path.read_text(encoding='utf-8')
               if text.count(helper_marker) != 1:
                   raise SystemExit(f'{path}: helper marker count={text.count(helper_marker)}')
               text = text.replace(helper_marker, helper_replacement, 1)
-              if text.count(old_unknown) != 1:
-                  raise SystemExit(f'{path}: UNKNOWN navigation snippet count={text.count(old_unknown)}')
-              text = text.replace(old_unknown, new_unknown, 1)
-              if text.count(old_result_buttons) != 1:
-                  raise SystemExit(f'{path}: result button snippet count={text.count(old_result_buttons)}')
-              text = text.replace(old_result_buttons, new_result_buttons, 1)
+              if text.count(unknown_marker) != 1:
+                  raise SystemExit(f'{path}: UNKNOWN marker count={text.count(unknown_marker)}')
+              text = text.replace(unknown_marker, unknown_replacement, 1)
+              if text.count(result_row_marker) != 1:
+                  raise SystemExit(f'{path}: result row marker count={text.count(result_row_marker)}')
+              text = text.replace(result_row_marker, result_row_replacement, 1)
               path.write_text(text, encoding='utf-8')
 
-          app = paths[0].read_bytes()
-          patch = paths[1].read_bytes()
-          if app != patch:
+          if paths[0].read_bytes() != paths[1].read_bytes():
               raise SystemExit('ErmakDiagnosticsScreen mirrors differ after patch')
           print('Ermak UNKNOWN UX hotfix applied to app and patch mirrors')
           PY
           git diff --check
           grep -Fq 'resolveUnknownPresentationTarget' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
+          grep -Fq 'scenario.resolveUnknownPresentationTarget(uncertaintyChoice.nextNodeId)' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           grep -Fq 'Text("Назад на шаг")' app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
           cmp app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt patch/app/src/main/java/ru/railbrake/calculator/ui/ErmakDiagnosticsScreen.kt
 
