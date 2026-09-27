@@ -354,6 +354,17 @@ private fun buildErmakDiagnosticReport(
     }
 }.trim()
 
+private fun ErmakDiagnosticScenario.resolveUnknownPresentationTarget(startNodeId: String): String {
+    var current = startNodeId
+    val visited = mutableSetOf<String>()
+    while (visited.add(current)) {
+        val candidate = nodes[current] ?: return current
+        if (!candidate.type.equals("uncertainty", ignoreCase = true)) return current
+        current = candidate.nextNodeId ?: return current
+    }
+    return startNodeId
+}
+
 @Composable
 private fun ErmakQuestionAnswers(
     choices: List<ErmakDiagnosticChoice>,
@@ -534,7 +545,7 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                                 onClick = {
                                     if (uncertaintyChoice != null) {
                                         navigate(
-                                            uncertaintyChoice.nextNodeId,
+                                            scenario.resolveUnknownPresentationTarget(uncertaintyChoice.nextNodeId),
                                             "${node.text} — Не знаю",
                                             incrementsQuestion = true
                                         )
@@ -683,8 +694,11 @@ private fun ErmakDiagnosticRoute(scenario: ErmakDiagnosticScenario, onBack: () -
                 if (savedLocally) {
                     Text("Сессия сохранена на устройстве.", color = MaterialTheme.colorScheme.primary)
                 }
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedButton(onClick = {
+                if (pathNodeIds.isNotEmpty()) {
+            TextButton(onClick = { navigateBack() }) { Text("Назад на шаг") }
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedButton(onClick = {
                         nodeId = scenario.startNodeId
                         history = emptyList()
                         uncertain = false
