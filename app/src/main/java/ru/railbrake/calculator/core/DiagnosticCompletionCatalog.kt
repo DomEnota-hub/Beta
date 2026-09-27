@@ -310,7 +310,7 @@ object DiagnosticCompletionCatalog {
 
     private fun q(key: String, text: String, yes: String, no: String, next: String, yesNext: String = next, noNext: String = next) = DiagnosticQuestion(
         key = key, text = text, yesMeaning = yes, noMeaning = no,
-        unknownMeaning = "Состояние считать неподтверждённым; расширять действия нельзя.",
-        yesNextKey = yesNext, noNextKey = noNext, unknownNextKey = DiagnosticRepository.END_OF_FLOW
+        unknownMeaning = "Не удалось подтвердить признак «$text». Остаются возможны оба направления: $yes $no Следующее уточнение используется как независимый признак; неподтверждённая ветвь не разрешает дополнительных действий.",
+        yesNextKey = yesNext, noNextKey = noNext, unknownNextKey = next
     )
 }

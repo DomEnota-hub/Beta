@@ -1078,13 +1078,13 @@ object DiagnosticDeepening {
 
     private fun q(
         key: String, text: String, yes: String, no: String, next: String,
-        yesNext: String = next, noNext: String = next, unknownNext: String = DiagnosticRepository.END_OF_FLOW
+        yesNext: String = next, noNext: String = next, unknownNext: String = next
     ) = DiagnosticQuestion(
         key = key,
         text = text,
         yesMeaning = yes,
         noMeaning = no,
-        unknownMeaning = "Считать состояние неподтверждённым, записать наблюдение и не расширять действия.",
+        unknownMeaning = "Не удалось подтвердить признак «$text». Одновременно сохраняются обе области поиска: $yes $no Следующий вопрос используется как независимый признак; действия по неподтверждённой ветви не выполнять.",
         yesNextKey = yesNext,
         noNextKey = noNext,
         unknownNextKey = unknownNext

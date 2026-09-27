@@ -11,15 +11,15 @@ class DiagnosticRepositoryTest {
         val roof = DiagnosticRepository.scenario("substation-protection-roof")!!
         assertEquals(null, DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.YES))
         assertEquals("sr-section", DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.NO)?.key)
-        assertEquals(null, DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.UNKNOWN))
+        assertEquals("sr-section", DiagnosticRepository.nextQuestion(roof, "sr-contact", DiagnosticResponse.UNKNOWN)?.key)
 
         val rectifier = DiagnosticRepository.scenario("rectifier-differential-trip")!!
         assertEquals("rd-damage", DiagnosticRepository.nextQuestion(rectifier, "rd-combined", DiagnosticResponse.YES)?.key)
-        assertEquals(null, DiagnosticRepository.nextQuestion(rectifier, "rd-combined", DiagnosticResponse.UNKNOWN))
+        assertEquals("rd-damage", DiagnosticRepository.nextQuestion(rectifier, "rd-combined", DiagnosticResponse.UNKNOWN)?.key)
 
         val drive = DiagnosticRepository.scenario("ekg-drive-disconnected")!!
         assertEquals("ed-other", DiagnosticRepository.nextQuestion(drive, "ed-motion", DiagnosticResponse.YES)?.key)
-        assertEquals(null, DiagnosticRepository.nextQuestion(drive, "ed-motion", DiagnosticResponse.UNKNOWN))
+        assertEquals("ed-other", DiagnosticRepository.nextQuestion(drive, "ed-motion", DiagnosticResponse.UNKNOWN)?.key)
 
         val braking = DiagnosticRepository.scenario("rheostatic-rpt-trip")!!
         assertEquals(null, DiagnosticRepository.nextQuestion(braking, "rpt-effect", DiagnosticResponse.NO))

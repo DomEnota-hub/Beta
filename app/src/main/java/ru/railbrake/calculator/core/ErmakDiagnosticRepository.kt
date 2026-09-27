@@ -6,8 +6,11 @@ import org.json.JSONObject
 
 data class ErmakDiagnosticChoice(
     val label: String,
-    val nextNodeId: String
-)
+    val nextNodeId: String,
+    val responseKind: String = "OPTION"
+) {
+    val isUnknown: Boolean get() = responseKind.equals("UNKNOWN", ignoreCase = true)
+}
 
 data class ErmakDiagnosticNode(
     val id: String,
@@ -151,7 +154,13 @@ private fun JSONArray?.stringChoices(): List<ErmakDiagnosticChoice> {
             val label = firstNonBlank(item.optString("label"), item.optString("text"))
             val next = firstNonBlank(item.optString("nextNodeId"), item.optString("next"))
             if (label.isNotBlank() && next.isNotBlank()) {
-                add(ErmakDiagnosticChoice(label, next))
+                add(
+                    ErmakDiagnosticChoice(
+                        label = label,
+                        nextNodeId = next,
+                        responseKind = item.optString("responseKind").trim().ifBlank { "OPTION" }
+                    )
+                )
             }
         }
     }

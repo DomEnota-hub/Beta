@@ -29,10 +29,15 @@ class DiagnosticDecisionRouteTest {
     }
 
     @Test
-    fun unknownAnswerDoesNotAssumeSafeContinuationInDeepenedRoutes() {
+    fun unknownAnswerContinuesOnlyWithAnIndependentQuestionInDeepenedRoutes() {
         for (id in listOf("gv-no-open", "ekg-slow-transition", "compressor-long-run")) {
             val scenario = DiagnosticRepository.scenario(id)!!
-            assertNull(id, DiagnosticRepository.nextQuestion(scenario, scenario.questions.first().key, DiagnosticResponse.UNKNOWN))
+            val first = scenario.questions.first()
+            val next = DiagnosticRepository.nextQuestion(scenario, first.key, DiagnosticResponse.UNKNOWN)
+            assertTrue(id, next != null)
+            assertTrue(id, next?.key != first.key)
+            assertTrue(id, first.unknownMeaning.contains(first.yesMeaning))
+            assertTrue(id, first.unknownMeaning.contains(first.noMeaning))
         }
     }
 
