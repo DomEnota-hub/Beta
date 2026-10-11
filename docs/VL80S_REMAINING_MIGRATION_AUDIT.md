@@ -224,6 +224,39 @@ It tests:
 - the diagnostic catalog staying empty for unpublished candidate scenarios,
   including search for the still-gated pantograph example.
 
+Expanded integration evidence (2026-10-11):
+
+- `Vl80sLearningFlowInstrumentationTest` exercises **all four pneumatic
+  modes** and **all five electrical scenarios**, including Next, Previous,
+  Restart and scenario-switch reset.
+- `Vl80sContentNavigationInstrumentationTest` follows the **actual**
+  Atlas transformer hotspot -> canonical equipment card -> Technical Data.
+- The new test was first observed failing on the Android emulator with
+  `Semantic Node has no parent layout with a Scroll SemanticsAction`,
+  proving that long `RailContentEntryScreen` cards did not allow users to
+  scroll to links. Shared design-system now gives the article and links one
+  bounded vertical-scroll viewport with a fixed heading and resets scroll
+  state when the canonical entry ID changes.
+- Regression was confirmed green with **5/5 instrumented Android tests**
+  (GitHub Actions run `38156179846`), plus green module/Gradle/APK
+  validation (run `38156156994`). This covers source-pinned preview
+  navigation; it does **not** grant operational authority to any content.
+- The Android UI workflow now also re-runs for changes in shared design
+  system, acceptance, safety, content-runtime and link-router modules.
+
+Engineering review tools:
+
+- Context7 checked current Android Jetpack Compose testing, semantics,
+  `verticalScroll` and constrained `Column` patterns against official
+  Android developer documentation, rather than guessing an API contract.
+- Superpowers methodology was tried selectively for bounded QA:
+  reproduce failing device test -> inspect exact failure -> minimal shared
+  fix -> re-run full CI/UI suite. This produced a concrete scrollability
+  regression test; its overall cost/benefit for larger migrations is
+  still to be assessed.
+
+
+
 This is device smoke coverage, NOT a source/safety acceptance of diagnostics
 or a substitute for manual inspection of route drawing and touch regions.
 The workflow is kept separate from basic module lint/build validations.
@@ -233,8 +266,10 @@ Remaining shared UI and acceptance work:
 - independently review donor pneumatic texts against current approved
   operating documentation before relying on any reported checks;
 - keep Acceptance presentation in shared `feature-acceptance`;
-- verify actual device/emulator interaction, navigation and responsive
-  scrolling for new interactive diagrams and diagnostics;
+- extend emulator coverage and visually inspect touch maps, long text,
+  physical Back navigation and responsive layouts on different screen sizes;
+  first five Pixel API 34 UI cases now pass, but manual and multi-device
+  acceptance is still outstanding;
 - complete separate semantic, source and safety acceptance of diagnostic
   scenarios and publish only those that genuinely pass.
 
