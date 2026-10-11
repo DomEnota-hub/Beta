@@ -4,11 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.domain.ContentEntry
@@ -30,76 +33,87 @@ fun RailContentEntryScreen(
         title = entry.title,
         subtitle = "${modelTitle} · ${destination.displayTitle()}",
     ) {
-        entry.summary?.takeIf { it.isNotBlank() }?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        }
-
-        if (entry.details.isNotEmpty()) {
+        key(entry.id.value) {
+            // Keep the module header fixed; the long model-owned article,
+            // acceptance state and canonical cross-feature links all scroll.
+            // Keying the viewport resets its position when following a link.
             Column(
-                modifier = Modifier.padding(top = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                entry.details.forEach { detail ->
+                entry.summary?.takeIf { it.isNotBlank() }?.let {
                     Text(
-                        text = "• $detail",
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = it,
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
-            }
-        }
 
-        if (entry.blocks.isNotEmpty()) {
-            Column(
-                modifier = Modifier.padding(top = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                entry.blocks.forEach { block ->
+                if (entry.details.isNotEmpty()) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
+                        modifier = Modifier.padding(top = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Text(
-                            text = block.title,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                        block.lines.forEach { line ->
+                        entry.details.forEach { detail ->
                             Text(
-                                text = "• $line",
+                                text = "• $detail",
                                 style = MaterialTheme.typography.bodyMedium,
                             )
                         }
                     }
                 }
-            }
-        }
 
-        extraContent()
-
-        if (!notice.isNullOrBlank()) {
-            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
-            Text(
-                text = notice,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
-
-        if (entry.links.isNotEmpty()) {
-            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(
-                    text = "Связано",
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                entry.links.forEach { link ->
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { onLink(link) },
+                if (entry.blocks.isNotEmpty()) {
+                    Column(
+                        modifier = Modifier.padding(top = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        Text(link.displayTitle())
+                        entry.blocks.forEach { block ->
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(5.dp),
+                            ) {
+                                Text(
+                                    text = block.title,
+                                    style = MaterialTheme.typography.titleMedium,
+                                )
+                                block.lines.forEach { line ->
+                                    Text(
+                                        text = "• $line",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                extraContent()
+
+                if (!notice.isNullOrBlank()) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                    Text(
+                        text = notice,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+
+                if (entry.links.isNotEmpty()) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = "Связано",
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        entry.links.forEach { link ->
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { onLink(link) },
+                            ) {
+                                Text(link.displayTitle())
+                            }
+                        }
                     }
                 }
             }
