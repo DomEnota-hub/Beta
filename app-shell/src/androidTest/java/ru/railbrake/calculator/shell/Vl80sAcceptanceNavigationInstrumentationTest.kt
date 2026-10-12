@@ -3,6 +3,7 @@ package ru.railbrake.calculator.shell
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
@@ -29,7 +30,8 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
         )
         routes.forEach { (title, count) ->
             compose.onNodeWithText(title).performScrollTo().performClick()
-            compose.onNodeWithText("Найдено: $count из $count").assertExists()
+            compose.onNodeWithTag("acceptance-found-count")
+                .assertTextContains("Найдено: $count из $count")
             compose.activity.onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -44,7 +46,8 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
         compose.onNodeWithText("Документы и передача замечаний")
             .performScrollTo().performClick()
         compose.onNodeWithText("Замечание").performScrollTo().performClick()
-        compose.onNodeWithText("Что обнаружено при проверке")
+        compose.onNodeWithText("Статус: Замечание").assertExists()
+        compose.onNodeWithTag("acceptance-note")
             .performTextInput("Требуется уточнить запись")
         compose.activity.onBackPressedDispatcher.onBackPressed()
         compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
@@ -54,7 +57,8 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
         compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
         compose.onNodeWithText("Поиск по пунктам")
             .performTextInput("Документы и передача замечаний")
-        compose.onNodeWithText("Найдено: 1 из 81").assertExists()
+        compose.onNodeWithTag("acceptance-found-count")
+            .assertTextContains("Найдено: 1 из 81")
 
         compose.activity.recreate()
         compose.onNodeWithText("Приёмка").performClick()
