@@ -95,6 +95,9 @@ jobs:
       - name: Validate pinned TEM2 Stage-4 acceptance data
         run: python3 qa/validate_tem2_acceptance.py
 
+      - name: Verify TEM2 acceptance object dispositions
+        run: python3 qa/map_tem2_acceptance_document.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
       - name: Validate cross-block migrated data array
         run: python3 qa/validate_migrated_data_array.py
 
