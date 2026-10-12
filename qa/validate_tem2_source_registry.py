@@ -7,7 +7,7 @@ from pathlib import Path
 
 from migrate_tem2_source_registry import BLOB, DEST, META, build, source, variants
 
-SHA = {DEST: "48153babfe4089a6d283f45c78df47ee073308f27c2e00902915c54ced5cee23",
+SHA = {DEST: "fba9d144e17735c35dbb8a004a1274fed4830035b8c5c27427a73c380caa7098",
        META: "b5c4cfeec8b2d1a7d0e21e8ca77c857f5aee337c8541ad8e616f73d7328da0a6"}
 
 
@@ -28,6 +28,7 @@ def validate(root, donor_root=None):
         assert e["publicationStatus"] == "CANDIDATE"
         assert e["provenance"] == e["sourceStatus"] == "UNKNOWN"
         assert e["actionDisposition"] == "INFORMATION_ONLY"
+        assert isinstance(e["summary"], str)
         assert not e["links"] and not e["sourceRefs"]
         assert e["sourceObject"]["sourceBlobSha"] == BLOB
     if donor_root:

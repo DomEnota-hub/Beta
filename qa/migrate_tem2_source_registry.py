@@ -41,7 +41,8 @@ def build(donor_root):
                         "layer": "STANDARD", "publicationStatus": "CANDIDATE",
                         "provenance": "UNKNOWN", "sourceStatus": "UNKNOWN",
                         "actionDisposition": "INFORMATION_ONLY", "title": record["title"],
-                        "summary": record.get("purpose", ""), "sourceRefs": [], "links": [],
+                        "summary": ", ".join(record.get("purpose", [])),
+                        "sourceRefs": [], "links": [],
                         "sourceObject": {"sourcePath": SOURCE, "sourceBlobSha": BLOB,
                                          "object": record}})
     manifest = {"schemaVersion": 1, "packId": "tem2-family.sources.registry",
