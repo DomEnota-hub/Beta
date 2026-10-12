@@ -32,4 +32,35 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
             compose.activity.onBackPressedDispatcher.onBackPressed()
         }
     }
+
+    @Test fun noteAndCanonicalStateSurviveRouteSwitchAndActivityRecreation() {
+        compose.activity.getSharedPreferences(
+            "railbrake_acceptance_state_v1", android.content.Context.MODE_PRIVATE,
+        ).edit().clear().commit()
+
+        compose.onNodeWithText("Приёмка").performClick()
+        compose.onNodeWithText("Обязательная приёмка").performClick()
+        compose.onNodeWithText("Документы и передача замечаний")
+            .performScrollTo().performClick()
+        compose.onNodeWithText("Замечание").performScrollTo().performClick()
+        compose.onNodeWithText("Что обнаружено при проверке")
+            .performTextInput("Требуется уточнить запись")
+        compose.activity.onBackPressedDispatcher.onBackPressed()
+        compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
+
+        compose.activity.onBackPressedDispatcher.onBackPressed()
+        compose.onNodeWithText("Полный осмотр").performScrollTo().performClick()
+        compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
+        compose.onNodeWithText("Поиск по пунктам")
+            .performTextInput("Документы и передача замечаний")
+        compose.onNodeWithText("Найдено: 1 из 81").assertExists()
+
+        compose.activity.recreate()
+        compose.onNodeWithText("Приёмка").performClick()
+        compose.onNodeWithText("Полный осмотр").performScrollTo().performClick()
+        compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
+        compose.onNodeWithText("Документы и передача замечаний")
+            .performScrollTo().performClick()
+        compose.onNodeWithText("Требуется уточнить запись").assertExists()
+    }
 }
