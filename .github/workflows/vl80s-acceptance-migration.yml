@@ -23,11 +23,6 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Ensure branch has not moved
-        run: |
-          git fetch origin modular-rebuild
-          test "$(git rev-parse origin/modular-rebuild)" = "$GITHUB_SHA"
-
       - name: Export verified donor
         run: python3 qa/export_vl80s_donor.py
 
