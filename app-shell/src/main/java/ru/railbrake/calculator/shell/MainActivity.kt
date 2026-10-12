@@ -11,7 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import ru.railbrake.calculator.acceptance.AcceptanceFeatureIndexJsonLoader
 import ru.railbrake.calculator.acceptance.AcceptanceItemScreen
+import ru.railbrake.calculator.acceptance.AcceptanceRouteResolution
+import ru.railbrake.calculator.acceptance.AcceptanceRouteResolver
+import ru.railbrake.calculator.acceptance.AcceptanceRouteScreen
+import ru.railbrake.calculator.acceptance.AcceptanceRoutesScreen
+import ru.railbrake.calculator.acceptance.ResolvedAcceptanceRoute
 import ru.railbrake.calculator.atlas.AtlasElectricalFlowScreen
 import ru.railbrake.calculator.atlas.AtlasPneumaticFlowScreen
 import ru.railbrake.calculator.atlas.ElectricalFunctionalFlowDocument
@@ -62,10 +68,14 @@ class MainActivity : ComponentActivity() {
                 var returnFromEntry by remember { mutableStateOf(Vl80sScreen.LAYOUT) }
                 var currentId by remember { mutableStateOf(CanonicalId("VL-EQ-HV-002")) }
                 var notice by remember { mutableStateOf<String?>(null) }
+                var selectedRoute by remember { mutableStateOf<ResolvedAcceptanceRoute?>(null) }
 
                 if (currentScreen != Vl80sScreen.ENTRY) {
                     BackHandler(enabled = currentScreen != Vl80sScreen.LAYOUT) {
-                        currentScreen = Vl80sScreen.LAYOUT
+                        currentScreen = when (currentScreen) {
+                            Vl80sScreen.ACCEPTANCE_ROUTE -> Vl80sScreen.ACCEPTANCE_ROUTES
+                            else -> Vl80sScreen.LAYOUT
+                        }
                     }
                     when (currentScreen) {
                         Vl80sScreen.LAYOUT -> AtlasLayoutScreen(
@@ -85,6 +95,9 @@ class MainActivity : ComponentActivity() {
                             },
                             onDiagnosticsCatalog = {
                                 currentScreen = Vl80sScreen.DIAGNOSTICS
+                            },
+                            onAcceptanceRoutes = {
+                                currentScreen = Vl80sScreen.ACCEPTANCE_ROUTES
                             },
                         )
 
@@ -111,6 +124,28 @@ class MainActivity : ComponentActivity() {
                             modelTitle = "ВЛ80С",
                             onBack = { currentScreen = Vl80sScreen.LAYOUT },
                         )
+
+                        Vl80sScreen.ACCEPTANCE_ROUTES -> AcceptanceRoutesScreen(
+                            routes = loaded.acceptanceRoutes,
+                            modelTitle = "ВЛ80С",
+                            onOpenRoute = { route ->
+                                selectedRoute = route
+                                currentScreen = Vl80sScreen.ACCEPTANCE_ROUTE
+                            },
+                        )
+
+                        Vl80sScreen.ACCEPTANCE_ROUTE -> selectedRoute?.let { route ->
+                            AcceptanceRouteScreen(
+                                route = route,
+                                modelTitle = "ВЛ80С",
+                                onOpenItem = { id ->
+                                    currentId = id
+                                    notice = null
+                                    returnFromEntry = Vl80sScreen.ACCEPTANCE_ROUTE
+                                    currentScreen = Vl80sScreen.ENTRY
+                                },
+                            )
+                        }
 
                         Vl80sScreen.ENTRY -> Unit
                     }
@@ -283,6 +318,31 @@ class MainActivity : ComponentActivity() {
             "VL80S vertical slice validation failed: ${installationIssues + graphIssues}"
         }
 
+        val acceptanceIndexPath = requireNotNull(index.featureIndexes["acceptance"]) {
+            "VL80S acceptance feature index is not configured"
+        }
+        val acceptanceIndexJson = assets.open(acceptanceIndexPath)
+            .bufferedReader().use { it.readText() }
+        val acceptanceIndex = AcceptanceFeatureIndexJsonLoader().parse(acceptanceIndexJson)
+        check(acceptanceIndex.modelId == index.modelId) {
+            "Acceptance index belongs to another model"
+        }
+        check(acceptanceIndex.itemPacks.all { it in index.packs }) {
+            "Acceptance index references a pack outside the model runtime index"
+        }
+        val routeResolver = AcceptanceRouteResolver(registry)
+        val acceptanceRoutes = acceptanceIndex.routes.map { route ->
+            val result = routeResolver.resolve(route)
+            check(result is AcceptanceRouteResolution.Ready) {
+                "Acceptance route contains unresolved or unpublished items: ${route.id}"
+            }
+            result.value.also { ready ->
+                check(ready.items.all { it.owner == ContentOwner.Model(ModelId(index.modelId)) }) {
+                    "Acceptance route contains an item from another model"
+                }
+            }
+        }
+
         val context = RuntimeContext(
             workingModelId = ModelId("vl80s"),
             viewedModelId = ModelId("vl80s"),
@@ -329,6 +389,7 @@ class MainActivity : ComponentActivity() {
             pneumaticFlow = pneumaticFlow,
             electricalFlow = electricalFlow,
             diagnosticCatalog = diagnosticCatalog,
+            acceptanceRoutes = acceptanceRoutes,
             context = context,
         )
     }
@@ -341,6 +402,7 @@ private data class Vl80sVerticalSlice(
     val pneumaticFlow: PneumaticFlowDocument,
     val electricalFlow: ElectricalFunctionalFlowDocument,
     val diagnosticCatalog: PublishedDiagnosticCatalog,
+    val acceptanceRoutes: List<ResolvedAcceptanceRoute>,
     val context: RuntimeContext,
 )
 
@@ -349,5 +411,7 @@ private enum class Vl80sScreen {
     PNEUMATIC,
     ELECTRICAL,
     DIAGNOSTICS,
+    ACCEPTANCE_ROUTES,
+    ACCEPTANCE_ROUTE,
     ENTRY,
 }
