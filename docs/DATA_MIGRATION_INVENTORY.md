@@ -163,3 +163,14 @@ The following source JSON files are separate object groups, some of which may du
 - Canonical Ermak pack entries: **506** in 27 packs. Complete source objects and source blob hashes are embedded per entry. Local importer comparison reproduces exact object arrays; CI verifies pinned pack hashes. **4731** typed same-model links resolve. All entries are `CANDIDATE` with UNKNOWN source/provenance and information-only action disposition; a future profile-specific gate must preserve original exclusions before publication.
 - [Source audit](../content-packs/electric/ermak/migration/source-audit.json) lists each of **152** referenced source IDs and occurrence counts: 95 unambiguous (924 raw references, 922 distinct typed links), two collisions (6 references), 55 absent in the equipment registry (542 references). These 547 raw references do **not** have typed source targets. The collision `ER-SRC-039` identifies both an equipment TO-2 document and a pantograph training document; `ER-SRC-041` has two separately keyed records. No automatic equivalence asserted.
 - Effective SHA `c4d18e85619156f9e4466facdd166e31f22efb52`. Remaining donor docs/Kotlin/generator/media objects need individual dispositions, and this checkpoint cannot count as full Ermak acceptance.
+
+## CHME3 family core mapping checkpoint (2026-10-12)
+
+| Execution | Catalog source records | Diagnostic source records | Canonical applicability |
+|---|---:|---:|---|
+| CHME3 | 306 | 55 | `chme3` only or exact shared group |
+| CHME3T | 319 | 56 | `chme3t` only or exact shared group |
+| CHME3E | 428 | 67 | `chme3e` only or exact shared group |
+
+- Total **1231** source records from six pinned assets → **738** canonical entries; **493** exact variant copies `MERGED_WITH_CANONICAL`, **738** representative objects `MIGRATED`. Object-level mapping with donor variant, source index and Git blob SHA: [CHME3 source audit](../content-packs/diesel/chme3-family/migration/source-audit.json). 28 conflicting catalog IDs remain separate by execution; no inferred inheritance across variants. Catalog DIAGNOSTICS cards and executable graph sources are separate object kinds. 5421 typed same-variant links resolve; 610 raw source references remain unresolved (no target object in these six assets). Importer and validator: `qa/migrate_chme3.py`, `qa/validate_chme3.py`. [CI 38266192611](https://github.com/DomEnota-maker/Beta/actions/runs/38266192611) success on `affdc9befbfd532d2af9345fe2eddbebbe194467`.
+- This is a six-asset coverage checkpoint. Donor docs/Kotlin/other technical assets and normative review remain unclassified or open. Every canonical entry is CANDIDATE/UNKNOWN/information-only.
