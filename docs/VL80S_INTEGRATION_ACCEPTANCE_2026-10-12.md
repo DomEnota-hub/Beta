@@ -59,3 +59,10 @@ Stage 0 recorded. Subsequent major stages append exact SHA, tests, results and l
 - `8499abc` restored the exact prior content blob `e0be168f662a95eebd51e3e072848aa14b33475a`. `d7ff9eb` made the acceptance generator retain the already verified same-model diagnostic relations.
 - `d273bd4` / `c1e129f` converted the migration workflow into a **read-only reproducibility check**: it regenerates, validates acceptance plus diagnostics and rejects any content diff; it no longer has contents-write permission or a push step. [Run 38222140830](https://github.com/DomEnota-maker/Beta/actions/runs/38222140830) completed/success with zero generated diff on `c1e129fc7185c193cd862f490def9fb0bb3d9541`.
 - The expanded UI suite was started on an earlier code snapshot; its result cannot be used as final evidence after content restoration. A final current-SHA UI run is required.
+
+### Stage 3d — state, search and restart confirmed (2026-10-12)
+
+- [Bootstrap 38222612061](https://github.com/DomEnota-maker/Beta/actions/runs/38222612061): completed/success on `a49ca7f0ab2371c8ee3282aeefbaf545278ebf31`, including restored diagnostic relation validation, unit/contract, lint, APK and asset checks.
+- [Pixel API 34 UI 38222612042](https://github.com/DomEnota-maker/Beta/actions/runs/38222612042): completed/success, **8/8** tests. The new `noteAndCanonicalStateSurviveRouteSwitchAndActivityRecreation` proves note entry, route summary, the same canonical status in “Обязательная приёмка” and “Полный осмотр”, search narrowing to 1/81, then persistence and note text after Android Activity recreation. It uses semantic tags for the count and note field, which are also stable accessibility/test targets.
+- This is Activity recreation, not a separate process kill or app reinstall. The unit `AcceptanceStateTest.summaryKeepsFourUserFacingStatesSeparate` checks all four states and completion logic; device interaction for each non-note status and manual visual review remain open.
+- The branch has subsequent documentation-only commits; code and content in this successful run match their current blobs, but final-stage verification will run on the final SHA.
