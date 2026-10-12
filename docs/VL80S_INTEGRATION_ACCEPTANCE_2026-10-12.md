@@ -40,3 +40,9 @@ Stage 0 recorded. Subsequent major stages append exact SHA, tests, results and l
 - Commits: `af7d4f8` (shared chooser), `f515cea` (Atlas entry), `f8922c79a415256bfb36a3a0b1ed95ec75d1ca40` (shell integration).
 - [Bootstrap run 38218174385](https://github.com/DomEnota-maker/Beta/actions/runs/38218174385): completed/success (contract/unit, lint, debug APK, indexed assets). [Android UI run 38218174433](https://github.com/DomEnota-maker/Beta/actions/runs/38218174433): completed/success, 6/6 tests, including all eight route counts.
 - Remaining Stage 3: search, canonical shared status, notes, summary and restart persistence need direct device regression evidence. Route sequence equality is covered by the pack validator, but actual operational order remains subject to source review.
+
+### Stage 1a — linked entry Back (2026-10-12)
+
+- RED: `Vl80sContentNavigationInstrumentationTest.systemBackFromLinkedTechnicalDataReturnsToEquipmentCard` failed after the actual Atlas transformer → equipment → Technical Data path: the technical link could not be found after Back, because the shell returned to Atlas. [Run 38218977310](https://github.com/DomEnota-maker/Beta/actions/runs/38218977310), 1/7 failed.
+- GREEN: `5ed9dd930024546bc0edd255724a4a8ee40ad7da` retains a canonical entry history in the shell, clears it on each root entry and pops it before returning to the origin. A self-link does not push duplicate history.
+- [Bootstrap run 38219634064](https://github.com/DomEnota-maker/Beta/actions/runs/38219634064): completed/success. [Android UI run 38219634156](https://github.com/DomEnota-maker/Beta/actions/runs/38219634156): completed/success, 7/7 tests. Ordinary on-screen Back from generic linked cards still needs a dedicated UI affordance and test; this check specifically exercises system Back.
