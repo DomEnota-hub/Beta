@@ -9,7 +9,7 @@ BLOCKS = {
     "common": ("content-packs/common", 3, 87),
     "ermak": ("content-packs/electric/ermak", 27, 506),
     "chme3-family": ("content-packs/diesel/chme3-family", 38, 738),
-    "tem2-family": ("content-packs/diesel/tem2-family", 19, 345),
+    "tem2-family": ("content-packs/diesel/tem2-family", 20, 348),
 }
 LINK_TARGET_TYPES = {
     "RELATED_SCENARIO": "DIAGNOSTIC_SCENARIO",
@@ -100,6 +100,6 @@ if __name__ == "__main__":
     p.add_argument("--root", type=Path, default=Path("."))
     a = p.parse_args()
     entries = load(a.root)
-    assert check(entries) == (1676, 11382)
+    assert check(entries) == (1679, 11382)
     negative_cases(entries)
     print("MIGRATED_DATA_ARRAY_PASS", *check(entries))
