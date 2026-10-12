@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun RailContentEntryScreen(
     modelTitle: String,
     notice: String?,
     extraContent: @Composable () -> Unit = {},
+    onBack: (() -> Unit)? = null,
     onLink: (ContentLink) -> Unit,
 ) {
     RailFeatureScaffold(
@@ -33,6 +35,9 @@ fun RailContentEntryScreen(
         title = entry.title,
         subtitle = "${modelTitle} · ${destination.displayTitle()}",
     ) {
+        if (onBack != null) {
+            TextButton(onClick = onBack) { Text("← Назад") }
+        }
         key(entry.id.value) {
             // Keep the module header fixed; the long model-owned article,
             // acceptance state and canonical cross-feature links all scroll.
