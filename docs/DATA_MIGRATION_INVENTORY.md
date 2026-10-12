@@ -174,3 +174,15 @@ The following source JSON files are separate object groups, some of which may du
 
 - Total **1231** source records from six pinned assets → **738** canonical entries; **493** exact variant copies `MERGED_WITH_CANONICAL`, **738** representative objects `MIGRATED`. Object-level mapping with donor variant, source index and Git blob SHA: [CHME3 source audit](../content-packs/diesel/chme3-family/migration/source-audit.json). 28 conflicting catalog IDs remain separate by execution; no inferred inheritance across variants. Catalog DIAGNOSTICS cards and executable graph sources are separate object kinds. 5421 typed same-variant links resolve; 610 raw source references remain unresolved (no target object in these six assets). Importer and validator: `qa/migrate_chme3.py`, `qa/validate_chme3.py`. [CI 38266192611](https://github.com/DomEnota-maker/Beta/actions/runs/38266192611) success on `affdc9befbfd532d2af9345fe2eddbebbe194467`.
 - This is a six-asset coverage checkpoint. Donor docs/Kotlin/other technical assets and normative review remain unclassified or open. Every canonical entry is CANDIDATE/UNKNOWN/information-only.
+
+## TEM2 / TEM2U core mapping checkpoint (2026-10-12)
+
+| Execution/source | Catalog | Diagnostics | Scheme sources | Canonical applicability |
+|---|---:|---:|---:|---|
+| TEM2 | 122 | 22 | 8 shared-file sequences + 8 layouts | `tem2` |
+| TEM2U | 131 | 24 | 9 shared-file sequences + 9 layouts | `tem2u` |
+
+- **333** source objects from six pinned technical assets → **320** canonical entries in 17 packs. Thirteen byte-equivalent diagnostic copies merged; differing catalog records with equal source IDs remain separate. [TEM2 source audit](../content-packs/diesel/tem2-family/migration/source-audit.json) lists every source index/variant/blob and canonical ID; within these six assets, 1073 typed variant-safe links resolve and no target ID is missing. This does not close references in the remaining `docs/locomotives/diesel/tem2-family/` documents. Scheme coordinates are training geometry, not a precise mounting plan. Importer/validator: `qa/migrate_tem2.py`, `qa/validate_tem2.py`.
+- Current imported Common + three model-block subset: **85** packs, **1651** canonical entries and **11,302** typed links; cross-block gate `qa/validate_migrated_data_array.py` checks them together. VL80S remains under its existing separate migration checks, and the full donor object ledger still needs final dispositions. All new TEM2 items remain CANDIDATE/UNKNOWN/information-only.
+
+The complete [discovery ledger](data-migration/source-discovery-ledger.json) preserves all 837 preliminary file/group rows. Its PENDING and mirror statuses have not been replaced by final object dispositions; exact per-object mappings for the four migrated subsets are held in their source audits and pinned importers. [CI 38292680525](https://github.com/DomEnota-maker/Beta/actions/runs/38292680525) passed on `bdf3fe12315ca014855f7fc4ba4e841fca4a71ae` after the TEM2 reference-type fix.
