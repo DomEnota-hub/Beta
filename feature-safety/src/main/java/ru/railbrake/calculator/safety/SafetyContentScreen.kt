@@ -12,6 +12,7 @@ fun SafetyContentScreen(
     modelTitle: String?,
     notice: String?,
     onLink: (ContentLink) -> Unit,
+    onBack: (() -> Unit)? = null,
 ) {
     RailContentEntryScreen(
         entry = entry,
@@ -19,5 +20,6 @@ fun SafetyContentScreen(
         modelTitle = modelTitle ?: "Общий раздел",
         notice = notice,
         onLink = onLink,
+        onBack = onBack,
     )
 }
