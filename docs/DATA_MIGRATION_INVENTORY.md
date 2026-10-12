@@ -198,3 +198,7 @@ Pinned common acceptance document blob `2e3454b9e75141ff211918acab527ff228e56363
 ### Ermak supplementary source indexes (2026-10-12)
 
 The pinned Stage-2 system map and Stage-7 integration index are retained as exact gzip source blobs under [source-indexes](../content-packs/electric/ermak/migration/source-indexes/), with a candidate-only note and `runtimeImport=false`. The former contains 15 systems and 16 critical links; the latter indexes 111 equipment, 15 systems, 135 diagnostics and 22 schemes. The 136th canonical diagnostic `ER-DIAG-136` is absent from the Stage-7 index. `qa/validate_ermak_supplement.py` pins both Git blob SHAs and checks this difference; it does not resolve the 55 missing source IDs or two collisions in the original Ermak source registry. CI [38294041951](https://github.com/DomEnota-maker/Beta/actions/runs/38294041951) pending at this checkpoint.
+
+### TEM2 Stage-4 object-level disposition overlay
+
+[50-row map](data-migration/tem2-acceptance-dispositions.json) verifies every top-level/nested row of the Stage-4 document against its destination canonical JSON SHA-256: 16 pack checks, two source-index routes and 32 root metadata values. Those 50 rows are `MIGRATED`/CANDIDATE; 1698 other locomotive-document discovery rows are still pending and are not assigned a final disposition by subtraction. `qa/map_tem2_acceptance_document.py --ledger docs/data-migration/document-object-ledger.json --verify-output` is the reproducibility gate.
