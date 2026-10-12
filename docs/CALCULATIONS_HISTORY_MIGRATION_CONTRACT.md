@@ -1,12 +1,12 @@
 # Calculations and History — data-first migration contract
 
-Pinned source: `DomEnota-maker/Test-` @ `3176d6ee228f0ed4b78371f45209e10c1c724eff`. This is a source/compatibility contract, **not** a claim that the new modular application has the calculator or history UI. Numerical behavior below is donor behavior, **not** an independent check of current railway rules.
+Pinned source: `DomEnota-maker/Test-` @ `3176d6ee228f0ed4b78371f45209e10c1c724eff`. This is a source/compatibility contract, **not** a claim that the new modular application has calculator or history UI. Beta already contains a pure `feature-calculations` engine and a `feature-history` record/interface contract; its storage migration gate remains false. Numerical behavior below is donor behavior, **not** an independent check of current railway rules.
 
 ## Effective build and ownership
 
 The donor `README.md` says its CI unpacks `RailBrakeCalculator.zip` and overlays `patch/`; root `app/` mirrors overlapping paths. All 169 common `app/` and `patch/app/` blobs in this pinned tree are SHA-identical. `BrakeCalculator.kt` is present only in `patch/app/src/main/java/ru/railbrake/calculator/core/` (Git blob `5ec501f1a157666ea36d9fff0f3103fe118fbf9b`). `HistoryRepository.kt` is present in the ZIP base (archive Git blob `6c3c7edc1713c1c901a566fd8a81a2494ee4ac58`), not in either mirror. The UI consumer is `app/src/main/java/ru/railbrake/calculator/ui/BrakeCalculatorApp.kt` (blob `b369e8fbf500799a860f1356672abd9a4b41748b`); theme preferences are also used in `app/src/main/java/ru/railbrake/calculator/MainActivity.kt`.
 
-The data/algorithm boundary is a common functional calculations contract, and history is a separate common local-storage boundary (see `docs/AUXILIARY_APP_BLOCKS.md`). Neither belongs to a locomotive pack. The legacy table of locomotive masses is reference/profile data for an optional consist input; it does not make the calculator model-owned. Do not copy local user records into the repository.
+Beta already implements the pure engine in `feature-calculations/src/main/kotlin/.../BrakeCalculator.kt`; its current unit suite has three focused cases. `feature-history` defines the five-field `HistoryRecord` and `HistoryStore` interface, while `HistoryStorageMigrationGate.legacyFormatVerified` is `false` and there is no store implementation yet. This audit did not introduce either module. The data/algorithm boundary is a common functional calculations contract, and history is a separate common local-storage boundary (see `docs/AUXILIARY_APP_BLOCKS.md`). Neither belongs to a locomotive pack. The legacy table of locomotive masses is reference/profile data for an optional consist input; it does not make the calculator model-owned. Do not copy local user records into the repository.
 
 ## Modes and donor algorithm
 
@@ -33,7 +33,7 @@ Validation: finite positive mass/load; positive axles; finite nonnegative Append
 
 ## Donor regression vectors (structural handoff)
 
-These are exact expected assertions from the pinned ZIP's `app/src/test/java/ru/railbrake/calculator/core/BrakeCalculatorTest.kt` and its displayed source behavior; they were **not rerun as compiled donor tests** in this data-first cycle because no Kotlin compiler is installed in the current scratch environment. A future engine transfer must run these plus missing/invalid/rounding cases.
+These are exact expected assertions from the pinned ZIP's `app/src/test/java/ru/railbrake/calculator/core/BrakeCalculatorTest.kt` and its displayed source behavior; they were **not rerun as compiled donor tests** in this data-first cycle because no Kotlin compiler is installed in the current scratch environment. The existing Beta engine needs direct parity assertions for these donor cases plus missing/invalid/rounding cases; its three tests cover only a small subset.
 
 | Case | Input | Expected donor output |
 |---|---|---|
@@ -61,4 +61,4 @@ Persistence is Android `SharedPreferences("calculation_history", MODE_PRIVATE)`,
 
 - Railway norm and source revisions for mass coefficients, Appendix №12, locomotive masses and UI explanatory claims have **not** been independently reviewed. Retain donor behavior as a regression reference only; do not label it current law.
 - A minimal mapping for 46 locomotive reference specimens and any linked static tables belongs to the common reference layer or explicitly applicable model profile **after source review**. The pure formula/table can remain within the future calculations module until separating it is provably behavior-preserving.
-- The next separately authorized functional stage will port and execute the engine tests, implement a legacy-compatible history reader/writer and preference migration, connect shared UI/navigation, and verify upgrade with matching signing identity. This data-first cycle does not claim those functions work in the modular APK.
+- The next separately authorized functional stage will extend donor parity tests for the **existing** pure engine, implement a legacy-compatible history reader/writer and preference migration, connect shared UI/navigation, and verify upgrade with matching signing identity. This data-first cycle does not claim those functions work in the modular APK.
