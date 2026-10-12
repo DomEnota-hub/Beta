@@ -11,7 +11,7 @@ on:
       - '.github/workflows/vl80s-acceptance-migration.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   migrate:
@@ -34,35 +34,13 @@ jobs:
       - name: Generate modular acceptance packs
         run: python3 qa/migrate_vl80s_acceptance.py
 
-      - name: Validate generated acceptance
+      - name: Validate generated acceptance and relations
         run: |
           python3 qa/validate_vl80s_acceptance.py
+          python3 qa/validate_vl80s_diagnostics.py
           python3 qa/validate_vl80s_equipment_migration.py
           python3 qa/validate_vl80s_schemes.py
           git diff --check
 
-      - name: Commit generated VL80S acceptance
-        id: generated
-        run: |
-          git add content-packs/electric/vl80s
-          git diff --cached --check
-          if git diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Acceptance packs already match the pinned donor."
-            exit 0
-          fi
-          git config user.name "DomEnota-maker"
-          git config user.email "dk3093706@gmail.com"
-          git commit -m "feat: migrate full VL80S acceptance"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
-      - name: Push only if branch is still ours
-        if: steps.generated.outputs.changed == 'true'
-        run: |
-          git fetch origin modular-rebuild
-          remote_head="$(git rev-parse origin/modular-rebuild)"
-          if [ "$remote_head" != "$GITHUB_SHA" ]; then
-            echo "modular-rebuild moved to $remote_head; refusing non-fast-forward push."
-            exit 1
-          fi
-          git push origin HEAD:modular-rebuild
+      - name: Reject unreviewed generated content changes
+        run: git diff --exit-code -- content-packs/electric/vl80s
