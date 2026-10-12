@@ -202,3 +202,7 @@ The pinned Stage-2 system map and Stage-7 integration index are retained as exac
 ### TEM2 Stage-4 object-level disposition overlay
 
 [50-row map](data-migration/tem2-acceptance-dispositions.json) verifies every top-level/nested row of the Stage-4 document against its destination canonical JSON SHA-256: 16 pack checks, two source-index routes and 32 root metadata values. Those 50 rows are `MIGRATED`/CANDIDATE; 1698 other locomotive-document discovery rows are still pending and are not assigned a final disposition by subtraction. `qa/map_tem2_acceptance_document.py --ledger docs/data-migration/document-object-ledger.json --verify-output` is the reproducibility gate.
+
+### TEM2 source registry and exact object mappings (2026-10-12)
+
+Pinned source registry Git blob `160a2531a67bdb1c6fff1fb532fc3df6044d67a6` contributes nine candidate model-owned SOURCE entries in [registry pack](../content-packs/diesel/tem2-family/sources/registry.pack.json). Full source objects and document root metadata are retained; `qa/validate_tem2_source_registry.py` pins output hashes and unknown/information-only gates. [23-row exact disposition map](data-migration/tem2-source-registry-dispositions.json) covers nine records and 14 metadata values with source/destination hashes. Alongside Stage-4's 50 rows, 73 of 1748 locomotive-document rows have exact destinations; 1675 are pending review. The combined new-data subset has 87 packs, 1676 entries and 11,382 typed links. CI [38294668082](https://github.com/DomEnota-maker/Beta/actions/runs/38294668082) pending.
