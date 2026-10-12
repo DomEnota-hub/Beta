@@ -61,7 +61,8 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
         compose.onNodeWithTag("acceptance-found-count")
             .assertTextContains("Найдено: 1 из 81")
 
-        compose.activity.recreate()
+        compose.runOnUiThread { compose.activity.recreate() }
+        compose.waitForIdle()
         compose.onNodeWithText("Приёмка").performClick()
         compose.onNodeWithText("Полный осмотр").performScrollTo().performClick()
         compose.onNodeWithText("Замечания: 1", substring = true).assertExists()
