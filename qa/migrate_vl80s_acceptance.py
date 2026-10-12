@@ -125,6 +125,19 @@ for path in sorted(EQUIPMENT_ROOT.glob("*.pack.json")):
 if len(equipment_by_id) != 89:
     raise SystemExit(f"Expected 89 migrated equipment entries, got {len(equipment_by_id)}")
 
+# A later diagnostic-link stage enriches these canonical items. Preserve its
+# verified same-model relations when the pinned donor acceptance data is rebuilt.
+existing_items_path = ACCEPTANCE_ROOT / "items.pack.json"
+existing_diagnostic_links = {}
+if existing_items_path.exists():
+    existing_document = json.loads(existing_items_path.read_text(encoding="utf-8"))
+    for existing in existing_document.get("entries", []):
+        existing_diagnostic_links[existing["id"]] = [
+            link for link in existing.get("links", [])
+            if link.get("type") == "RELATED_SCENARIO"
+            and link.get("targetId", "").startswith("vl80s.diag.")
+        ]
+
 donor_entries = []
 reverse_acceptance = defaultdict(set)
 pending_diagnostic_hint_count = 0
@@ -154,6 +167,8 @@ for raw in items:
             }
         )
         reverse_acceptance[equipment_id].add(entry_id)
+
+    links.extend(existing_diagnostic_links.get(entry_id, []))
 
     blocks = []
     for title, lines in (
