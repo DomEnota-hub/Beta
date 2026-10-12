@@ -2,6 +2,8 @@ package ru.railbrake.calculator.runtime
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertThrows
+import com.google.gson.JsonParser
 import org.junit.Test
 import ru.railbrake.calculator.domain.CanonicalId
 import ru.railbrake.calculator.domain.ContentTarget
@@ -90,5 +92,31 @@ class ContentPackJsonLoaderTest {
                 context,
             )
         )
+    }
+    @Test
+    fun preservesNestedDonorObjectAndRejectsIncompleteSnapshot() {
+        val source = """{"sourcePath":"app/src/main/assets/technical/ermak_equipment.json.gz",
+            "sourceBlobSha":"47a8d2424d69943fba9747746aa6ad8c8f4e2e98",
+            "object":{"id":"ER-EQ-HV-001","parameters":[{"value":0.24,"unit":"MPa"}],
+            "applicability":{"models":["2ES5K"],"profiles":["base_early"],"exclusions":[]}}}"""
+        val prefix = """{"manifest":{"schemaVersion":1,"packId":"ermak.test",
+            "packVersion":"0.1.0","modelIds":["ermak"],"variantIds":[],
+            "locale":"ru-RU","entries":["ER-EQ-HV-001"],"requiresRuntime":"1.1.0",
+            "sourceCatalogVersion":"test"},"entries":[{"id":"ER-EQ-HV-001",
+            "type":"EQUIPMENT","owner":{"kind":"MODEL","modelId":"ermak"},
+            "publicationStatus":"CANDIDATE","title":"test","sourceObject":"""
+        val json = prefix + source + "}]}"
+        val entry = ContentPackJsonLoader().parse(json).entries.single()
+        assertEquals(
+            JsonParser.parseString(source).asJsonObject.getAsJsonObject("object"),
+            JsonParser.parseString(entry.sourceObject!!.objectJson),
+        )
+        assertEquals("app/src/main/assets/technical/ermak_equipment.json.gz",
+            entry.sourceObject!!.sourcePath)
+        assertThrows(IllegalArgumentException::class.java) {
+            ContentPackJsonLoader().parse(
+                prefix + """{"sourcePath":"x","sourceBlobSha":"y"}}]}"""
+            )
+        }
     }
 }

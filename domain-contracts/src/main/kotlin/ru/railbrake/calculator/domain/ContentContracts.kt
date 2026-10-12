@@ -153,6 +153,17 @@ data class ContentLink(
     val applicability: Applicability = Applicability(),
 )
 
+/** Exact donor object retained for lossless migration; interpretation remains gated by the entry policy. */
+data class SourceObjectSnapshot(
+    val sourcePath: String,
+    val sourceBlobSha: String,
+    val objectJson: String,
+) {
+    init {
+        require(sourcePath.isNotBlank() && sourceBlobSha.isNotBlank() && objectJson.isNotBlank())
+    }
+}
+
 data class ContentEntry(
     val id: CanonicalId,
     val aliases: Set<CanonicalId> = emptySet(),
@@ -171,6 +182,7 @@ data class ContentEntry(
     val searchTerms: Set<String> = emptySet(),
     val sourceRefs: Set<String> = emptySet(),
     val links: List<ContentLink> = emptyList(),
+    val sourceObject: SourceObjectSnapshot? = null,
 ) {
     init {
         require(title.isNotBlank()) { "content title must not be blank" }

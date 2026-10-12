@@ -1,6 +1,8 @@
 package ru.railbrake.calculator.runtime
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import ru.railbrake.calculator.domain.SourceObjectSnapshot
 import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.Applicability
 import ru.railbrake.calculator.domain.CanonicalId
@@ -90,6 +92,7 @@ private data class JsonEntry(
     val searchTerms: List<String>? = null,
     val sourceRefs: List<String>? = null,
     val links: List<JsonLink>? = null,
+    val sourceObject: JsonSourceObject? = null,
 ) {
     fun toDomain() = ContentEntry(
         id = CanonicalId(requireText(id, "entry.id")),
@@ -109,6 +112,19 @@ private data class JsonEntry(
         searchTerms = searchTerms.orEmpty().toSet(),
         sourceRefs = sourceRefs.orEmpty().toSet(),
         links = links.orEmpty().map { it.toDomain() },
+        sourceObject = sourceObject?.toDomain(),
+    )
+}
+
+private data class JsonSourceObject(
+    val sourcePath: String? = null,
+    val sourceBlobSha: String? = null,
+    val `object`: JsonObject? = null,
+) {
+    fun toDomain() = SourceObjectSnapshot(
+        sourcePath = requireText(sourcePath, "sourceObject.sourcePath"),
+        sourceBlobSha = requireText(sourceBlobSha, "sourceObject.sourceBlobSha"),
+        objectJson = requireNotNull(`object`) { "sourceObject.object is missing" }.toString(),
     )
 }
 
