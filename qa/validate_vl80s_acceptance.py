@@ -45,7 +45,7 @@ expected_sequence_sha256 = {
     "VL80-ROUTE-route_from_outside": "a05fbeaeba53bd51b80a92c29f86096b2b6113c7413c06c16b1016a5ba4b27ec",
     "VL80-ROUTE-route_from_cab": "ccdebb5500e1ee5795f4a7df7807b74a6babc152b579b4815355f885720008ed",
     "VL80-ROUTE-route_running_gear": "d196ea93c16e3ed9388929196ed40db284941dfbcb5520d1101ace7858e8ec44",
-    "VL80-ROUTE-route_machine_room": "b02ee0929609b4a8555cc5c2deacf348fad943c4f5a4e528a3491942140fd",
+    "VL80-ROUTE-route_machine_room": "b02ee0929609b4a8555cc5c2deacf348fad943c4f5a4d35e528a3491942140fd",
     "VL80-ROUTE-route_functional": "87c3a5f70c10a3981367ba6af4db4f099f17cf1618b004a901f1c1fcb8db91bc",
 }
 assert {route["id"] for route in index["routes"]} == set(expected_sequence_sha256)
