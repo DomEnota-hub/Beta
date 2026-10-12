@@ -9,28 +9,28 @@ from pathlib import Path
 from migrate_ermak import ASSETS, BASE, build, read_asset
 
 OUTPUT_SHA256 = {
-    "equipment-01.pack.json": "f44f5c7ba25c79b32c566fbaa1f4c7f188a8b63f01013fb578b2534c398cadb8",
-    "equipment-02.pack.json": "37162aee26d6494ad3d63dbbe9bfd4c3cfe2a6d107accc510fbd86c85a8ff6a9",
-    "equipment-03.pack.json": "a53b6cf87ed2e7ba7a80dbb7b963fecab184ef61f6a4217131be3e36dd685a0a",
-    "equipment-04.pack.json": "013e9c810613e69e54f7d37a69828d3b78b81e917c1c7c567e1be0c460be86fb",
-    "equipment-05.pack.json": "932231e86073a64aa5ebbd6bc891beb357be7c6f531d5a1047e8c15b97603228",
-    "equipment-06.pack.json": "12b2c1863593ec5831c8a797f91ac293208fda905e18e3d5aff2b223b4e6880b",
-    "schemes-01.pack.json": "6f024f1117e6d6ec6623f7062dd1ad01f4473e99af71df99651da2e71ca5642d",
-    "schemes-02.pack.json": "ffe06abc7be76d728cc5f6138a6c434153d926e11654e653d433a03749a6aa24",
-    "diagnostics-01.pack.json": "016182b1b035a66fbce038b64a1f1787c4d748a4f31212b0569c503b9df28328",
-    "diagnostics-02.pack.json": "f57bfeb2e04aeeed34df8d785421948ae1273c3ff3903f0ef06d4b0466ed2994",
-    "diagnostics-03.pack.json": "c64d454bcaf72a41cc0b500fdbe6802101da1ef889cce3e242bc27ec3a10a49b",
-    "diagnostics-04.pack.json": "9feb7fca6727c2a99365e03693f54006bfc81a23a458fb793cf7ba22352f6931",
-    "diagnostics-05.pack.json": "3fe35d130785cc431b7048315963a56510ac8fb599b77bb3eda7f39aa3ec4d21",
-    "diagnostics-06.pack.json": "3d579bdaaedebced51ae16c117807f838a4c9512e963476f3d4786a95c9fcc78",
-    "diagnostics-07.pack.json": "8d65eae72e16392b713032fccbea1b51ecb64a0fd9a49570cc9a59f8a424903d",
-    "knowledge-01.pack.json": "4801967c4f5432052135dd33cf6a577c5372ed1eb8ec608683bfff37acd3c7af",
-    "knowledge-02.pack.json": "e33c71d2b96e11a0bd6d682e6703a0bc51046a03d828ad52ab5fdc7cf15918bc",
-    "knowledge-03.pack.json": "227eb3bd4006b1a2e4c206fe070c5e52a5562fecd52d4d387bcaa138d2dfabe2",
-    "knowledge-04.pack.json": "abe68c942cbedf3dc69e2215d4345ca1b1b67d61b869c3789b1ee3944216a123",
-    "knowledge-05.pack.json": "08dacf467cbee602f2d32734e4c5d860e8a12da5d99c9fc83ebbec19051118ed",
-    "knowledge-06.pack.json": "8a3088ed9d8d6e8c4b03b36c852527d18094ef6e81bff7898681b3fe7de56a8a",
-    "knowledge-07.pack.json": "047a79cf942d201d062453c36f9e91377249a8bc8cd4c9b4cf7302c650f4f27a",
+    "equipment-01.pack.json": "a9f433ac0c25bf0e01fd4b0c29d950f8b0d7d21ad2364d3f0fff42afc52624a4",
+    "equipment-02.pack.json": "323a354ba2c6bf4941460dae03459b41f8d4a2fb3e560e7a05483e8d28456681",
+    "equipment-03.pack.json": "6eab32817d3dbd52ef7778619bec41e279a8f8163572afd7a7a16ccfcae618a7",
+    "equipment-04.pack.json": "1bc4f050d7a576840368c1906498a7c199b270aa5821f29a7196229abafc4003",
+    "equipment-05.pack.json": "64b45ac902ec9cbc1b7263a0ac645bc377d9bb56b7bb350687a2929863f7d2e2",
+    "equipment-06.pack.json": "167ce0dd342e33d965a81b4ed432f58c1b7a5811b6b929ded6275065e37a7490",
+    "schemes-01.pack.json": "4f84728a222a7ce7f670ce5814d1cf8ed646de39480810f50b696b6e5765bf88",
+    "schemes-02.pack.json": "4c1c2b9e6513cd19258c151a1abb8ef6d198f9dd93de0bd798540388f770b2cb",
+    "diagnostics-01.pack.json": "fb5f84757fc69ed638d9301afe075be151b4fa14f81c199a3117e5225812a3d2",
+    "diagnostics-02.pack.json": "ecd41c31b16a2f31522a13425339428ab751b4c15d7c2c3ef39c67a4d43fcec0",
+    "diagnostics-03.pack.json": "195060385d2d0df28c6177bcc752c37fbcab89fd0d5f4faf9ebd19397979652c",
+    "diagnostics-04.pack.json": "c088cd3d491036ed1e6c27c33b6a04d230882ee20cfdcdf5164dede6ac3db31e",
+    "diagnostics-05.pack.json": "9ec0fe543378e2fff3b5031c19f79974716d2375a59e36589a51d1b98947c35b",
+    "diagnostics-06.pack.json": "2b70f08ef3962f479d6093b44146f6bca5220508f379fdf21fb2b5f23e940c93",
+    "diagnostics-07.pack.json": "2100dc65f64c53a33da97e202551abefa47191c86e8b78ffed3a720eca82e4c4",
+    "knowledge-01.pack.json": "ccd618254ba25835212dc12dbd601026805d8153106816719659344206c9815c",
+    "knowledge-02.pack.json": "ecb3a6c7c12b73dbc5ecaefc3eda034b8f02bc7f8bb62f7fc1a0b5a2397d207d",
+    "knowledge-03.pack.json": "68c801dec97f772eac7d584e018d8422c90c689d056667377357faa6e77015d6",
+    "knowledge-04.pack.json": "cab1e18d7e2856c2b22bb1816687a31094bee68dfaa84cb0acaa18c9623318c1",
+    "knowledge-05.pack.json": "3083a14cf4cfd3ac375dfadfb37179d2fca57e7c84bd57dcae7e8a5e04d5ef91",
+    "knowledge-06.pack.json": "b0ce7befe89f6d53a051be957be0d614391f67c29484f15b67334a76ca108143",
+    "knowledge-07.pack.json": "54eb69ee57c60de9ea84fe84d13c5ef261ff6597cc334f94cb4b974b188e989c",
 }
 
 COUNTS = {"equipment": 111, "knowledge": 138, "diagnostics": 136, "schemes": 22}
@@ -75,6 +75,13 @@ def validate(root, donor_dir=None):
         all_entries += entries
     ids = [e["id"] for e in all_entries]
     assert len(ids) == len(set(ids)) == 407
+    expected_types = {"EQUIPMENT":"EQUIPMENT", "KNOWLEDGE":"KNOWLEDGE",
+                      "RELATED_SCENARIO":"DIAGNOSTIC_SCENARIO"}
+    canonical_types = {e["id"]:e["type"] for e in all_entries}
+    links = [link for e in all_entries for link in e["links"]]
+    assert len(links) == 3809
+    for link in links:
+        assert canonical_types[link["targetId"]] == expected_types[link["type"]]
     scenario_ids = {e["id"] for e in groups["diagnostics"]}
     node_total = branch_total = 0
     for e in groups["diagnostics"]:

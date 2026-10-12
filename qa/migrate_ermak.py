@@ -31,7 +31,24 @@ def read_asset(name, donor_dir):
     return records
 
 
-def entry(name, kind, sha, record):
+def typed_links(record, known_ids):
+    specs = (("equipmentRefs", "EQUIPMENT"),
+             ("knowledgeRefs", "KNOWLEDGE"),
+             ("relatedScenarioIds", "RELATED_SCENARIO"))
+    links = []
+    for field, link_type in specs:
+        for target in record.get(field, []):
+            if isinstance(target, str) and target in known_ids:
+                links.append({"type": link_type, "targetId": target, "role": field})
+    for relation in record.get("relations", []):
+        target = relation.get("targetId")
+        if target in known_ids:
+            links.append({"type": "EQUIPMENT", "targetId": target,
+                          "role": str(relation.get("type") or "relation")})
+    return links
+
+
+def entry(name, kind, sha, record, known_ids):
     identifier = record["id"]
     title = record.get("name") or record.get("title") or identifier
     refs = sorted({r["sourceId"] if isinstance(r, dict) else r
@@ -54,17 +71,22 @@ def entry(name, kind, sha, record):
         "summary": summary,
         "searchTerms": [str(v) for v in [record.get("slug"), *record.get("aliases", [])] if v],
         "sourceRefs": refs,
+        "links": typed_links(record, known_ids),
         "sourceObject": {"sourcePath": source, "sourceBlobSha": sha, "object": record},
     }
 
 
 def build(donor_dir):
     outputs = {}
+    records_by_group = {name: read_asset(name, donor_dir) for name in ASSETS}
+    known_ids = {record["id"] for records in records_by_group.values() for record in records}
+    assert len(known_ids) == sum(len(records) for records in records_by_group.values())
     for name, (group, kind, sha) in ASSETS.items():
-        records = read_asset(name, donor_dir)
+        records = records_by_group[name]
         for offset in range(0, len(records), 20):
             number = offset // 20 + 1
-            entries = [entry(name, kind, sha, record) for record in records[offset:offset+20]]
+            entries = [entry(name, kind, sha, record, known_ids)
+                       for record in records[offset:offset+20]]
             assert len(entries) == len({e["id"] for e in entries})
             pack = {
                 "manifest": {
