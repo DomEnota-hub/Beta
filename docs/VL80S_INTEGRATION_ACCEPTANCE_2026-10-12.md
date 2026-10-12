@@ -32,3 +32,11 @@ Specification: `RailBrakeCalculator_Work_HandOff_2026-10-12.md` supplied by the 
 ## Change log
 
 Stage 0 recorded. Subsequent major stages append exact SHA, tests, results and limitations here. Do not change `RailBrakeCalculator_BACKLOG.md`.
+
+### Stage 3a — route entry (2026-10-12)
+
+- RED: `Vl80sAcceptanceNavigationInstrumentationTest.allEightRoutesOpenFromShellInSourceOrder` failed on Pixel API 34 because the “Приёмка” entry was absent. [Run 38217349283](https://github.com/DomEnota-maker/Beta/actions/runs/38217349283), one new failure and five previous tests passing. An earlier attempt `125f501` did not compile due to an invalid test import; corrected in `eae0f73`.
+- GREEN: shared `AcceptanceRoutesScreen` lists the eight index routes in their declared order. `app-shell` loads and resolves their canonical items, checks model ownership and pack membership, and navigates Atlas → route list → route → item → route. No acceptance pack sequence changed.
+- Commits: `af7d4f8` (shared chooser), `f515cea` (Atlas entry), `f8922c79a415256bfb36a3a0b1ed95ec75d1ca40` (shell integration).
+- [Bootstrap run 38218174385](https://github.com/DomEnota-maker/Beta/actions/runs/38218174385): completed/success (contract/unit, lint, debug APK, indexed assets). [Android UI run 38218174433](https://github.com/DomEnota-maker/Beta/actions/runs/38218174433): completed/success, 6/6 tests, including all eight route counts.
+- Remaining Stage 3: search, canonical shared status, notes, summary and restart persistence need direct device regression evidence. Route sequence equality is covered by the pack validator, but actual operational order remains subject to source review.
