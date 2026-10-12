@@ -141,3 +141,9 @@ The following source JSON files are separate object groups, some of which may du
 2. Split Common general knowledge/first aid/safety from VL80S-specific articles, preserving source and publication gates. Audit the encoded exam asset decoder.
 3. Check primary Ermak, CHME3-family and TEM2-family assets against source JSON/Kotlin generators; map variants per object and resolve conflicts explicitly.
 4. Classify remaining scripts, source documents and ZIP members as unique source data or superseded/functional material with exact mapping. This discovery table is **not** a claim of full migration.
+
+## Common migration checkpoint (2026-10-12)
+
+- `FirstAidScreen.kt` blob `09587b2da7f23ac532755fd8aad4ced100d369fa`: 17 distinct first-aid topics + one worker-kit entity + two distinct SOURCE entities → 20 Common entries. Importer and pinned structural/negative validator: `qa/migrate_common_first_aid.py`, `qa/validate_common_first_aid.py`.
+- `KnowledgeRepository.kt` blob `b37ead2d66c0c976bcc850f9cde4fddc0e198fb3` and `KnowledgeFirstWave.kt` blob `b12651f2e4dde65e0b5f50277c8928a97809afdd`: 48 unique article IDs → 26 KNOWLEDGE + 22 SAFETY; 19 distinct SOURCE entities. Importer/validator: `qa/migrate_common_knowledge.py`, `qa/validate_common_knowledge.py`. Eleven typed internal links resolve in the three-pack Common registry.
+- These **87** entries are a source-mapped subset, not all Common source objects. All are unreviewed CANDIDATE/information-only with UNKNOWN source status/provenance; duplicate source descriptors were merged within this subset. The encrypted 329-question exam remains outside these packs, with hidden-access handling and object disposition open. `COMMON_INTERNAL` restricts links to Common→Common. CI on `7caea4394214348781e5925fdfec4bebd6b32617`: [38262930314](https://github.com/DomEnota-maker/Beta/actions/runs/38262930314) success.
