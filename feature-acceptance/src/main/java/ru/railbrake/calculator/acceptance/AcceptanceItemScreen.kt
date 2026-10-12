@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.designsystem.RailContentEntryScreen
 import ru.railbrake.calculator.domain.ContentEntry
@@ -81,7 +82,7 @@ fun AcceptanceItemScreen(
                         onValueChange = { value ->
                             save(itemState.copy(note = value))
                         },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().testTag("acceptance-note"),
                         minLines = 3,
                         maxLines = 6,
                         label = { Text("Замечание") },
