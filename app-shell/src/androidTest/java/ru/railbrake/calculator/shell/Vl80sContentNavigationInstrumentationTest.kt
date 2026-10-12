@@ -44,4 +44,16 @@ class Vl80sContentNavigationInstrumentationTest {
         compose.activity.onBackPressedDispatcher.onBackPressed()
         compose.onNodeWithText("Технические данные").performScrollTo().assertIsDisplayed()
     }
+
+    @Test
+    fun visibleBackFromLinkedTechnicalDataReturnsToEquipmentCard() {
+        compose.onNodeWithContentDescription("Тяговый трансформатор. ОДЦЭ-5000/25Б")
+            .performScrollTo().performClick()
+        compose.onNodeWithText("Подробнее").performScrollTo().performClick()
+        compose.onNodeWithText("Технические данные").performScrollTo().performClick()
+        compose.onNodeWithText("ВЛ80С · Технические данные").assertIsDisplayed()
+
+        compose.onNodeWithText("← Назад").assertIsDisplayed().performClick()
+        compose.onNodeWithText("Технические данные").performScrollTo().assertIsDisplayed()
+    }
 }
