@@ -125,6 +125,10 @@ class ContentRegistry {
             LinkScope.COMMON_TARGET ->
                 source.owner is ContentOwner.Model &&
                     target.owner == ContentOwner.Common
+
+            LinkScope.COMMON_INTERNAL ->
+                source.owner == ContentOwner.Common &&
+                    target.owner == ContentOwner.Common
         }
 
     fun resolve(target: ContentTarget, context: RuntimeContext): ResolveResult {
