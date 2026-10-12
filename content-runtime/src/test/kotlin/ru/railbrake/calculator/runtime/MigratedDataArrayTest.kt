@@ -25,10 +25,10 @@ class MigratedDataArrayTest {
                     .sorted().toList()
             }
         }
-        assertEquals(85, paths.size)
+        assertEquals(86, paths.size)
         val packs = paths.map { ContentPackJsonLoader().parse(Files.readString(it)) }
-        assertEquals(1651, packs.sumOf { it.entries.size })
-        assertEquals(11302, packs.sumOf { pack -> pack.entries.sumOf { it.links.size } })
+        assertEquals(1667, packs.sumOf { it.entries.size })
+        assertEquals(11382, packs.sumOf { pack -> pack.entries.sumOf { it.links.size } })
         val registry = ContentRegistry()
         packs.forEach { assertTrue(registry.install(it).isEmpty()) }
         assertTrue(registry.validateGlobalLinks().isEmpty())
