@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,6 +70,7 @@ class MainActivity : ComponentActivity() {
                 var currentId by remember { mutableStateOf(CanonicalId("VL-EQ-HV-002")) }
                 var notice by remember { mutableStateOf<String?>(null) }
                 var selectedRoute by remember { mutableStateOf<ResolvedAcceptanceRoute?>(null) }
+                val entryHistory = remember { mutableStateListOf<CanonicalId>() }
 
                 if (currentScreen != Vl80sScreen.ENTRY) {
                     BackHandler(enabled = currentScreen != Vl80sScreen.LAYOUT) {
@@ -83,6 +85,7 @@ class MainActivity : ComponentActivity() {
                             modelTitle = "ВЛ80С",
                             onEquipmentTarget = { target ->
                                 currentId = target.id
+                                entryHistory.clear()
                                 notice = null
                                 returnFromEntry = Vl80sScreen.LAYOUT
                                 currentScreen = Vl80sScreen.ENTRY
@@ -113,6 +116,7 @@ class MainActivity : ComponentActivity() {
                             onBack = { currentScreen = Vl80sScreen.LAYOUT },
                             onEquipmentTarget = { target ->
                                 currentId = target.id
+                                entryHistory.clear()
                                 notice = null
                                 returnFromEntry = Vl80sScreen.ELECTRICAL
                                 currentScreen = Vl80sScreen.ENTRY
@@ -140,6 +144,7 @@ class MainActivity : ComponentActivity() {
                                 modelTitle = "ВЛ80С",
                                 onOpenItem = { id ->
                                     currentId = id
+                                    entryHistory.clear()
                                     notice = null
                                     returnFromEntry = Vl80sScreen.ACCEPTANCE_ROUTE
                                     currentScreen = Vl80sScreen.ENTRY
@@ -154,7 +159,11 @@ class MainActivity : ComponentActivity() {
 
                 BackHandler {
                     notice = null
-                    currentScreen = returnFromEntry
+                    if (entryHistory.isNotEmpty()) {
+                        currentId = entryHistory.removeAt(entryHistory.lastIndex)
+                    } else {
+                        currentScreen = returnFromEntry
+                    }
                 }
 
                 val entry = loaded.registry.find(currentId)
@@ -172,7 +181,10 @@ class MainActivity : ComponentActivity() {
                         )
                     ) {
                         is LinkNavigationResult.Found -> {
-                            currentId = result.target.id
+                            if (currentId != result.target.id) {
+                                entryHistory.add(currentId)
+                                currentId = result.target.id
+                            }
                             notice = null
                         }
 
