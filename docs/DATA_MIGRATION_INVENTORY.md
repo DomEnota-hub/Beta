@@ -186,3 +186,7 @@ The following source JSON files are separate object groups, some of which may du
 - Current imported Common + three model-block subset: **85** packs, **1651** canonical entries and **11,302** typed links; cross-block gate `qa/validate_migrated_data_array.py` checks them together. VL80S remains under its existing separate migration checks, and the full donor object ledger still needs final dispositions. All new TEM2 items remain CANDIDATE/UNKNOWN/information-only.
 
 The complete [discovery ledger](data-migration/source-discovery-ledger.json) preserves all 837 preliminary file/group rows. Its PENDING and mirror statuses have not been replaced by final object dispositions; exact per-object mappings for the four migrated subsets are held in their source audits and pinned importers. [CI 38292680525](https://github.com/DomEnota-maker/Beta/actions/runs/38292680525) passed on `bdf3fe12315ca014855f7fc4ba4e841fca4a71ae` after the TEM2 reference-type fix.
+
+### Supplemental document object ledger
+
+[70 pinned locomotive JSON documents](data-migration/document-object-ledger.json) contain **1748** enumerated top-level source objects: CHME3 family 1379, TEM2 family 357, mixed 12. Each row has a JSON pointer, original Git blob SHA and content SHA-256. All rows are `PENDING_MAPPING`; 332 have a matching source ID in a migrated model pack but non-identical object content, so equality/merge is **not** inferred. Generator: [build_document_object_ledger.py](data-migration/build_document_object_ledger.py). No full-source disposition is claimed yet.
