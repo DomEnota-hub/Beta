@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.designsystem.RailFeatureScaffold
 import ru.railbrake.calculator.designsystem.RailFeatureTemplate
@@ -89,6 +90,7 @@ fun AcceptanceRouteScreen(
         Text(
             text = "Найдено: ${visibleItems.size} из ${route.items.size}",
             style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.testTag("acceptance-found-count"),
         )
 
         LazyColumn(
