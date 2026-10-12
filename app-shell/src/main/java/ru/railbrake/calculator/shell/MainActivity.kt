@@ -157,7 +157,7 @@ class MainActivity : ComponentActivity() {
                     return@MaterialTheme
                 }
 
-                BackHandler {
+                val backFromEntry: () -> Unit = {
                     notice = null
                     if (entryHistory.isNotEmpty()) {
                         currentId = entryHistory.removeAt(entryHistory.lastIndex)
@@ -165,6 +165,7 @@ class MainActivity : ComponentActivity() {
                         currentScreen = returnFromEntry
                     }
                 }
+                BackHandler(onBack = backFromEntry)
 
                 val entry = loaded.registry.find(currentId)
                 if (entry == null) {
@@ -220,6 +221,7 @@ class MainActivity : ComponentActivity() {
                         modelTitle = "ВЛ80С",
                         notice = notice,
                         onLink = handleLink,
+                        onBack = backFromEntry,
                     )
 
                     FeatureDestination.SAFETY -> SafetyContentScreen(
@@ -227,6 +229,7 @@ class MainActivity : ComponentActivity() {
                         modelTitle = "ВЛ80С",
                         notice = notice,
                         onLink = handleLink,
+                        onBack = backFromEntry,
                     )
 
                     else -> RailContentEntryScreen(
@@ -235,6 +238,7 @@ class MainActivity : ComponentActivity() {
                         modelTitle = "ВЛ80С",
                         notice = notice,
                         onLink = handleLink,
+                        onBack = backFromEntry,
                     )
                 }
             }
