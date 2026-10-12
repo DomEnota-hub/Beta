@@ -147,3 +147,19 @@ The following source JSON files are separate object groups, some of which may du
 - `FirstAidScreen.kt` blob `09587b2da7f23ac532755fd8aad4ced100d369fa`: 17 distinct first-aid topics + one worker-kit entity + two distinct SOURCE entities → 20 Common entries. Importer and pinned structural/negative validator: `qa/migrate_common_first_aid.py`, `qa/validate_common_first_aid.py`.
 - `KnowledgeRepository.kt` blob `b37ead2d66c0c976bcc850f9cde4fddc0e198fb3` and `KnowledgeFirstWave.kt` blob `b12651f2e4dde65e0b5f50277c8928a97809afdd`: 48 unique article IDs → 26 KNOWLEDGE + 22 SAFETY; 19 distinct SOURCE entities. Importer/validator: `qa/migrate_common_knowledge.py`, `qa/validate_common_knowledge.py`. Eleven typed internal links resolve in the three-pack Common registry.
 - These **87** entries are a source-mapped subset, not all Common source objects. All are unreviewed CANDIDATE/information-only with UNKNOWN source status/provenance; duplicate source descriptors were merged within this subset. The encrypted 329-question exam remains outside these packs, with hidden-access handling and object disposition open. `COMMON_INTERNAL` restricts links to Common→Common. CI on `7caea4394214348781e5925fdfec4bebd6b32617`: [38262930314](https://github.com/DomEnota-maker/Beta/actions/runs/38262930314) success.
+
+## Ermak core asset mapping checkpoint (2026-10-12)
+
+| Pinned donor source group | Observed source objects | Canonical output | Structural disposition |
+|---|---:|---|---|
+| `ermak_equipment.json.gz.records` | 111 | 111 EQUIPMENT | MIGRATED, exact nested object snapshot |
+| `ermak_knowledge.json.gz.articles` | 138 | 138 KNOWLEDGE | MIGRATED, exact nested object snapshot |
+| `ermak_diagnostics.json.gz.scenarios` | 136 | 136 DIAGNOSTIC_SCENARIO | MIGRATED, exact graph snapshot; 2535 nodes/2248 choices |
+| `ermak_schemes.json.gz.schemes` | 22 | 22 ATLAS_SCHEME | MIGRATED, exact layers/metadata snapshot |
+| `ermak_equipment.json.gz.sourceRegistry` | 99 keyed records / 97 source IDs | 99 SOURCE | MIGRATED by registry key; two colliding source IDs deliberately kept separate |
+| Root metadata of the four assets above | four dictionaries excluding extracted arrays | `content-packs/electric/ermak/migration/source-audit.json` | MIGRATED as provenance/coverage metadata |
+| `ermak_links.json.gz`, `ermak_system_map.json.gz` | 6 canonicalInputs and 15 systems, with further nested objects | None yet | PENDING_MAPPING, not accepted as migrated |
+
+- Canonical Ermak pack entries: **506** in 27 packs. Complete source objects and source blob hashes are embedded per entry. Local importer comparison reproduces exact object arrays; CI verifies pinned pack hashes. **4731** typed same-model links resolve. All entries are `CANDIDATE` with UNKNOWN source/provenance and information-only action disposition; a future profile-specific gate must preserve original exclusions before publication.
+- [Source audit](../content-packs/electric/ermak/migration/source-audit.json) lists each of **152** referenced source IDs and occurrence counts: 95 unambiguous (924 raw references, 922 distinct typed links), two collisions (6 references), 55 absent in the equipment registry (542 references). These 547 raw references do **not** have typed source targets. The collision `ER-SRC-039` identifies both an equipment TO-2 document and a pantograph training document; `ER-SRC-041` has two separately keyed records. No automatic equivalence asserted.
+- Effective SHA `c4d18e85619156f9e4466facdd166e31f22efb52`. Remaining donor docs/Kotlin/generator/media objects need individual dispositions, and this checkpoint cannot count as full Ermak acceptance.
