@@ -59,6 +59,7 @@ fun LinkType.expectedTargetType(): ContentType = when (this) {
 enum class LinkScope {
     SAME_MODEL,
     COMMON_TARGET,
+    COMMON_INTERNAL,
 }
 
 enum class ContentLayer {
