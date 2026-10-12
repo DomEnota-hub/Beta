@@ -19,6 +19,7 @@ class ErmakSourcePacksTest {
             Triple("technical-data/knowledge", "knowledge", 7),
             Triple("diagnostics/recommended", "diagnostics", 7),
             Triple("atlas/schemes", "schemes", 2),
+            Triple("technical-data/sources", "sources", 5),
         ).flatMap { (subdir, name, count) ->
             (1..count).map { n ->
                 Path.of("..", "content-packs", "electric", "ermak", subdir,
@@ -26,8 +27,9 @@ class ErmakSourcePacksTest {
             }
         }
         val packs = files.map { ContentPackJsonLoader().parse(Files.readString(it)) }
-        assertEquals(22, packs.size)
-        assertEquals(407, packs.sumOf { it.entries.size })
+        assertEquals(27, packs.size)
+        assertEquals(506, packs.sumOf { it.entries.size })
+        assertEquals(4731, packs.sumOf { pack -> pack.entries.sumOf { it.links.size } })
         val registry = ContentRegistry()
         packs.forEach { assertTrue(registry.install(it).isEmpty()) }
         assertTrue(registry.validateGlobalLinks().isEmpty())
@@ -39,6 +41,12 @@ class ErmakSourcePacksTest {
         assertEquals("ER-EQ-HV-001", raw.get("id").asString)
         assertEquals("MPa", raw.getAsJsonArray("parameters")[12].asJsonObject.get("unit").asString)
         assertEquals("each_section", raw.getAsJsonObject("location").get("sectionScope").asString)
+        val collisionA = registry.find(CanonicalId("ermak.source.es5k_vov_to2"))!!
+        val collisionB = registry.find(CanonicalId("ermak.source.tass10_tech_data"))!!
+        assertEquals("ER-SRC-039", JsonParser.parseString(collisionA.sourceObject!!.objectJson)
+            .asJsonObject.getAsJsonObject("source").get("sourceId").asString)
+        assertEquals("ER-SRC-039", JsonParser.parseString(collisionB.sourceObject!!.objectJson)
+            .asJsonObject.getAsJsonObject("source").get("sourceId").asString)
         val scenario = registry.find(CanonicalId("ER-DIAG-001"))!!
         val graph = JsonParser.parseString(scenario.sourceObject!!.objectJson)
             .asJsonObject.getAsJsonObject("graph")

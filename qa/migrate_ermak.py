@@ -5,6 +5,7 @@ The donor gz assets are read only. The canonical packs retain every source
 object as a structured snapshot while keeping all entries unpublishable.
 """
 import base64
+import collections
 import gzip
 import hashlib
 import json
@@ -31,6 +32,20 @@ def read_asset(name, donor_dir):
     return records
 
 
+def source_registry(donor_dir):
+    raw = base64.b64decode((donor_dir / "ermak_equipment.json.gz.b64").read_text())
+    registry = json.loads(gzip.decompress(raw))["sourceRegistry"]
+    by_id = collections.defaultdict(list)
+    for key, record in registry.items():
+        by_id[record["sourceId"]].append(key)
+    return registry, by_id
+
+
+def read_document(name, donor_dir):
+    raw = base64.b64decode((donor_dir / f"ermak_{name}.json.gz.b64").read_text())
+    return json.loads(gzip.decompress(raw))
+
+
 def typed_links(record, known_ids):
     specs = (("equipmentRefs", "EQUIPMENT"),
              ("knowledgeRefs", "KNOWLEDGE"),
@@ -48,7 +63,7 @@ def typed_links(record, known_ids):
     return links
 
 
-def entry(name, kind, sha, record, known_ids):
+def entry(name, kind, sha, record, known_ids, sources):
     identifier = record["id"]
     title = record.get("name") or record.get("title") or identifier
     refs = sorted({r["sourceId"] if isinstance(r, dict) else r
@@ -57,6 +72,12 @@ def entry(name, kind, sha, record, known_ids):
     if isinstance(summary, dict):
         summary = None
     source = f"app/src/main/assets/technical/ermak_{name}.json.gz"
+    links = typed_links(record, known_ids)
+    for source_id in refs:
+        keys = sources.get(source_id, [])
+        if len(keys) == 1:
+            links.append({"type": "SOURCE", "targetId": f"ermak.source.{keys[0].lower()}",
+                          "role": "source-evidence"})
     return {
         "id": identifier,
         "type": kind,
@@ -71,7 +92,7 @@ def entry(name, kind, sha, record, known_ids):
         "summary": summary,
         "searchTerms": [str(v) for v in [record.get("slug"), *record.get("aliases", [])] if v],
         "sourceRefs": refs,
-        "links": typed_links(record, known_ids),
+        "links": links,
         "sourceObject": {"sourcePath": source, "sourceBlobSha": sha, "object": record},
     }
 
@@ -79,13 +100,14 @@ def entry(name, kind, sha, record, known_ids):
 def build(donor_dir):
     outputs = {}
     records_by_group = {name: read_asset(name, donor_dir) for name in ASSETS}
+    registry, by_source_id = source_registry(donor_dir)
     known_ids = {record["id"] for records in records_by_group.values() for record in records}
     assert len(known_ids) == sum(len(records) for records in records_by_group.values())
     for name, (group, kind, sha) in ASSETS.items():
         records = records_by_group[name]
         for offset in range(0, len(records), 20):
             number = offset // 20 + 1
-            entries = [entry(name, kind, sha, record, known_ids)
+            entries = [entry(name, kind, sha, record, known_ids, by_source_id)
                        for record in records[offset:offset+20]]
             assert len(entries) == len({e["id"] for e in entries})
             pack = {
@@ -108,6 +130,71 @@ def build(donor_dir):
                       "diagnostics": "diagnostics/recommended", "schemes": "atlas/schemes"}[name]
             path = BASE / subdir / f"{name}-{number:02d}.pack.json"
             outputs[path] = json.dumps(pack, ensure_ascii=False, separators=(",", ":")) + "\n"
+    source_items = list(registry.items())
+    for offset in range(0, len(source_items), 20):
+        number = offset // 20 + 1
+        entries = []
+        for key, record in source_items[offset:offset+20]:
+            entries.append({
+                "id": f"ermak.source.{key.lower()}",
+                "type": "SOURCE",
+                "owner": {"kind": "MODEL", "modelId": "ermak"},
+                "applicability": {"modelIds": ["ermak"]},
+                "layer": "STANDARD",
+                "publicationStatus": "CANDIDATE",
+                "provenance": "UNKNOWN",
+                "sourceStatus": "UNKNOWN",
+                "actionDisposition": "INFORMATION_ONLY",
+                "title": record.get("title") or record.get("document") or key,
+                "summary": record.get("document"),
+                "links": [],
+                "sourceObject": {
+                    "sourcePath": "app/src/main/assets/technical/ermak_equipment.json.gz",
+                    "sourceBlobSha": ASSETS["equipment"][2],
+                    "object": {"registryKey": key, "source": record},
+                },
+            })
+        pack = {
+            "manifest": {
+                "schemaVersion": 1, "packId": f"ermak.sources.{number:02d}",
+                "packVersion": "0.1.0", "family": "ELECTRIC",
+                "modelIds": ["ermak"], "variantIds": [], "locale": "ru-RU",
+                "entries": [e["id"] for e in entries], "requiresRuntime": "1.1.0",
+                "sourceCatalogVersion": f"test-{DONOR[:8]}-ermak-sources",
+                "checksums": {"ermak_equipment.json.gz.gitBlob": ASSETS["equipment"][2]},
+            },
+            "entries": entries,
+        }
+        path = BASE / "technical-data/sources" / f"sources-{number:02d}.pack.json"
+        outputs[path] = json.dumps(pack, ensure_ascii=False, separators=(",", ":")) + "\n"
+    reference_counts = collections.Counter()
+    for name, records in records_by_group.items():
+        for record in records:
+            reference_counts.update(r["sourceId"] if isinstance(r, dict) else r
+                                    for r in record.get("sourceRefs", []))
+    audit = {
+        "schemaVersion": 1,
+        "donorCommit": DONOR,
+        "sourceObjectCounts": {name: len(records) for name, records in records_by_group.items()},
+        "sourceRegistryKeyCount": len(registry),
+        "sourceReferences": [
+            {"sourceId": source_id, "occurrences": count,
+             "registryKeys": by_source_id.get(source_id, []),
+             "disposition": ("LINKED" if len(by_source_id.get(source_id, [])) == 1 else
+                             "AMBIGUOUS_SOURCE_ID" if by_source_id.get(source_id) else
+                             "SOURCE_GAP")}
+            for source_id, count in sorted(reference_counts.items())
+        ],
+        "sourceRootMetadata": {
+            name: {key: value for key, value in read_document(name, donor_dir).items()
+                   if key != group}
+            for name, (group, _, _) in ASSETS.items()
+        },
+        "notYetMappedAssets": ["ermak_links.json.gz", "ermak_system_map.json.gz"],
+    }
+    outputs[BASE / "migration/source-audit.json"] = (
+        json.dumps(audit, ensure_ascii=False, separators=(",", ":")) + "\n"
+    )
     return outputs
 
 
@@ -122,7 +209,8 @@ def main():
         target = args.output_root / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(content)
-    print("ERMAK_STRUCTURED_PACKS", len(outputs), sum(len(json.loads(v)["entries"]) for v in outputs.values()))
+    print("ERMAK_STRUCTURED_PACKS", len(outputs) - 1,
+          sum(len(json.loads(v)["entries"]) for p, v in outputs.items() if p.name.endswith("pack.json")))
 
 
 if __name__ == "__main__":
