@@ -42,14 +42,22 @@ jobs:
           git diff --check
 
       - name: Commit generated VL80S acceptance
+        id: generated
         run: |
           git add content-packs/electric/vl80s
           git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Acceptance packs already match the pinned donor."
+            exit 0
+          fi
           git config user.name "DomEnota-maker"
           git config user.email "dk3093706@gmail.com"
           git commit -m "feat: migrate full VL80S acceptance"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Push only if branch is still ours
+        if: steps.generated.outputs.changed == 'true'
         run: |
           git fetch origin modular-rebuild
           remote_head="$(git rev-parse origin/modular-rebuild)"
