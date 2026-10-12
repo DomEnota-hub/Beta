@@ -29,6 +29,7 @@ fun AcceptanceItemScreen(
     modelTitle: String,
     notice: String?,
     onLink: (ContentLink) -> Unit,
+    onBack: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val store = remember {
@@ -92,5 +93,6 @@ fun AcceptanceItemScreen(
             }
         },
         onLink = onLink,
+        onBack = onBack,
     )
 }
