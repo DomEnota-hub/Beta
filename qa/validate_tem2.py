@@ -11,8 +11,8 @@ from migrate_tem2 import PINS, ROOT, build, read_assets
 OUTPUT_SHA256 = {
     "layouts-01.pack.json": "d79d5f0e0332d6b0c1c1083cad7b070902b995000b07fff1f667d20d4550d01b",
     "sequences-01.pack.json": "32ad5da16048eceae81f48cc3c5f62c24a4f3f0e91a6ac6b65b7779d21195d5d",
-    "diagnostics-01.pack.json": "1c5096a8985b5d6d69746e70f33f45648505689db93f4d47bb300ece3275d1e9",
-    "diagnostics-02.pack.json": "3c1ac52c48d9fb35759e591ad8daaecefee17eee9828e93e2fe7f4755e28994a",
+    "diagnostics-01.pack.json": "24f26e288912d8e067f8f25fd8c32ff5958f63f3d3e9d8d3f55b724a7d031de6",
+    "diagnostics-02.pack.json": "f5a80b8c93f9b06d2c95066b4cc5f9596e2bd041717ac466c400dae0218fabf0",
     "catalog-01.pack.json": "0f5cd45d3b73a553feb05b2a1a911c00a5930031b9da2c80e0993f8e275cef0b",
     "catalog-02.pack.json": "f465ec02001788bf096af803ba14ccb896fda4aa984e7c5800b24d8ff89f9d3b",
     "catalog-03.pack.json": "b906370fb1eea57dae1aefa6701f77421d655e4a2f5a5fb8fb0e5ff89be70565",
@@ -64,6 +64,7 @@ def validate(root,donor_dir=None):
         variants=set(e["applicability"]["variantIds"])
         assert variants and variants <= {"tem2","tem2u"}
         assert e["sourceObject"]["sourceBlobSha"] in PINS.values()
+        assert all(isinstance(ref, str) for ref in e.get("sourceRefs", []))
         for link in e["links"]:
             links+=1
             target=ids[link["targetId"]]

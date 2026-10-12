@@ -76,7 +76,9 @@ def build(donor_dir):
                       record.get("functionalDisclaimer") or None,
             "searchTerms":record.get("searchAliases",[]) if kind=="catalog" else
                           record.get("searchTerms",[]) if kind=="diagnostics" else [],
-            "sourceRefs":record.get("sourceRefs",[]) if kind=="diagnostics" else [],
+            "sourceRefs":sorted({r["sourceId"] if isinstance(r,dict) else r
+                                 for r in record.get("sourceRefs",[])
+                                 if isinstance(r,(dict,str))}) if kind=="diagnostics" else [],
             "blocks":record.get("blocks",[]) if kind=="catalog" else [],
             "links":[],
             "sourceObject":{"sourcePath":f"app/src/main/assets/technical/{name}.json",
