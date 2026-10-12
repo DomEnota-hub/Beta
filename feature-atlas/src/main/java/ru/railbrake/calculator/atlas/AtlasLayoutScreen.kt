@@ -46,6 +46,7 @@ fun AtlasLayoutScreen(
     onPneumaticFlow: (() -> Unit)? = null,
     onElectricalFlow: (() -> Unit)? = null,
     onDiagnosticsCatalog: (() -> Unit)? = null,
+    onAcceptanceRoutes: (() -> Unit)? = null,
 ) {
     var selectedId by remember(layout.id) { mutableStateOf<String?>(null) }
     var expanded by remember(selectedId) { mutableStateOf(false) }
@@ -84,6 +85,12 @@ fun AtlasLayoutScreen(
                     onClick = onDiagnosticsCatalog,
                     modifier = Modifier.fillMaxWidth(),
                 ) { Text("Диагностика · только принятые сценарии") }
+            }
+            if (onAcceptanceRoutes != null) {
+                Button(
+                    onClick = onAcceptanceRoutes,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("Приёмка") }
             }
 
             if (image == null) {
