@@ -95,6 +95,12 @@ jobs:
       - name: Verify CHME3 source registry dispositions
         run: python3 qa/map_chme3_source_registries.py --ledger docs/data-migration/document-object-ledger.json --verify-output
 
+      - name: Validate pinned CHME3 family and profile sources
+        run: python3 qa/validate_chme3_profiles.py
+
+      - name: Verify CHME3 profile document dispositions
+        run: python3 qa/map_chme3_profiles.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
       - name: Validate TEM2 family source and training scheme data
         run: python3 qa/validate_tem2.py
 
