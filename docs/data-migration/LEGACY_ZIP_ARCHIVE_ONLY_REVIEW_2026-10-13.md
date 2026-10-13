@@ -19,3 +19,11 @@ Input: `RailBrakeCalculator.zip` at donor commit `3176d6ee228f0ed4b78371f45209e1
 | `tools/__pycache__/generate_exam_questions.cpython-312.pyc` | `29bf256141517dc3480abe20ebe39eed810980e6` | Compiled Python cache; the archive's `tools/generate_exam_questions.py` is byte-identical to the pinned tree source. Do not execute or treat the cache as a separate question corpus. |
 
 The remaining 33 nonmatching archive members have a same-path or patch-path counterpart with different bytes. Those require semantic diffs, especially the older plaintext `exam_questions.json` (329 questions) against the current encoded asset and its access policy. The public Test repository already exposes the old archive; this review does not copy its question text into Beta. The ZIP itself is not committed to Beta.
+
+## Initial comparison of the 33 changed counterparts
+
+A read-only scan of the 20 changed main-source Kotlin files compared ASCII ID literals with the corresponding pinned Test files. This is a triage signal, not proof that older card content is preserved. Five files have archive-only literals; the other 15 still require semantic review because matching IDs do not prove matching text, rules or applicability.
+
+- The ZIP's `FirstAidScreen.kt` has one combined `cold` topic titled “Переохлаждение / обморожение”. The pinned current source has separate `hypothermia` and `frostbite` topics. The old combined topic must not be imported as a third first-aid topic or used to merge those two conditions.
+- The ZIP's `DiagnosticRepository.kt` includes older `gv-attempt`, `gv-command`, `gv-load` and `traction-scope` question keys. The current source uses a different `gvc-*` and `tna-*` question graph for those scenarios. Their graph semantics require a node-by-node comparison before any older route is considered missing or reusable.
+- The archive UI references `vl80-electrical-simulator` and `vl80-pneumatic-simulator`, and the old diagnostic screen has a `training` literal. These are historical navigation identifiers, not proof that present Atlas objects are missing. The old `appearance` setting literal similarly needs UI mapping, not data promotion.
