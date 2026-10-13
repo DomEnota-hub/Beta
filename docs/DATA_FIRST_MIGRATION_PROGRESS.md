@@ -245,3 +245,7 @@ Append after each major completed stage: starting and ending SHA, source and des
 
 - Starting SHA `86eb1d2ca933e2be965e585a79f65fd93d9dc6ce`. Read-only comparison of the pinned source link index with all current model-owned candidate pack IDs: 111 equipment, 138 knowledge articles, 136 diagnostics and 22 schemes. All link targets of these four kinds have a unique canonical ID; all 138 knowledge IDs are referenced, and the source map’s 15 system IDs match the link index. The one missing index key remains `ER-DIAG-136`; it is not added by this check. A negative test removes one knowledge target and verifies a missing-ID report. The full check is in bootstrap CI; final run/SHA pending.
 - This validates ID existence and source-internal consistency only. The index’s historical profile filtering and `PASS` labels are **not** accepted as current applicability, engineering or safety authority. No runtime links, canonical objects or publication states changed.
+
+### Ermak canonical link-ID CI closure
+
+- [Bootstrap 38382019124](https://github.com/DomEnota-hub/Beta/actions/runs/38382019124) on `bca2cbbd4466eff891b5e0ca0304719d2f6dd462` completed/success: all four canonical ID sets and 15 source system IDs, negative missing-knowledge test, preceding pinned data/JVM validations, Android lint and debug APK. This documentation-only closure does not alter the tested data or code. The absent `ER-DIAG-136` link and technical/profile authority checks remain open.
