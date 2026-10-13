@@ -6,7 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from migrate_chme3 import PINS, ROOT, VARIANTS, build, read_assets
+from migrate_chme3 import (PINS, ROOT, VARIANTS, build, read_assets,
+                           BRAKE_RESISTOR_SOURCE_ID, BRAKE_RESISTOR_PREFERRED_NAME)
 
 OUTPUT_SHA256 = {
     "diagnostics-01.pack.json": "85658ef1cb10f09298014bfabae15814580e5a2c04c4ebc5c2cb09e5e4a5f66f",
@@ -46,7 +47,7 @@ OUTPUT_SHA256 = {
     "catalog-31.pack.json": "b75ee21aa11460fe0fab8bae199900a3741f749d3a7493c54b26c95f616220ee",
     "catalog-32.pack.json": "5d6359581f842a6216335a3435c0bed0230aaba0856d5aed7f766d27654d54fd",
     "catalog-33.pack.json": "feaba1a3aa632fb23507d0c61a85b18c9b8e83b3fe060431af98a795aee86342",
-    "catalog-34.pack.json": "39108204220b3be345ee98ebfe4403ab9d7c58cc16cf6dab19bcdacf9e936824",
+    "catalog-34.pack.json": "7bcdbe3a869b64b9c59e57a8525b6f014e72dc528ebc8a9a998ff0dcca934e3e",
 }
 COUNTS = {"chme3.catalog":306,"chme3.diagnostics":55,
           "chme3t.catalog":319,"chme3t.diagnostics":56,
@@ -76,6 +77,15 @@ def validate(root, donor_dir=None):
         entries+=group
     ids={e["id"]:e for e in entries}
     assert len(ids)==len(entries)==738
+    brake = [e for e in groups["catalog"]
+             if e["sourceObject"]["object"]["id"] == BRAKE_RESISTOR_SOURCE_ID]
+    assert len(brake) == 1
+    brake, = brake
+    assert brake["title"] == BRAKE_RESISTOR_PREFERRED_NAME
+    assert brake["sourceObject"]["object"]["title"] == "Тормозные резисторы"
+    assert brake["applicability"]["variantIds"] == ["chme3t"]
+    assert "тормозные резисторы" in brake["searchTerms"]
+    assert all(link["applicability"]["variantIds"] == ["chme3t"] for link in brake["links"])
     links=0
     for e in entries:
         assert e["owner"]=={"kind":"MODEL","modelId":"chme3-family"}

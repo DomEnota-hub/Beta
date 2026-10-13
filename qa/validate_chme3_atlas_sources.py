@@ -21,6 +21,23 @@ def validate(root, donor_root=None):
     assert sum(p["nameComparison"] == "MISSING_CARD_NAME" for p in index["pairedRecords"]) == 33
     assert [p["sourceId"] for p in index["pairedRecords"]
             if p["nameComparison"] == "DIFFERENT_NAMES"] == ["CHME3T-EQ-BRAKE-RESISTORS"]
+    resolution, = index["canonicalNameResolutions"]
+    assert resolution["sourceId"] == "CHME3T-EQ-BRAKE-RESISTORS"
+    assert resolution["preferredName"] == "Блок тормозных резисторов"
+    assert resolution["alternativeNames"] == ["Тормозные резисторы"]
+    assert resolution["applicability"] == ["ЧМЭ3Т"]
+    assert resolution["cardContentPolicy"] == "PRESERVE_COMPLETE_SOURCE_CARD"
+    assert resolution["nameSources"] == next(p["occurrences"] for p in index["pairedRecords"]
+                                               if p["sourceId"] == resolution["sourceId"])
+    pack = json.loads((root / "content-packs/diesel/chme3-family/technical-data/catalog/catalog-34.pack.json").read_text())
+    matched = [e for e in pack["entries"] if e["id"] == resolution["canonicalId"]]
+    assert len(matched) == 1
+    entry = matched[0]
+    assert entry["title"] == resolution["preferredName"]
+    assert entry["applicability"]["variantIds"] == ["chme3t"]
+    assert entry["sourceObject"]["object"]["title"] == resolution["alternativeNames"][0]
+    assert resolution["alternativeNames"][0].lower() in entry["searchTerms"]
+    assert all(link["applicability"]["variantIds"] == ["chme3t"] for link in entry["links"])
     assert [(d["sourcePath"], d["sourceBlobSha"]) for d in index["documents"]] == list(PINS.items())
     if donor_root:
         expected = json.dumps(build(donor_root), ensure_ascii=False, separators=(",", ":")) + "\n"

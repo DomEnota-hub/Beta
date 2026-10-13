@@ -25,6 +25,8 @@ TYPE_BY_SECTION = {
 LINK_TYPES = {"ACCEPTANCE_ITEM":"ACCEPTANCE_ITEM", "EQUIPMENT":"EQUIPMENT",
               "KNOWLEDGE":"KNOWLEDGE", "DIAGNOSTIC_SCENARIO":"RELATED_SCENARIO"}
 ROOT = Path("content-packs/diesel/chme3-family")
+BRAKE_RESISTOR_SOURCE_ID = "CHME3T-EQ-BRAKE-RESISTORS"
+BRAKE_RESISTOR_PREFERRED_NAME = "Блок тормозных резисторов"
 
 
 def read_assets(donor_dir):
@@ -59,6 +61,12 @@ def build(donor_dir):
         suffix = "" if conflicts[(kind, source_id)] == 1 else "." + "-".join(variants)
         canonical_id = f"chme3.{kind}.{source_id.lower()}{suffix}"
         record = copies[0][2]
+        display_title = record["title"]
+        if kind == "catalog" and source_id == BRAKE_RESISTOR_SOURCE_ID:
+            assert variants == ["chme3t"]
+            assert record["title"] == "Тормозные резисторы"
+            assert "тормозные резисторы" in record["searchAliases"]
+            display_title = BRAKE_RESISTOR_PREFERRED_NAME
         path = f"app/src/main/assets/technical/chme3_{copies[0][0]}_{kind}.json.gz"
         content_type = ("DIAGNOSTIC_SCENARIO" if kind == "diagnostics" else
                         TYPE_BY_SECTION[record["section"]])
@@ -69,7 +77,7 @@ def build(donor_dir):
             "layer":"STANDARD", "publicationStatus":"CANDIDATE",
             "provenance":"UNKNOWN", "sourceStatus":"UNKNOWN",
             "actionDisposition":"INFORMATION_ONLY",
-            "title":record["title"],
+            "title":display_title,
             "summary": record.get("subtitle") or record.get("symptom") or None,
             "searchTerms": record.get("searchAliases", []) if kind == "catalog" else record.get("searchTerms", []),
             "blocks": record.get("blocks", []) if kind == "catalog" else [],

@@ -56,10 +56,28 @@ def build(donor_root):
     assert sum(p["nameComparison"] == "MISSING_CARD_NAME" for p in pairs) == 33
     assert [p["sourceId"] for p in pairs if p["nameComparison"] == "DIFFERENT_NAMES"] == [
         "CHME3T-EQ-BRAKE-RESISTORS"]
+    brake = next(p for p in pairs if p["sourceId"] == "CHME3T-EQ-BRAKE-RESISTORS")
+    by_role = {o["role"]: o for o in brake["occurrences"]}
+    assert by_role["INDEX"]["name"] == "Блок тормозных резисторов"
+    assert by_role["CARD"]["name"] == "Тормозные резисторы"
+    source_by_path = {d["sourcePath"]: d["sourceObject"] for d in documents}
+    for occurrence in brake["occurrences"]:
+        node = source_by_path[occurrence["sourcePath"]]
+        for token in occurrence["sourcePointer"].lstrip("/").split("/"):
+            node = node[int(token)] if isinstance(node, list) else node[token]
+        assert node["applicability"] == ["ЧМЭ3Т"]
+    name_resolution = {"sourceId": brake["sourceId"],
+                       "canonicalId": "chme3.catalog.chme3t-eq-brake-resistors",
+                       "preferredName": by_role["INDEX"]["name"],
+                       "alternativeNames": [by_role["CARD"]["name"]],
+                       "applicability": ["ЧМЭ3Т"],
+                       "nameSources": brake["occurrences"],
+                       "cardContentPolicy": "PRESERVE_COMPLETE_SOURCE_CARD"}
     return {"schemaVersion": 1, "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
             "publicationStatus": "CANDIDATE", "actionDisposition": "INFORMATION_ONLY",
             "runtimeImport": False, "pairPolicy": "INDEX_AND_CARD_RETAINED_SEPARATELY",
-            "pairedRecords": pairs, "documents": documents}
+            "pairedRecords": pairs, "canonicalNameResolutions": [name_resolution],
+            "documents": documents}
 
 
 if __name__ == "__main__":
