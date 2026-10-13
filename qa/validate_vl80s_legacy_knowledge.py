@@ -90,6 +90,15 @@ def validate():
     ids = [entry["id"] for entry in entries]
     assert len(ids) == len(set(ids)) == 8
     assert ids == pack["manifest"]["entries"]
+    for other_path in (ROOT / "content-packs").rglob("*.pack.json"):
+        if other_path == PACK:
+            continue
+        other = json.loads(other_path.read_text(encoding="utf-8"))
+        if isinstance(other, dict) and isinstance(other.get("entries"), list):
+            duplicate = set(ids) & {
+                item.get("id") for item in other["entries"] if isinstance(item, dict)
+            }
+            assert not duplicate, (str(other_path.relative_to(ROOT)), duplicate)
     assert pack["manifest"]["modelIds"] == ["vl80s"]
     assert pack["manifest"]["checksums"]["KnowledgeRepository.gitBlob"] == EXPECTED_BLOB
     source_entries = {entry["id"]: entry for entry in entries if entry["type"] == "SOURCE"}
