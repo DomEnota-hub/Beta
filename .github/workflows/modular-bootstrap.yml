@@ -95,6 +95,9 @@ jobs:
       - name: Verify pinned Ermak supplemental assets and unresolved diagnostic link
         run: python3 qa/validate_ermak_supplemental_assets.py
 
+      - name: Reconcile Ermak system map and source link indexes without runtime promotion
+        run: python3 qa/validate_ermak_system_link_reconciliation.py
+
       - name: Test Ermak source-link ID gap detection
         run: python3 -m unittest discover -s qa -p test_ermak_link_id_audit.py
 
