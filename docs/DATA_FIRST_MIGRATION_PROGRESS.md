@@ -236,3 +236,12 @@ Append after each major completed stage: starting and ending SHA, source and des
 
 - Starting SHA `404f6ff41743b1d5f34bc9655f3354bfa5acb8e5`. The pinned `ermak_links.json.gz` index is checked internally without promoting its historical `PASS` or link policy into Android runtime. It has 111 equipment, 15 system, 135 diagnostic and 22 scheme index keys; 5140 internal reference occurrences resolve inside the four index namespaces. The 523 diagnostic↔scheme pairs are reciprocal. Local negative checks rejected an unknown system target and a one-sided scheme link.
 - This internal integrity result does **not** settle 138 knowledge references against their canonical targets, verify profile compatibility against primary documents, or supply the absent `ER-DIAG-136` link. The previous candidate/non-runtime policy remains. No source bytes or runtime pack changed. New bootstrap CI pending on this validator/index update.
+
+### Ermak source-link graph CI closure
+
+- [Bootstrap 38381336747](https://github.com/DomEnota-hub/Beta/actions/runs/38381336747) on `86eb1d2ca933e2be965e585a79f65fd93d9dc6ce` completed/success: internal link integrity, earlier data/JVM validators, lint and APK.
+
+## Stage 1o — Ermak link IDs versus canonical candidates (2026-10-13 Moscow)
+
+- Starting SHA `86eb1d2ca933e2be965e585a79f65fd93d9dc6ce`. Read-only comparison of the pinned source link index with all current model-owned candidate pack IDs: 111 equipment, 138 knowledge articles, 136 diagnostics and 22 schemes. All link targets of these four kinds have a unique canonical ID; all 138 knowledge IDs are referenced, and the source map’s 15 system IDs match the link index. The one missing index key remains `ER-DIAG-136`; it is not added by this check. A negative test removes one knowledge target and verifies a missing-ID report. The full check is in bootstrap CI; final run/SHA pending.
+- This validates ID existence and source-internal consistency only. The index’s historical profile filtering and `PASS` labels are **not** accepted as current applicability, engineering or safety authority. No runtime links, canonical objects or publication states changed.

@@ -9,6 +9,37 @@ from pathlib import Path
 from migrate_ermak_supplemental_assets import DEST, audit_links, build
 
 
+def compare_canonical_ids(indexes: dict, canonical: dict) -> dict:
+    equipment = set(indexes["byEquipment"])
+    diagnostics = set(indexes["byDiagnostic"])
+    schemes = set(indexes["byScheme"])
+    knowledge = {id_ for group in indexes.values() for obj in group.values()
+                 for id_ in obj.get("knowledgeIds", [])}
+    knowledge.update(obj["equipmentArticleId"] for obj in indexes["byEquipment"].values())
+    return {
+        "missingEquipmentTargets": sorted(equipment - canonical["equipment"]),
+        "missingKnowledgeTargets": sorted(knowledge - canonical["knowledge"]),
+        "missingDiagnosticTargets": sorted(diagnostics - canonical["diagnostics"]),
+        "missingSchemeTargets": sorted(schemes - canonical["schemes"]),
+        "unreferencedKnowledgeIds": sorted(canonical["knowledge"] - knowledge),
+        "missingDiagnosticIndexIds": sorted(canonical["diagnostics"] - diagnostics),
+        "extraEquipmentIndexIds": sorted(canonical["equipment"] - equipment),
+        "extraSchemeIndexIds": sorted(canonical["schemes"] - schemes),
+        "knowledgeReferenceIds": len(knowledge),
+    }
+
+
+def canonical_entries(root: Path, relative: str) -> list:
+    paths = sorted((root / relative).glob("*.pack.json"))
+    assert paths, relative
+    entries = [entry for path in paths
+               for entry in json.loads(path.read_text(encoding="utf-8"))["entries"]]
+    ids = [entry["id"] for entry in entries]
+    assert len(ids) == len(set(ids)), relative + " duplicate canonical ID"
+    assert all(entry["publicationStatus"] == "CANDIDATE" for entry in entries)
+    return entries
+
+
 def validate(root: Path, check_canonical: bool = True) -> int:
     actual = (root / DEST).read_text(encoding="utf-8")
     expected = json.dumps(build(root), ensure_ascii=False, separators=(",", ":")) + "\n"
@@ -25,16 +56,28 @@ def validate(root: Path, check_canonical: bool = True) -> int:
     assert index["sourceGraphAudit"]["reciprocalDiagnosticSchemePairs"] == 523
     assert index["sourceGraphAudit"]["unresolvedInternalReferences"] == []
     if check_canonical:
-        pack_dir = root / "content-packs/electric/ermak/diagnostics/recommended"
-        ids = [entry["id"] for path in sorted(pack_dir.glob("*.pack.json"))
-               for entry in json.loads(path.read_text(encoding="utf-8"))["entries"]]
-        assert len(ids) == 136 and len(set(ids)) == 136, "canonical diagnostic count/IDs"
-        linked_ids = set(links["indexes"]["byDiagnostic"])
-        assert sorted(set(ids) - linked_ids) == index["missingDiagnosticLinkIds"]
-        assert not linked_ids - set(ids), "unknown linked diagnostic"
-        assert all(e["publicationStatus"] == "CANDIDATE"
-                   for path in sorted(pack_dir.glob("*.pack.json"))
-                   for e in json.loads(path.read_text(encoding="utf-8"))["entries"])
+        paths = {
+            "equipment": "content-packs/electric/ermak/atlas/equipment",
+            "knowledge": "content-packs/electric/ermak/technical-data/knowledge",
+            "diagnostics": "content-packs/electric/ermak/diagnostics/recommended",
+            "schemes": "content-packs/electric/ermak/atlas/schemes",
+        }
+        canonical = {kind: {e["id"] for e in canonical_entries(root, path)}
+                     for kind, path in paths.items()}
+        assert {kind: len(ids) for kind, ids in canonical.items()} == {
+            "equipment": 111, "knowledge": 138, "diagnostics": 136, "schemes": 22}
+        result = compare_canonical_ids(links["indexes"], canonical)
+        assert result == {
+            "missingEquipmentTargets": [], "missingKnowledgeTargets": [],
+            "missingDiagnosticTargets": [], "missingSchemeTargets": [],
+            "unreferencedKnowledgeIds": [],
+            "missingDiagnosticIndexIds": index["missingDiagnosticLinkIds"],
+            "extraEquipmentIndexIds": [], "extraSchemeIndexIds": [],
+            "knowledgeReferenceIds": 138,
+        }, result
+        source_map = json.loads(gzip.decompress(
+            (root / index["assets"][1]["destinationPath"]).read_bytes()))
+        assert {s["id"] for s in source_map["systems"]} == set(links["indexes"]["bySystem"])
     return len(index["assets"])
 
 
