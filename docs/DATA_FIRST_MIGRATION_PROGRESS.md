@@ -249,3 +249,8 @@ Append after each major completed stage: starting and ending SHA, source and des
 ### Ermak canonical link-ID CI closure
 
 - [Bootstrap 38382019124](https://github.com/DomEnota-hub/Beta/actions/runs/38382019124) on `bca2cbbd4466eff891b5e0ca0304719d2f6dd462` completed/success: all four canonical ID sets and 15 source system IDs, negative missing-knowledge test, preceding pinned data/JVM validations, Android lint and debug APK. This documentation-only closure does not alter the tested data or code. The absent `ER-DIAG-136` link and technical/profile authority checks remain open.
+
+## Stage 1p — Three diagnostic Kotlin wrappers (2026-10-13 Moscow)
+
+- Starting SHA `5538e660c8e966780484391f355d2106b5f3d2e0`. Read pinned donor source blobs `5775a53cc7b3a2d66bd40f15568199e3ee80ea6e` (CHME3), `01fcf7c267d879fdd5f6da7ab751a48db7cf3051` (Ermak), and `d61d6f13fedc6ca7a5f37327ff92f28c593e7908` (TEM2). They contain asset selection, JSON parsing/fallbacks and exact-profile filtering, with no literal scenario objects. The [three-row overlay](data-migration/diagnostic-kotlin-wrapper-dispositions.json) classifies these source-file code objects as `DEFERRED_SCOPE`; it does not classify the separately migrated JSON scenario objects or migrate the donor parser into Beta. Donor comments claiming verification or completion grant no current action authority.
+- The validator checks the three paths and blob SHAs against the 837-row discovery ledger, enforces no scenario ID/publication promotion and the runtime-deferred boundary. Local 3-row validation and a negative promotion mutation passed; CI pending. The other Kotlin, media, generator and ZIP rows remain under review.
