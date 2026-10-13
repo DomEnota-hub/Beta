@@ -116,6 +116,11 @@ jobs:
       - name: Verify legacy local-state code and history migration boundary
         run: python3 qa/validate_legacy_local_state_code_dispositions.py
 
+      - name: Verify pinned legacy ZIP members, media and history format
+        run: |
+          curl --fail --location --silent --show-error --output /tmp/rail-donor.zip https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/RailBrakeCalculator.zip
+          python3 qa/validate_legacy_zip_member_manifest.py --archive /tmp/rail-donor.zip
+
       - name: Validate CHME3 family source and variant isolation
         run: python3 qa/validate_chme3.py
 

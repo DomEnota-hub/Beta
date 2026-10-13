@@ -40,8 +40,10 @@ def validate(root: Path, ledger_path: Path) -> int:
     h = data["calculationHistoryStorage"]
     assert h["destinationContract"] == str(HISTORY)
     assert h["migrationGate"] == "legacyFormatVerified=false"
-    assert h["status"] == "PENDING_ZIP_MEMBER_INSPECTION"
+    assert h["status"] == "FORMAT_OBSERVED_MIGRATION_PENDING"
     assert h["zipOnlySourcePath"] == "RailBrakeCalculator.zip!RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/data/HistoryRepository.kt"
+    assert h["memberBlobSha"] == "d95a2ce465e2f09bb96d74b8318f36b16d21afd0"
+    assert h["memberManifest"] == "docs/data-migration/legacy-zip-member-manifest.json"
     assert h["storageMigrationImplemented"] is False
     contract = (root / HISTORY).read_text(encoding="utf-8")
     assert "const val legacyFormatVerified: Boolean = false" in contract
