@@ -98,6 +98,9 @@ jobs:
       - name: Reconcile Ermak system map and source link indexes without runtime promotion
         run: python3 qa/validate_ermak_system_link_reconciliation.py
 
+      - name: Test Ermak source identities and unresolved-link isolation
+        run: python3 -m unittest discover -s qa -p test_ermak_reconciliation_dispositions.py
+
       - name: Test Ermak source-link ID gap detection
         run: python3 -m unittest discover -s qa -p test_ermak_link_id_audit.py
 

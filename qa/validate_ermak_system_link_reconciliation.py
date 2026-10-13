@@ -12,6 +12,7 @@ from pathlib import Path
 BASE = Path("content-packs/electric/ermak")
 REPORT = Path("docs/data-migration/ermak-system-link-reconciliation.json")
 PIN = "3176d6ee228f0ed4b78371f45209e10c1c724eff"
+RESOLUTION = BASE / "migration/source-identity-resolution.json"
 
 
 def entries(root, relative, pattern):
@@ -119,12 +120,125 @@ def reconcile(root):
     return report
 
 
+def load_resolution(root):
+    return json.loads((root / RESOLUTION).read_text(encoding="utf-8"))
+
+
+def validate_resolution(root, data=None):
+    """Check the identity overlay against unmodified source objects and fail closed."""
+    data = load_resolution(root) if data is None else data
+    assert data["schemaVersion"] == 1 and data["donorCommit"] == PIN
+    assert data["publicationStatus"] == "CANDIDATE"
+    assert data["actionDisposition"] == "INFORMATION_ONLY"
+    assert data["runtimeImport"] is False
+    all_sources = entries(root, "technical-data/sources", "sources-*.pack.json")
+    sources = {entry["id"]: entry for entry in all_sources}
+    assert len(sources) == len(all_sources) == 99
+    records = data["sourceRecords"]
+    assert len(records) == 4
+    assert len({row["sourceEntryId"] for row in records}) == 4
+    expected_ids = {"ermak.source.es5k_vov_to2", "ermak.source.tass10_tech_data",
+                    "ermak.source.dp011_rgups", "ermak.source.dp011_rgups_data"}
+    assert {row["sourceEntryId"] for row in records} == expected_ids
+    for row in records:
+        entry = sources[row["sourceEntryId"]]
+        original = entry["sourceObject"]
+        source = original["object"]["source"]
+        assert {key: row[key] for key in (
+            "registryKey", "legacySourceId", "originalDocument", "originalTitle",
+            "originalUrl", "originalLocator", "sourcePath", "sourceBlobSha"
+        )} == {
+            "registryKey": original["object"]["registryKey"],
+            "legacySourceId": source["sourceId"], "originalDocument": source["document"],
+            "originalTitle": source["title"], "originalUrl": source["url"],
+            "originalLocator": source["locator"], "sourcePath": original["sourcePath"],
+            "sourceBlobSha": original["sourceBlobSha"],
+        }
+        assert row["rawIdLinkDisposition"] == "AMBIGUOUS_NO_AUTOMATIC_LINK"
+        assert entry["publicationStatus"] == "CANDIDATE"
+        assert entry["actionDisposition"] == "INFORMATION_ONLY"
+    grouped = defaultdict(list)
+    for row in records:
+        grouped[row["legacySourceId"]].append(row)
+    assert set(grouped) == {"ER-SRC-039", "ER-SRC-041"}
+    assert all(len(value) == 2 for value in grouped.values())
+    r39, r41 = grouped["ER-SRC-039"], grouped["ER-SRC-041"]
+    assert len({row["publicationId"] for row in r39}) == 2
+    assert len({row["bibliographicWorkId"] for row in r39}) == 2
+    assert len({row["originalUrl"] for row in r39}) == 2
+    assert len({row["publicationId"] for row in r41}) == 1
+    assert len({row["bibliographicWorkId"] for row in r41}) == 1
+    assert len({row["originalUrl"] for row in r41}) == 1
+    publications = data["publications"]
+    works = data["bibliographicWorks"]
+    pub_by_id = {item["id"]: item for item in publications}
+    work_by_id = {item["id"]: item for item in works}
+    assert len(pub_by_id) == len(publications) == 3
+    assert len(work_by_id) == len(works) == 3
+    assert set(pub_by_id) == {row["publicationId"] for row in records}
+    assert set(work_by_id) == {row["bibliographicWorkId"] for row in records}
+    for pub in publications:
+        corresponding = [row for row in records if row["publicationId"] == pub["id"]]
+        assert pub["bibliographicWorkId"] in work_by_id
+        assert sorted(pub["sourceEntryIds"]) == sorted(row["sourceEntryId"] for row in corresponding)
+        assert {row["originalUrl"] for row in corresponding} == {pub["url"]}
+        assert all(row["bibliographicWorkId"] == pub["bibliographicWorkId"] for row in corresponding)
+    verigin = work_by_id["ermak.work.verigin_2024"]
+    assert verigin["author"] == "Веригин Олег Сергеевич" and verigin["year"] == 2024
+    assert verigin["title"] == ("Влияние электромеханических процессов в тяговом "
+                                 "электроприводе магистрального электровоза переменного тока "
+                                 "на надежность и долговечность колесных пар")
+    assert "Приложение Б, таблица Б.1" in verigin["locator"]
+    assert verigin["primaryUrl"] == r41[0]["originalUrl"]
+    assert {row["bibliographicWorkId"] for row in r41} == {verigin["id"]}
+
+    system_map = json.loads(gzip.decompress((root / BASE / "migration/source-assets/ermak_system_map.json.gz").read_bytes()))
+    unresolved = data["unresolvedSourceIds"]
+    source_ids = {entry["sourceObject"]["object"]["source"]["sourceId"] for entry in all_sources}
+    assert [item["sourceId"] for item in unresolved] == sorted(set(system_map["sourceIds"]) - source_ids)
+    assert all(item["disposition"] == "SOURCE_GAP" and item["automaticMatch"] == "FORBIDDEN"
+               and item["requiredEvidence"] == "ORIGINAL_NUMBERED_SOURCE_REGISTRY" for item in unresolved)
+    evidence = data["technicalEvidence"]
+    assert evidence["sourceDocument"] == "ИДМБ.661142.009РЭ1 (3ТС.001.012РЭ1)"
+    assert evidence["sourceSection"].startswith("6.6.1")
+    assert evidence["observedChain"] == ["ЭПК У25", "KV12", "КТ1/KV15", "КМ41/КМ42", "шкаф А55"]
+    assert evidence["scope"] == "ONLY_DOCUMENTED_EARLY_CIRCUIT"
+    assert evidence["requiresExactExecutionConfirmation"] is True
+    assert evidence["universalRelationActive"] is False and evidence["runtimeImport"] is False
+    assert evidence["rawSystemLink"] == {"from": "SYS-80", "to": "SYS-20",
+                                         "relation": "cuts_traction",
+                                         "disposition": "HISTORICAL_UNCONFIRMED_AS_UNIVERSAL"}
+    assert ["SYS-80", "SYS-20", "cuts_traction"] in system_map["criticalLinks"]
+    diagnostic = data["diagnosticGap"]
+    ids = {entry["id"] for entry in entries(root, "diagnostics/recommended", "diagnostics-*.pack.json")}
+    links = json.loads(gzip.decompress((root / BASE / "migration/source-assets/ermak_links.json.gz").read_bytes()))
+    assert diagnostic["scenarioId"] == diagnostic["candidateCardId"] == "ER-DIAG-136"
+    assert diagnostic["scenarioId"] in ids and diagnostic["scenarioId"] not in links["indexes"]["byDiagnostic"]
+    assert diagnostic["causeStatus"] == "NOT_DOCUMENTALLY_ESTABLISHED"
+    assert diagnostic["disposition"] == "SEPARATE_CANDIDATE_WITHOUT_STAGE7_LINK"
+    assert diagnostic["autoAddToStage7"] is False and diagnostic["runtimeImport"] is False
+    assert diagnostic["generationEvidence"] == [
+        {"path": "tools/integrate_beta51_ermak_diagnostics.jq", "gitBlob": "b0c9692487675826622b864e4139b9526724f29d"},
+        {"path": "tools/deepen_ermak_p0_batch2.py", "gitBlob": "806d39755c0e8cc6131a21e140a0521b601f2e90"}]
+    assert diagnostic["stage7WiringScript"] == {
+        "path": ".github/scripts/wire_ermak_stage7_links.py", "gitBlob": "adb1f345e38552e59abab54fe22781eb5323f19a"}
+    systems = {item["id"]: item for item in system_map["systems"]}
+    cards = {e["sourceObject"]["object"]["systemIds"][0]: e for e in
+             entries(root, "technical-data/knowledge", "knowledge-*.pack.json")
+             if e["sourceObject"]["object"].get("articleType") == "system"}
+    assert data["systemTitles"] == [
+        {"systemId": sid, "sourceName": systems[sid]["name"], "cardTitle": cards[sid]["title"]}
+        for sid in ("SYS-20", "SYS-70", "SYS-90")]
+    return data
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--write-report", action="store_true")
     args = parser.parse_args()
     report = reconcile(args.root)
+    validate_resolution(args.root)
     path = args.root / REPORT
     encoded = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.write_report:
