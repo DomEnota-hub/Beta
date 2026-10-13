@@ -107,6 +107,12 @@ jobs:
       - name: Verify pinned diagnostic Kotlin wrapper dispositions
         run: python3 qa/validate_ermak_diagnostic_kotlin_dispositions.py
 
+      - name: Verify pinned Ermak generator dispositions and Stage 7 isolation
+        run: python3 qa/validate_ermak_generator_dispositions.py
+
+      - name: Test Ermak generator disposition gates
+        run: python3 -m unittest discover -s qa -p test_ermak_generator_dispositions.py
+
       - name: Validate CHME3 family source and variant isolation
         run: python3 qa/validate_chme3.py
 
