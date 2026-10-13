@@ -258,3 +258,10 @@ Append after each major completed stage: starting and ending SHA, source and des
 ### Diagnostic Kotlin wrapper CI closure
 
 - [Bootstrap 38382879610](https://github.com/DomEnota-hub/Beta/actions/runs/38382879610) on `2d92d84b9f7949853595beda762bedd7a3d8d553` completed/success: pinned three-row code disposition, all previous data/JVM checks, Android lint and debug APK. The following documentation-only closure does not change tested code or data; no emulator was launched for this source classification.
+
+## Stage — VL80S Kotlin knowledge cards (2026-10-13)
+
+- Compared the pinned donor `KnowledgeRepository.kt` (Git blob `b37ead2d66c0c976bcc850f9cde4fddc0e198fb3`) with the already migrated Common knowledge/safety packs, the VL80S fire-safety pack and three interactive Atlas assets. The five model-specific `KnowledgeArticle` cards for layout, brake equipment groups, service-brake air route, pneumatic simulator and electrical simulator were absent as independent records; the separate fire-safety card already exists and is not copied again.
+- Imported those five cards to `content-packs/electric/vl80s/technical-data/knowledge/legacy-articles.pack.json`, preserving every original title, category, status, summary, body line, tag, source title/note/URL, related article ID and interactive flag in `sourceObject`. Three distinct original source titles receive model-scoped attribution records. The original Kotlin file is preserved byte-for-byte in `migration/source-assets/` with its Git blob checksum.
+- All new entries are VL80S-only `CANDIDATE`, `INFORMATION_ONLY`, with unknown independent source verification. The donor's status text is retained as historical data, not treated as a current review. The links to already migrated interactive assets are still legacy card flags and related IDs; no runtime binding or action authority was inferred.
+- `python3 qa/validate_vl80s_legacy_knowledge.py` passes locally: exact projection from pinned Kotlin, five unique cards, three source titles, no duplicate IDs, complete source attribution, explicit model scope and gate. The CI workflow has a matching validator step. CI result: pending commit.
