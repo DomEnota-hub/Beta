@@ -187,3 +187,13 @@ Append after each major completed stage: starting and ending SHA, source and des
 - Six pinned source documents and all 102 corresponding ledger rows have exact JSON SHA-256 destinations in `content-packs/diesel/chme3-family/migration/diagnostic-source-index.json` and `docs/data-migration/chme3-diagnostic-dispositions.json`.
 - The 68 source scenario IDs and titles match 68 existing canonical entries. This is an ID/title relation only: pass3 decision trees, `actionAuthority`, risk and evidence fields are preserved as historical source fields, not equated to canonical runtime graph content or promoted to valid instructions. No runtime import; CANDIDATE/information-only.
 - Local pinned-donor reconstruction, 68 ID/title match checks, 102 exact row mappings and a negative runtime-import mutation passed. Exact destinations now cover 1191 of 1748 locomotive-document rows; 557 remain pending (545 CHME3-family and 12 mixed/review), plus non-JSON source review. New bootstrap CI pending. Next: source-layer, search and interactive-scheme documents with explicit evidence boundaries.
+
+### CHME3 pass3/stage3 diagnostic-source CI closure
+
+- [Bootstrap 38350672244](https://github.com/DomEnota-hub/Beta/actions/runs/38350672244) on `6859c8c18e52a01e6f9f0773ab13078d93929f7a`: conclusion pending at this checkpoint.
+
+## Stage 1k — Remaining CHME3 JSON documentary sources (2026-10-13 Moscow)
+
+- Twenty-one pinned documents covering Atlas ID contracts and functional schemes, diagnostic observations and source layers, search vocabulary, assistant semantics, interactive-scheme contracts/views and variant schemes are preserved whole in `content-packs/diesel/chme3-family/migration/remaining-document-source-index.json`. All 545 ledger rows have exact JSON SHA-256 destinations in `docs/data-migration/chme3-remaining-document-dispositions.json`.
+- This is source preservation only. No candidate ID is assigned a canonical classification or alias, no scheme becomes a precise wiring/hotspot authority, no search or assistant rule becomes runtime behavior, and no observation or scenario is promoted to diagnostic authority. CANDIDATE/information-only with `runtimeImport=false`.
+- Local pinned-donor reconstruction, exact 545-row mapping, a negative runtime-import mutation and seven-map disjoint/complete CHME3 ledger assertion passed. Exact destinations cover all 1379 CHME3-family JSON document rows and 1736 of 1748 locomotive-document rows; 12 mixed/review rows remain pending, plus Kotlin/media/generator/non-JSON review. This is not full data-first migration, safety approval, or Android user-flow acceptance. New bootstrap CI pending.
