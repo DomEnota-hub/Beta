@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from migrate_ermak_supplemental_assets import DEST, build
+from migrate_ermak_supplemental_assets import DEST, audit_links, build
 
 
 def validate(root: Path, check_canonical: bool = True) -> int:
@@ -19,13 +19,16 @@ def validate(root: Path, check_canonical: bool = True) -> int:
     assert index["runtimeImport"] is False
     assert index["canonicalMappingStatus"] == "PENDING_OBJECT_RECONCILIATION"
     assert index["missingDiagnosticLinkIds"] == ["ER-DIAG-136"]
+    links_path = root / index["assets"][0]["destinationPath"]
+    links = json.loads(gzip.decompress(links_path.read_bytes()))
+    assert index["sourceGraphAudit"] == audit_links(links)
+    assert index["sourceGraphAudit"]["reciprocalDiagnosticSchemePairs"] == 523
+    assert index["sourceGraphAudit"]["unresolvedInternalReferences"] == []
     if check_canonical:
         pack_dir = root / "content-packs/electric/ermak/diagnostics/recommended"
         ids = [entry["id"] for path in sorted(pack_dir.glob("*.pack.json"))
                for entry in json.loads(path.read_text(encoding="utf-8"))["entries"]]
         assert len(ids) == 136 and len(set(ids)) == 136, "canonical diagnostic count/IDs"
-        source_path = root / index["assets"][0]["destinationPath"]
-        links = json.loads(gzip.decompress(source_path.read_bytes()))
         linked_ids = set(links["indexes"]["byDiagnostic"])
         assert sorted(set(ids) - linked_ids) == index["missingDiagnosticLinkIds"]
         assert not linked_ids - set(ids), "unknown linked diagnostic"

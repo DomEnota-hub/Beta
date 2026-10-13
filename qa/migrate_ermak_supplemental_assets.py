@@ -16,6 +16,57 @@ PINS = (
 )
 
 
+def audit_links(document: dict) -> dict:
+    indexes = document["indexes"]
+    groups = {name: set(indexes[name]) for name in
+              ("byEquipment", "bySystem", "byDiagnostic", "byScheme")}
+    fields = {
+        "byEquipment": {"systemIds": "bySystem", "diagnosticIds": "byDiagnostic", "schemeIds": "byScheme"},
+        "bySystem": {"equipmentIds": "byEquipment", "diagnosticIds": "byDiagnostic", "schemeIds": "byScheme"},
+        "byDiagnostic": {"systemIds": "bySystem", "equipmentIds": "byEquipment",
+                         "relatedScenarioIds": "byDiagnostic"},
+        "byScheme": {"systemIds": "bySystem", "equipmentIds": "byEquipment"},
+    }
+    missing = []
+    edge_count = 0
+    for group, mappings in fields.items():
+        for source_id, obj in indexes[group].items():
+            for field, target_group in mappings.items():
+                for target in obj.get(field, []):
+                    edge_count += 1
+                    if target not in groups[target_group]:
+                        missing.append({"sourceGroup": group, "sourceId": source_id,
+                                        "field": field, "targetId": target})
+    diagnostic_pairs = set()
+    scheme_pairs = set()
+    for diag_id, obj in indexes["byDiagnostic"].items():
+        for link in obj.get("schemeLinks", []):
+            scheme_id = link["schemeId"]
+            edge_count += 1
+            if scheme_id not in groups["byScheme"]:
+                missing.append({"sourceGroup": "byDiagnostic", "sourceId": diag_id,
+                                "field": "schemeLinks", "targetId": scheme_id})
+            diagnostic_pairs.add((diag_id, scheme_id))
+    for scheme_id, obj in indexes["byScheme"].items():
+        for link in obj.get("diagnosticLinks", []):
+            diag_id = link["diagnosticId"]
+            edge_count += 1
+            if diag_id not in groups["byDiagnostic"]:
+                missing.append({"sourceGroup": "byScheme", "sourceId": scheme_id,
+                                "field": "diagnosticLinks", "targetId": diag_id})
+            scheme_pairs.add((diag_id, scheme_id))
+    assert diagnostic_pairs == scheme_pairs, "diagnostic/scheme links are not reciprocal"
+    assert len(diagnostic_pairs) == document["statistics"]["canonicalDiagnosticSchemePairs"]
+    return {
+        "indexedCounts": {name: len(ids) for name, ids in groups.items()},
+        "internalReferenceOccurrences": edge_count,
+        "reciprocalDiagnosticSchemePairs": len(diagnostic_pairs),
+        "unresolvedInternalReferences": missing,
+        "knowledgeReferencesExternallyUnverified": True,
+        "profileCompatibilityExternallyUnverified": True,
+    }
+
+
 def build(root: Path) -> dict:
     assets = []
     parsed = {}
@@ -71,6 +122,7 @@ def build(root: Path) -> dict:
             "canonicalCandidateDiagnostics": 136,
         },
         "missingDiagnosticLinkIds": ["ER-DIAG-136"],
+        "sourceGraphAudit": audit_links(links),
         "boundary": "Donor PASS labels and links are historical source data, not current safety, variant, publication or action authority.",
     }
 

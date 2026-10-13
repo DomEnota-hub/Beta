@@ -231,3 +231,8 @@ Append after each major completed stage: starting and ending SHA, source and des
 ### Ermak supplemental-asset CI closure
 
 - [Bootstrap 38365824856](https://github.com/DomEnota-hub/Beta/actions/runs/38365824856) on data/gate SHA `932b07be0be1077a9d7692cb5e368e972a4fa59a` completed/success: pinned gzip hashes and source structure, explicit `ER-DIAG-136` link gap versus all 136 canonical candidate diagnostics, prior data/JVM checks, Android lint and APK assembly. The following documentation-only closure does not change the tested data or validator. No emulator was launched for source-only changes.
+
+## Stage 1n — Ermak source-link graph integrity (2026-10-13 Moscow)
+
+- Starting SHA `404f6ff41743b1d5f34bc9655f3354bfa5acb8e5`. The pinned `ermak_links.json.gz` index is checked internally without promoting its historical `PASS` or link policy into Android runtime. It has 111 equipment, 15 system, 135 diagnostic and 22 scheme index keys; 5140 internal reference occurrences resolve inside the four index namespaces. The 523 diagnostic↔scheme pairs are reciprocal. Local negative checks rejected an unknown system target and a one-sided scheme link.
+- This internal integrity result does **not** settle 138 knowledge references against their canonical targets, verify profile compatibility against primary documents, or supply the absent `ER-DIAG-136` link. The previous candidate/non-runtime policy remains. No source bytes or runtime pack changed. New bootstrap CI pending on this validator/index update.
