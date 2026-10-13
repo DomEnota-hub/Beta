@@ -129,6 +129,12 @@ service_kinds = {
     for segment in step["segments"]
 }
 assert service_kinds == {"FLOW", "RELEASE", "CONTROL"}
+release_kinds = {
+    segment["kind"]
+    for step in modes["RELEASE"]["steps"]
+    for segment in step["segments"]
+}
+assert {"RELEASE", "CONTROL"} <= release_kinds
 assert all_kinds == {"FLOW", "RELEASE", "CONTROL"}
 assert segment_count == 44
 
