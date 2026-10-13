@@ -89,6 +89,12 @@ jobs:
       - name: Validate CHME3 family source and variant isolation
         run: python3 qa/validate_chme3.py
 
+      - name: Validate pinned CHME3 source registries and unresolved IDs
+        run: python3 qa/validate_chme3_source_registries.py
+
+      - name: Verify CHME3 source registry dispositions
+        run: python3 qa/map_chme3_source_registries.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
       - name: Validate TEM2 family source and training scheme data
         run: python3 qa/validate_tem2.py
 
