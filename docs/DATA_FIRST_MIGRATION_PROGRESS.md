@@ -254,3 +254,7 @@ Append after each major completed stage: starting and ending SHA, source and des
 
 - Starting SHA `5538e660c8e966780484391f355d2106b5f3d2e0`. Read pinned donor source blobs `5775a53cc7b3a2d66bd40f15568199e3ee80ea6e` (CHME3), `01fcf7c267d879fdd5f6da7ab751a48db7cf3051` (Ermak), and `d61d6f13fedc6ca7a5f37327ff92f28c593e7908` (TEM2). They contain asset selection, JSON parsing/fallbacks and exact-profile filtering, with no literal scenario objects. The [three-row overlay](data-migration/diagnostic-kotlin-wrapper-dispositions.json) classifies these source-file code objects as `DEFERRED_SCOPE`; it does not classify the separately migrated JSON scenario objects or migrate the donor parser into Beta. Donor comments claiming verification or completion grant no current action authority.
 - The validator checks the three paths and blob SHAs against the 837-row discovery ledger, enforces no scenario ID/publication promotion and the runtime-deferred boundary. Local 3-row validation and a negative promotion mutation passed; CI pending. The other Kotlin, media, generator and ZIP rows remain under review.
+
+### Diagnostic Kotlin wrapper CI closure
+
+- [Bootstrap 38382879610](https://github.com/DomEnota-hub/Beta/actions/runs/38382879610) on `2d92d84b9f7949853595beda762bedd7a3d8d553` completed/success: pinned three-row code disposition, all previous data/JVM checks, Android lint and debug APK. The following documentation-only closure does not change tested code or data; no emulator was launched for this source classification.
