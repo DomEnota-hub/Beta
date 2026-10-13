@@ -107,6 +107,12 @@ jobs:
       - name: Verify CHME3 acceptance document dispositions
         run: python3 qa/map_chme3_acceptance_sources.py --ledger docs/data-migration/document-object-ledger.json --verify-output
 
+      - name: Validate pinned CHME3 Atlas source pairs
+        run: python3 qa/validate_chme3_atlas_sources.py
+
+      - name: Verify CHME3 Atlas document dispositions
+        run: python3 qa/map_chme3_atlas_sources.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
       - name: Validate TEM2 family source and training scheme data
         run: python3 qa/validate_tem2.py
 
