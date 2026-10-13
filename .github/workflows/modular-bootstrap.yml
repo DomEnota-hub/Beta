@@ -134,6 +134,15 @@ jobs:
       - name: Verify complete CHME3 document-ledger coverage
         run: python3 qa/validate_chme3_document_coverage.py
 
+      - name: Validate pinned shared locomotive family manifest
+        run: python3 qa/validate_locomotive_family_manifest.py
+
+      - name: Verify mixed-owner family manifest dispositions
+        run: python3 qa/map_locomotive_family_manifest.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
+      - name: Verify complete locomotive document-ledger coverage
+        run: python3 qa/validate_locomotive_document_coverage.py
+
       - name: Validate TEM2 family source and training scheme data
         run: python3 qa/validate_tem2.py
 

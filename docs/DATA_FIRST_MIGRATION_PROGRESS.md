@@ -197,3 +197,13 @@ Append after each major completed stage: starting and ending SHA, source and des
 - Twenty-one pinned documents covering Atlas ID contracts and functional schemes, diagnostic observations and source layers, search vocabulary, assistant semantics, interactive-scheme contracts/views and variant schemes are preserved whole in `content-packs/diesel/chme3-family/migration/remaining-document-source-index.json`. All 545 ledger rows have exact JSON SHA-256 destinations in `docs/data-migration/chme3-remaining-document-dispositions.json`.
 - This is source preservation only. No candidate ID is assigned a canonical classification or alias, no scheme becomes a precise wiring/hotspot authority, no search or assistant rule becomes runtime behavior, and no observation or scenario is promoted to diagnostic authority. CANDIDATE/information-only with `runtimeImport=false`.
 - Local pinned-donor reconstruction, exact 545-row mapping, a negative runtime-import mutation and seven-map disjoint/complete CHME3 ledger assertion passed. Exact destinations cover all 1379 CHME3-family JSON document rows and 1736 of 1748 locomotive-document rows; 12 mixed/review rows remain pending, plus Kotlin/media/generator/non-JSON review. This is not full data-first migration, safety approval, or Android user-flow acceptance. New bootstrap CI pending.
+
+### CHME3 remaining-document CI closure
+
+- [Bootstrap 38350901279](https://github.com/DomEnota-hub/Beta/actions/runs/38350901279) on `d88263d0e42d372a4b8fdf3588ead9ff9fe46750`: conclusion pending at this checkpoint.
+
+## Stage 1l — Shared locomotive-family manifest (2026-10-13 Moscow)
+
+- The pinned `docs/locomotives/manifests/locomotive_families.json` from Test- contains both CHME3 and TEM2 family records. It is preserved whole at `content-packs/locomotive-migration/shared-family-manifest-source.json`, with 12 exact JSON SHA-256 row destinations at `docs/data-migration/locomotive-family-manifest-dispositions.json`.
+- Ownership remains `MIXED_REVIEW_REQUIRED`; no single family owner, canonical object ID, runtime layout rule or authority was assigned. The manifest stays CANDIDATE/information-only, `runtimeImport=false`. Local pinned reconstruction, exact 12-row mapping, a negative owner-promotion mutation and a 13-map disjoint/complete assertion passed.
+- The 1748/1748 rows in the pinned locomotive JSON document ledger now have exact source-preservation destinations: 1379 CHME3-family, 357 TEM2-family, 12 shared. This does not close source discovery beyond that ledger, Kotlin/media/generator migration, status/authority resolution, Android user-flow acceptance, or final data-first signoff. New bootstrap CI pending.
