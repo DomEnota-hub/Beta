@@ -238,3 +238,7 @@ Ten pinned Atlas documents and [265 exact row dispositions](data-migration/chme3
 ### CHME3 diagnostic graph documents — exact source checkpoint (2026-10-13 Moscow)
 
 Ten pinned graph documents and [109 exact object dispositions](data-migration/chme3-graph-dispositions.json) preserve the source graphs in a [closed source index](../content-packs/diesel/chme3-family/migration/graph-source-index.json). Each of 68 scenario IDs matches a canonical diagnostic entry by exact graph comparison after excluding canonical-added unknown-response branches; 898 source nodes are checked. The relation is provenance, not status promotion or automatic runtime import. Source-preservation destinations cover **732 of 1379 CHME3-family rows**; **647 CHME3-family and 12 mixed** rows remain pending. CI pending.
+
+### CHME3 pass3/stage3 diagnostic documents — exact source checkpoint (2026-10-13 Moscow)
+
+Six pinned documents and [102 exact object dispositions](data-migration/chme3-diagnostic-dispositions.json) preserve 68 historical scenario records in a [closed source index](../content-packs/diesel/chme3-family/migration/diagnostic-source-index.json). Matching canonical IDs and titles are recorded as candidate relations only; pass3 decision trees, risk, evidence, and action authority have no runtime activation. Source-preservation destinations cover **834 of 1379 CHME3-family rows**; **545 CHME3-family and 12 mixed** rows remain pending. CI pending.

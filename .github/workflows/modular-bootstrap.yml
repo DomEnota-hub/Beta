@@ -119,6 +119,12 @@ jobs:
       - name: Verify CHME3 diagnostic graph dispositions
         run: python3 qa/map_chme3_graph_sources.py --ledger docs/data-migration/document-object-ledger.json --verify-output
 
+      - name: Validate pinned CHME3 pass3 diagnostic sources
+        run: python3 qa/validate_chme3_diagnostic_sources.py
+
+      - name: Verify CHME3 pass3 diagnostic dispositions
+        run: python3 qa/map_chme3_diagnostic_sources.py --ledger docs/data-migration/document-object-ledger.json --verify-output
+
       - name: Validate TEM2 family source and training scheme data
         run: python3 qa/validate_tem2.py
 

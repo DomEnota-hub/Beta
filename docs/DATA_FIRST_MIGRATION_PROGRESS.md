@@ -177,3 +177,13 @@ Append after each major completed stage: starting and ending SHA, source and des
 - Ten pinned graph documents are preserved whole in `content-packs/diesel/chme3-family/migration/graph-source-index.json`; all 109 ledger rows have exact JSON SHA-256 destinations in `docs/data-migration/chme3-graph-dispositions.json`.
 - All 68 distinct source scenario IDs correspond to 68 existing recommended diagnostic entries. The 898 source graph nodes match their canonical graph objects after removal of the canonical-added `UNKNOWN` response branches. This is a verified provenance/transformation relationship, not a safety or authority judgment. No source graph overwrote a canonical graph; `runtimeImport=false`, CANDIDATE/information-only.
 - Local pinned-donor reconstruction, 68 graph equality checks, 109 exact row mappings, and a negative runtime-import mutation passed. Exact destinations now cover 1089 of 1748 locomotive-document rows; 659 remain pending (647 CHME3-family and 12 mixed/review), plus non-JSON source review. New bootstrap CI pending. Next: remaining diagnostic and functional-scheme source documents, with classification and authority kept explicit.
+
+### CHME3 diagnostic-graph CI closure
+
+- [Bootstrap 38350369823](https://github.com/DomEnota-hub/Beta/actions/runs/38350369823) on `a849ef6d7e849bad8185d6be795dfdfa5f402f70`: conclusion pending at this checkpoint.
+
+## Stage 1j — CHME3 pass3/stage3 diagnostic source reconciliation (2026-10-13 Moscow)
+
+- Six pinned source documents and all 102 corresponding ledger rows have exact JSON SHA-256 destinations in `content-packs/diesel/chme3-family/migration/diagnostic-source-index.json` and `docs/data-migration/chme3-diagnostic-dispositions.json`.
+- The 68 source scenario IDs and titles match 68 existing canonical entries. This is an ID/title relation only: pass3 decision trees, `actionAuthority`, risk and evidence fields are preserved as historical source fields, not equated to canonical runtime graph content or promoted to valid instructions. No runtime import; CANDIDATE/information-only.
+- Local pinned-donor reconstruction, 68 ID/title match checks, 102 exact row mappings and a negative runtime-import mutation passed. Exact destinations now cover 1191 of 1748 locomotive-document rows; 557 remain pending (545 CHME3-family and 12 mixed/review), plus non-JSON source review. New bootstrap CI pending. Next: source-layer, search and interactive-scheme documents with explicit evidence boundaries.
