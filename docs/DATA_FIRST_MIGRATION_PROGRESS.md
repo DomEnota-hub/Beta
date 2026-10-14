@@ -16,6 +16,12 @@ Scope: `DomEnota-maker/Beta:modular-rebuild`. Pinned read-only donor: `DomEnota-
 
 Append after each major completed stage: starting and ending SHA, source and destination counts, tests/CI on matching SHA, unresolved sources, safety status, and next step. Do not use `RailBrakeCalculator_BACKLOG.md` as a task source.
 
+## Stage 1 extraction-file triage (2026-10-14)
+
+- On the draft data-audit branch after the 206-group discovery reconciliation, `qa/reconcile_pending_extraction.py` matched all **254** provisional extraction rows to their exact source path, object identity and Git blob. A separate `git ls-tree` check against pinned Test commit `3176d6e` confirmed all 254 blob IDs. The machine-readable [overlay](data-migration/pending-extraction-evidence.json) retains the original statuses and null final dispositions.
+- Review tracks: 86 generator scripts that may embed content, 63 QA scripts, 50 documents, 33 app Kotlin sources, seven patch code files, three binary/archive sources, and 12 project/build files. Five Kotlin informational sources link to existing candidate projections or source archives: `KnowledgeRepository`, `KnowledgeFirstWave`, `FirstAidScreen`, `TechnicalPresentation`, and the six `Vl80sNormalValues` parameters. Six additional paths link to prior diagnostic-wrapper/generator file-level dispositions. These links do not assert whole-file semantic parity or close embedded data. `SafetyScreen` includes contextual UI wording and remains in review.
+- Local triage check passed (`254`); existing focused Common first-aid, Common knowledge/safety, VL80S legacy knowledge and normal-value validators passed. CI gate added to bootstrap; PR-head run is pending. No runtime/content-pack changes, exam text, palette import or diagnostic UI changes. Next: compare the remaining generator-embedded and Kotlin/UI informational content to preserved packs, and record object-level decisions; diagnostics behavior follows completion of the information transfer.
+
 ## Stage 1a — pinned source discovery (2026-10-12)
 
 - Starting SHA `8056095b8d0fb7c2826165978c43159e1336f397`; source inventory checkpoint commit `bce37d937391bc84dc365fad81e36ea99e69bab4`. [Inventory](DATA_MIGRATION_INVENTORY.md) lists the 35 technical assets and 70 locomotive source JSON documents with observed top-level array counts and Git blob SHA prefixes.
