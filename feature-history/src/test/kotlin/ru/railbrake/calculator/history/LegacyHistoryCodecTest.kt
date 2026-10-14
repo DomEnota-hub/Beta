@@ -37,11 +37,11 @@ class LegacyHistoryCodecTest {
 
     @Test
     fun emptyFieldsAndUnpaddedUrlSafeTextRemainReadable() {
-        val record = LegacyHistoryCodec.decode("1||QQ|_w|")!!
+        val record = LegacyHistoryCodec.decode("1||QQ|0J_QviDQvNCw0YHRgdC1|")!!
         assertEquals("", record.mode)
         assertEquals("A", record.title)
         assertEquals("", record.details)
-        assertEquals("1||QQ==|_w==|", LegacyHistoryCodec.encode(record))
+        assertEquals("1||QQ==|0J_QviDQvNCw0YHRgdC1|", LegacyHistoryCodec.encode(record))
     }
 
     @Test
