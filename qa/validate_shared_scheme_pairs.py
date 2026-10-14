@@ -19,6 +19,14 @@ def digest(obj):
 
 
 overlay = json.loads(OVERLAY.read_text())
+metadata = json.loads((ROOT / "content-packs/locomotive-migration/shared-scheme-source-metadata.candidate.json").read_text())
+assert metadata["donorCommit"] == overlay["donorCommit"]
+assert metadata["publicationStatus"] == "CANDIDATE" and metadata["runtimeImport"] is False
+assert [(s["sourcePath"], s["sourceBlobSha"]) for s in metadata["sources"]] == [
+    (s["sourcePath"], s["sourceBlobSha"]) for s in overlay["sources"]]
+for source in metadata["sources"]:
+    assert digest(source["metadata"]) == source["metadataSha256"]
+assert [digest(gap) for gap in metadata["sources"][0]["metadata"]["researchGaps"]] == overlay["researchGapSha256"]
 expected = {(r["sequenceId"], kind): r[f"{kind}Sha256"]
             for r in overlay["rows"] for kind in ("sequence", "layout")}
 actual = {}
