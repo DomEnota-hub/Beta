@@ -10,6 +10,8 @@ The 70-file locomotive JSON document ledger has 1,748 top-level object rows. Mat
 
 The [technical discovery evidence overlay](technical-discovery-evidence.json) now joins **all 70 field-group rows across the 35 technical assets** back to their exact ledger path, field-group ID, Git blob and source count. It points to existing evidence: 54 informational groups, 14 diagnostic-source groups and two separately deferred UI groups. The grouped evidence types distinguish complete original source snapshots, model-pack projections with source audits, exact indexes, split root/record preservation and explicit UI deferral. `qa/reconcile_technical_discovery.py --check` gates the 70-row identity and destination-file existence in CI. This overlay does **not** rewrite the 70 old `PENDING_MAPPING` labels, claim one-to-one runtime objects for every group, or turn an evidence pointer into a publication decision.
 
+The [documentary discovery evidence overlay](document-discovery-evidence.json) likewise joins **128 groups from 70 documentary files** to the exact 1,748-row document ledger and its 13 disposition maps. Its 126 array groups account for their original top-level element counts; two whole-file groups map to 24 and 34 ledger objects respectively. Together these groups cover 1,123 unique object rows. The other 625 ledger rows are root or metadata objects that had exact dispositions but were not enumerated as separate discovery groups. The validator checks every matched pointer, Git blob, count and map membership without promoting the preliminary `PENDING_MAPPING` labels or granting authority.
+
 ## Block-by-block gap list
 
 | Block | Source-preservation checkpoint | Remaining factual gate |
