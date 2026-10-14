@@ -40,6 +40,12 @@ def evidence():
             ("SIX_NORMAL_PARAMETERS_PROJECTED", [
                 "content-packs/electric/vl80s/technical-data/normal-values.pack.json",
                 "qa/validate_vl80s_normal_values.py"]),
+        ".github/scripts/enrich_ermak_pantograph.py":
+            ("EXACT_PINNED_GENERATOR_AND_PARAMETER_PROJECTION", [
+                "content-packs/electric/ermak/migration/source-assets/enrich_ermak_pantograph.py",
+                "content-packs/electric/ermak/atlas/equipment/equipment-01.pack.json",
+                "content-packs/electric/ermak/technical-data/knowledge/knowledge-01.pack.json",
+                "qa/reconcile_ermak_pantograph_generator.py"]),
     }
 
 
@@ -70,7 +76,7 @@ def project():
                                          ("ermak-generator-dispositions.json", generators))
                 for r in source["rows"]}
     explicit = evidence()
-    assert len(existing) == 6 and len(explicit) == 5
+    assert len(existing) == 6 and len(explicit) == 6
     result = []
     for row in pending:
         path = row["sourcePath"]
@@ -88,7 +94,7 @@ def project():
             status = "SOURCE_CONTENT_REVIEW_OPEN"
         for destination in paths:
             assert (ROOT / destination).is_file(), destination
-        if path.endswith("KnowledgeRepository.kt") or path.endswith("TechnicalPresentation.kt"):
+        if path.endswith(("KnowledgeRepository.kt", "TechnicalPresentation.kt", "enrich_ermak_pantograph.py")):
             assert git_blob((ROOT / paths[0]).read_bytes()) == row["sourceArtifactGitBlob"]
         result.append({
             "sourcePath": path,
