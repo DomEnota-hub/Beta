@@ -12,6 +12,8 @@ The [technical discovery evidence overlay](technical-discovery-evidence.json) no
 
 The [documentary discovery evidence overlay](document-discovery-evidence.json) likewise joins **128 groups from 70 documentary files** to the exact 1,748-row document ledger and its 13 disposition maps. Its 126 array groups account for their original top-level element counts; two whole-file groups map to 24 and 34 ledger objects respectively. Together these groups cover 1,123 unique object rows. The other 625 ledger rows are root or metadata objects that had exact dispositions but were not enumerated as separate discovery groups. The validator checks every matched pointer, Git blob, count and map membership without promoting the preliminary `PENDING_MAPPING` labels or granting authority.
 
+The [remaining eight-group overlay](remaining-pending-mapping-evidence.json) accounts for the **other eight of the original 206 `PENDING_MAPPING` groups**: four reference-pack groups are an exact Git-blob alias of the saved VL80S pantograph snapshot, three ZIP-only historical code/media members have an archive-only source-file review but no final object disposition, and the 329 exam questions have proven structural parity with the older archive but an unresolved access/hosting policy. The three overlays therefore locate evidence for **70 + 128 + 8 = 206/206 preliminary pending-mapping groups**. This is not a claim that all 206 are migrated or fit for publication. It does not expose exam text, decide archive semantics, or alter the source discovery ledger.
+
 ## Block-by-block gap list
 
 | Block | Source-preservation checkpoint | Remaining factual gate |
