@@ -72,4 +72,16 @@ for scenario_id, (owner, route) in routes.items():
         "FOUND" if scenario_id in record_scenarios else "NO_ADDITIONAL_METHOD_FOUND")
 for owner, record in records.values():
     assert routes[record["standardScenarioId"]][0] == owner
+for owner in DESTINATIONS:
+    recommended_dir = ROOT / "content-packs/diesel" / owner / "diagnostics/recommended"
+    standard_entries = [entry for pack_path in recommended_dir.glob("*.pack.json")
+                        for entry in json.loads(pack_path.read_text())["entries"]]
+    standard_ids = Counter(entry["sourceObject"]["object"]["id"]
+                           for entry in standard_entries)
+    routed_ids = {scenario_id for scenario_id, (route_owner, _) in routes.items()
+                  if route_owner == owner}
+    assert set(standard_ids) == routed_ids
+    assert len(standard_ids) == {"chme3-family": 68, "tem2-family": 24}[owner]
+    assert Counter(standard_ids.values()) == (
+        {1: 68} if owner == "chme3-family" else {1: 15, 2: 9})
 print("EXTENDED_EMERGENCY_SOURCE_PASS", 92, 77, dict(dispositions))
