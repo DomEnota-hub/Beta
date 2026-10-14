@@ -41,6 +41,27 @@ def main():
     layouts = {l["sequenceId"]: l for l in source["layouts"]["layouts"]}
     assert len(sequences) == len(layouts) == len(overlay["rows"]) == 55
     assert set(sequences) == set(layouts) == {r["sequenceId"] for r in overlay["rows"]}
+    metadata_path = root / "content-packs/locomotive-migration/shared-scheme-source-metadata.candidate.json"
+    metadata = {
+        "schemaVersion": 1,
+        "donorCommit": DONOR_COMMIT,
+        "publicationStatus": "CANDIDATE",
+        "runtimeImport": False,
+        "sources": [
+            {"sourcePath": f"app/src/main/assets/technical/{SOURCES[kind][0]}",
+             "sourceBlobSha": SOURCES[kind][1],
+             "metadata": {k: v for k, v in source[kind].items() if k not in ("sequences", "layouts")},
+             "metadataSha256": digest({k: v for k, v in source[kind].items()
+                                      if k not in ("sequences", "layouts")})}
+            for kind in ("sequences", "layouts")
+        ],
+    }
+    assert [digest(gap) for gap in metadata["sources"][0]["metadata"]["researchGaps"]] == overlay["researchGapSha256"]
+    metadata_text = json.dumps(metadata, ensure_ascii=False, indent=2) + "\n"
+    if args.check:
+        assert metadata_path.read_text() == metadata_text
+    else:
+        metadata_path.write_text(metadata_text)
     out = {"ermak": [], "chme3-family": []}
     for row in overlay["rows"]:
         sid = row["sequenceId"]
