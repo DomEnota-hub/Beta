@@ -391,3 +391,8 @@ Append after each major completed stage: starting and ending SHA, source and des
 ### ZIP discovery bridge CI closure
 
 - [Modular architecture bootstrap 38519408386](https://github.com/DomEnota-hub/Beta/actions/runs/38519408386) completed/success on `5793bddd0ebbeead2641a0dfd89842b23bc401f3`: pinned ZIP manifest, new 60-row overlay generation check and four unit tests, other data/JVM checks, Android lint and debug assembly passed. This validates the source-file accounting and existing build gates, not final technical applicability or archive access policy. Palette work remains deferred for the separate new UI effort.
+
+### Information-block gap audit (2026-10-14 Moscow)
+
+- [Block-by-block audit](data-migration/INFORMATION_BLOCK_GAP_AUDIT_2026-10-14.md) reconciles the 1,748-row locomotive JSON document ledger with its disposition overlays by source path, JSON pointer and object SHA-256: 1,748 unique matches, no duplicate or unmatched mappings. This is bounded source-object preservation only. The older 837-row discovery ledger retains provisional statuses, which must not be counted as still-missing objects without joining later maps and source-file reviews.
+- The report identifies remaining Common, ВЛ80С, Ермак, ЧМЭ3/Т/Э, ТЭМ2/ТЭМ2У, cross-model, calculation/history and exam gates and orders the next object-level reconciliation. Ermak raw source-number gaps and `ER-DIAG-136`, CHME3 unresolved raw references, profile applicability and primary-source/action approval remain open. No runtime, candidate status, UI, preference or donor change is included; palette work stays with the separate new UI.
