@@ -270,6 +270,21 @@ jobs:
       - name: Reconcile pinned Ermak pantograph generator constants
         run: python3 qa/reconcile_ermak_pantograph_generator.py
 
+      - name: Verify 46 pinned locomotive reference rows
+        run: python3 qa/migrate_locomotive_reference_source.py --check
+
+      - name: Verify Kotlin-embedded reference source groups
+        run: python3 qa/migrate_embedded_reference_sources.py --check
+
+      - name: Verify seven extended-stage source documents
+        run: python3 qa/reconcile_extended_stage_documents.py --check
+
+      - name: Verify 50 historical source documents
+        run: python3 qa/preserve_pending_documents.py
+
+      - name: Reconcile all provisional extraction file reviews
+        run: python3 qa/reconcile_pending_extraction_review.py --check
+
       - name: Validate pinned candidate inventory
         run: python3 qa/validate_vl80s_candidate_inventory.py
 
