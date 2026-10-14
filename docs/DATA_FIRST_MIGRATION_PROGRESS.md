@@ -364,3 +364,9 @@ Append after each major completed stage: starting and ending SHA, source and des
 ### Pneumatic QA CI closure
 
 - On QA SHA `2c124a36fc610658b372d7cf7217e69fddb1a5e3`, [Modular architecture bootstrap 38472634998](https://github.com/DomEnota-hub/Beta/actions/runs/38472634998) and [Recover VL80S pneumatic scheme resource 38472634968](https://github.com/DomEnota-hub/Beta/actions/runs/38472634968) both completed/success. The intervening documentation-only commits do not alter the tested validator or assets. The 21 remaining semantic comparisons and preference migration gate are still open.
+
+### ZIP comparison follow-up: first aid and base diagnostics (2026-10-14 Moscow)
+
+- On the pinned Test ZIP and later tree, two further differing counterparts received limited source-file dispositions in the [archive review](data-migration/LEGACY_ZIP_ARCHIVE_ONLY_REVIEW_2026-10-13.md): 14 of 33 reviewed, 19 pending. First aid has 11 common topic IDs, of which only `stress` and `trauma` have identical complete initializers; nine have changed string fields. The older combined cold topic is historical only and cannot replace the separate later conditions.
+- The base diagnostic source retains its 11 base scenario IDs but changes the effective assembly and the GV/traction question rewrites. Old `gv-*` and `traction-*` keys cannot be auto-mapped to `gvc-*` and `tna-*`. No diagnostic graph, first-aid text, runtime source status or action authority was promoted. Effective graph, deepening and tests are still open.
+- Archive SHA-256 and CRC were rechecked locally. This was a documentation-only update: report SHA `40b91dc3e82ba270a6d92d4ef768e73ff7437dbf`. No new Android or CI result is claimed. Continue semantic review of the 19 open counterparts, followed by independent source/variant and action review before publication.
