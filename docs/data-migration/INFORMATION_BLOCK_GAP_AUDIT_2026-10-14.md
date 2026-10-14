@@ -27,3 +27,9 @@ The 70-file locomotive JSON document ledger has 1,748 top-level object rows. Mat
 3. Review applicability, primary authority and allowed actions **per card and execution**. Only then change candidate publication gates and connect accepted content to shared screens/routes. Treat exam access and legacy user-data migration as separate gates.
 
 The separate visual redesign does not authorize palette transfer here. No new Android runtime or emulator result is claimed for this documentation audit.
+
+## First shared-asset disposition: source presentation labels
+
+The pinned `technical/source_presentations.json` blob `6dde42099f5c6e9f1226212ae5e42c6a04fde00c` contains 57 keyed title/detail objects: 38 CHME3-family, seven Ermak and 12 TEM2-family labels by raw ID prefix. The [57-row source-presentation disposition](source-presentation-dispositions.json) preserves each original keyed object, its JSON pointer and canonical JSON SHA-256. All 57 are `DEFERRED_SCOPE`, with no canonical SOURCE target and `runtimeImport=false`. This is a classification and lossless source snapshot of display wording only. The labels do not define a numbered source registry, document identity, current source status, variant scope or authority for an action; especially do not use them to resolve Ermak's missing raw source IDs by similar titles.
+
+The remaining mixed technical assets include diagnostic framework/policy/runtime, layout/stepwise flows and scheme presentation contracts. Their object ownership and relation to already migrated packs still need separate comparison. Palette tokens and accent migration are excluded from this stage under the separate UI decision.
