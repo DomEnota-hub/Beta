@@ -28,6 +28,10 @@ The 70-file locomotive JSON document ledger has 1,748 top-level object rows. Mat
 
 The separate visual redesign does not authorize palette transfer here. No new Android runtime or emulator result is claimed for this documentation audit.
 
+## Kotlin-embedded technical presentation vocabulary
+
+The pinned `TechnicalPresentation.kt` blob `9bca8e63e62390d65b5ed4e1208b1889999fd300` contains 78 explicit location labels, 82 exact labels and seven English-rule labels, plus ten hidden-metadata keys and 16 status-display branches covering 19 donor status keys. The [candidate vocabulary inventory](../../content-packs/locomotive-migration/technical-presentation-vocabulary.candidate.json) preserves these literal mappings with their original keys; the [exact Kotlin snapshot](../../content-packs/locomotive-migration/source-assets/TechnicalPresentation.kt) retains the remaining dynamic quantity, profile and rendering logic. They are cross-model presentation data only and are not loaded into runtime or applied to the separate new-UI work. In particular, donor display words such as “Подтверждено” do not certify a present source or operational action. `qa/validate_technical_presentation.py` checks the archived blob, complete literal counts and candidate projection.
+
 ## First shared-asset disposition: source presentation labels
 
 The pinned `technical/source_presentations.json` blob `6dde42099f5c6e9f1226212ae5e42c6a04fde00c` contains 57 keyed title/detail objects: 38 CHME3-family, seven Ermak and 12 TEM2-family labels by raw ID prefix. The [57-row source-presentation disposition](source-presentation-dispositions.json) preserves each original keyed object, its JSON pointer and canonical JSON SHA-256. All 57 are `DEFERRED_SCOPE`, with no canonical SOURCE target and `runtimeImport=false`. This is a classification and lossless source snapshot of display wording only. The labels do not define a numbered source registry, document identity, current source status, variant scope or authority for an action; especially do not use them to resolve Ermak's missing raw source IDs by similar titles.
