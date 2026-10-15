@@ -57,6 +57,12 @@ def check():
                                      "MIXED_OBJECT_REVIEW": 5, "SEPARATE_UI_STAGE": 4}
     assert {d["sourcePath"] for d in historical["documents"]} == {
         d["sourcePath"] for d in phases["rows"]}
+    mixed = json.loads((AUDIT / "mixed-historical-section-review.json").read_text())
+    assert mixed["phaseCounts"] == {
+        "ASSISTANT_STAGE": 3, "DIAGNOSTIC_STAGE": 3, "INFORMATION_REVIEW": 14,
+        "MIXED_REVIEW": 10, "QA_CONTEXT": 3, "SEPARATE_UI_STAGE": 1,
+        "SOURCE_CONTEXT": 8}
+    assert len(mixed["rows"]) == 42
     raw = json.loads((ROOT / "content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json").read_text())
     # Its detailed source/variant/object hash checks live in reconcile_chme3_raw_targets.
     assert raw["runtimeImport"] is False
