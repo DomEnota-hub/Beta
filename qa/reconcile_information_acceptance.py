@@ -71,6 +71,11 @@ def check():
         "FUNCTIONAL_STAGE": 3, "INFORMATION_EVIDENCE_REVIEW": 10,
         "QA_CONTEXT": 4, "SAFETY_POLICY_CONTEXT": 6, "SOURCE_CONTEXT": 20,
         "UI_STAGE": 4}
+    acceptance_audits = json.loads((AUDIT / "historical-acceptance-audit-relations.json").read_text())
+    assert len(acceptance_audits["audits"]) == 2
+    assert [len(s["requiredIds"]) for s in acceptance_audits["preservedItemSets"]] == [15, 18]
+    assert [len(s["expandedIds"]) for s in acceptance_audits["preservedItemSets"]] == [66, 111]
+    assert not acceptance_audits["currentRequirednessVerified"]
     raw = json.loads((ROOT / "content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json").read_text())
     # Its detailed source/variant/object hash checks live in reconcile_chme3_raw_targets.
     assert raw["runtimeImport"] is False
