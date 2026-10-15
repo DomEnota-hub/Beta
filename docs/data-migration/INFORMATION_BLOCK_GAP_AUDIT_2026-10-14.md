@@ -2,6 +2,8 @@
 
 Checkpoint: `DomEnota-hub/Beta:modular-rebuild` at `79f2c0b6144b205c9172a0d82e97e5156031f26d`. Pinned donor: `DomEnota-hub/Test-` at `3176d6ee228f0ed4b78371f45209e10c1c724eff`. This is an accounting audit, not an operational or publication approval. It does not change runtime data, UI, source status, or user preferences.
 
+Later scope update (2026-10-15): the exam question group is no longer a completion gate for information transfer. Its 329 objects remain excluded from Beta; the structural comparison below documents their discovery status at the time of this audit. The ten existing VL80S pneumatic hotspots now have an exact Kotlin field-parity gate (`qa/reconcile_vl80s_pneumatic_hotspots.py`) against an archived source blob. Their content is still candidate material without current action authority.
+
 ## What the accounting actually proves
 
 The 70-file locomotive JSON document ledger has 1,748 top-level object rows. Matching each row by `(sourcePath, sourcePointer, SHA-256)` against the exact disposition overlays yields **1,748 unique matches, zero duplicates, zero unmatched overlays, zero uncovered rows**. All 1,748 overlays say `MIGRATED` and `CANDIDATE`: 1,379 CHME3-family, 357 TEM2-family and 12 mixed family-manifest rows. The corresponding destinations include preserved source indexes and provenance, not necessarily runtime cards. This establishes exact object preservation for this *bounded 70-file set*, not complete donor coverage, field-level current authority, or usable UI.

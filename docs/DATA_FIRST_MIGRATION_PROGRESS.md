@@ -16,6 +16,11 @@ Scope: `DomEnota-maker/Beta:modular-rebuild`. Pinned read-only donor: `DomEnota-
 
 Append after each major completed stage: starting and ending SHA, source and destination counts, tests/CI on matching SHA, unresolved sources, safety status, and next step. Do not use `RailBrakeCalculator_BACKLOG.md` as a task source.
 
+## Stage 1 Kotlin information parity checkpoint (2026-10-15 Moscow)
+
+- The ten VL80S pneumatic diagram hotspots already existed in `atlas/interactive/pneumatic-flows.json`; the pinned `KnowledgeBaseScreen.kt` source (blob `0f18989087a7f4f2efcbdd46bdf05b1065d8f54c`) is now archived exactly. `qa/reconcile_vl80s_pneumatic_hotspots.py` compares every title, description, normalized bound and three explanatory fields in all ten entries to the Kotlin literals. No duplicate cards or runtime changes were made. The hotspot notes are source data, not current operational authorization; technical and variant applicability remain to be reviewed.
+- Per the user's current scope decision, the 329 exam questions are **outside the required information transfer**. Their structural audit remains historical evidence only. There is no need to resolve their hosting or access to finish the other information blocks; the existing Test copy and hidden exam feature are untouched. Reconsider only on a later explicit request.
+
 ## Stage 1 extraction-file triage (2026-10-14)
 
 - On the draft data-audit branch after the 206-group discovery reconciliation, `qa/reconcile_pending_extraction.py` matched all **254** provisional extraction rows to their exact source path, object identity and Git blob. A separate `git ls-tree` check against pinned Test commit `3176d6e` confirmed all 254 blob IDs. The machine-readable [overlay](data-migration/pending-extraction-evidence.json) retains the original statuses and null final dispositions.
