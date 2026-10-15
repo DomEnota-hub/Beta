@@ -30,6 +30,7 @@ Append after each major completed stage: starting and ending SHA, source and des
 ## Stage 1 CHME3 raw-target evidence checkpoint (2026-10-15 Moscow)
 
 - The [610-row source-target evidence overlay](../content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json) finds all **19** distinct raw targets in exact CHME3 documentary snapshots: 18 scheme records and the CHME3T electric-brake control equipment record. For **602** references, the target's original applicability includes the source variant. The other **eight** references originate from CHME3 or CHME3E traction-motor cards but point to CHME3T-only brake-control equipment or scheme; they remain explicitly unlinked. `qa/reconcile_chme3_raw_targets.py` checks every source entry, variant, raw target, preserved object hash and classification in CI. This resolves the previous “target not among six core assets” evidence gap but does not infer a canonical runtime edge, equipment equivalence, installation, or permission to use a scheme for action.
+- The exact Package B stepwise-scheme generator source is now archived. `qa/reconcile_stepwise_generator_contract.py` compares its six original representation rules and all **20** line-kind labels/styles with the complete preserved source contract. These strings are informational source vocabulary; the generator's theme/style presentation is not adopted for the separate new UI.
 
 ## Stage 1 extraction-file triage (2026-10-14)
 
