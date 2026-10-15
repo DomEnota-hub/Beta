@@ -77,11 +77,17 @@ jobs:
       - name: Validate pinned Common first-aid data and publication gate
         run: python3 qa/validate_common_first_aid.py --verify-pinned-output
 
+      - name: Relate historical first-aid audit to candidate cards
+        run: python3 qa/reconcile_first_aid_historical_audit.py --check
+
       - name: Validate Common knowledge and safety source packs
         run: python3 qa/validate_common_knowledge.py --verify-pinned-output
 
       - name: Validate lossless Ermak object packs
         run: python3 qa/validate_ermak.py
+
+      - name: Preserve source-derived Ermak acceptance checks
+        run: python3 qa/reconcile_ermak_acceptance_source.py --check
 
       - name: Validate pinned VL80S legacy knowledge cards
         run: python3 qa/validate_vl80s_legacy_knowledge.py

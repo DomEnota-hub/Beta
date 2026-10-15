@@ -33,6 +33,11 @@ def decide(path, existing):
                 ".github/scripts/add_wheel_flat_reference.py",
                 ".github/scripts/add_safety_reference_section.py",
                 "app/src/main/java/ru/railbrake/calculator/core/TechnicalDataRepository.kt"):
+        if path.endswith("TechnicalDataRepository.kt"):
+            return "EXACT_EMBEDDED_REFERENCE_AND_ACCEPTANCE_SOURCE_PRESERVED", [
+                EMBEDDED,
+                "content-packs/electric/ermak/acceptance/migration/kotlin-source.candidate.json",
+            ], "ACCEPTANCE_ROUTE_ORDER_AND_EXECUTION_APPLICABILITY"
         return "EXACT_EMBEDDED_REFERENCE_SOURCE_PRESERVED", [EMBEDDED], "CURRENT_SOURCE_APPLICABILITY_AND_DISPLAY_GATE"
     if path.endswith("/LocomotiveDatabase.kt"):
         return "EXACT_46_REFERENCE_ROWS_PRESERVED", [MASSES], "MASS_SOURCE_AND_VARIANT_REVIEW"
