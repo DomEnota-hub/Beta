@@ -26,7 +26,7 @@ def decide(path, existing):
         if path.endswith("/Vl80sNormalValues.kt"):
             return "EXACT_NORMAL_VALUES_AND_CONFIDENCE_SOURCE_PRESERVED", existing[path] + [
                 "content-packs/electric/vl80s/technical-data/migration/kotlin-normal-values.candidate.json",
-            ], "CURRENT_AUTHORITY_AND_SOURCE_EQUIPMENT_ALIAS_REVIEW"
+            ], "CURRENT_SOURCE_AUTHORITY_REVIEW"
         return "PREVIOUS_EVIDENCE_LINKED_SEMANTICS_OPEN", existing[path], "FINAL_OBJECT_OR_BEHAVIOR_REVIEW"
     if path.startswith("docs/"):
         evidence = [HISTORICAL]

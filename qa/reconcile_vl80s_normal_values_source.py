@@ -31,6 +31,17 @@ def project():
     entries = json.loads(PACK.read_text())["entries"]
     by_alias = {e["aliases"][0]: e for e in entries}
     assert len(by_alias) == len(entries) == 6
+    index = json.loads((ROOT / "content-packs/electric/vl80s/runtime-index.json").read_text())
+    equipment_by_legacy = {}
+    for relative in index["packs"]:
+        if "/atlas/equipment/" not in relative:
+            continue
+        for equipment_entry in json.loads((ROOT / "content-packs" / relative).read_text())["entries"]:
+            legacy = equipment_entry["migrationRefs"]["legacyId"]
+            if legacy is None:
+                continue
+            assert legacy not in equipment_by_legacy
+            equipment_by_legacy[legacy] = equipment_entry
     rows = []
     for m in matches:
         key, title, normal, applicability, equipment, confidence, source = m.groups()
@@ -43,9 +54,17 @@ def project():
         assert entry["migrationRefs"] == {"sourceFile": SOURCE.name, "sourceId": key,
                                            "sourceBlobSha": PIN}
         assert entry["actionDisposition"] == "INFORMATION_ONLY"
+        assert len(ids) == len(set(ids))
+        assert all(legacy in equipment_by_legacy for legacy in ids)
+        mapped = [{"sourceEquipmentId": legacy, "canonicalEquipmentId": equipment_by_legacy[legacy]["id"]}
+                  for legacy in ids]
+        assert {x["canonicalEquipmentId"] for x in mapped} == {
+            link["targetId"] for link in entry["links"] if link["type"] == "EQUIPMENT"}
+        assert len(mapped) == len(entry["links"])
         rows.append({"sourceId": key, "candidateId": entry["id"],
                      "sourceFragmentSha256": digest(m.group(0)),
                      "sourceConfidence": confidence, "sourceEquipmentIds": ids,
+                     "equipmentIdentityLinks": mapped,
                      "sourceTitle": title, "sourceNormalValue": normal,
                      "sourceApplicability": applicability, "sourceCitation": source,
                      "candidatePublicationStatus": entry["publicationStatus"],
@@ -57,7 +76,7 @@ def project():
             "sourceBlobSha": PIN, "sourceAsset": str(SOURCE.relative_to(ROOT)),
             "publicationStatus": "CANDIDATE", "runtimeImport": False,
             "currentAuthorityVerified": False, "actionAuthorityGranted": False,
-            "note": "Exact six source values and original InformationConfidence labels. The existing card text is equal, but those confidence labels and original equipment aliases were not represented in the normal-values cards. The donor confidence label does not verify present source authority or permissible action; existing pack publication status is recorded, not changed here.",
+            "note": "Exact six source values and original InformationConfidence labels. Existing card text and all source-equipment to canonical-equipment identity links match the preserved legacyId fields. The confidence labels were absent from normal-values cards; the donor label does not verify present source authority or permissible action. Existing pack publication status is recorded, not changed here.",
             "rows": rows}
 
 
