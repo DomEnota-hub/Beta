@@ -52,6 +52,11 @@ def check():
     assert historical["documentCount"] == len(historical["documents"]) == 50
     assert historical["sectionCount"] == sum(len(d["sections"]) for d in historical["documents"]) == 351
     assert not historical["runtimeImport"] and not historical["actionAuthorityGranted"]
+    phases = json.loads((AUDIT / "historical-document-phase-review.json").read_text())
+    assert phases["phaseCounts"] == {"DIAGNOSTIC_STAGE": 29, "INFORMATION_REVIEW": 12,
+                                     "MIXED_OBJECT_REVIEW": 5, "SEPARATE_UI_STAGE": 4}
+    assert {d["sourcePath"] for d in historical["documents"]} == {
+        d["sourcePath"] for d in phases["rows"]}
     raw = json.loads((ROOT / "content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json").read_text())
     # Its detailed source/variant/object hash checks live in reconcile_chme3_raw_targets.
     assert raw["runtimeImport"] is False
