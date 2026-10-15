@@ -76,6 +76,10 @@ def check():
     assert [len(s["requiredIds"]) for s in acceptance_audits["preservedItemSets"]] == [15, 18]
     assert [len(s["expandedIds"]) for s in acceptance_audits["preservedItemSets"]] == [66, 111]
     assert not acceptance_audits["currentRequirednessVerified"]
+    normal_source = json.loads((ROOT / "content-packs/electric/vl80s/technical-data/migration/kotlin-normal-values.candidate.json").read_text())
+    assert len(normal_source["rows"]) == 6
+    assert all(not x["currentAuthorityVerified"] for x in normal_source["rows"])
+    assert not normal_source["runtimeImport"] and not normal_source["actionAuthorityGranted"]
     raw = json.loads((ROOT / "content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json").read_text())
     # Its detailed source/variant/object hash checks live in reconcile_chme3_raw_targets.
     assert raw["runtimeImport"] is False
