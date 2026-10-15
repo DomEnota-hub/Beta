@@ -129,6 +129,9 @@ jobs:
       - name: Validate CHME3 family source and variant isolation
         run: python3 qa/validate_chme3.py
 
+      - name: Reconcile CHME3 raw source targets with preserved documentary objects
+        run: python3 qa/reconcile_chme3_raw_targets.py --check
+
       - name: Validate pinned CHME3 source registries and unresolved IDs
         run: python3 qa/validate_chme3_source_registries.py
 
@@ -269,6 +272,9 @@ jobs:
 
       - name: Reconcile pinned Ermak pantograph generator constants
         run: python3 qa/reconcile_ermak_pantograph_generator.py
+
+      - name: Reconcile 28 Ermak enrichment sources and static objects
+        run: python3 qa/reconcile_ermak_enrichment_literals.py --check
 
       - name: Verify 46 pinned locomotive reference rows
         run: python3 qa/migrate_locomotive_reference_source.py --check
