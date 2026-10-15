@@ -297,8 +297,14 @@ jobs:
       - name: Verify 50 historical source documents
         run: python3 qa/preserve_pending_documents.py
 
+      - name: Index historical document sections without source promotion
+        run: python3 qa/project_historical_sections.py --check
+
       - name: Reconcile all provisional extraction file reviews
         run: python3 qa/reconcile_pending_extraction_review.py --check
+
+      - name: Reconcile information acceptance accounting boundaries
+        run: python3 qa/reconcile_information_acceptance.py
 
       - name: Validate pinned candidate inventory
         run: python3 qa/validate_vl80s_candidate_inventory.py
