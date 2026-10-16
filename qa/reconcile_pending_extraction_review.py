@@ -41,6 +41,7 @@ def decide(path, existing):
             return "EXACT_EMBEDDED_REFERENCE_AND_ACCEPTANCE_SOURCE_PRESERVED", [
                 EMBEDDED,
                 "content-packs/electric/ermak/acceptance/migration/kotlin-source.candidate.json",
+                "content-packs/electric/vl80s/acceptance/migration/kotlin-required.candidate.json",
             ], "ACCEPTANCE_ROUTE_ORDER_AND_EXECUTION_APPLICABILITY"
         return "EXACT_EMBEDDED_REFERENCE_SOURCE_PRESERVED", [EMBEDDED], "CURRENT_SOURCE_APPLICABILITY_AND_DISPLAY_GATE"
     if path.endswith("/LocomotiveDatabase.kt"):
