@@ -87,6 +87,12 @@ def check():
     assert len(replay["outputs"]) == 26
     assert len({r["donorBlobSha"] for r in replay["outputs"]}) == 13
     assert not replay["runtimeImport"] and not replay["currentAuthorityVerified"]
+    tem2_history = json.loads((AUDIT / "tem2-information-checkpoint-relations.json").read_text())
+    assert len(tem2_history["checkpoints"]) == 2
+    assert tem2_history["sourceObjectCounts"] == {"systems": 9, "equipment": 36,
+            "schemes": 9, "flows": 11, "flowNodes": 42, "coreChecks": 14,
+            "profileChecks": 2, "routes": 2}
+    assert not tem2_history["runtimeImport"] and not tem2_history["actionAuthorityGranted"]
     normal_source = json.loads((ROOT / "content-packs/electric/vl80s/technical-data/migration/kotlin-normal-values.candidate.json").read_text())
     assert len(normal_source["rows"]) == 6
     assert all(not x["currentAuthorityVerified"] for x in normal_source["rows"])
