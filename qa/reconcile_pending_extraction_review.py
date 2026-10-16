@@ -56,9 +56,15 @@ def decide(path, existing):
         if path.endswith("generate_exam_questions.py"):
             return "EXAM_GENERATOR_REVIEWED", [ZIP], "EXAM_ACCESS_HOSTING_POLICY"
         if "chme3_android_assets" in path:
-            return "FAMILY_GENERATOR_REVIEWED", ["docs/data-migration/chme3-remaining-document-dispositions.json"], "PROJECTION_SEMANTICS"
+            return "FAMILY_GENERATOR_EXACT_OUTPUT_REPLAY", [
+                "docs/data-migration/chme3-remaining-document-dispositions.json",
+                "docs/data-migration/family-generator-replay.json",
+            ], "CURRENT_APPLICABILITY_AND_PUBLICATION"
         if "tem2_android_assets" in path:
-            return "FAMILY_GENERATOR_REVIEWED", ["docs/data-migration/tem2-stage3-dispositions.json"], "PROJECTION_SEMANTICS"
+            return "FAMILY_GENERATOR_EXACT_OUTPUT_REPLAY", [
+                "docs/data-migration/tem2-stage3-dispositions.json",
+                "docs/data-migration/family-generator-replay.json",
+            ], "CURRENT_APPLICABILITY_AND_PUBLICATION"
         if "vl80s_diagnostics.jq" in path:
             return "TERMINAL_VL80S_DIAGNOSTIC_PRESERVED", [VL_DIAG], "DIAGNOSTIC_SOURCE_AUTHORITY"
         if path.endswith("audit_canonical_data.py"):
