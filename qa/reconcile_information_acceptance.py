@@ -80,6 +80,9 @@ def check():
     assert len(vl_required["requiredChecks"]) == 15
     assert len(vl_required["expandedRouteIdsFromSource"]) == 7
     assert not vl_required["currentRequirednessVerified"] and not vl_required["runtimeImport"]
+    package_b = json.loads((AUDIT / "package-b-checkpoint-relations.json").read_text())
+    assert (package_b["sequenceCount"], package_b["stepCount"], package_b["layoutCount"]) == (55, 145, 55)
+    assert not package_b["runtimeImport"] and not package_b["actionAuthorityGranted"]
     normal_source = json.loads((ROOT / "content-packs/electric/vl80s/technical-data/migration/kotlin-normal-values.candidate.json").read_text())
     assert len(normal_source["rows"]) == 6
     assert all(not x["currentAuthorityVerified"] for x in normal_source["rows"])
