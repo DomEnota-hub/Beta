@@ -93,6 +93,12 @@ def check():
             "schemes": 9, "flows": 11, "flowNodes": 42, "coreChecks": 14,
             "profileChecks": 2, "routes": 2}
     assert not tem2_history["runtimeImport"] and not tem2_history["actionAuthorityGranted"]
+    chme3_history = json.loads((AUDIT / "chme3-legacy-atlas-checkpoint-relations.json").read_text())
+    assert chme3_history["counts"] == {"sourceRecords": 16, "systems": 13,
+            "equipment": 70, "detailCards": 70, "functionalSchemes": 12,
+            "schemeDesignations": 24}
+    assert len(chme3_history["distinctEquipmentIds"]) == 2
+    assert not chme3_history["runtimeImport"] and not chme3_history["actionAuthorityGranted"]
     normal_source = json.loads((ROOT / "content-packs/electric/vl80s/technical-data/migration/kotlin-normal-values.candidate.json").read_text())
     assert len(normal_source["rows"]) == 6
     assert all(not x["currentAuthorityVerified"] for x in normal_source["rows"])
