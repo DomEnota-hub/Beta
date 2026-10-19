@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 30310)
+Total output lines: 477
+
 Warning: truncated output (original token count: 31005)
 Total output lines: 485
 
@@ -242,9 +245,7 @@ Append after each major completed stage: starting and ending SHA, source and des
 
 - The pinned `docs/locomotives/manifests/locomotive_families.json` from Test- contains both CHME3 and TEM2 family records. It is preserved whole at `content-packs/locomotive-migration/shared-family-manifest-source.json`, with 12 exact JSON SHA-256 row destinations at `docs/data-migration/locomotive-family-manifest-dispositions.json`.
 - Ownership remains `MIXED_REVIEW_REQUIRED`; no single family owner, canonical object ID, runtime layout rule or authority was assigned. The manifest stays CANDIDATE/information-only, `runtimeImport=false`. Local pinned reconstruction, exact 12-row mapping, a negative owner-promotion mutation and a 13-map disjoint/complete assertion passed.
-- The 1748/1748 rows in the pinned locomotive JSON document ledger now have exact source-preservation destinations: 1379 CHME3-family, 357 TEM2-family, 12 shared. This does not close source discovery …1005 tokens truncated…ee-case results were reported before this next stage began.
-- The pinned donor `ermak_links.json.gz` (Git blob `432eb86db028b8c6c1413ad054bc110fa83ce633`) and `ermak_system_map.json.gz` (`bd17468332261f7fb965de6e1ba3d7f0b28a05b2`) are preserved as exact compressed bytes under `content-packs/electric/ermak/migration/source-assets/`. Their SHA-256, source paths, top-level fields and observed counts are recorded in `supplemental-asset-index.json`; the CI validator compares the pinned bytes and checks CANDIDATE/information-only/non-runtime policy. This is an archival source checkpoint; individual nested objects still require canonical disposition and source/variant review. Donor `PASS` text is retained inside the source asset, not accepted as present-day authority.
-- Source map: 15 systems, 16 critical links, seven open questions and 13 source IDs. Link indexes contain 111 equipment, 15 systems, 135 diagnostics and 22 schemes. The already imported diagnostic catalog contains 136 candidates. The source link index omits `ER-DIAG-136` (“Секции развивают разную тягу / токи”); its link is explicitly unresolved, not invented. No canonical pack, runtime links, status or cross-variant scope changed. The 1748-row locomotive JSON document ledger is unaffected because these are two technical gzip assets outside that ledger.
+- The 1748/1748 rows in the pinned locomotive JSON document ledger now have exact source-preservation destinations: 137…310 tokens truncated… explicitly unresolved, not invented. No canonical pack, runtime links, status or cross-variant scope changed. The 1748-row locomotive JSON document ledger is unaffected because these are two technical gzip assets outside that ledger.
 - Local source-only validation passed; the full catalog comparison is added to bootstrap CI. Final run/SHA pending. Next: reconcile the remaining Ermak nested sources and link/variant authority against pinned donor and primary documents, then resume complete Kotlin/media/generator inventory.
 
 ### Ermak supplemental-asset CI closure
@@ -469,3 +470,9 @@ Append after each major completed stage: starting and ending SHA, source and des
 - The preserved historical checkpoint `STAGE_1_CHECKPOINT.md` is now related to the exact CHME3E profile, inheritance and four-item source-registry snapshots. The guarded relation checks all three profile traits (additional electronic control, diesel preheating and no factory rheostatic brake), the three distinct CHME3T-only equipment IDs, the non-heuristic CHME3T EDB exclusion, and the source action boundaries (`NO_BY_ITSELF` / `NO`).
 - This is a non-runtime `CANDIDATE` relation only. It does not treat the historical `COMPLETE` label as current operational authority, infer a physical locomotive's execution from a number, activate a profile action, or import the checkpoint into Android runtime.
 - Focused regression test and the new reconciliation gate pass locally. The gate has been added to the modular bootstrap workflow; its CI result must be checked on the final commit before remote verification is claimed.
+
+## Stage — CHME3E historical Stage 2 Atlas relation (2026-10-19 Moscow)
+
+- The preserved Stage 2 checkpoint is now related to three profile systems, all 33 profile Atlas IDs and their 33 detailed cards, six profile schemes, 29 electrical designations and five Stage 2 source records. The relation checks that the cards form the same ID set as the Atlas profile, all profile equipment is explicitly scoped to ЧМЭ3Э, and the external-preheat scheme remains `INFORMATION_ONLY` with its original warning that it is not an instruction for connecting an external three-phase supply.
+- The guarded relation separately rejects any active reference to `CHME3-SYS-EDB`, `CHME3T-EQ-BRAKE-RESISTORS` or `CHME3T-EQ-EDB-CONTROL`. This protects the profile boundary without applying a heuristic “ЧМЭ3Т minus one function” model.
+- The checkpoint's phrase “67 common Atlas-ID” stays only historical text: no separately bounded Stage 2 source list identifies those 67 objects, so this number is not recreated from a broad applicability search. The relation is `CANDIDATE`/non-runtime and grants no current authority or action.
