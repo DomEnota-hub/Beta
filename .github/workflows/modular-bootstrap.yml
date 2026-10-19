@@ -348,6 +348,9 @@ jobs:
       - name: Reconcile all provisional extraction file reviews
         run: python3 qa/reconcile_pending_extraction_review.py --check
 
+      - name: Reconcile all donor discovery rows to bounded evidence and gates
+        run: python3 qa/reconcile_discovery_outcomes.py --check && python3 -m unittest qa/test_reconcile_discovery_outcomes.py
+
       - name: Reconcile information acceptance accounting boundaries
         run: python3 qa/reconcile_information_acceptance.py
 
