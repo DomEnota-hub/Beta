@@ -477,3 +477,9 @@ Append after each major completed stage: starting and ending SHA, source and des
 - The relation keeps the common contract fail-closed: unknown variant-dependent operational actions are denied, actual installed equipment overrides a number hint, and the adjacent variants ТЭМ2УМ, ТЭМ2Т, ТЭМ2А and later ТЭМ-family remain explicit exclusions.
 - This is a non-runtime `CANDIDATE` relation only. It does not turn the historical foundation-complete label into current authority, permit an operational action, or declare Android integration complete.
 - [Modular architecture bootstrap 39243352837](https://github.com/DomEnota-hub/Beta/actions/runs/39243352837) completed successfully on `2dbcc3db0d83c190ee8bb6f2f054e229d5c3f474`: the reconciliation gates, all preceding Python data checks, JVM tests, Android lint and debug assembly passed. The successful CI run validates preservation and isolation only; it does not promote operational authority or runtime integration.
+
+## Stage — ЧМЭ3-family historical Interactive Stage 2 relation (2026-10-19 Moscow)
+
+- The historical checkpoint is now bounded to the three preserved profile bindings and 29 source-backed functional/layout pairs: seven for ЧМЭ3, eight for ЧМЭ3Т and 14 for ЧМЭ3Э. Every preserved entry remains a non-runtime `CANDIDATE` with `INFORMATION_ONLY` action disposition.
+- The old checkpoint totals — 38 effective views, 261 hotspots and 215 directed edges — stay historical claims only. Beta has no separately bounded interactive-runtime source from which those totals can be recreated; the relation records this explicitly rather than equating them to the 29 candidate pairs.
+- Profile-dependent actions remain fail-closed when actual equipment or modernization is unknown. The relation does not enable Android runtime, assistant integration, source-overlay coordinates, diagnostic transitions or any operational action.
