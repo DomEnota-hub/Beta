@@ -35,19 +35,37 @@ object DiagnosticActionGate {
 
 data class DiagnosticEvidenceRoute(
     val sourceId: String,
+    val scenarioId: String,
     val exactProfileId: String,
+    val startNodeId: String,
+    val nodes: List<DiagnosticRouteNode>,
     val executable: Boolean = false,
 ) {
     init {
-        require(sourceId.isNotBlank() && exactProfileId.isNotBlank())
+        require(sourceId.isNotBlank() && scenarioId.isNotBlank() && exactProfileId.isNotBlank())
         require(!executable) { "extended source evidence cannot grant action authority" }
+        validateDiagnosticGraph(startNodeId, nodes)
     }
+
+    fun next(nodeId: String, response: ExecutableDiagnosticResponse): String? =
+        nodes.singleOrNull { it.id == nodeId }?.responses?.get(response)
 }
 
 data class DiagnosticRouteNode(
     val id: String,
     val responses: Map<ExecutableDiagnosticResponse, String>,
 )
+
+private fun validateDiagnosticGraph(startNodeId: String, nodes: List<DiagnosticRouteNode>) {
+    val ids = nodes.map { it.id }
+    require(ids.size == ids.distinct().size && ids.none(String::isBlank))
+    require(startNodeId in ids)
+    nodes.forEach { node ->
+        require(node.responses.isEmpty() ||
+            node.responses.keys == ExecutableDiagnosticResponse.entries.toSet())
+        require(node.responses.values.all { it == DIAGNOSTIC_END_OF_FLOW || it in ids })
+    }
+}
 
 data class DiagnosticCardRoute(
     val version: DiagnosticCardVersion,
@@ -56,15 +74,9 @@ data class DiagnosticCardRoute(
     val extendedRoutes: List<DiagnosticEvidenceRoute>,
 ) {
     init {
-        val ids = nodes.map { it.id }
-        require(ids.size == ids.distinct().size && ids.none(String::isBlank))
-        require(startNodeId in ids)
+        validateDiagnosticGraph(startNodeId, nodes)
+        require(extendedRoutes.isNotEmpty()) { "each card version needs its own extended branch" }
         require(extendedRoutes.map { it.sourceId }.distinct().size == extendedRoutes.size)
-        nodes.forEach { node ->
-            require(node.responses.isEmpty() ||
-                node.responses.keys == ExecutableDiagnosticResponse.entries.toSet())
-            require(node.responses.values.all { it == DIAGNOSTIC_END_OF_FLOW || it in ids })
-        }
     }
 }
 
@@ -77,6 +89,9 @@ data class DiagnosticCardSelection(
 ) {
     fun next(nodeId: String, response: ExecutableDiagnosticResponse): String? =
         route?.nodes?.singleOrNull { it.id == nodeId }?.responses?.get(response)
+
+    fun nextExtended(sourceId: String, nodeId: String, response: ExecutableDiagnosticResponse): String? =
+        evidence.singleOrNull { it.sourceId == sourceId }?.next(nodeId, response)
 }
 
 data class DiagnosticModeContract(
@@ -90,6 +105,12 @@ data class DiagnosticModeContract(
             "short and detailed routes are both required"
         }
         require(routes.size == DiagnosticCardVersion.entries.size)
+        require(routes.all { route -> route.extendedRoutes.all { it.scenarioId == scenarioId } }) {
+            "extended branches must belong to this scenario"
+        }
+        require(routes.map { route -> route.extendedRoutes.map { it.startNodeId to it.nodes } }.distinct().size == 2) {
+            "short and detailed versions need independently authored extended branches"
+        }
         require(routes.all { route ->
             route.extendedRoutes.all { it.exactProfileId == exactProfileId }
         }) { "extended evidence must match the exact scenario profile" }

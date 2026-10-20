@@ -249,6 +249,9 @@ jobs:
       - name: Reconcile Atlas source pairs with model equipment and layout nodes
         run: python3 qa/reconcile_atlas_pair_bindings.py --check
 
+      - name: Account for unreviewed diagnostic versions against the donor
+        run: python3 qa/reconcile_diagnostic_version_coverage.py --check
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
