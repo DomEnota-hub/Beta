@@ -49,7 +49,7 @@ data class AtlasPairRoute(
         require(nodes.isNotEmpty())
         require(keys.size == keys.distinct().size && keys.none(String::isBlank))
         require(steps.isNotEmpty() && steps.all { it.title.isNotBlank() })
-        require(steps.all { it.activeNodeKeys <= keys.toSet() })
+        require(steps.all { keys.toSet().containsAll(it.activeNodeKeys) })
     }
 
     fun hitTest(x: Float, y: Float): AtlasPairNode? =
