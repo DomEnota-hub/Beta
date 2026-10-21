@@ -252,6 +252,9 @@ jobs:
       - name: Account for unreviewed diagnostic versions against the donor
         run: python3 qa/reconcile_diagnostic_version_coverage.py --check
 
+      - name: Reconcile per-scenario source and extended-variant coverage
+        run: python3 qa/analyze_diagnostic_corpus.py --check
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
