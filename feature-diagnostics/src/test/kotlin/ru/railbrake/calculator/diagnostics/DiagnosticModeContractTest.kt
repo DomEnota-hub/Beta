@@ -156,4 +156,72 @@ class DiagnosticModeContractTest {
             sourceAuthorityVerified = true,
         )))
     }
+    @Test
+    fun distinctApproachesFromOneHistoricalSourceRemainSelectableOnlyAfterWarning() {
+        val first = extension("archive-air-end").copy(
+            sourceId = "historical-book",
+            approachId = "pneumatic-interpretation",
+            origin = DiagnosticEvidenceOrigin.HISTORICAL_PUBLICATION,
+            sourceLabel = "Историческое пособие, раздел А",
+            applicabilityCaveat = "Точная секция не установлена",
+        )
+        val second = extension("archive-command-end").copy(
+            sourceId = "historical-book",
+            approachId = "control-chain-interpretation",
+            origin = DiagnosticEvidenceOrigin.HISTORICAL_PUBLICATION,
+            sourceLabel = "Историческое пособие, раздел Б",
+            applicabilityCaveat = "Комплектация аппаратов требует сверки",
+        )
+        val scenario = DiagnosticModeContract("CHME3-DIAG-001", "chme3-base", listOf(
+            route(DiagnosticCardVersion.SHORT, "short-end", listOf(first, second)),
+            route(DiagnosticCardVersion.DETAILED, "detailed-end", listOf(
+                extension("different-detailed-end"),
+            )),
+        ))
+        val disabled = scenario.select(DiagnosticCardVersion.SHORT, "chme3-base",
+            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = false))
+        assertTrue(disabled.evidence.isEmpty())
+        val enabled = scenario.select(DiagnosticCardVersion.SHORT, "chme3-base",
+            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true))
+        assertEquals(listOf("pneumatic-interpretation", "control-chain-interpretation"),
+            enabled.evidence.map { it.approachId })
+        assertEquals(listOf("historical-book", "historical-book"), enabled.evidence.map { it.sourceId })
+        assertEquals("archive-air-end", enabled.nextExtended("pneumatic-interpretation",
+            "extended-start", ExecutableDiagnosticResponse.YES))
+        assertEquals("archive-command-end", enabled.nextExtended("control-chain-interpretation",
+            "extended-start", ExecutableDiagnosticResponse.YES))
+        assertEquals(null, enabled.nextExtended("historical-book",
+            "extended-start", ExecutableDiagnosticResponse.YES))
+        assertFalse(first.executable)
+        assertFalse(second.executable)
+        assertTrue(scenario.select(DiagnosticCardVersion.SHORT, "another-model",
+            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true))
+            .evidence.isEmpty())
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun rejectsDuplicateApproachEvenWhenSourceIsShared() {
+        DiagnosticCardRoute(DiagnosticCardVersion.SHORT, "start",
+            route(DiagnosticCardVersion.SHORT, "end").nodes,
+            listOf(extension("a").copy(sourceId = "book", approachId = "same"),
+                   extension("b").copy(sourceId = "book", approachId = "same")))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun historicalBranchCannotBecomeConditionalAction() {
+        extension("end").copy(actionDisposition = ActionDisposition.CONDITIONAL_ACTION)
+    }
+
+    @Test
+    fun acknowledgedWarningStillDoesNotGrantAuthority() {
+        val inputs = DiagnosticActionInputs(
+            publicationStatus = PublicationStatus.CANDIDATE,
+            actionDisposition = ActionDisposition.INFORMATION_ONLY,
+            runtimeAvailability = DiagnosticRuntimeAvailability.EXECUTABLE_FLOW_AVAILABLE,
+            exactProfileConfirmed = true,
+            sourceAuthorityVerified = false,
+            installedEquipmentConfirmed = true,
+        )
+        assertFalse(DiagnosticActionGate.permits(inputs))
+    }
 }

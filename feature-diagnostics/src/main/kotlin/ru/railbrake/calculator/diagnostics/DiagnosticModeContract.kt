@@ -5,6 +5,7 @@ import ru.railbrake.calculator.domain.PublicationStatus
 
 /** Presentation and source eligibility are independent of executable action authority. */
 enum class DiagnosticCardVersion { SHORT, DETAILED }
+enum class DiagnosticEvidenceOrigin { TECHNICAL_LITERATURE, HISTORICAL_PUBLICATION, PRACTICE_NOTE, DONOR_CANDIDATE }
 enum class DiagnosticKnowledgeVolume { BASIC, EXPANDED }
 enum class DiagnosticDisplayDepth { MINIMAL, STANDARD, DETAILED }
 
@@ -40,10 +41,21 @@ data class DiagnosticEvidenceRoute(
     val startNodeId: String,
     val nodes: List<DiagnosticRouteNode>,
     val executable: Boolean = false,
+    // An individual source may describe competing diagnostic interpretations.
+    // Select an approach, not merely a bibliography record.
+    val approachId: String = sourceId,
+    val origin: DiagnosticEvidenceOrigin = DiagnosticEvidenceOrigin.DONOR_CANDIDATE,
+    val sourceLabel: String = "Исторический / неподтверждённый материал",
+    val applicabilityCaveat: String = "Точная применимость к установленному оборудованию не подтверждена",
+    val actionDisposition: ActionDisposition = ActionDisposition.INFORMATION_ONLY,
 ) {
     init {
         require(sourceId.isNotBlank() && scenarioId.isNotBlank() && exactProfileId.isNotBlank())
+        require(approachId.isNotBlank() && sourceLabel.isNotBlank() && applicabilityCaveat.isNotBlank())
         require(!executable) { "extended source evidence cannot grant action authority" }
+        require(actionDisposition != ActionDisposition.CONDITIONAL_ACTION) {
+            "historical extended evidence must not grant action authority"
+        }
         validateDiagnosticGraph(startNodeId, nodes)
     }
 
@@ -115,7 +127,9 @@ data class DiagnosticCardRoute(
         require(extendedRoutes.isEmpty() || extendedSourceGapReason == null) {
             "a bound extension cannot also claim an unbound source gap"
         }
-        require(extendedRoutes.map { it.sourceId }.distinct().size == extendedRoutes.size)
+        require(extendedRoutes.map { it.approachId }.distinct().size == extendedRoutes.size) {
+            "approaches within a card version must have distinct identities"
+        }
     }
 }
 
@@ -129,8 +143,8 @@ data class DiagnosticCardSelection(
     fun next(nodeId: String, response: ExecutableDiagnosticResponse): String? =
         route?.nodes?.singleOrNull { it.id == nodeId }?.responses?.get(response)
 
-    fun nextExtended(sourceId: String, nodeId: String, response: ExecutableDiagnosticResponse): String? =
-        evidence.singleOrNull { it.sourceId == sourceId }?.next(nodeId, response)
+    fun nextExtended(approachId: String, nodeId: String, response: ExecutableDiagnosticResponse): String? =
+        evidence.singleOrNull { it.approachId == approachId }?.next(nodeId, response)
 }
 
 data class DiagnosticModeContract(

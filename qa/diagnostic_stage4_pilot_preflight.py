@@ -21,8 +21,6 @@ def load(path):
 
 def check_graph(route, anchors, sources):
     require(route["authoringStatus"]=="RESEARCH_DRAFT_BLOCKED", "premature approval")
-    require(route["extendedRoutes"]==[] and route["extendedSourceStatus"]=="UNBOUND"
-            and bool(route["extendedSourceGapReason"]), "extended gap silently inherited")
     nodes=route["nodes"]
     by={n["id"]:n for n in nodes}
     require(len(nodes)==len(by) and route["startNodeId"] in by, "invalid graph IDs")
@@ -99,6 +97,54 @@ def check_pilot(record, inventory_row, stage2):
     versions=record["versionDrafts"]
     require(set(versions)=={"SHORT","DETAILED"}, "version set")
     counts={k:check_graph(v,anchor_set,src) for k,v in versions.items()}
+    require(record["schemaVersion"]=="diagnostic-authoring-pilot/2",
+            "pilot alternative format not migrated")
+    warning=record["extendedWarningContract"]
+    require(warning=={"offByDefault":True,"readToEndRequired":True,
+                     "acknowledgementRequired":True,"acknowledgementGrantsActionAuthority":False},
+            "expanded warning is not sufficient")
+    for name,v in versions.items():
+        if v["extendedSourceStatus"]=="UNBOUND":
+            require(v["extendedRoutes"]==[] and bool(v["extendedSourceGapReason"]),
+                    "missing evidence gap")
+        else:
+            require(v["extendedSourceStatus"]=="HISTORICAL_INFORMATION_BOUND"
+                    and v["extendedSourceGapReason"] is None and bool(v["extendedRoutes"]),
+                    "historical evidence incorrectly marked unbound")
+        ids=set()
+        focuses=set()
+        graph_signatures=set()
+        for a in v["extendedRoutes"]:
+            require(a["approachId"] not in ids and bool(a["approachId"]), "merged/duplicate approach")
+            ids.add(a["approachId"])
+            require(a["sourceId"] in src and bool(a["sourcePointer"]), "source provenance missing")
+            require(a["alternativeGroup"] and bool(a["approachSummary"]) and
+                    bool(a["approachFocus"]) and a["approachFocus"] not in focuses,
+                    "alternative focus missing or duplicated")
+            focuses.add(a["approachFocus"])
+            require(a["displayMode"]=="EXTENDED_ONLY" and
+                    a["visibility"]=={"extendedEnabledRequired":True,
+                     "warningReadToEndRequired":True,"warningAcknowledgedRequired":True},
+                    "unverified source exposed without warning")
+            require(a["actionDisposition"]=="INFORMATION_ONLY" and
+                    a["operationalInstructionsIncluded"] is False and
+                    a["procedureSteps"]==[] and a["executable"] is False and
+                    a["actionAuthorityGranted"] is False and
+                    a["humanSafetyReviewPassed"] is False,
+                    "historical alternative became operational")
+            require(a["applicability"]["profileId"]==record["authoringProfileId"] and
+                    a["applicability"]["installedVariantConfirmed"] is False and
+                    bool(a["applicability"]["limitation"]), "unqualified profile applicability")
+            require(a["authoringStatus"]=="RESEARCH_EXTENDED_INFORMATION_ONLY", "extended approval")
+            # A second approach cannot silently reuse the same exact graph.
+            signature=json.dumps(a["nodes"],sort_keys=True,ensure_ascii=False)
+            require(signature not in graph_signatures, "duplicate source approach graph")
+            graph_signatures.add(signature)
+            # The same structural rules apply to each historical reading route.
+            check_graph({**a, "authoringStatus":"RESEARCH_DRAFT_BLOCKED"},anchor_set,src)
+    require([a["approachId"] for a in versions["SHORT"]["extendedRoutes"]]!=
+            [a["approachId"] for a in versions["DETAILED"]["extendedRoutes"]],
+            "extended versions silently share one route")
     require([v["nodes"] for v in versions.values()][0]!=
             [v["nodes"] for v in versions.values()][1], "copied SHORT/DETAILED")
     return counts
