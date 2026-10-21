@@ -5,6 +5,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.railbrake.calculator.domain.ContentLayer
+import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.ExtendedDiagnosticClass
 import ru.railbrake.calculator.domain.PublicationStatus
 
@@ -80,11 +81,28 @@ class DiagnosticRuntimeTest {
             disabled.reason,
         )
 
+        val warningPending = DiagnosticAccessPolicy.evaluate(
+            descriptor,
+            DiagnosticRuntimeAvailability.RELATION_GRAPH_ONLY,
+            DiagnosticVisibilitySettings(
+                extendedEnabled = true,
+                enabledExtendedClasses = setOf(
+                    ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL
+                ),
+            ),
+        )
+        assertFalse(warningPending.visibleInCatalog)
+        assertEquals(
+            DiagnosticAccessReason.EXTENDED_WARNING_NOT_ACKNOWLEDGED,
+            warningPending.reason,
+        )
+
         val enabled = DiagnosticAccessPolicy.evaluate(
             descriptor,
             DiagnosticRuntimeAvailability.RELATION_GRAPH_ONLY,
             DiagnosticVisibilitySettings(
                 extendedEnabled = true,
+                warningAcknowledged = true,
                 enabledExtendedClasses = setOf(
                     ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL
                 ),
@@ -163,10 +181,30 @@ class DiagnosticRuntimeTest {
                 extendedClass = null,
             ),
             runtimeAvailability = DiagnosticRuntimeAvailability.EXECUTABLE_FLOW_AVAILABLE,
+            actionInputs = DiagnosticActionInputs(
+                publicationStatus = PublicationStatus.ACTIVE,
+                actionDisposition = ActionDisposition.CONDITIONAL_ACTION,
+                runtimeAvailability = DiagnosticRuntimeAvailability.EXECUTABLE_FLOW_AVAILABLE,
+                sourceAuthorityVerified = true,
+                exactProfileConfirmed = true,
+                installedEquipmentConfirmed = true,
+            ),
         )
 
         assertTrue(decision.visibleInCatalog)
         assertTrue(decision.executable)
         assertEquals(DiagnosticAccessReason.AVAILABLE, decision.reason)
+    }
+
+    @Test
+    fun activeFlowWithoutIndependentActionEvidenceRemainsNonExecutable() {
+        val decision = DiagnosticAccessPolicy.evaluate(
+            DiagnosticDescriptor("example", ContentLayer.STANDARD,
+                PublicationStatus.ACTIVE, "RECOMMENDED", null),
+            DiagnosticRuntimeAvailability.EXECUTABLE_FLOW_AVAILABLE,
+        )
+        assertTrue(decision.visibleInCatalog)
+        assertFalse(decision.executable)
+        assertEquals(DiagnosticAccessReason.ACTION_AUTHORITY_UNVERIFIED, decision.reason)
     }
 }
