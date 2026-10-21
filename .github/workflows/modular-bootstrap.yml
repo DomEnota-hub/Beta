@@ -273,6 +273,12 @@ jobs:
       - name: Negative Stage 4 pilot and profile/source tests
         run: python3 -m unittest discover -s qa -p test_diagnostic_stage4_pilot_preflight.py
 
+      - name: Validate Stage 5 source-variability research dossiers
+        run: python3 qa/validate_diagnostic_stage5_variability.py
+
+      - name: Negative Stage 5 diversity vs raw source count checks
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage5_variability.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
