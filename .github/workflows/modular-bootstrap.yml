@@ -261,6 +261,12 @@ jobs:
       - name: Validate pilot diagnostic claim evidence against pinned snapshots
         run: python3 qa/validate_diagnostic_stage2_claims.py
 
+      - name: Verify Stage 3 diagnostic authoring baseline and source safety
+        run: python3 qa/diagnostic_stage3_preflight.py --check
+
+      - name: Exercise Stage 3 claim/source negative fixtures
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage3_preflight.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 

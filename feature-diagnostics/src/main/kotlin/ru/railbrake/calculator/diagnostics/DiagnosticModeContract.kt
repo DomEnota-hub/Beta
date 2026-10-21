@@ -65,6 +65,37 @@ private fun validateDiagnosticGraph(startNodeId: String, nodes: List<DiagnosticR
             node.responses.keys == ExecutableDiagnosticResponse.entries.toSet())
         require(node.responses.values.all { it == DIAGNOSTIC_END_OF_FLOW || it in ids })
     }
+
+    // Authoring preflight: every authored node must be reachable, and every node
+    // must have a path to an explicit terminal or end-of-flow. Cycles without
+    // any exit cannot be published as a diagnostic route.
+    val byId = nodes.associateBy { it.id }
+    val reached = mutableSetOf(startNodeId)
+    val pending = ArrayDeque<String>()
+    pending.add(startNodeId)
+    while (pending.isNotEmpty()) {
+        val node = requireNotNull(byId[pending.removeFirst()])
+        node.responses.values.forEach { target ->
+            if (target != DIAGNOSTIC_END_OF_FLOW && reached.add(target)) pending.add(target)
+        }
+    }
+    require(reached.size == ids.size) { "unreachable diagnostic nodes" }
+
+    val canFinish = nodes.filter { node ->
+        node.responses.isEmpty() || DIAGNOSTIC_END_OF_FLOW in node.responses.values
+    }.mapTo(mutableSetOf()) { it.id }
+    require(canFinish.isNotEmpty()) { "diagnostic graph has no terminal" }
+    var changed = true
+    while (changed) {
+        changed = false
+        nodes.forEach { node ->
+            if (node.id !in canFinish && node.responses.values.any { it in canFinish }) {
+                canFinish.add(node.id)
+                changed = true
+            }
+        }
+    }
+    require(canFinish.containsAll(ids)) { "diagnostic nodes have no path to a terminal" }
 }
 
 data class DiagnosticCardRoute(
@@ -72,10 +103,18 @@ data class DiagnosticCardRoute(
     val startNodeId: String,
     val nodes: List<DiagnosticRouteNode>,
     val extendedRoutes: List<DiagnosticEvidenceRoute>,
+    // Authoring-only evidence gap. An absent source is NOT a synthetic route,
+    // not a published extension and cannot grant execution authority.
+    val extendedSourceGapReason: String? = null,
 ) {
     init {
         validateDiagnosticGraph(startNodeId, nodes)
-        require(extendedRoutes.isNotEmpty()) { "each card version needs its own extended branch" }
+        require(extendedRoutes.isNotEmpty() || !extendedSourceGapReason.isNullOrBlank()) {
+            "each card version needs evidence or an explicit source gap"
+        }
+        require(extendedRoutes.isEmpty() || extendedSourceGapReason == null) {
+            "a bound extension cannot also claim an unbound source gap"
+        }
         require(extendedRoutes.map { it.sourceId }.distinct().size == extendedRoutes.size)
     }
 }
@@ -108,7 +147,14 @@ data class DiagnosticModeContract(
         require(routes.all { route -> route.extendedRoutes.all { it.scenarioId == scenarioId } }) {
             "extended branches must belong to this scenario"
         }
-        require(routes.map { route -> route.extendedRoutes.map { it.startNodeId to it.nodes } }.distinct().size == 2) {
+        require(routes.map { it.startNodeId to it.nodes }.distinct().size == 2) {
+            "short and detailed versions need distinct authored route graphs"
+        }
+        // Compare only real extensions; one or both versions may have a
+        // documented source gap rather than fictitious extended nodes.
+        val boundExtensions = routes.filter { it.extendedRoutes.isNotEmpty() }
+            .map { route -> route.extendedRoutes.map { it.startNodeId to it.nodes } }
+        require(boundExtensions.distinct().size == boundExtensions.size) {
             "short and detailed versions need independently authored extended branches"
         }
         require(routes.all { route ->
