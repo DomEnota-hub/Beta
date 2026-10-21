@@ -255,6 +255,9 @@ jobs:
       - name: Reconcile per-scenario source and extended-variant coverage
         run: python3 qa/analyze_diagnostic_corpus.py --check
 
+      - name: Guard diagnostic authoring evidence and exact profiles
+        run: python3 qa/validate_diagnostic_stage1_evidence.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
