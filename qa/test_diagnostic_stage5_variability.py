@@ -22,9 +22,19 @@ class SourceVarietyTest(unittest.TestCase):
             a=d["scenarios"][1]["alternativeSourceCandidates"]
             a[1]["approachFocus"]=a[0]["approachFocus"]
         self.reject(m)
-    def test_two_urls_same_source_not_enough(self):
-        self.reject(lambda d:d["scenarios"][0]["alternativeSourceCandidates"][1].update(
-            url=d["scenarios"][0]["alternativeSourceCandidates"][0]["url"]))
+    def test_same_source_may_contain_distinct_approaches(self):
+        # One publication may contain several genuinely different interpretations.
+        doc=copy.deepcopy(self.document)
+        a=doc["scenarios"][0]["alternativeSourceCandidates"]
+        a[1]["url"]=a[0]["url"]
+        self.assertEqual(check(doc,self.inventory)["scenarios"],2)
+    def test_selected_research_batch_requires_two_independent_publications(self):
+        # The two-publication rule is a selection criterion for this first batch,
+        # not a universal authoring rule for historical branches.
+        def mutate(doc):
+            a=doc["scenarios"][0]["alternativeSourceCandidates"]
+            for source in a[1:]: source["url"]=a[0]["url"]
+        self.reject(mutate)
     def test_cannot_mark_unread_full_claims_verified(self):
         self.reject(lambda d:d["scenarios"][0]["alternativeSourceCandidates"][0].update(
             currentOperationalAuthorityVerified=True))
