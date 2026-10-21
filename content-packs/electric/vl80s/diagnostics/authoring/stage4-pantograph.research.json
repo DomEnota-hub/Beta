@@ -1,0 +1,528 @@
+{
+  "schemaVersion": "diagnostic-authoring-pilot/1",
+  "cycleStage": "4/51",
+  "recordType": "PREPUBLICATION_RESEARCH_DRAFT",
+  "createdAt": "2026-10-21",
+  "scenarioId": "vl80s.diag.pantograph-no-rise",
+  "originalId": "pantograph-no-rise",
+  "modelId": "vl80s",
+  "authoringProfileId": "vl80s-general",
+  "exactInstalledProfileConfirmed": false,
+  "installedEquipmentConfirmed": false,
+  "sourceAuthorityVerified": false,
+  "technicalClaimsReviewed": false,
+  "substantiveReviewed": false,
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "executable": false,
+  "canonicalDonorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "canonicalDonorPath": "app/src/main/assets/technical/diagnostic_framework_v2.json",
+  "canonicalDonorBlob": "ab2ecd3f58256a1d4d260dc17ec334ee8fe4d12d",
+  "sources": [
+    {
+      "id": "DONOR",
+      "kind": "PINNED_TEST_SNAPSHOT",
+      "role": "STRUCTURAL_ONLY",
+      "ref": "content-packs/electric/vl80s/diagnostics/migration/framework-source.candidate.json",
+      "revision": "Test@3176d6ee2",
+      "currentRevisionVerified": false,
+      "exactClauseVerified": false
+    },
+    {
+      "id": "IOT-2961-2024-REPRINT",
+      "kind": "PUBLIC_RAILWAY_SAFETY_REPRINT",
+      "role": "SAFETY_SCOPE_RESEARCH_ONLY",
+      "ref": "https://legalacts.ru/doc/rasporjazhenie-oao-rzhd-ot-16112022-n-2961r-ob-utverzhdenii/",
+      "document": "ИОТ РЖД-4100612-ЦТ-273-2022 / 2961/р",
+      "revision": "публикация редакции 23.12.2024",
+      "clauses": [
+        "3.4.4",
+        "3.4.5"
+      ],
+      "currentRevisionVerified": false,
+      "exactProfileVerified": false,
+      "sourceAuthorityVerified": false
+    }
+  ],
+  "safetyScope": "OBSERVATIONS_RECORDED_ONLY_NO_NEW_EQUIPMENT_OPERATION",
+  "versionDrafts": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "extendedSourceStatus": "UNBOUND",
+      "extendedSourceGapReason": "Точный рабочий РЭ/ИОТ, профиль и нормативная допустимость расширения не установлены [SHORT]",
+      "extendedRoutes": [],
+      "startNodeId": "s-danger",
+      "nodes": [
+        {
+          "id": "s-danger",
+          "type": "QUESTION",
+          "text": "Из безопасного места ранее наблюдалось повреждение токоприёмника или контактной сети?",
+          "responses": {
+            "YES": "s-danger-stop",
+            "NO": "s-arc",
+            "UNKNOWN": "s-unknown-stop"
+          },
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "IOT-2961-2024-REPRINT"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "s-arc",
+          "type": "QUESTION",
+          "text": "Ранее наблюдались дуга или искрение у крышевого оборудования?",
+          "responses": {
+            "YES": "s-arc-stop",
+            "NO": "s-scope",
+            "UNKNOWN": "s-unknown-stop"
+          },
+          "donorAnchors": [
+            "pnr-arc"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "s-scope",
+          "type": "QUESTION",
+          "text": "Из имеющихся сведений следует, что отказ отмечен только у одного аппарата (без подачи новых команд)?",
+          "responses": {
+            "YES": "s-one-observed",
+            "NO": "s-scope-other",
+            "UNKNOWN": "s-unknown-stop"
+          },
+          "donorAnchors": [
+            "pnr-scope"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "s-danger-stop",
+          "type": "STOP",
+          "text": "STOP: отмечено возможное повреждение контактной сети/токоприёмника. Обычная диагностика не продолжается; применяются действующие требования охраны труда и доклада. Причина отказа не установлена.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "IOT-2961-2024-REPRINT"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s-arc-stop",
+          "type": "STOP",
+          "text": "STOP: зафиксирован опасный внешний признак. Не выполнять дополнительные проверки по этому проектному маршруту; нужен доклад по действующим требованиям.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-arc"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s-unknown-stop",
+          "type": "STOP",
+          "text": "STOP: опасность либо наблюдение не удалось подтвердить. UNKNOWN не приравнивается к NO; безопасное продолжение не установлено.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s-one-observed",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записан отказ одного аппарата по имеющимся наблюдениям. Причина, состояние остальных аппаратов и право дальнейших проверок не подтверждены.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-scope"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s-scope-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наблюдения не подтверждают отказ только одного аппарата; это НЕ доказательство общей неисправности. Сохранить исходные признаки и неопределённость.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-scope"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "extendedSourceStatus": "UNBOUND",
+      "extendedSourceGapReason": "Точный рабочий РЭ/ИОТ, профиль и нормативная допустимость расширения не установлены [DETAILED]",
+      "extendedRoutes": [],
+      "startNodeId": "d-danger",
+      "nodes": [
+        {
+          "id": "d-danger",
+          "type": "QUESTION",
+          "text": "По уже имеющимся сведениям наблюдалось внешнее повреждение токоприёмника/контактной сети?",
+          "responses": {
+            "YES": "d-stop-danger",
+            "NO": "d-arc",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "IOT-2961-2024-REPRINT"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-arc",
+          "type": "QUESTION",
+          "text": "Из ранее доступных наблюдений отмечены дуга либо искрение?",
+          "responses": {
+            "YES": "d-stop-arc",
+            "NO": "d-variant",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-arc"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-variant",
+          "type": "QUESTION",
+          "text": "Документально подтверждены исполнение конкретной секции и установленное оборудование?",
+          "responses": {
+            "YES": "d-cab-state",
+            "NO": "d-stop-variant",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-permission"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-cab-state",
+          "type": "QUESTION",
+          "text": "В уже сделанных записях есть сведения о штатной индикации цепи команды без обхода защит?",
+          "responses": {
+            "YES": "d-air-record",
+            "NO": "d-no-command-data",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-permission"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-air-record",
+          "type": "QUESTION",
+          "text": "Есть ли уже записанное показание давления с указанием ТОЧНОЙ точки измерения (без оценки нормы)?",
+          "responses": {
+            "YES": "d-scope",
+            "NO": "d-no-air-data",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-pressure"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-scope",
+          "type": "QUESTION",
+          "text": "В имеющемся описании симптом относится только к одному аппарату?",
+          "responses": {
+            "YES": "d-valve-prior",
+            "NO": "d-other-scope",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-scope"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-valve-prior",
+          "type": "QUESTION",
+          "text": "В исходных наблюдениях уже отмечен звуковой признак срабатывания клапана (не выполнять новую команду)?",
+          "responses": {
+            "YES": "d-leak-prior",
+            "NO": "d-no-valve-observation",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-valve"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-leak-prior",
+          "type": "QUESTION",
+          "text": "В тех же прежних наблюдениях отмечена утечка воздуха?",
+          "responses": {
+            "YES": "d-leak-record",
+            "NO": "d-no-leak-observation",
+            "UNKNOWN": "d-stop-unknown"
+          },
+          "donorAnchors": [
+            "pnr-leak"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "NOT_SUBSTANTIVELY_APPROVED",
+          "permittedAction": false
+        },
+        {
+          "id": "d-stop-danger",
+          "type": "STOP",
+          "text": "STOP: признак возможного повреждения. Без дальнейшей локализации; соблюдать действующие требования безопасности и доклада.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "IOT-2961-2024-REPRINT"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-stop-arc",
+          "type": "STOP",
+          "text": "STOP: признак электрической дуги. Дальнейшие действия по этому исследовательскому графу не допускаются.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-arc"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-stop-unknown",
+          "type": "STOP",
+          "text": "STOP: необходимые признаки не известны. Не выводить безопасность или причину из UNKNOWN.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-danger"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-stop-variant",
+          "type": "STOP",
+          "text": "STOP: исполнение/комплектация не доказаны. Нельзя интерпретировать номер аппарата, цепь и норму по аналогии.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-permission"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-no-command-data",
+          "type": "OBSERVATION_REPORT",
+          "text": "В записи не хватает сведений о доступной индикации; отказ управляющей цепи НЕ установлен.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-permission"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-no-air-data",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствует привязка показания к точке измерения; норматив давления не установлен и не должен вычисляться из этого графа.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-pressure"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-other-scope",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данные не подтверждают единственный отказ одного токоприёмника; общая причина также не доказана.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-scope"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-no-valve-observation",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет зафиксированного отклика клапана в исходных данных; это не доказательство электрической неисправности.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-valve"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-leak-record",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записан наблюдавшийся ранее признак утечки; точная точка, дефект и разрешённое действие не установлены.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-leak"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d-no-leak-observation",
+          "type": "OBSERVATION_REPORT",
+          "text": "По наблюдениям утечка не отмечена, но пневматическая исправность не подтверждена.",
+          "responses": {},
+          "donorAnchors": [
+            "pnr-leak"
+          ],
+          "sourceRefs": [
+            "DONOR"
+          ],
+          "claimReview": "SOURCE_GAP_OR_HUMAN_REVIEW",
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "stage2AnchorRefs": [
+    "pnr-danger",
+    "pnr-arc",
+    "pnr-permission",
+    "pnr-pressure",
+    "pnr-scope",
+    "pnr-valve",
+    "pnr-leak"
+  ],
+  "openReviewNotes": [
+    "ИОТ 2961/р: найденный текст редакции 23.12.2024, но не подтверждена эксплуатационная действительность на 21.10.2026; местные инструкции отсутствуют.",
+    "VL80S-PANTO-S12 относится к иной профессии — не включать как разрешающий источник.",
+    "Пневматическое давление зависит от конкретной точки измерения и исполнения: PANTO-PRESSURE-POINT-001 OPEN_CONFLICT.",
+    "Реле 248/серийные границы не подтверждены первичной ведомостью.",
+    "Нет подтверждённой конкретной секции, паспортной комплектации, схемы цепи команды.",
+    "В обоих графах только прежние наблюдения: не подаются новые команды и не выполняется диагностика в высоковольтной зоне."
+  ],
+  "reportFields": [
+    "Серия и подтверждённое исполнение",
+    "Установленное оборудование и подтверждение комплектации",
+    "Время и условия первоначального наблюдения",
+    "Наблюдавшиеся признаки без дополнительных операций",
+    "Ответы YES/NO/UNKNOWN с неопределённостями",
+    "Источник, редакция и нерешённые противоречия",
+    "Факт доклада ответственному работнику по действующим требованиям"
+  ],
+  "acceptance": {
+    "structure": "REQUIRES_CI",
+    "sourceCurrency": "BLOCKED",
+    "exactProfile": "BLOCKED",
+    "equipment": "BLOCKED",
+    "roleActionAuthority": "BLOCKED",
+    "humanSafetyReview": "BLOCKED",
+    "androidUI": "NOT_TESTED",
+    "publication": "BLOCKED"
+  }
+}

@@ -267,6 +267,12 @@ jobs:
       - name: Exercise Stage 3 claim/source negative fixtures
         run: python3 -m unittest discover -s qa -p test_diagnostic_stage3_preflight.py
 
+      - name: Verify Stage 4 non-published pilot graphs and source gaps
+        run: python3 qa/diagnostic_stage4_pilot_preflight.py
+
+      - name: Negative Stage 4 pilot and profile/source tests
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage4_pilot_preflight.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
