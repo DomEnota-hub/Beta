@@ -63,9 +63,21 @@ def check_graph(route, anchors, sources):
 def check_pilot(record, inventory_row, stage2):
     require(record["scenarioId"]==inventory_row["scenarioId"], "wrong scenario")
     require(record["originalId"]==inventory_row["sourceScenarioId"], "donor identity mismatch")
+    # VL80S canonical inventory preserves DiagnosticRepository.scenarios, while
+    # this pilot intentionally authors against the separately pinned Framework v2
+    # reference snapshot from the Stage 2 ledger. Both source identities matter.
+    if record["modelId"]=="vl80s":
+        expected=stage2["sourceSnapshots"]["vl80sFramework"]
+        donor_path=expected["donorPath"]
+        donor_blob=expected["donorBlob"]
+        require(inventory_row["donorPath"]=="DiagnosticRepository.scenarios",
+                "VL80S canonical runtime provenance changed")
+    else:
+        donor_path=inventory_row["donorPath"]
+        donor_blob=inventory_row["donorBlob"]
     require(record["canonicalDonorCommit"]==DONOR and
-            record["canonicalDonorBlob"]==inventory_row["donorBlob"] and
-            record["canonicalDonorPath"]==inventory_row["donorPath"], "untracked donor source")
+            record["canonicalDonorBlob"]==donor_blob and
+            record["canonicalDonorPath"]==donor_path, "untracked donor source")
     require(record["publicationStatus"]=="CANDIDATE" and
             record["runtimeImport"] is False and
             record["actionAuthorityGranted"] is False and
