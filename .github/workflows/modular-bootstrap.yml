@@ -291,6 +291,12 @@ jobs:
       - name: Negative donor-mapping regression on Stage 5
         run: python3 -m unittest discover -s qa -p test_stage5_donor_reconciliation.py
 
+      - name: Stage 6 original scenarios and similar-fault separation
+        run: python3 qa/validate_stage6_separation.py
+
+      - name: Stage 6 negative source and no-action cases
+        run: python3 -m unittest discover -s qa -p test_stage6_separation.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 

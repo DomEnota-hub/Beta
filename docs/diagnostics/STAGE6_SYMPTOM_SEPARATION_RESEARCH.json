@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "diagnostic-stage6-separation/1",
+  "stage": "6/51",
+  "createdAt": "2026-11-04",
+  "status": "SOURCE_COMPARISON_STARTED_NOT_AUTHORED",
+  "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "sourceKotlin": {
+    "base": {
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticRepository.kt",
+      "blob": "5f57ff2c98f02a04692e8553700ec8d23077d166"
+    },
+    "extendedSeeds": {
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blob": "090d448d0e9de20d002edf07361764e524298bf8"
+    }
+  },
+  "baseline": {
+    "scenarios": 340,
+    "preservedGraphNodes": 3902
+  },
+  "groups": [
+    {
+      "groupId": "GV_COMMAND_DIRECTION",
+      "baselineScenario": {
+        "scenarioId": "vl80s.diag.gv-no-close",
+        "originalId": "gv-no-close",
+        "title": "Главный выключатель не включается или отключается",
+        "summary": "ГВ не принимает команду, не удерживается либо отключается сразу/при наборе позиции.",
+        "sourceLayer": "DiagnosticRepository.kt",
+        "variantIds": [
+          "vl80s-937-1260",
+          "vl80s-general",
+          "vl80s-later"
+        ],
+        "canonicalGraphNodeCount": 5,
+        "sourceRefCount": 0
+      },
+      "contrastingScenario": {
+        "scenarioId": "vl80s.diag.gv-no-open",
+        "originalId": "gv-no-open",
+        "title": "Главный выключатель не отключается штатной командой",
+        "summary": "Команда отключения не подтверждается или индикация противоречит фактическому состоянию.",
+        "sourceLayer": "DiagnosticExtendedCatalog.kt",
+        "variantIds": [
+          "vl80s-general"
+        ],
+        "canonicalGraphNodeCount": 4,
+        "sourceRefCount": 0
+      },
+      "symptomCodes": {
+        "baseline": "NO_ENGAGEMENT_OR_TRIP_AFTER_ENGAGEMENT",
+        "contrast": "NO_CONFIRMED_DISCONNECTION"
+      },
+      "reasonToKeepDistinct": "Не удалось включить ГВ и невозможно подтвердить штатное отключение ГВ — разные опасные состояния. Во втором случае нельзя считать силовую цепь обесточенной.",
+      "contrastIsSeparateCanonicalScenarioNotAnExtension": true,
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "actionAuthorityGranted": false,
+      "exactInstalledEquipmentVerified": false,
+      "technicalClaimsReviewed": false,
+      "sourceAuthorityVerified": false,
+      "operationalSteps": [],
+      "stage6AuthoredVersions": []
+    },
+    {
+      "groupId": "EKG_TRANSITION_STATE",
+      "baselineScenario": {
+        "scenarioId": "vl80s.diag.ekg-stuck",
+        "originalId": "ekg-stuck",
+        "title": "ЭКГ не набирает, не сбрасывает или застрял между позициями",
+        "summary": "Нет перемещения главного контроллера, указатель не соответствует команде либо движение прекращается на переходной позиции.",
+        "sourceLayer": "DiagnosticRepository.kt",
+        "variantIds": [
+          "vl80s-general"
+        ],
+        "canonicalGraphNodeCount": 5,
+        "sourceRefCount": 0
+      },
+      "contrastingScenario": {
+        "scenarioId": "vl80s.diag.ekg-slow-transition",
+        "originalId": "ekg-slow-transition",
+        "title": "ЭКГ медленно переходит между позициями",
+        "summary": "Переход затянут, сопровождается повторными командами или нестабильной индикацией.",
+        "sourceLayer": "DiagnosticExtendedCatalog.kt",
+        "variantIds": [
+          "vl80s-general"
+        ],
+        "canonicalGraphNodeCount": 4,
+        "sourceRefCount": 0
+      },
+      "symptomCodes": {
+        "baseline": "NO_MOVEMENT_STUCK_OR_COMMAND_LOST",
+        "contrast": "MOVEMENT_SLOW_OR_INDICATION_CHATTER"
+      },
+      "reasonToKeepDistinct": "Медленный переход и отсутствие хода ЭКГ требуют отдельных диагностических наблюдений, а не общего ремонта привода.",
+      "contrastIsSeparateCanonicalScenarioNotAnExtension": true,
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "actionAuthorityGranted": false,
+      "exactInstalledEquipmentVerified": false,
+      "technicalClaimsReviewed": false,
+      "sourceAuthorityVerified": false,
+      "operationalSteps": [],
+      "stage6AuthoredVersions": []
+    }
+  ],
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "scope": "Research-only difference of original scenarios. Old 59 EXTENDED canonical cases are not historical branches of the 44 STANDARD scenarios.",
+  "nextAction": "Verify exact installed equipment, per-scenario source points and independent safety review before authoring either contrast scenario."
+}
