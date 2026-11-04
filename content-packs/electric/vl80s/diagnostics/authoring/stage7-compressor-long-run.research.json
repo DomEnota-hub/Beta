@@ -1,0 +1,777 @@
+{
+  "schemaVersion": "diagnostic-stage7-compressor-source-first/1",
+  "stage": "7/51",
+  "scenarioId": "vl80s.diag.compressor-long-run",
+  "originalId": "compressor-long-run",
+  "canonicalGroup": "CONTINUOUS_RUN_VS_NO_AUTO_CUTOFF",
+  "mustRemainDistinctFrom": [
+    "vl80s.diag.compressor-pressure",
+    "vl80s.diag.compressor-no-start",
+    "vl80s.diag.feed-line-leak"
+  ],
+  "title": "Компрессор работает непрерывно или слишком долго",
+  "summary": "Давление растёт медленно либо регулятор не отключает компрессор.",
+  "category": "Вспомогательные машины",
+  "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+  "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+  "donorGraphNodeCount": 4,
+  "donorOriginalQuestions": [],
+  "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+  "authoringProfileId": "vl80s-general",
+  "sourceRecords": {
+    "donor": {
+      "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+      "repository": "DomEnota-hub/Test-",
+      "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "originalId": "compressor-long-run",
+      "sourcePointer": "Seed(\"compressor-long-run\")",
+      "excerpt": {
+        "category": "Вспомогательные машины",
+        "title": "Компрессор работает непрерывно или слишком долго",
+        "summary": "Давление растёт медленно либо регулятор не отключает компрессор."
+      },
+      "currentOperatingAuthority": false,
+      "proceduresImported": false
+    },
+    "manual1990": {
+      "kind": "HISTORICAL_FACTORY_MANUAL",
+      "title": "Электровоз ВЛ80С. Руководство по эксплуатации, 2-е изд. (Васько и др., 1990)",
+      "year": 1990,
+      "isbn": "5-277-01048-3",
+      "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+      "verifiedLocators": [
+        "VII §20, печ. стр. 176–178: регулятор давления АК-11БТЗ, рис. 229",
+        "VII §40, печ. стр. 119–120: разгрузочный клапан КР-1, рис. 158–159",
+        "X §1, печ. стр. 191–192: пневматическая схема, рис. 241"
+      ],
+      "sourceTextLocated": true,
+      "modernRevisionVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "currentOperatingAuthority": false,
+      "proceduresImported": false
+    },
+    "training": {
+      "kind": "TEACHING_MATERIAL_NONNORMATIVE",
+      "title": "Пневматические схемы тормозного оборудования ВЛ80С (учебная публикация, дата редакции не установлена)",
+      "year": null,
+      "url": "https://lektsii.org/3-33450.html",
+      "verifiedLocators": [
+        "Пневматические схемы тормозного оборудования ВЛ80С: абзац о РГД, КО1, ЭПВ2, ГР"
+      ],
+      "sourceTextLocated": true,
+      "modernRevisionVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "currentOperatingAuthority": false,
+      "proceduresImported": false,
+      "unresolvedDiscrepancy": "Учебный текст обозначает регулятор АК-11Б, заводское руководство 1990 года — АК-11БТЗ; исполнение и соответствие маркировки не подтверждены."
+    }
+  },
+  "historicalEvidenceClaims": [
+    {
+      "id": "compressor-long-run-manual-regulator",
+      "sourceId": "manual1990",
+      "locator": "VII §20, печ. стр. 176–178: регулятор давления АК-11БТЗ, рис. 229",
+      "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+      "claim": "Регулятор управляет автоматическим включением и выключением мотор-компрессора",
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false
+    },
+    {
+      "id": "compressor-long-run-manual-air",
+      "sourceId": "manual1990",
+      "locator": "X §1, печ. стр. 191–192: пневматическая схема, рис. 241",
+      "confidence": "HISTORICAL_SCHEME_ONLY",
+      "claim": "Компрессор, обратный клапан, резервуары и потребители различаются по функции",
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false
+    },
+    {
+      "id": "compressor-long-run-training",
+      "sourceId": "training",
+      "locator": "Пневматические схемы тормозного оборудования ВЛ80С: абзац о РГД, КО1, ЭПВ2, ГР",
+      "confidence": "SECONDARY_TRAINING_ONLY",
+      "claim": "Учебный текст различает регулятор, обратный и разгрузочный клапаны; точная марка регулятора расходится с историческим заводским источником",
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false
+    }
+  ],
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "exactInstalledVariantConfirmed": false,
+  "substantiveSafetyReviewed": false,
+  "warningGate": {
+    "default": "HIDDEN",
+    "extendedEnabled": true,
+    "warningReadToEnd": true,
+    "warningAcknowledged": true,
+    "warningGrantsActionAuthority": false
+  },
+  "safePolicy": {
+    "observationOnly": true,
+    "onlyPreviouslyRecorded": true,
+    "triState": [
+      "YES",
+      "NO",
+      "UNKNOWN"
+    ],
+    "unknownMustStop": true,
+    "operationsAllowed": [],
+    "unknownProfile": "BLOCKED"
+  },
+  "versions": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "startNodeId": "danger",
+      "nodes": [
+        {
+          "id": "danger",
+          "type": "QUESTION",
+          "text": "По исходному событию длительная работа сопровождалась дымом, перегревом или опасным падением запаса воздуха?",
+          "responses": {
+            "YES": "stop-danger",
+            "NO": "symptom",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "symptom",
+          "type": "QUESTION",
+          "text": "Ранее было документально подтверждено достижение верхнего предела именно для установленного регулятора?",
+          "responses": {
+            "YES": "report-yes",
+            "NO": "report-no",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-danger",
+          "type": "STOP",
+          "text": "STOP: опасный признак из исходного сообщения. Никакие новые операции или переключения не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведений недостаточно. Не заменять UNKNOWN предположением и не инициировать проверку.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В исходной записи предел указан, но отсутствие отключения нужно подтвердить отдельным наблюдением; дефект регулятора не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Продолжительная работа без подтверждения достижения предела не доказывает отказ автоматического отключения.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "extendedRoutes": [
+        {
+          "approachId": "compressor-long-run-short-donor_duration",
+          "version": "SHORT",
+          "sourceId": "donor",
+          "sourcePointer": "Original DiagnosticExtendedCatalog Seed: prolonged compressor run",
+          "approachFocus": "DONOR_DURATION",
+          "approachSummary": "Длительная работа является симптомом, а не доказательством неисправности регулятора.",
+          "questionType": "ALREADY_RECORDED_FACT_ONLY",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "visibility": {
+            "default": "HIDDEN",
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "startNodeId": "evidence",
+          "nodes": [
+            {
+              "id": "evidence",
+              "type": "QUESTION",
+              "text": "Зафиксирована ли длительность события без новых проверочных пусков?",
+              "responses": {
+                "YES": "recorded",
+                "NO": "not-recorded",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Длительная работа является симптомом, а не доказательством неисправности регулятора.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "not-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных сведений недостаточно для этого источникового подхода. Не выполнять новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник или исходное наблюдение не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "compressor-long-run-short-historic_cutoff",
+          "version": "SHORT",
+          "sourceId": "manual1990",
+          "sourcePointer": "VII §20, печ. стр. 176–178: регулятор давления АК-11БТЗ, рис. 229",
+          "approachFocus": "HISTORIC_CUTOFF",
+          "approachSummary": "В исторической схеме есть раздельные состояния автоматического включения и отключения; их нельзя проверять искусственным повышением давления.",
+          "questionType": "ALREADY_RECORDED_FACT_ONLY",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "visibility": {
+            "default": "HIDDEN",
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "startNodeId": "evidence",
+          "nodes": [
+            {
+              "id": "evidence",
+              "type": "QUESTION",
+              "text": "Был ли в исходной записи достигнут применимый для машины предел?",
+              "responses": {
+                "YES": "recorded",
+                "NO": "not-recorded",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "В исторической схеме есть раздельные состояния автоматического включения и отключения; их нельзя проверять искусственным повышением давления.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "not-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных сведений недостаточно для этого источникового подхода. Не выполнять новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник или исходное наблюдение не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "startNodeId": "danger",
+      "nodes": [
+        {
+          "id": "danger",
+          "type": "QUESTION",
+          "text": "В зарегистрированном событии есть перегрев, дым, стук или угроза запасу воздуха?",
+          "responses": {
+            "YES": "stop-danger",
+            "NO": "primary",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "primary",
+          "type": "QUESTION",
+          "text": "По ранее записанным показаниям давление росло во время длительной работы?",
+          "responses": {
+            "YES": "secondary",
+            "NO": "third",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "secondary",
+          "type": "QUESTION",
+          "text": "Достигался документально подтверждённый для данного исполнения верхний предел?",
+          "responses": {
+            "YES": "report-a",
+            "NO": "fourth",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "third",
+          "type": "QUESTION",
+          "text": "В исходном событии отдельно была отмечена существенная утечка воздуха?",
+          "responses": {
+            "YES": "report-b",
+            "NO": "report-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fourth",
+          "type": "QUESTION",
+          "text": "После достигнутого и документально подтверждённого предела автоматическое отключение происходило?",
+          "responses": {
+            "YES": "report-d",
+            "NO": "report-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-danger",
+          "type": "STOP",
+          "text": "STOP: зафиксирован опасный режим; дальнейших операций не назначать.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестный ответ не является подтверждением неисправного узла.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Автоматическое отключение после подтверждённого предела зарегистрировано: симптом непрерывной работы требует пересмотра.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "По прежней записи отмечено существенное расходование воздуха; место утечки и причинная связь не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Длительная работа без признака существенной утечки не позволяет назвать виновным регулятор.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Автоматическая остановка после предела подтверждена; исходное описание требует уточнения.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "report-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неотключение после документированного предела отмечено, но конкретный узел не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "donor"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "extendedRoutes": [
+        {
+          "approachId": "compressor-long-run-detailed-donor_leak_separation",
+          "version": "DETAILED",
+          "sourceId": "donor",
+          "sourcePointer": "Original DiagnosticExtendedCatalog Seed: slow pressure growth or regulator not stopping",
+          "approachFocus": "DONOR_LEAK_SEPARATION",
+          "approachSummary": "Семантически разные причины длительной работы из Seed должны оставаться разными ветвями наблюдений.",
+          "questionType": "ALREADY_RECORDED_FACT_ONLY",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "visibility": {
+            "default": "HIDDEN",
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "startNodeId": "evidence",
+          "nodes": [
+            {
+              "id": "evidence",
+              "type": "QUESTION",
+              "text": "Сообщение касается медленного набора или неотключения после ранее достигнутого предела?",
+              "responses": {
+                "YES": "recorded",
+                "NO": "not-recorded",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Семантически разные причины длительной работы из Seed должны оставаться разными ветвями наблюдений.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "not-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных сведений недостаточно для этого источникового подхода. Не выполнять новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник или исходное наблюдение не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "compressor-long-run-detailed-historic_reservoir",
+          "version": "DETAILED",
+          "sourceId": "manual1990",
+          "sourcePointer": "X §1, печ. стр. 191–192: пневматическая схема, рис. 241",
+          "approachFocus": "HISTORIC_RESERVOIR",
+          "approachSummary": "Компрессор подаёт воздух в резервуары и сеть; расход может менять длительность работы без доказанного отказа регулятора.",
+          "questionType": "ALREADY_RECORDED_FACT_ONLY",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "visibility": {
+            "default": "HIDDEN",
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "startNodeId": "evidence",
+          "nodes": [
+            {
+              "id": "evidence",
+              "type": "QUESTION",
+              "text": "Есть ли прежние сведения об утечке/расходе в том же событии?",
+              "responses": {
+                "YES": "recorded",
+                "NO": "not-recorded",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Компрессор подаёт воздух в резервуары и сеть; расход может менять длительность работы без доказанного отказа регулятора.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "not-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных сведений недостаточно для этого источникового подхода. Не выполнять новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник или исходное наблюдение не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "compressor-long-run-detailed-training_unloader",
+          "version": "DETAILED",
+          "sourceId": "training",
+          "sourcePointer": "Пневматические схемы тормозного оборудования ВЛ80С: абзац о РГД, КО1, ЭПВ2, ГР",
+          "approachFocus": "TRAINING_UNLOADER",
+          "approachSummary": "Учебная схема отделяет разгрузку, подачу и регулятор; не подтверждает их конкретные типы или исправность.",
+          "questionType": "ALREADY_RECORDED_FACT_ONLY",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "visibility": {
+            "default": "HIDDEN",
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "startNodeId": "evidence",
+          "nodes": [
+            {
+              "id": "evidence",
+              "type": "QUESTION",
+              "text": "Есть ли в технической документации данной секции подтверждение состава пневматической цепи?",
+              "responses": {
+                "YES": "recorded",
+                "NO": "not-recorded",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Учебная схема отделяет разгрузку, подачу и регулятор; не подтверждает их конкретные типы или исправность.",
+              "responses": {},
+              "sourceRefs": [
+                "training"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "not-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных сведений недостаточно для этого источникового подхода. Не выполнять новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "training"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник или исходное наблюдение не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "training"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "unresolved": [
+    "Точная комплектация конкретной секции не подтверждена; профиль vl80s-general не даёт права на действия.",
+    "Современная редакция эксплуатационных инструкций и применимые требования по тормозам не верифицированы для этого случая.",
+    "АК-11Б (учебная публикация) и АК-11БТЗ (руководство 1990) не отождествляются без документов конкретной секции.",
+    "Исторические уставки давления не импортируются в диагностические вопросы и эксплуатационные критерии.",
+    "Отложены только ручные device/UI испытания до выпуска тестового APK; это не равно разрешению на эксплуатацию."
+  ],
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "reviewStatus": "STRUCTURAL_CANDIDATE_NOT_OPERATIONALLY_APPROVED"
+}
