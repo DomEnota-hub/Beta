@@ -2,6 +2,7 @@
 """Stage8 heater-fault source-first authoring and fail-closed negative QA."""
 import copy
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -35,12 +36,19 @@ def need(value, message):
     if not value:
         raise ValueError(message)
 
+FORBIDDEN_IMPERATIVES = re.compile(
+    r"(?i)\\b(?:включите|перемкните|замкните|вскройте|снимите\\s+ограждение|"
+    r"измерьте|подайте\\s+напряжение|отключите\\s+защиту|"
+    r"сбросьте\\s+защиту|поставьте\\s+перемычку|запустите)\\b"
+)
+
 def graph(nodes, start, sources):
     ids = {n["id"]: n for n in nodes}
     need(len(ids) == len(nodes) and start in ids, "duplicate/missing graph ID")
     seen, pending = {start}, [start]
     while pending:
         n = ids[pending.pop()]
+        need(not FORBIDDEN_IMPERATIVES.search(n["text"]), "imperative operational instruction")
         need(n["recordedOnly"] is True and n["operationRequested"] is False
              and n["causeConfirmed"] is False and bool(n["sourceRefs"])
              and set(n["sourceRefs"]) <= sources, "unsafe graph node")
@@ -195,6 +203,7 @@ class NegativeQA(unittest.TestCase):
             ("warning_action", lambda d: d["warningGate"].update(warningGrantsActionAuthority=True)),
             ("unknown_profile", lambda d: d["safePolicy"].update(unknownProfile="ALLOW")),
             ("new_operation", lambda d: d["versions"]["SHORT"]["nodes"][0].update(operationRequested=True)),
+            ("hidden_operational_text", lambda d: d["versions"]["SHORT"]["nodes"][1].update(text="Включите печь повторно")),
             ("unrecorded_probe", lambda d: d["versions"]["DETAILED"]["nodes"][0].update(recordedOnly=False)),
             ("unknown_to_report", lambda d: d["versions"]["SHORT"]["nodes"][1]["responses"].update(UNKNOWN="report-identified")),
             ("bad_graph_target", lambda d: d["versions"]["DETAILED"]["nodes"][1]["responses"].update(NO="missing")),
