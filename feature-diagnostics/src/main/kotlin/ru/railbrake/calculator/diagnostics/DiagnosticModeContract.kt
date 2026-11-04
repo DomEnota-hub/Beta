@@ -14,6 +14,8 @@ data class DiagnosticPresentationSettings(
     val displayDepth: DiagnosticDisplayDepth = DiagnosticDisplayDepth.MINIMAL,
     val extendedEnabled: Boolean = false,
     val warningAcknowledged: Boolean = false,
+    // Set only after the warning container has reached its last scroll position.
+    val warningReadToEnd: Boolean = false,
 )
 
 data class DiagnosticActionInputs(
@@ -184,7 +186,7 @@ data class DiagnosticModeContract(
         val route = routes.single { it.version == version }.takeIf {
             actualProfileId == exactProfileId
         }
-        val evidence = if (settings.extendedEnabled && settings.warningAcknowledged) {
+        val evidence = if (settings.extendedEnabled && settings.warningReadToEnd && settings.warningAcknowledged) {
             route?.extendedRoutes.orEmpty()
         } else {
             emptyList()

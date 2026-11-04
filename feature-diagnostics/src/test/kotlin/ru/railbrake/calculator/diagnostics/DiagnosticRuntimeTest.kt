@@ -93,7 +93,7 @@ class DiagnosticRuntimeTest {
         )
         assertFalse(warningPending.visibleInCatalog)
         assertEquals(
-            DiagnosticAccessReason.EXTENDED_WARNING_NOT_ACKNOWLEDGED,
+            DiagnosticAccessReason.EXTENDED_WARNING_NOT_READ_TO_END,
             warningPending.reason,
         )
 
@@ -102,7 +102,7 @@ class DiagnosticRuntimeTest {
             DiagnosticRuntimeAvailability.RELATION_GRAPH_ONLY,
             DiagnosticVisibilitySettings(
                 extendedEnabled = true,
-                warningAcknowledged = true,
+                warningAcknowledged = true, warningReadToEnd = true,
                 enabledExtendedClasses = setOf(
                     ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL
                 ),
@@ -207,4 +207,34 @@ class DiagnosticRuntimeTest {
         assertFalse(decision.executable)
         assertEquals(DiagnosticAccessReason.ACTION_AUTHORITY_UNVERIFIED, decision.reason)
     }
+    @Test
+    fun acknowledgmentAloneDoesNotRevealExtendedCatalog() {
+        val descriptor = DiagnosticDescriptor(
+            id = "vl80s.diag.synthetic-historical",
+            layer = ContentLayer.EXTENDED,
+            publicationStatus = PublicationStatus.CANDIDATE,
+            corpus = "EXTENDED",
+            extendedClass = ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL,
+        )
+        val ackAlone = DiagnosticAccessPolicy.evaluate(
+            descriptor, DiagnosticRuntimeAvailability.RELATION_GRAPH_ONLY,
+            DiagnosticVisibilitySettings(
+                extendedEnabled = true,
+                warningAcknowledged = true,
+                enabledExtendedClasses = setOf(ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL),
+            ),
+        )
+        assertFalse(ackAlone.visibleInCatalog)
+        assertEquals(DiagnosticAccessReason.EXTENDED_WARNING_NOT_READ_TO_END, ackAlone.reason)
+        val readButNoAck = DiagnosticAccessPolicy.evaluate(
+            descriptor, DiagnosticRuntimeAvailability.RELATION_GRAPH_ONLY,
+            DiagnosticVisibilitySettings(
+                extendedEnabled = true, warningReadToEnd = true,
+                enabledExtendedClasses = setOf(ExtendedDiagnosticClass.SUPPLEMENTAL_OPERATIONAL),
+            ),
+        )
+        assertFalse(readButNoAck.visibleInCatalog)
+        assertEquals(DiagnosticAccessReason.EXTENDED_WARNING_NOT_ACKNOWLEDGED, readButNoAck.reason)
+    }
+
 }

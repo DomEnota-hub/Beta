@@ -285,6 +285,12 @@ jobs:
       - name: Guard Stage 5 historical evidence, warnings and forbidden actions
         run: python3 -m unittest discover -s qa -p test_stage5_research.py
 
+      - name: Reconcile original pinned donor Kotlin scenarios with Stage 5 drafts
+        run: python3 qa/validate_stage5_donor_reconciliation.py
+
+      - name: Negative donor-mapping regression on Stage 5
+        run: python3 -m unittest discover -s qa -p test_stage5_donor_reconciliation.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 

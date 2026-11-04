@@ -59,7 +59,7 @@ class DiagnosticModeContractTest {
             knowledgeVolume = DiagnosticKnowledgeVolume.EXPANDED,
             displayDepth = DiagnosticDisplayDepth.DETAILED,
             extendedEnabled = true,
-            warningAcknowledged = true,
+            warningAcknowledged = true, warningReadToEnd = true,
         )
 
         val short = scenario.select(DiagnosticCardVersion.SHORT, "chme3-base", settings)
@@ -90,9 +90,9 @@ class DiagnosticModeContractTest {
         assertEquals(null, scenario.select(DiagnosticCardVersion.SHORT, "chme3-base", enabledWithoutWarning)
             .nextExtended("EXT2-CHME3-DIAG-001", "extended-start", ExecutableDiagnosticResponse.YES))
         assertTrue(scenario.select(DiagnosticCardVersion.SHORT, "chme3t",
-            enabledWithoutWarning.copy(warningAcknowledged = true)).evidence.isEmpty())
+            enabledWithoutWarning.copy(warningAcknowledged = true, warningReadToEnd = true)).evidence.isEmpty())
         assertEquals(listOf("EXT2-CHME3-DIAG-001"), scenario.select(DiagnosticCardVersion.SHORT, "chme3-base",
-            enabledWithoutWarning.copy(warningAcknowledged = true)).evidence.map { it.sourceId })
+            enabledWithoutWarning.copy(warningAcknowledged = true, warningReadToEnd = true)).evidence.map { it.sourceId })
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -182,7 +182,7 @@ class DiagnosticModeContractTest {
             DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = false))
         assertTrue(disabled.evidence.isEmpty())
         val enabled = scenario.select(DiagnosticCardVersion.SHORT, "chme3-base",
-            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true))
+            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true, warningReadToEnd = true))
         assertEquals(listOf("pneumatic-interpretation", "control-chain-interpretation"),
             enabled.evidence.map { it.approachId })
         assertEquals(listOf("historical-book", "historical-book"), enabled.evidence.map { it.sourceId })
@@ -195,7 +195,7 @@ class DiagnosticModeContractTest {
         assertFalse(first.executable)
         assertFalse(second.executable)
         assertTrue(scenario.select(DiagnosticCardVersion.SHORT, "another-model",
-            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true))
+            DiagnosticPresentationSettings(extendedEnabled = true, warningAcknowledged = true, warningReadToEnd = true))
             .evidence.isEmpty())
     }
 
@@ -224,4 +224,32 @@ class DiagnosticModeContractTest {
         )
         assertFalse(DiagnosticActionGate.permits(inputs))
     }
+    @Test
+    fun acknowledgmentWithoutActualReadToEndCannotRevealHistoricalEvidence() {
+        val case = DiagnosticModeContract("CHME3-DIAG-001", "chme3-base", listOf(
+            route(DiagnosticCardVersion.SHORT, "short-end", listOf(extension("short-extended-end"))),
+            route(DiagnosticCardVersion.DETAILED, "detailed-end", listOf(extension("detail-extended-end"))),
+        ))
+        val acknowledgedBeforeScroll = DiagnosticPresentationSettings(
+            extendedEnabled = true, warningAcknowledged = true, warningReadToEnd = false,
+        )
+        assertTrue(case.select(DiagnosticCardVersion.SHORT, "chme3-base",
+            acknowledgedBeforeScroll).evidence.isEmpty())
+        assertTrue(case.select(DiagnosticCardVersion.DETAILED, "chme3-base",
+            acknowledgedBeforeScroll).evidence.isEmpty())
+        assertEquals(1, case.select(DiagnosticCardVersion.SHORT, "chme3-base",
+            acknowledgedBeforeScroll.copy(warningReadToEnd = true)).evidence.size)
+    }
+
+    @Test
+    fun readToEndWithoutAcknowledgmentAlsoCannotRevealHistoricalEvidence() {
+        val case = DiagnosticModeContract("CHME3-DIAG-001", "chme3-base", listOf(
+            route(DiagnosticCardVersion.SHORT, "short-end", listOf(extension("short-extended-end"))),
+            route(DiagnosticCardVersion.DETAILED, "detailed-end", listOf(extension("detail-extended-end"))),
+        ))
+        assertTrue(case.select(DiagnosticCardVersion.SHORT, "chme3-base",
+            DiagnosticPresentationSettings(extendedEnabled = true,
+                warningReadToEnd = true, warningAcknowledged = false)).evidence.isEmpty())
+    }
+
 }

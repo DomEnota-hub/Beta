@@ -42,7 +42,7 @@ class DiagnosticAuthoringStage3Test {
         val settings = DiagnosticPresentationSettings(
             knowledgeVolume = DiagnosticKnowledgeVolume.EXPANDED,
             extendedEnabled = true,
-            warningAcknowledged = true,
+            warningAcknowledged = true, warningReadToEnd = true,
         )
         val short = contract.select(DiagnosticCardVersion.SHORT, "synthetic-profile", settings)
         val detailed = contract.select(DiagnosticCardVersion.DETAILED, "synthetic-profile", settings)
@@ -66,7 +66,7 @@ class DiagnosticAuthoringStage3Test {
             ),
         )
         val settings = DiagnosticPresentationSettings(
-            extendedEnabled = true, warningAcknowledged = true,
+            extendedEnabled = true, warningAcknowledged = true, warningReadToEnd = true,
         )
         assertEquals(1, contract.select(DiagnosticCardVersion.SHORT,
             "synthetic-profile", settings).evidence.size)
