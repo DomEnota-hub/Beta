@@ -279,6 +279,12 @@ jobs:
       - name: Negative Stage 5 diversity vs raw source count checks
         run: python3 -m unittest discover -s qa -p test_diagnostic_stage5_variability.py
 
+      - name: Review integrated Stage 5 research graphs against canonical lineage
+        run: python3 qa/validate_stage5_research.py
+
+      - name: Guard Stage 5 historical evidence, warnings and forbidden actions
+        run: python3 -m unittest discover -s qa -p test_stage5_research.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
