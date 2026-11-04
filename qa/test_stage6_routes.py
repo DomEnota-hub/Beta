@@ -12,7 +12,9 @@ class Stage6RouteTests(unittest.TestCase):
  def test_both_have_independent_versions(self):
   self.assertTrue(all(check(x,self.inv)["DETAILED"]>check(x,self.inv)["SHORT"] for x in self.records))
  def test_source_can_have_multiple_different_approaches(self):
-  self.assertTrue(all({a["sourceId"] for v in r["versions"].values() for a in v["extendedRoutes"]}=={"donorSeed"} for r in self.records))
+  for r in self.records:
+   self.assertEqual({a["sourceId"] for a in r["versions"]["SHORT"]["extendedRoutes"]},{"donorSeed"})
+   self.assertEqual(len([a for a in r["versions"]["DETAILED"]["extendedRoutes"] if a["sourceId"]!="donorSeed"]),2)
  def test_unknown_must_stop(self):
   self.reject(lambda x:x["versions"]["SHORT"]["nodes"][0]["responses"].update(UNKNOWN="confirmed"))
  def test_operational_steps_never_accepted(self):
@@ -31,6 +33,14 @@ class Stage6RouteTests(unittest.TestCase):
   self.reject(lambda x:x["versions"]["SHORT"]["extendedRoutes"][1].update(approachFocus=x["versions"]["SHORT"]["extendedRoutes"][0]["approachFocus"]))
  def test_observation_cannot_be_declared_as_verified_cause(self):
   self.reject(lambda x:x["versions"]["DETAILED"]["nodes"][4].update(causeConfirmed=True))
+ def test_historical_component_source_cannot_be_promoted(self):
+  self.reject(lambda x:x["sourceRecords"]["manual1990"].update(currentActionAuthorityVerified=True))
+ def test_archival_hypothesis_requires_independent_source(self):
+  self.reject(lambda x:x["versions"]["DETAILED"]["extendedRoutes"][3].update(sourceId="donorSeed"))
+ def test_historical_actions_still_rejected(self):
+  self.reject(lambda x:x["versions"]["DETAILED"]["extendedRoutes"][4].update(operationalSteps=["synthetic repair"]))
+ def test_machine_variant_cannot_be_declared_known(self):
+  self.reject(lambda x:x["sourceRecords"]["manual1990"].update(exactInstalledEquipmentVerified=True))
  def test_canonical_scenario_cannot_be_conflated(self):
   self.reject(lambda x:x.update(scenarioId="vl80s.diag.gv-no-close"))
 if __name__=="__main__":unittest.main()

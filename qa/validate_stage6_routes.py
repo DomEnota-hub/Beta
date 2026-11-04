@@ -9,11 +9,11 @@ PATHS={
 }
 def require(ok,msg):
  if not ok:raise ValueError(msg)
-def graph(nodes,start):
+def graph(nodes,start,source_id="donorSeed"):
  by={n["id"]:n for n in nodes}
  require(len(by)==len(nodes) and start in by,"duplicate/invalid start")
  for n in nodes:
-  require(n["sourceRefs"]==["donorSeed"] and n["operationRequested"] is False,"unattributed operation")
+  require(n["sourceRefs"]==[source_id] and n["operationRequested"] is False,"unattributed operation")
   if n["type"]=="QUESTION":
    r=n["responses"]
    require(set(r)=={"YES","NO","UNKNOWN"} and r["YES"]!=r["NO"],"not tri-state")
@@ -69,11 +69,24 @@ def check(d,inventory):
           route["operatingInstructionsIncluded"] is False,"route prematurely accepted")
   graph(route["nodes"],route["startNodeId"])
   counts[kind]=len(route["nodes"])
-  require(len(route["extendedRoutes"])==(2 if kind=="SHORT" else 3),"missing variation")
+  require(len(route["extendedRoutes"])==(2 if kind=="SHORT" else 5),"missing variation")
   for alt in route["extendedRoutes"]:
-   require(alt["sourceId"]=="donorSeed"
-           and alt["sourcePointer"]=='Seed("'+d["originalId"]+'")'
-           and alt["origin"]=="PINNED_DONOR_OFFLINE_REFERENCE","source gap")
+   require(alt["sourceId"] in d["sourceRecords"],"unknown source")
+   if alt["sourceId"]=="donorSeed":
+    require(alt["sourcePointer"]=='Seed("'+d["originalId"]+'")'
+            and alt["origin"]=="PINNED_DONOR_OFFLINE_REFERENCE","donor seed ambiguity")
+   else:
+    record=d["sourceRecords"][alt["sourceId"]]
+    require(record["sourceTextLocated"] is True and
+            record["completeModernEditionValidated"] is False
+            and record["currentActionAuthorityVerified"] is False
+            and record["exactInstalledEquipmentVerified"] is False
+            and record["operationalProcedureImported"] is False,
+            "historical source wrongly approved or unverified")
+    require(alt["sourcePointer"] and alt["claimId"] in d["historicalEvidenceReview"]["sourceClaimIds"]
+            and alt["evidenceLevel"]=="SPECIFIC_HISTORICAL_TEXT_LOCATION_VERIFIED_NOT_CURRENT_APPLICABILITY"
+            and alt["differenceFromSeed"]=="DEVICE_LEVEL_TECHNICAL_HYPOTHESIS_NOT_REPEATED_SYMPTOM",
+            "historical alternative lacks independent technical source anchor")
    require(alt["approachId"] not in approaches and alt["approachFocus"] not in focus,
            "duplicate method")
    approaches.add(alt["approachId"]);focus.add(alt["approachFocus"])
@@ -86,7 +99,16 @@ def check(d,inventory):
            and bool(alt["applicability"]["limitation"]),"incorrect machine profile")
    require(alt["visibility"]=={"extendedEnabled":True,"warningReadToEnd":True,
            "warningAcknowledged":True},"warning bypass")
-   graph(alt["nodes"],alt["startNodeId"])
+   graph(alt["nodes"],alt["startNodeId"],alt["sourceId"])
+ require(d["historicalEvidenceReview"]["originalDonorSeedAlternatives"]==
+         {"short":2,"detailed":3,"interpretationType":"OBSERVATION_FOCI_NOT_VERIFIED_REPAIR_METHODS"},
+         "donor seed observation count misrepresented")
+ require(d["historicalEvidenceReview"]["separatelyTextAnchoredTechnicalAlternatives"]==
+         {"short":0,"detailed":2,"actionAuthorizationGranted":False},
+         "historical hypotheses upgraded to actions")
+ require({a["sourceId"] for a in d["versions"]["SHORT"]["extendedRoutes"]}=={"donorSeed"} and
+         len([a for a in d["versions"]["DETAILED"]["extendedRoutes"] if a["sourceId"]!="donorSeed"])==2,
+         "claim count mismatch")
  require(counts["SHORT"]<counts["DETAILED"],"versions are not distinct")
  return counts
 if __name__=="__main__":

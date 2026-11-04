@@ -28,6 +28,20 @@
       "currentActionAuthorityVerified": false,
       "exactInstalledEquipmentVerified": false,
       "operationalProcedureImported": false
+    },
+    "manual1990": {
+      "id": "manual1990",
+      "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+      "title": "Васько, Девятков, Кучеров и др., Электровоз ВЛ80с: Руководство по эксплуатации, 2-е изд., Транспорт, 1990",
+      "publishedYear": 1990,
+      "sourceType": "HISTORICAL_OPERATING_MANUAL",
+      "verifiedLocator": "Приложение 19, стр. 435; схема управления ГВ, стр. 220-221; показания указателя позиций, стр. 140-141",
+      "sourceTextLocated": true,
+      "completeModernEditionValidated": false,
+      "exactInstalledEquipmentVerified": false,
+      "currentActionAuthorityVerified": false,
+      "operationalProcedureImported": false,
+      "sourceSafetyPolicy": "HISTORICAL_TECHNICAL_CONTEXT_ONLY_NO_REPAIR_PROCEDURES"
     }
   },
   "reportedSummary": "Команда отключения не подтверждается или индикация противоречит фактическому состоянию.",
@@ -632,6 +646,162 @@
               "causeConfirmed": false
             }
           ]
+        },
+        {
+          "approachId": "detailed-gv1990-electromagnet-winding",
+          "sourceId": "manual1990",
+          "sourcePointer": "Приложение 19, стр. 435, строка 'Выключатель не отключается от электромагнита переменного тока': причина — дефект катушки",
+          "origin": "INDEPENDENT_HISTORICAL_PUBLICATION_NOT_CURRENT_OPERATIONAL_AUTHORITY",
+          "approachFocus": "HISTORICAL_DISCONNECT_ELECTROMAGNET_WINDING",
+          "approachSummary": "В приложении 19 издания 1990 года дефект катушки упоминается как возможная причина неотключения выключателя от электромагнита; это не доказательство отказа штатной команды на конкретном ВЛ80С.",
+          "alternativeGroup": "GV_HISTORICAL_COMPONENT_HYPOTHESES",
+          "claimId": "S6-GV-1990-01",
+          "evidenceLevel": "SPECIFIC_HISTORICAL_TEXT_LOCATION_VERIFIED_NOT_CURRENT_APPLICABILITY",
+          "differenceFromSeed": "DEVICE_LEVEL_TECHNICAL_HYPOTHESIS_NOT_REPEATED_SYMPTOM",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Непроверена эквивалентность 'не отключается штатной командой' и архивного отказа 'от электромагнита переменного тока'; тип аппарата и электромагнита конкретной секции неизвестны."
+          },
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-gv1990-electromagnet-winding",
+          "nodes": [
+            {
+              "id": "q-detailed-gv1990-electromagnet-winding",
+              "type": "QUESTION",
+              "text": "В ранее оформленном заключении допущенного персонала уже прямо отмечалась неисправность катушки отключающего электромагнита?",
+              "responses": {
+                "YES": "q-detailed-gv1990-electromagnet-winding-yes",
+                "NO": "q-detailed-gv1990-electromagnet-winding-no",
+                "UNKNOWN": "q-detailed-gv1990-electromagnet-winding-unknown"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-electromagnet-winding-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Существующее заключение соответствует одной архивной гипотезе; его точное исполнение и достаточность необходимо подтвердить независимо.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-electromagnet-winding-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведений о катушке нет; нельзя выводить такую причину из одной отсутствующей индикации.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-electromagnet-winding-unknown",
+              "type": "STOP",
+              "text": "STOP: предыдущая фиксация признака неизвестна, историческая гипотеза не устанавливается и не служит командой к действию.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-gv1990-mechanism-motion",
+          "sourceId": "manual1990",
+          "sourcePointer": "Приложение 19, стр. 435, та же строка: отдельная причина — заедание штока якоря вследствие загрязнения или перекоса",
+          "origin": "INDEPENDENT_HISTORICAL_PUBLICATION_NOT_CURRENT_OPERATIONAL_AUTHORITY",
+          "approachFocus": "HISTORICAL_DISCONNECT_MAGNET_MOVING_PART_STICKING",
+          "approachSummary": "Историческая таблица отдельно перечисляет механическое заедание подвижной части электромагнита; не следует путать с электрическим дефектом катушки и назначать ремонт по одному симптому.",
+          "alternativeGroup": "GV_HISTORICAL_COMPONENT_HYPOTHESES",
+          "claimId": "S6-GV-1990-02",
+          "evidenceLevel": "SPECIFIC_HISTORICAL_TEXT_LOCATION_VERIFIED_NOT_CURRENT_APPLICABILITY",
+          "differenceFromSeed": "DEVICE_LEVEL_TECHNICAL_HYPOTHESIS_NOT_REPEATED_SYMPTOM",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Архивный компонентный случай не равен подтверждённому отказу отключения командой; возможность доступа и осмотра специально не подтверждены."
+          },
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-gv1990-mechanism-motion",
+          "nodes": [
+            {
+              "id": "q-detailed-gv1990-mechanism-motion",
+              "type": "QUESTION",
+              "text": "Было ли ранее документировано компетентным персоналом заедание подвижной части электромагнита отключения?",
+              "responses": {
+                "YES": "q-detailed-gv1990-mechanism-motion-yes",
+                "NO": "q-detailed-gv1990-mechanism-motion-no",
+                "UNKNOWN": "q-detailed-gv1990-mechanism-motion-unknown"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-mechanism-motion-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Имеется ранее полученная запись о механическом признаке; она не заменяет актуальный допуск и ремонтную технологию.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-mechanism-motion-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Доказательств механической неисправности нет. Карточка не предполагает её установление новыми вмешательствами.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-gv1990-mechanism-motion-unknown",
+              "type": "STOP",
+              "text": "STOP: предыдущая фиксация признака неизвестна, историческая гипотеза не устанавливается и не служит командой к действию.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            }
+          ]
         }
       ]
     }
@@ -641,6 +811,28 @@
     "Текущая схема конкретного исполнения не установлена",
     "Методы и гипотезы не прошли независимую предметную экспертизу",
     "Ограничения допуска и безопасность требуют отдельной проверки",
-    "Реальное отображение расширенного режима в Android не проверено"
-  ]
+    "Реальное отображение расширенного режима в Android не проверено",
+    "Прямое подтверждение актуальности исторических технических гипотез для конкретной схемы и допусков отсутствует"
+  ],
+  "historicalEvidenceReview": {
+    "verifiedAt": "2026-11-04",
+    "sourceReviewStatus": "TWO_SPECIFIC_INDEPENDENT_HISTORICAL_CLAIMS_ATTACHED_NOT_CURRENT_AUTHORITY",
+    "originalDonorSeedAlternatives": {
+      "short": 2,
+      "detailed": 3,
+      "interpretationType": "OBSERVATION_FOCI_NOT_VERIFIED_REPAIR_METHODS"
+    },
+    "separatelyTextAnchoredTechnicalAlternatives": {
+      "short": 0,
+      "detailed": 2,
+      "actionAuthorizationGranted": false
+    },
+    "sourceClaimIds": [
+      "S6-GV-1990-01",
+      "S6-GV-1990-02"
+    ],
+    "currentEditionAndInstalledProfileVerified": false,
+    "reviewedCurrentOperatingProcedure": false,
+    "originalPotentiallyUnsafeRepairInstructionsExcluded": true
+  }
 }

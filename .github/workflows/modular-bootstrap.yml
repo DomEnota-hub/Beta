@@ -303,6 +303,12 @@ jobs:
       - name: Stage 6 negative gates for source, profile and historic alternatives
         run: python3 -m unittest discover -s qa -p test_stage6_routes.py
 
+      - name: Verify located 1990 and 2005 archival claims remain informational
+        run: python3 qa/validate_stage6_claim_ledger.py
+
+      - name: Negative Stage 6 historical evidence and source-authority checks
+        run: python3 -m unittest discover -s qa -p test_stage6_claim_ledger.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
