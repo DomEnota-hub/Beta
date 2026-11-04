@@ -19,7 +19,7 @@ class Stage5ResearchTests(unittest.TestCase):
             validate(d)
     def test_all_drafts_structurally_valid(self):
         self.assertEqual([validate(d) for d in self.items],
-                         [(10, 14, 5), (12, 14, 5)])
+                         [(10, 20, 5), (12, 20, 5)])
     def test_historical_not_shown_without_full_warning(self):
         for d in self.items:
             for v in ("short", "detailed"):
@@ -72,5 +72,22 @@ class Stage5ResearchTests(unittest.TestCase):
         self.reject(lambda d: d.update(exactInstalledVariantConfirmed=True))
     def test_synthetic_safe_stop_cannot_be_removed(self):
         self.reject(lambda d: d["short"]["nodes"][0]["responses"].update(UNKNOWN="missing"))
+    def test_direct_donor_questions_are_distinct_and_non_operational(self):
+        required={
+            "vl80s.diag.gv-no-close":{"attempt-indication","trip-during-notch","relay-known"},
+            "vl80s.diag.ekg-stuck":{"audible-motor","reset-only","position-specific"}
+        }
+        for draft in self.items:
+            mapped={n["id"] for n in draft["detailed"]["nodes"]}
+            self.assertTrue(required[draft["scenarioId"]]<=mapped)
+            by={n["id"]:n for n in draft["detailed"]["nodes"]}
+            for node_id in required[draft["scenarioId"]]:
+                node=by[node_id]
+                self.assertFalse(node["operationRequested"])
+                self.assertIn("donorKotlin",node["sourceRefs"])
+                self.assertEqual(by[node["responses"]["UNKNOWN"]]["type"],"STOP")
+            self.assertFalse(draft["runtimeImport"])
+            self.assertFalse(draft["actionAuthorityGranted"])
+
 if __name__ == "__main__":
     unittest.main()

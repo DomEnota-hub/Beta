@@ -47,11 +47,23 @@ def check(m):
                 "research draft mismatch/activation")
         ids={v+":"+n["id"] for v in ("short","detailed") for n in draft[v]["nodes"]}
         for q in item["questionReconciliation"]:
-            require(q["coverage"] in ("NOT_COVERED","PARTIAL_NOT_EQUIVALENT") and
+            require(q["coverage"] in ("NOT_COVERED","PARTIAL_NOT_EQUIVALENT", "RESEARCH_QUESTION_ADDED_UNVERIFIED") and
                     q["independentSafetyReviewRequired"] is True and bool(q["gap"]),
                     "unreviewed gap promoted to complete")
             require(all(ref in ids for ref in q["draftNodes"]),
                     "invented candidate node mapping")
+            if q["coverage"] == "RESEARCH_QUESTION_ADDED_UNVERIFIED":
+                expected_nodes={
+                    "vl80s.diag.gv-no-close":("attempt-indication","trip-during-notch","relay-known"),
+                    "vl80s.diag.ekg-stuck":("audible-motor","reset-only","position-specific")
+                }
+                idx=item["questionReconciliation"].index(q)
+                expected_ref="detailed:"+expected_nodes[item["scenarioId"]][idx]
+                require(q["draftNodes"] == [expected_ref],
+                        "canonical question mapped to wrong research node")
+                node=next(n for n in draft["detailed"]["nodes"] if n["id"]==expected_ref.split(":",1)[1])
+                require("donorKotlin" in node["sourceRefs"] and node["operationRequested"] is False,
+                        "new donor question lacks exact pinned provenance")
             require(q["coverage"]!="NOT_COVERED" or not q["draftNodes"],
                     "uncovered question falsely mapped")
         coverage[item["scenarioId"]]={q["coverage"] for q in item["questionReconciliation"]}
