@@ -1,0 +1,821 @@
+{
+  "ledger": {
+    "schemaVersion": "stage8-motor-fan-slice/1",
+    "date": "2026-11-04",
+    "stage": "8/51",
+    "baseHead": "6400984ed588e24295ebc6054b4ba029a360d08d",
+    "logicalStep": "One source-scoped motor-fan-failure research candidate",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "addedScenarioIds": [
+      "vl80s.diag.motor-fan-failure"
+    ],
+    "previousStage8Ids": [
+      "vl80s.diag.aux-common-loss",
+      "vl80s.diag.aux-contactor-chatter",
+      "vl80s.diag.phase-splitter-no-start"
+    ],
+    "stage8OverallStatus": "IN_PROGRESS_NOT_CLOSED",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Continue a distinct source-supported VL80S auxiliary symptom after green CI."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage8-motor-fan-failure-source-first/1",
+      "stage": "8/51",
+      "scenarioId": "vl80s.diag.motor-fan-failure",
+      "originalId": "motor-fan-failure",
+      "canonicalGroup": "SINGLE_MOTOR_FAN_START_OR_COOLING_VS_AIRFLOW_OR_VIBRATION",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.fan-low-airflow",
+        "vl80s.diag.fan-vibration",
+        "vl80s.diag.aux-common-loss",
+        "vl80s.diag.phase-splitter-no-start",
+        "vl80s.diag.aux-contactor-chatter"
+      ],
+      "title": "Не работает мотор-вентилятор или отсутствует охлаждение",
+      "summary": "Один канал вентиляции не запускается, поток воздуха слабый либо появляется сигнал отсутствия охлаждения.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorOriginalBlobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [
+        "Слышна попытка запуска двигателя вентилятора?",
+        "Двигатель работает, но подтверждения потока нет?",
+        "Неисправен только один канал?"
+      ],
+      "donorQuestionProvenance": "PINNED_EXPANSION_QUESTIONS_REWRITTEN_AS_PREVIOUSLY_RECORDED_ONLY",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "originalId": "motor-fan-failure",
+          "sourcePointer": "expandedScenario(id = \"motor-fan-failure\")",
+          "originalQuestions": [
+            "Слышна попытка запуска двигателя вентилятора?",
+            "Двигатель работает, но подтверждения потока нет?",
+            "Неисправен только один канал?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд. (Васько и др.)",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "XI §5, печ. стр. 222–223, рис. 255: цепи управления контакторами вспомогательных машин",
+            "V §11, печ. стр. 268: МВ1/МВ2 и МВ3/МВ4, разграничение охлаждаемых цепей",
+            "V §14, табл. 14, печ. стр. 281–282: сигнализация МВ1–МВ4 и защита ТРТ"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "motor-fan-evidence-0",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 222–223, рис. 255: цепи управления контакторами вспомогательных машин",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивная схема различает цепи управления контакторами вспомогательных машин.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "motor-fan-evidence-1",
+          "sourceId": "manual1990",
+          "locator": "V §11, печ. стр. 268: МВ1/МВ2 и МВ3/МВ4, разграничение охлаждаемых цепей",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивный раздел различает охлаждаемые группы МВ1/МВ2 и МВ3/МВ4; переключения не импортированы.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "motor-fan-evidence-2",
+          "sourceId": "manual1990",
+          "locator": "V §14, табл. 14, печ. стр. 281–282: сигнализация МВ1–МВ4 и защита ТРТ",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивная таблица фиксирует индикацию МВ1–МВ4 и ТРТ; причина отказа не установлена.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходном сообщении отмечены дым, запах перегретой изоляции, сильный стук или повторная защита?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "По ранее записанным признакам подтверждён отказ отдельного вентилятора, а не только слабый поток воздуха?",
+              "responses": {
+                "YES": "report-single",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак; не запускать повторно и не выполнять новые операции.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данных недостаточно, применимость UNKNOWN/BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-single",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отдельный отказ вентилятора зарегистрирован; причина и схема секции не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unconfirmed",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отказ самого привода не подтверждён; слабый поток и групповая остановка требуют отдельных карточек.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.motor-fan-failure.short-1",
+              "approachFocus": "Исходные вопросы о пуске",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourceLocator": "expandedScenario(id = \"motor-fan-failure\")",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В исходной записи присутствует факт отсутствия пуска конкретного вентилятора?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Зафиксирован факт для подхода «Исходные вопросы о пуске»; причина не доказана.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт для подхода «Исходные вопросы о пуске» не подтверждён; не инициировать проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное наблюдение; не проводить новую проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "vl80s.motor-fan-failure.short-2",
+              "approachFocus": "Разделение охлаждаемых групп",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourceLocator": "V §11, печ. стр. 268: МВ1/МВ2 и МВ3/МВ4, разграничение охлаждаемых цепей",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Из прежней записи известно, к какой группе охлаждения относится вентилятор?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Зафиксирован факт для подхода «Разделение охлаждаемых групп»; причина не доказана.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт для подхода «Разделение охлаждаемых групп» не подтверждён; не инициировать проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное наблюдение; не проводить новую проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "Исходная запись содержит дым, запах нагрева, стук или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "start",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "start",
+              "type": "QUESTION",
+              "text": "Был ранее подтверждён именно отказ запуска мотор-вентилятора?",
+              "responses": {
+                "YES": "report-no-start",
+                "NO": "channel",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "channel",
+              "type": "QUESTION",
+              "text": "Ранее установлен отказ только одного вентиляционного канала?",
+              "responses": {
+                "YES": "flow",
+                "NO": "report-group",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "flow",
+              "type": "QUESTION",
+              "text": "При ранее зарегистрированной работе двигателя поток воздуха в соответствующем канале отсутствовал?",
+              "responses": {
+                "YES": "signal",
+                "NO": "report-no-flow",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "signal",
+              "type": "QUESTION",
+              "text": "Имеется ранее зафиксированный сигнал отсутствия охлаждения того же канала?",
+              "responses": {
+                "YES": "report-confirmed",
+                "NO": "report-no-signal",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный симптом; не инициировать пуск, измерение, осмотр вращающегося оборудования или обход защиты.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: неизвестный исходный факт; профиль и причина остаются BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no-start",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зафиксирован отказ запуска; контакт, питание, защита и механика не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-group",
+              "type": "OBSERVATION_REPORT",
+              "text": "Одиночный отказ не подтверждён; проверить соответствие отдельной карточке группового отказа только по уже имеющимся сведениям.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no-flow",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак отсутствия потока не установлен; отсутствие охлаждения не следует выводить из одного звука.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-confirmed",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сохранены совместные исходные признаки работы двигателя и отсутствия охлаждения; причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no-signal",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зарегистрированное отсутствие потока и отсутствие подтверждённого сигнала различаются; вывод о датчике не делается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.motor-fan-failure.detailed-1",
+              "approachFocus": "Отказ привода и отсутствие потока",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourceLocator": "expandedScenario(id = \"motor-fan-failure\")",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Ранее были отдельно записаны состояние двигателя и наличие потока?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Зафиксирован факт для подхода «Отказ привода и отсутствие потока»; причина не доказана.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт для подхода «Отказ привода и отсутствие потока» не подтверждён; не инициировать проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное наблюдение; не проводить новую проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "vl80s.motor-fan-failure.detailed-2",
+              "approachFocus": "Историческая цепь контакторов",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 222–223, рис. 255: цепи управления контакторами вспомогательных машин",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Есть подтверждённая документация именно установленной цепи управления, без предположений по номерам?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Зафиксирован факт для подхода «Историческая цепь контакторов»; причина не доказана.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт для подхода «Историческая цепь контакторов» не подтверждён; не инициировать проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное наблюдение; не проводить новую проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "vl80s.motor-fan-failure.detailed-3",
+              "approachFocus": "Историческая сигнализация и защита",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "V §14, табл. 14, печ. стр. 281–282: сигнализация МВ1–МВ4 и защита ТРТ",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Ранее зафиксирована сигнализация отдельного МВ без новых сбросов защиты?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Зафиксирован факт для подхода «Историческая сигнализация и защита»; причина не доказана.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт для подхода «Историческая сигнализация и защита» не подтверждён; не инициировать проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное наблюдение; не проводить новую проверку.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
