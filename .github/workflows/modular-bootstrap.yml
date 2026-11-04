@@ -496,6 +496,12 @@ jobs:
       - name: Show project boundaries
         run: gradle projects --console=plain
 
+      - name: Validate Stage7 auxiliary closeout candidates
+        run: python3 qa/validate_stage7_auxiliary_closeout.py
+
+      - name: Stage7 auxiliary negative source and safety regression
+        run: python3 qa/validate_stage7_auxiliary_closeout.py --negative
+
       - name: Validate Stage7 compressor source-first candidates
         run: python3 qa/validate_stage7_compressor_source_first.py
 
