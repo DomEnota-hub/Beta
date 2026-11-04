@@ -31,3 +31,7 @@
 Итого исследовательский объём Stage7: **8/8** после данной группы. Это не означает публикацию или эксплуатационный допуск. Требуются независимая проверка действующих документов, привязка к фактическим исполнениям и отдельный safety/role/source gate. Физические Android/UI проверки остаются в `docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md` до финального тестового APK и **не считаются пройденными**.
 
 После успешного CI закрыть технический авторинг Stage7, зафиксировать HEAD и запуск CI; следующим отдельным запуском начать **Stage8**. При красном или незавершённом CI сперва исправить этот этап.
+
+## Подтверждение завершения CI (04.11.2026)
+
+HEAD `4898e7bb6dc53a4e2839a53b0dfb7bbcd276b4db`, [CI №41879465893](https://github.com/DomEnota-hub/Beta/actions/runs/41879465893) `completed/success`: Stage7 auxiliary positive/negative QA, Kotlin/JVM, Android lint, assembleDebug и APK resource checks успешны. **Этап 7 технически завершён; device QA отложено**. Runtime и эксплуатационный допуск по-прежнему запрещены.

@@ -508,6 +508,12 @@ jobs:
       - name: Stage7 compressor negative source and safety regression
         run: python3 -m unittest discover -s qa -p test_stage7_compressor_source_first.py
 
+      - name: Validate Stage8 auxiliary common-loss source-first
+        run: python3 qa/validate_stage8_aux_common_loss.py
+
+      - name: Stage8 auxiliary common-loss negative source and safety regression
+        run: python3 qa/validate_stage8_aux_common_loss.py --negative
+
       - name: Contract, runtime, assistant, UI routing and policy tests
         run: >-
           gradle
