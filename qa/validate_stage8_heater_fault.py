@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "docs/diagnostics/STAGE8_MOTOR_FAN_FAILURE_2026-11-04.json"
+DATA = ROOT / "docs/diagnostics/STAGE8_HEATER_FAULT_2026-11-04.json"
 MIG = ROOT / "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json"
 INV = ROOT / "docs/data-migration/diagnostic-corpus-analysis.json"
 DONOR = "3176d6ee228f0ed4b78371f45209e10c1c724eff"
