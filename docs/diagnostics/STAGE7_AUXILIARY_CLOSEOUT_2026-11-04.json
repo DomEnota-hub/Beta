@@ -1,0 +1,2333 @@
+{
+  "ledger": {
+    "schemaVersion": "stage7-auxiliary-closeout/1",
+    "date": "2026-11-04",
+    "stage": "7/51",
+    "baseHead": "a7d4c28bcf41de18260c7cfd31f9e89728104d9a",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "previousResearchCount": 5,
+    "addedScenarioIds": [
+      "vl80s.diag.fan-low-airflow",
+      "vl80s.diag.fan-vibration",
+      "vl80s.diag.compressor-overheat"
+    ],
+    "stage7CurrentResearchCount": 8,
+    "stage7OriginalTarget": 8,
+    "stage7RemainingForTarget": 0,
+    "technicalCompletion": "PENDING_GREEN_CI",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "finalDeviceRegistry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "unknowns": [
+      "Current technical rules and installed variants not independently confirmed",
+      "Historical 1990 manual not current authority",
+      "Exact modern equipment / profile and safety gates pending"
+    ],
+    "next": "After completed successful CI, start Stage8 with a separately selected source-scoped group; do not enable runtime or claim device QA."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage7-auxiliary-source-first/1",
+      "stage": "7/51",
+      "scenarioId": "vl80s.diag.fan-low-airflow",
+      "originalId": "fan-low-airflow",
+      "canonicalGroup": "RUNNING_FAN_VS_UNCONFIRMED_AIRFLOW",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.fan-vibration",
+        "vl80s.diag.motor-fan-failure",
+        "vl80s.diag.rectifier-overheat"
+      ],
+      "title": "Недостаточный поток вентиляции",
+      "summary": "Вентилятор работает, но поток слабый или не подтверждается.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [],
+      "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "originalId": "fan-low-airflow",
+          "sourcePointer": "Seed(\"fan-low-airflow\")",
+          "excerpt": {
+            "category": "Вспомогательные машины",
+            "title": "Недостаточный поток вентиляции",
+            "summary": "Вентилятор работает, но поток слабый или не подтверждается."
+          },
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд. Васько и др., 1990",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "IX §10, печ. стр. 187–189, рис. 239: система вентиляции и раздельные тракты охлаждения",
+            "IX §11, печ. стр. 190, рис. 240: центробежные вентиляторы"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "supplement": {
+          "kind": "PRACTICAL_REFERENCE_UNVERIFIED",
+          "title": "МВ1–МВ4, справочная страница об устройстве ВЛ80С",
+          "year": null,
+          "url": "https://azjio.narod.ru/elektrovoz/vl80c/mv1-mv4.htm",
+          "verifiedLocators": [
+            "Таблица МВ1–МВ4: различия охлаждаемых объектов и направления вращения"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "fan-low-airflow-manual-main",
+          "sourceId": "manual1990",
+          "locator": "IX §10, печ. стр. 187–189, рис. 239: система вентиляции и раздельные тракты охлаждения",
+          "claim": "В издании 1990 года описана отдельная конструктивная подсистема, но её состояние по одному симптому не доказано.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "fan-low-airflow-manual-secondary",
+          "sourceId": "manual1990",
+          "locator": "IX §11, печ. стр. 190, рис. 240: центробежные вентиляторы",
+          "claim": "Историческая конструкция оборудования не равна подтверждённой комплектации конкретной секции.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "fan-low-airflow-supplement",
+          "sourceId": "supplement",
+          "locator": "Таблица МВ1–МВ4: различия охлаждаемых объектов и направления вращения",
+          "claim": "Справочная таблица разделяет назначение МВ1–МВ4, но не подтверждает исполнение конкретной секции.",
+          "confidence": "PRACTICAL_UNVERIFIED",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "По исходной записи имеются дым, запах перегрева либо сигнал опасной потери охлаждения?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "Ранее зафиксировано, что вентилятор работал, но достаточный поток не подтверждён?",
+              "responses": {
+                "YES": "report-yes",
+                "NO": "report-no",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не выполнять новые операции и не продолжать диагностическую ветку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходных сведений недостаточно; UNKNOWN не превращать в NO.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "В исходной записи признаки работы и недостаточного потока присутствуют, но причина не доказана.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Нет совместного подтверждения работы вентилятора и недостаточного потока; статус UNKNOWN.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "fan-low-airflow-short-donor_airflow_symptom",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"fan-low-airflow\")",
+              "approachFocus": "DONOR_AIRFLOW_SYMPTOM",
+              "approachSummary": "Исходный симптом сам по себе не подтверждает конкретную причину.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи присутствуют сведения для этого источникового подхода?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-low-airflow-short-historic_air_duct_split",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourcePointer": "IX §10, печ. стр. 187–189, рис. 239: система вентиляции и раздельные тракты охлаждения",
+              "approachFocus": "HISTORIC_AIR_DUCT_SPLIT",
+              "approachSummary": "Историческая компоновка помогает различать агрегаты, но не подтверждает исполнение.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть подтверждение применимости исторического описания именно к данной секции?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По исходной записи имеются дым, запах перегрева либо сигнал опасной потери охлаждения?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q2",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "Ранее зафиксировано, что вентилятор работал, но достаточный поток не подтверждён?",
+              "responses": {
+                "YES": "q3",
+                "NO": "report-absence",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "В исходных материалах различены показания работы двигателя и подтверждение фактического потока?",
+              "responses": {
+                "YES": "q4",
+                "NO": "report-localization",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "В записи указано, какое оборудование требовало охлаждения?",
+              "responses": {
+                "YES": "q5",
+                "NO": "report-context",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "Есть подтверждение, что историческая схема соответствует именно установленному исполнению?",
+              "responses": {
+                "YES": "report-supported",
+                "NO": "report-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: исходная запись содержит опасный признак. Никаких повторных пусков, работ или переключений.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: нет подтверждённых исходных данных. Не инициировать проверку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-absence",
+              "type": "OBSERVATION_REPORT",
+              "text": "Работа двигателя и наличие потока не установлены совместно; дефект вентилятора не доказан.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-localization",
+              "type": "OBSERVATION_REPORT",
+              "text": "Не подтверждено различие между вращением двигателя и фактической подачей воздуха.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-context",
+              "type": "OBSERVATION_REPORT",
+              "text": "Не установлено, какое оборудование охлаждалось; сравнение с исторической схемой ограничено.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unverified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Соответствие исторической схемы машине не доказано. Применимость остаётся BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-supported",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходные наблюдения совместимы с недостаточной вентиляцией, но причина и действия не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "fan-low-airflow-detailed-donor_motor_vs_flow",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"fan-low-airflow\")",
+              "approachFocus": "DONOR_MOTOR_VS_FLOW",
+              "approachSummary": "Отдельная запись наблюдения не равна проверенной неисправности узла.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Имеется независимая исходная запись признака без нового запуска?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-low-airflow-detailed-historic_cooling_consumers",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourcePointer": "IX §11, печ. стр. 190, рис. 240: центробежные вентиляторы",
+              "approachFocus": "HISTORIC_COOLING_CONSUMERS",
+              "approachSummary": "Архивное описание устройства не является современным регламентом.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Подтверждены модель и исполнение оборудования для архивного описания?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-low-airflow-detailed-practical_mv_variant_unverified",
+              "version": "DETAILED",
+              "sourceId": "supplement",
+              "sourcePointer": "Таблица МВ1–МВ4: различия охлаждаемых объектов и направления вращения",
+              "approachFocus": "PRACTICAL_MV_VARIANT_UNVERIFIED",
+              "approachSummary": "Справочная таблица разделяет назначение МВ1–МВ4, но не подтверждает исполнение конкретной секции.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть проверенная связь справочного источника с данной секцией?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Справочная таблица разделяет назначение МВ1–МВ4, но не подтверждает исполнение конкретной секции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": "diagnostic-stage7-auxiliary-source-first/1",
+      "stage": "7/51",
+      "scenarioId": "vl80s.diag.fan-vibration",
+      "originalId": "fan-vibration",
+      "canonicalGroup": "MECHANICAL_NOISE_VS_AIRFLOW",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.fan-low-airflow",
+        "vl80s.diag.compressor-overheat",
+        "vl80s.diag.aux-contactor-chatter"
+      ],
+      "title": "Сильная вибрация или стук вентилятора",
+      "summary": "При работе вентилятора возникает механический шум или вибрация.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [],
+      "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "originalId": "fan-vibration",
+          "sourcePointer": "Seed(\"fan-vibration\")",
+          "excerpt": {
+            "category": "Вспомогательные машины",
+            "title": "Сильная вибрация или стук вентилятора",
+            "summary": "При работе вентилятора возникает механический шум или вибрация."
+          },
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд. Васько и др., 1990",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "IX §11, печ. стр. 190, рис. 240: рабочее колесо, улитка, электродвигатель и амортизаторы",
+            "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "supplement": {
+          "kind": "HISTORICAL_FACTORY_APPENDIX",
+          "title": "ВЛ80С, руководство 1990, приложение 17: характерные неисправности вспомогательных машин",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Приложение 17, печ. стр. 410–411: шум и вибрация АЭ92-402"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "fan-vibration-manual-main",
+          "sourceId": "manual1990",
+          "locator": "IX §11, печ. стр. 190, рис. 240: рабочее колесо, улитка, электродвигатель и амортизаторы",
+          "claim": "В издании 1990 года описана отдельная конструктивная подсистема, но её состояние по одному симптому не доказано.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "fan-vibration-manual-secondary",
+          "sourceId": "manual1990",
+          "locator": "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402",
+          "claim": "Историческая конструкция оборудования не равна подтверждённой комплектации конкретной секции.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "fan-vibration-supplement",
+          "sourceId": "supplement",
+          "locator": "Приложение 17, печ. стр. 410–411: шум и вибрация АЭ92-402",
+          "claim": "В исторической таблице перечислены различные группы возможных механических причин шума и вибрации, без диагностики конкретного агрегата.",
+          "confidence": "HISTORICAL_TECHNICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "По исходному событию отмечены дым, разрушение, опасный стук или сильная вибрация?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "Есть ранее зафиксированное отличие вибрации от обычного рабочего звука вентилятора?",
+              "responses": {
+                "YES": "report-yes",
+                "NO": "report-no",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не выполнять новые операции и не продолжать диагностическую ветку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходных сведений недостаточно; UNKNOWN не превращать в NO.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Нештатная вибрация ранее отмечена, но причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отсутствует подтверждённая запись вибрации; не инициировать проверочный пуск.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "fan-vibration-short-donor_mechanical_noise",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"fan-vibration\")",
+              "approachFocus": "DONOR_MECHANICAL_NOISE",
+              "approachSummary": "Исходный симптом сам по себе не подтверждает конкретную причину.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи присутствуют сведения для этого источникового подхода?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-vibration-short-historic_fan_assembly",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourcePointer": "IX §11, печ. стр. 190, рис. 240: рабочее колесо, улитка, электродвигатель и амортизаторы",
+              "approachFocus": "HISTORIC_FAN_ASSEMBLY",
+              "approachSummary": "Историческая компоновка помогает различать агрегаты, но не подтверждает исполнение.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть подтверждение применимости исторического описания именно к данной секции?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По исходному событию отмечены дым, разрушение, опасный стук или сильная вибрация?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q2",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "Есть ранее зафиксированное отличие вибрации от обычного рабочего звука вентилятора?",
+              "responses": {
+                "YES": "q3",
+                "NO": "report-absence",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "Исходная запись относит звук именно к вентилятору, а не соседнему агрегату?",
+              "responses": {
+                "YES": "q4",
+                "NO": "report-localization",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "Указано, сопровождалось ли событие потерей потока охлаждения?",
+              "responses": {
+                "YES": "q5",
+                "NO": "report-context",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "Подтверждено ли соответствие архивной конструкции вентилятора конкретной машине?",
+              "responses": {
+                "YES": "report-supported",
+                "NO": "report-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: исходная запись содержит опасный признак. Никаких повторных пусков, работ или переключений.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: нет подтверждённых исходных данных. Не инициировать проверку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-absence",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отклонение звука или вибрации не подтверждено; источник неисправности не определён.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-localization",
+              "type": "OBSERVATION_REPORT",
+              "text": "Локализация шума к вентилятору не доказана; не смешивать с компрессором и контактором.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-context",
+              "type": "OBSERVATION_REPORT",
+              "text": "Состояние охлаждения по исходной записи неизвестно; нельзя делать вывод о допустимости нагрузки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unverified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Историческая конструкция не подтверждена для конкретной секции.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-supported",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические группы причин остаются справочными; диагноз и ремонт не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "fan-vibration-detailed-donor_vibration_vs_other_sound",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"fan-vibration\")",
+              "approachFocus": "DONOR_VIBRATION_VS_OTHER_SOUND",
+              "approachSummary": "Отдельная запись наблюдения не равна проверенной неисправности узла.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Имеется независимая исходная запись признака без нового запуска?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-vibration-detailed-historic_motor_drive",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourcePointer": "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402",
+              "approachFocus": "HISTORIC_MOTOR_DRIVE",
+              "approachSummary": "Архивное описание устройства не является современным регламентом.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Подтверждены модель и исполнение оборудования для архивного описания?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "fan-vibration-detailed-archival_motor_fault_table",
+              "version": "DETAILED",
+              "sourceId": "supplement",
+              "sourcePointer": "Приложение 17, печ. стр. 410–411: шум и вибрация АЭ92-402",
+              "approachFocus": "ARCHIVAL_MOTOR_FAULT_TABLE",
+              "approachSummary": "В исторической таблице перечислены различные группы возможных механических причин шума и вибрации, без диагностики конкретного агрегата.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть проверенная связь справочного источника с данной секцией?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "В исторической таблице перечислены различные группы возможных механических причин шума и вибрации, без диагностики конкретного агрегата.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": "diagnostic-stage7-auxiliary-source-first/1",
+      "stage": "7/51",
+      "scenarioId": "vl80s.diag.compressor-overheat",
+      "originalId": "compressor-overheat",
+      "canonicalGroup": "THERMAL_OR_MECHANICAL_HAZARD_VS_PRESSURE",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.compressor-long-run",
+        "vl80s.diag.compressor-pressure",
+        "vl80s.diag.fan-vibration"
+      ],
+      "title": "Перегрев или необычный шум компрессора",
+      "summary": "Появились запах, нагрев, стук или дым от мотор-компрессора.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [],
+      "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "originalId": "compressor-overheat",
+          "sourcePointer": "Seed(\"compressor-overheat\")",
+          "excerpt": {
+            "category": "Вспомогательные машины",
+            "title": "Перегрев или необычный шум компрессора",
+            "summary": "Появились запах, нагрев, стук или дым от мотор-компрессора."
+          },
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд. Васько и др., 1990",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "IX §7, печ. стр. 185, рис. 237: блок мотор-компрессора КТ6-Эл, редуктор и АЭ92-402",
+            "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "supplement": {
+          "kind": "HISTORICAL_FACTORY_APPENDIX",
+          "title": "ВЛ80С, руководство 1990, приложение 17: характерные неисправности вспомогательных машин",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Приложение 17, печ. стр. 410–411: нагрев и шум АЭ92-402"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "compressor-overheat-manual-main",
+          "sourceId": "manual1990",
+          "locator": "IX §7, печ. стр. 185, рис. 237: блок мотор-компрессора КТ6-Эл, редуктор и АЭ92-402",
+          "claim": "В издании 1990 года описана отдельная конструктивная подсистема, но её состояние по одному симптому не доказано.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "compressor-overheat-manual-secondary",
+          "sourceId": "manual1990",
+          "locator": "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402",
+          "claim": "Историческая конструкция оборудования не равна подтверждённой комплектации конкретной секции.",
+          "confidence": "HISTORICAL_DEVICE_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "compressor-overheat-supplement",
+          "sourceId": "supplement",
+          "locator": "Приложение 17, печ. стр. 410–411: нагрев и шум АЭ92-402",
+          "claim": "Архивный перечень различает нагрев, шум и механическую неисправность двигателя; это не подтверждение причины на конкретном компрессоре.",
+          "confidence": "HISTORICAL_TECHNICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходном событии отмечены дым, металлический стук, опасный перегрев или запах горелого?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "Ранее зафиксирован ненормальный нагрев, запах либо звук мотор-компрессора?",
+              "responses": {
+                "YES": "report-yes",
+                "NO": "report-no",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не выполнять новые операции и не продолжать диагностическую ветку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходных сведений недостаточно; UNKNOWN не превращать в NO.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Опасный тепловой или звуковой признак был отмечен; причина не доказана, операции не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходная запись не подтверждает тепловой/механический признак компрессора.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "compressor-overheat-short-donor_thermal_hazard",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"compressor-overheat\")",
+              "approachFocus": "DONOR_THERMAL_HAZARD",
+              "approachSummary": "Исходный симптом сам по себе не подтверждает конкретную причину.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи присутствуют сведения для этого источникового подхода?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "compressor-overheat-short-historic_compressor_drive",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourcePointer": "IX §7, печ. стр. 185, рис. 237: блок мотор-компрессора КТ6-Эл, редуктор и АЭ92-402",
+              "approachFocus": "HISTORIC_COMPRESSOR_DRIVE",
+              "approachSummary": "Историческая компоновка помогает различать агрегаты, но не подтверждает исполнение.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть подтверждение применимости исторического описания именно к данной секции?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "В исходном событии отмечены дым, металлический стук, опасный перегрев или запах горелого?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q2",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "Ранее зафиксирован ненормальный нагрев, запах либо звук мотор-компрессора?",
+              "responses": {
+                "YES": "q3",
+                "NO": "report-absence",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "Установлено ли по исходной записи, что симптом относится к мотор-компрессору, а не другому агрегату?",
+              "responses": {
+                "YES": "q4",
+                "NO": "report-localization",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "Есть отдельная запись о давлении, не подменяющая оценку нагрева и шума?",
+              "responses": {
+                "YES": "q5",
+                "NO": "report-context",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "Установлено ли соответствие исторической конструкции мотор-компрессора конкретной секции?",
+              "responses": {
+                "YES": "report-supported",
+                "NO": "report-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: исходная запись содержит опасный признак. Никаких повторных пусков, работ или переключений.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: нет подтверждённых исходных данных. Не инициировать проверку.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-absence",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ненормальный нагрев или шум не подтверждён исходной записью; причину не предполагать.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-localization",
+              "type": "OBSERVATION_REPORT",
+              "text": "Принадлежность признака компрессору не установлена; нельзя переносить диагноз с соседнего агрегата.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-context",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения о давлении отсутствуют либо не отделены от теплового признака; не смешивать сценарии.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unverified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Архивная компоновка не подтверждена для данной машины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-supported",
+              "type": "OBSERVATION_REPORT",
+              "text": "Нагрев или шум остаётся опасным признаком; причина и какие-либо операции не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "compressor-overheat-detailed-donor_heat_vs_pressure",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourcePointer": "Seed(\"compressor-overheat\")",
+              "approachFocus": "DONOR_HEAT_VS_PRESSURE",
+              "approachSummary": "Отдельная запись наблюдения не равна проверенной неисправности узла.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Имеется независимая исходная запись признака без нового запуска?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "compressor-overheat-detailed-historic_motor_assembly",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourcePointer": "III §2, печ. стр. 35–36, рис. 39: электродвигатель АЭ92-402",
+              "approachFocus": "HISTORIC_MOTOR_ASSEMBLY",
+              "approachSummary": "Архивное описание устройства не является современным регламентом.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Подтверждены модель и исполнение оборудования для архивного описания?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Сведения сохранены как историческое или исходное наблюдение; диагноз и действия не разрешены.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "compressor-overheat-detailed-archival_motor_heat_table",
+              "version": "DETAILED",
+              "sourceId": "supplement",
+              "sourcePointer": "Приложение 17, печ. стр. 410–411: нагрев и шум АЭ92-402",
+              "approachFocus": "ARCHIVAL_MOTOR_HEAT_TABLE",
+              "approachSummary": "Архивный перечень различает нагрев, шум и механическую неисправность двигателя; это не подтверждение причины на конкретном компрессоре.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Есть проверенная связь справочного источника с данной секцией?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Архивный перечень различает нагрев, шум и механическую неисправность двигателя; это не подтверждение причины на конкретном компрессоре.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Применимость или исходный факт не подтверждены. Остаётся BLOCKED; не выполнять проверочные операции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: неизвестное исполнение либо недостаточные исходные данные.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "supplement"
+                  ],
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
