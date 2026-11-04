@@ -315,6 +315,12 @@ jobs:
       - name: Negative Stage 6 serial number and operational-authority fixtures
         run: python3 -m unittest discover -s qa -p test_stage6_equipment_role_gate.py
 
+      - name: Verify Stage 7 VL80S source-first GV reservoir and EKG indication drafts
+        run: python3 qa/validate_stage7_source_first.py
+
+      - name: Negative Stage 7 source, profile, warning and action fixtures
+        run: python3 -m unittest discover -s qa -p test_stage7_source_first.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 

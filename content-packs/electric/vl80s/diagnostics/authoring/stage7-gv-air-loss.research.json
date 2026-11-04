@@ -1,0 +1,720 @@
+{
+  "schemaVersion": "diagnostic-stage7-source-first/1",
+  "stage": "7/51",
+  "scenarioId": "vl80s.diag.gv-air-loss",
+  "originalId": "gv-air-loss",
+  "canonicalGroup": "GV_PNEUMATIC_RESERVOIR_VS_SWITCH_COMMAND",
+  "mustRemainDistinctFrom": [
+    "vl80s.diag.gv-no-open",
+    "vl80s.diag.gv-no-close"
+  ],
+  "title": "Падает давление в резервуаре ГВ",
+  "authoringProfileId": "vl80s-general",
+  "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorLayer": "DiagnosticExtendedCatalog.kt",
+  "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+  "sourceRecords": {
+    "donorSeed": {
+      "sourceType": "PINNED_DONOR_OFFLINE_CATALOG",
+      "repository": "DomEnota-hub/Test-",
+      "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "sourcePointer": "Seed(\"gv-air-loss\")",
+      "excerptFields": {
+        "category": "Высоковольтные цепи",
+        "summary": "Запас воздуха привода ГВ не сохраняется или восстанавливается слишком медленно.",
+        "equipment": "ГВ, резервуар, пневмопривод",
+        "signs": "шипение, падение давления",
+        "danger": "неуправляемое состояние ГВ"
+      },
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "operationalProcedureImported": false
+    },
+    "manual1990": {
+      "sourceType": "HISTORICAL_OPERATION_AND_MAINTENANCE_MANUAL",
+      "title": "Васько Н. М., Девятков А. С., Кучеров А. Ф. и др. Электровоз ВЛ80С. Руководство по эксплуатации, 2-е изд., 1990",
+      "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+      "isbn": "5-277-01048-3",
+      "publishedYear": 1990,
+      "verifiedLocators": [
+        "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 68–70",
+        "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 70"
+      ],
+      "sourceTextLocated": true,
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "completeModernEditionValidated": false,
+      "operationalProcedureImported": false
+    }
+  },
+  "historicalClaims": [
+    {
+      "claimId": "S7-GV-1990-01",
+      "sourceId": "manual1990",
+      "sourcePointer": "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 68–70",
+      "scope": "HISTORICAL_RESERVOIR_AND_DRIVE_ARCHITECTURE",
+      "claim": "Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя.",
+      "historicalTextLocated": true,
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false,
+      "operationalSteps": []
+    },
+    {
+      "claimId": "S7-GV-1990-02",
+      "sourceId": "manual1990",
+      "sourcePointer": "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 70",
+      "scope": "HISTORICAL_MINIMUM_PRESSURE_INTERLOCK",
+      "claim": "В исторической схеме указан автомат минимального давления; его наличие не доказывает конкретную утечку.",
+      "historicalTextLocated": true,
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false,
+      "operationalSteps": []
+    }
+  ],
+  "reportedSummary": "Запас воздуха привода ГВ не сохраняется или восстанавливается слишком медленно.",
+  "reportedDanger": "неуправляемое состояние ГВ",
+  "reportedEquipment": "ГВ, резервуар, пневмопривод",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "executable": false,
+  "sourceAuthorityVerified": false,
+  "exactInstalledVariantConfirmed": false,
+  "technicalClaimsReviewed": false,
+  "substantiveSafetyReviewed": false,
+  "observationOnly": true,
+  "warningGate": {
+    "default": "HIDDEN",
+    "extendedEnabled": true,
+    "warningReadToEnd": true,
+    "warningAcknowledged": true,
+    "warningGrantsActionAuthority": false
+  },
+  "versions": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "s7-gv-air-loss-short-q0",
+      "nodes": [
+        {
+          "id": "s7-gv-air-loss-short-q0",
+          "type": "QUESTION",
+          "text": "В ранее сохранённом наблюдении указано снижение давления именно в резервуаре ГВ?",
+          "responses": {
+            "YES": "s7-gv-air-loss-short-yes0",
+            "NO": "s7-gv-air-loss-short-q1",
+            "UNKNOWN": "s7-gv-air-loss-short-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-short-yes0",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксировано сообщение о падении давления; место и причина потери воздуха не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-short-q1",
+          "type": "QUESTION",
+          "text": "В записи вместо снижения отмечено медленное восстановление запаса воздуха привода ГВ?",
+          "responses": {
+            "YES": "s7-gv-air-loss-short-yes1",
+            "NO": "s7-gv-air-loss-short-unresolved",
+            "UNKNOWN": "s7-gv-air-loss-short-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-short-yes1",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксировано медленное восстановление; нельзя объявлять причиной утечку или конкретный клапан.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-short-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-short-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "short-gv-air-loss-donor",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-air-loss\")",
+          "approachFocus": "DONOR_REPORTED_SYMPTOM_SHORT",
+          "approachSummary": "Отдельная фиксация исходного симптома без технической причинности.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-short-gv-air-loss-donor-q0",
+          "nodes": [
+            {
+              "id": "s7-short-gv-air-loss-donor-q0",
+              "type": "QUESTION",
+              "text": "Сохранён ли в исходной записи симптом «Падает давление в резервуаре ГВ» без подтверждения причины?",
+              "responses": {
+                "YES": "s7-short-gv-air-loss-donor-yes0",
+                "NO": "s7-short-gv-air-loss-donor-unresolved",
+                "UNKNOWN": "s7-short-gv-air-loss-donor-stop"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-donor-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник фиксирует только симптом, а не подтверждённую причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-donor-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-donor-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "short-gv-air-loss-historical",
+          "sourceId": "manual1990",
+          "sourcePointer": "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 68–70",
+          "claimId": "S7-GV-1990-01",
+          "approachFocus": "HISTORICAL_RESERVOIR_AND_DRIVE_ARCHITECTURE",
+          "approachSummary": "Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-short-gv-air-loss-historical-q0",
+          "nodes": [
+            {
+              "id": "s7-short-gv-air-loss-historical-q0",
+              "type": "QUESTION",
+              "text": "Есть ли в источнике прямое описание предмета: Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя.",
+              "responses": {
+                "YES": "s7-short-gv-air-loss-historical-yes0",
+                "NO": "s7-short-gv-air-loss-historical-unresolved",
+                "UNKNOWN": "s7-short-gv-air-loss-historical-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-historical-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторический контекст: Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя. Это не диагноз и не разрешение на действие.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-historical-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-gv-air-loss-historical-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "s7-gv-air-loss-detailed-q0",
+      "nodes": [
+        {
+          "id": "s7-gv-air-loss-detailed-q0",
+          "type": "QUESTION",
+          "text": "Имеется ли запись о снижении давления резервуара ГВ, а не общего давления в других магистралях?",
+          "responses": {
+            "YES": "s7-gv-air-loss-detailed-yes0",
+            "NO": "s7-gv-air-loss-detailed-q1",
+            "UNKNOWN": "s7-gv-air-loss-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-yes0",
+          "type": "OBSERVATION_REPORT",
+          "text": "В записи выделен локальный симптом; фактическая привязка к установленному оборудованию не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-q1",
+          "type": "QUESTION",
+          "text": "Упоминается ли медленное восстановление запаса воздуха без подтверждённого падения?",
+          "responses": {
+            "YES": "s7-gv-air-loss-detailed-yes1",
+            "NO": "s7-gv-air-loss-detailed-q2",
+            "UNKNOWN": "s7-gv-air-loss-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-yes1",
+          "type": "OBSERVATION_REPORT",
+          "text": "В записи выделена другая временная характеристика, не тождественная утечке.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-q2",
+          "type": "QUESTION",
+          "text": "Было ли шипение уже описано в исходном сообщении?",
+          "responses": {
+            "YES": "s7-gv-air-loss-detailed-yes2",
+            "NO": "s7-gv-air-loss-detailed-q3",
+            "UNKNOWN": "s7-gv-air-loss-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-yes2",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наличие звукового признака в записи не устанавливает место и причину неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-q3",
+          "type": "QUESTION",
+          "text": "Есть ли ранее зафиксированное противоречие показания и других наблюдений?",
+          "responses": {
+            "YES": "s7-gv-air-loss-detailed-yes3",
+            "NO": "s7-gv-air-loss-detailed-q4",
+            "UNKNOWN": "s7-gv-air-loss-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-yes3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Противоречивую индикацию нельзя трактовать как измеренную утечку.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-q4",
+          "type": "QUESTION",
+          "text": "Отмечены ли аналогичные признаки в других пневматических системах?",
+          "responses": {
+            "YES": "s7-gv-air-loss-detailed-yes4",
+            "NO": "s7-gv-air-loss-detailed-unresolved",
+            "UNKNOWN": "s7-gv-air-loss-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-yes4",
+          "type": "OBSERVATION_REPORT",
+          "text": "Общая пневматическая проблема и отдельный резервуар ГВ остаются разными гипотезами.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-gv-air-loss-detailed-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "detailed-gv-air-loss-donor",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-air-loss\")",
+          "approachFocus": "DONOR_REPORTED_SYMPTOM_DETAILED",
+          "approachSummary": "Отдельная фиксация исходного симптома без технической причинности.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-gv-air-loss-donor-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-gv-air-loss-donor-q0",
+              "type": "QUESTION",
+              "text": "Сохранён ли в исходной записи симптом «Падает давление в резервуаре ГВ» без подтверждения причины?",
+              "responses": {
+                "YES": "s7-detailed-gv-air-loss-donor-yes0",
+                "NO": "s7-detailed-gv-air-loss-donor-unresolved",
+                "UNKNOWN": "s7-detailed-gv-air-loss-donor-stop"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-donor-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник фиксирует только симптом, а не подтверждённую причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-donor-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-donor-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-gv-air-loss-historical-a",
+          "sourceId": "manual1990",
+          "sourcePointer": "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 68–70",
+          "claimId": "S7-GV-1990-01",
+          "approachFocus": "HISTORICAL_RESERVOIR_AND_DRIVE_ARCHITECTURE",
+          "approachSummary": "Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-gv-air-loss-historical-a-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-gv-air-loss-historical-a-q0",
+              "type": "QUESTION",
+              "text": "Есть ли в источнике прямое описание предмета: Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя.",
+              "responses": {
+                "YES": "s7-detailed-gv-air-loss-historical-a-yes0",
+                "NO": "s7-detailed-gv-air-loss-historical-a-unresolved",
+                "UNKNOWN": "s7-detailed-gv-air-loss-historical-a-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-a-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторический контекст: Историческое руководство описывает отдельный воздушный резервуар и пневматические узлы выключателя. Это не диагноз и не разрешение на действие.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-a-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-a-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-gv-air-loss-historical-b",
+          "sourceId": "manual1990",
+          "sourcePointer": "§2 «Главный выключатель ВОВ-25А-10/400УХЛ1», рис. 70",
+          "claimId": "S7-GV-1990-02",
+          "approachFocus": "HISTORICAL_MINIMUM_PRESSURE_INTERLOCK",
+          "approachSummary": "В исторической схеме указан автомат минимального давления; его наличие не доказывает конкретную утечку.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-gv-air-loss-historical-b-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-gv-air-loss-historical-b-q0",
+              "type": "QUESTION",
+              "text": "Есть ли в источнике прямое описание предмета: В исторической схеме указан автомат минимального давления; его наличие не доказывает конкретную утечку.",
+              "responses": {
+                "YES": "s7-detailed-gv-air-loss-historical-b-yes0",
+                "NO": "s7-detailed-gv-air-loss-historical-b-unresolved",
+                "UNKNOWN": "s7-detailed-gv-air-loss-historical-b-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-b-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторический контекст: В исторической схеме указан автомат минимального давления; его наличие не доказывает конкретную утечку. Это не диагноз и не разрешение на действие.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-b-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-gv-air-loss-historical-b-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "researchReviewStatus": "SOURCE_FIRST_RESEARCH_NOT_CURRENT_ACTION_AUTHORITY",
+  "remainingVerification": [
+    "фактическая секция, исполнение и модернизации",
+    "точная заводская схема установленного оборудования",
+    "раздельная оценка исторических технических утверждений и симптома",
+    "действующие местные инструкции и роль",
+    "независимая safety-проверка",
+    "финальный device QA после тестового выпуска"
+  ]
+}
