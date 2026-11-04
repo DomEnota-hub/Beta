@@ -1,0 +1,646 @@
+{
+  "schemaVersion": "diagnostic-stage6-contrasting-research/1",
+  "stage": "6/51",
+  "scenarioId": "vl80s.diag.gv-no-open",
+  "originalId": "gv-no-open",
+  "canonicalGroup": "GV_COMMAND_DIRECTION",
+  "title": "Главный выключатель не отключается штатной командой",
+  "authoringProfileId": "vl80s-general",
+  "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorLayer": "DiagnosticExtendedCatalog.kt",
+  "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+  "sourceRecords": {
+    "donorSeed": {
+      "id": "donorSeed",
+      "sourceType": "ARCHIVED_DONOR_OFFLINE_CATALOG",
+      "repository": "DomEnota-hub/Test-",
+      "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "sourcePointer": "Seed(\"gv-no-open\")",
+      "excerptFields": {
+        "category": "Высоковольтные цепи",
+        "summary": "Команда отключения не подтверждается или индикация противоречит фактическому состоянию.",
+        "equipment": "ГВ, цепь отключения, сигнализация",
+        "signs": "нет подтверждения отключения",
+        "danger": "невозможность гарантированно обесточить силовую цепь"
+      },
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "operationalProcedureImported": false
+    }
+  },
+  "reportedSummary": "Команда отключения не подтверждается или индикация противоречит фактическому состоянию.",
+  "reportedDanger": "невозможность гарантированно обесточить силовую цепь",
+  "reportedEquipment": "ГВ, цепь отключения, сигнализация",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "executable": false,
+  "sourceAuthorityVerified": false,
+  "exactInstalledVariantConfirmed": false,
+  "technicalClaimsReviewed": false,
+  "substantiveSafetyReviewed": false,
+  "observationOnly": true,
+  "contrastIsDistinctCanonicalScenario": true,
+  "warningGate": {
+    "default": "HIDDEN",
+    "extendedEnabled": true,
+    "warningReadToEnd": true,
+    "warningAcknowledged": true,
+    "warningGrantsActionAuthority": false
+  },
+  "versions": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "ack",
+      "nodes": [
+        {
+          "id": "ack",
+          "type": "QUESTION",
+          "text": "В сохранённой записи есть достоверное подтверждение отключения ГВ после штатной команды?",
+          "responses": {
+            "YES": "confirmed",
+            "NO": "indicator",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "indicator",
+          "type": "QUESTION",
+          "text": "Было ли уже зафиксировано противоречие между индикацией и предполагаемым состоянием ГВ?",
+          "responses": {
+            "YES": "conflict",
+            "NO": "not-confirmed",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "confirmed",
+          "type": "OBSERVATION_REPORT",
+          "text": "По исходной записи отключение подтверждалось. Нужно проверять классификацию события, не выдавая разрешения на доступ к оборудованию.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "conflict",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксировано противоречие индикации. Безопасное состояние силовой цепи НЕ доказано.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "not-confirmed",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие подтверждения отключения не означает безопасное снятие напряжения.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нельзя считать электрическую цепь обесточенной, когда исходные сведения неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "short-no-feedback",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-no-open\")",
+          "approachFocus": "NO_DISCONNECTION_FEEDBACK",
+          "approachSummary": "В источнике отсутствие штатного подтверждения отключения отделено от конкретного дефекта.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-short-no-feedback",
+          "nodes": [
+            {
+              "id": "q-short-no-feedback",
+              "type": "QUESTION",
+              "text": "Есть ли в исходном сообщении указание на отсутствие подтверждения отключения?",
+              "responses": {
+                "YES": "yes-short-no-feedback",
+                "NO": "no-short-no-feedback",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-short-no-feedback",
+              "type": "OBSERVATION_REPORT",
+              "text": "В источнике отсутствие штатного подтверждения отключения отделено от конкретного дефекта.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-short-no-feedback",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "short-indicator-conflict",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-no-open\")",
+          "approachFocus": "CONFLICTING_INDICATION",
+          "approachSummary": "Источник отдельно обозначает несовпадение штатной индикации и предполагаемого состояния.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-short-indicator-conflict",
+          "nodes": [
+            {
+              "id": "q-short-indicator-conflict",
+              "type": "QUESTION",
+              "text": "Упоминалась ли в исходных наблюдениях противоречивая индикация?",
+              "responses": {
+                "YES": "yes-short-indicator-conflict",
+                "NO": "no-short-indicator-conflict",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-short-indicator-conflict",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник отдельно обозначает несовпадение штатной индикации и предполагаемого состояния.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-short-indicator-conflict",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "ack",
+      "nodes": [
+        {
+          "id": "ack",
+          "type": "QUESTION",
+          "text": "В исходном сообщении есть прямое подтверждение отключения ГВ после штатной команды?",
+          "responses": {
+            "YES": "confirmed",
+            "NO": "conflicting",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "conflicting",
+          "type": "QUESTION",
+          "text": "Записано ли противоречие между штатной индикацией и предполагаемым состоянием ГВ?",
+          "responses": {
+            "YES": "conflict",
+            "NO": "feedback",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "feedback",
+          "type": "QUESTION",
+          "text": "Была ли вообще зафиксирована реакция штатной сигнализации на команду отключения?",
+          "responses": {
+            "YES": "feedback-recorded",
+            "NO": "risk",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "risk",
+          "type": "QUESTION",
+          "text": "Отмечено ли в сообщении, что обесточенность силовой цепи невозможно подтвердить?",
+          "responses": {
+            "YES": "risk-recorded",
+            "NO": "insufficient",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "confirmed",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отключение обозначено как подтверждённое в записи. Это не право на осмотр ВВК или операцию.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "conflict",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состояние индикации противоречиво; конкретная причина неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "feedback-recorded",
+          "type": "OBSERVATION_REPORT",
+          "text": "Реакция индикации записана, но фактическое безопасное состояние ГВ не доказано.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "risk-recorded",
+          "type": "STOP",
+          "text": "Неопределённая обесточенность зарегистрирована. Сценарий не содержит команд для исправления.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "insufficient",
+          "type": "STOP",
+          "text": "Исходной записи недостаточно для заключения о состоянии силовой цепи.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестный ответ не разрешает следующие действия.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "detailed-command-vs-feedback",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-no-open\")",
+          "approachFocus": "COMMAND_AND_FEEDBACK_SEPARATED",
+          "approachSummary": "Поданная команда и полученная сигнализация не являются доказательством гарантированного обесточивания.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-command-vs-feedback",
+          "nodes": [
+            {
+              "id": "q-detailed-command-vs-feedback",
+              "type": "QUESTION",
+              "text": "Отдельно ли были записаны команда и реакция индикации?",
+              "responses": {
+                "YES": "yes-detailed-command-vs-feedback",
+                "NO": "no-detailed-command-vs-feedback",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-command-vs-feedback",
+              "type": "OBSERVATION_REPORT",
+              "text": "Поданная команда и полученная сигнализация не являются доказательством гарантированного обесточивания.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-command-vs-feedback",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-cannot-confirm-safe",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-no-open\")",
+          "approachFocus": "ENERGIZED_STATE_NOT_EXCLUDED",
+          "approachSummary": "Опасное следствие исходной записи: отсутствие подтверждения не доказывает безопасного состояния.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-cannot-confirm-safe",
+          "nodes": [
+            {
+              "id": "q-detailed-cannot-confirm-safe",
+              "type": "QUESTION",
+              "text": "Было ли явно указано, что безопасное отключение не установлено?",
+              "responses": {
+                "YES": "yes-detailed-cannot-confirm-safe",
+                "NO": "no-detailed-cannot-confirm-safe",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-cannot-confirm-safe",
+              "type": "OBSERVATION_REPORT",
+              "text": "Опасное следствие исходной записи: отсутствие подтверждения не доказывает безопасного состояния.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-cannot-confirm-safe",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-fault-not-proven",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"gv-no-open\")",
+          "approachFocus": "UNKNOWN_ORIGIN_NOT_A_CAUSE",
+          "approachSummary": "Симптом не устанавливает, что неисправна конкретная катушка, контакт или цепь.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-fault-not-proven",
+          "nodes": [
+            {
+              "id": "q-detailed-fault-not-proven",
+              "type": "QUESTION",
+              "text": "В описании есть только противоречие индикации, без доказанной причины?",
+              "responses": {
+                "YES": "yes-detailed-fault-not-proven",
+                "NO": "no-detailed-fault-not-proven",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-fault-not-proven",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не устанавливает, что неисправна конкретная катушка, контакт или цепь.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-fault-not-proven",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "researchReviewStatus": "DRAFT_ONLY_NOT_CONTENT_APPROVED",
+  "remainingVerification": [
+    "Текущая схема конкретного исполнения не установлена",
+    "Методы и гипотезы не прошли независимую предметную экспертизу",
+    "Ограничения допуска и безопасность требуют отдельной проверки",
+    "Реальное отображение расширенного режима в Android не проверено"
+  ]
+}

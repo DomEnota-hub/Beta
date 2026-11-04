@@ -297,6 +297,12 @@ jobs:
       - name: Stage 6 negative source and no-action cases
         run: python3 -m unittest discover -s qa -p test_stage6_separation.py
 
+      - name: Validate Stage 6 source-only contrasting diagnostic routes
+        run: python3 qa/validate_stage6_routes.py
+
+      - name: Stage 6 negative gates for source, profile and historic alternatives
+        run: python3 -m unittest discover -s qa -p test_stage6_routes.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
