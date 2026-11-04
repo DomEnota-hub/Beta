@@ -127,9 +127,11 @@ def validate(d):
     require(d["short"]["nodes"] != d["detailed"]["nodes"], "SHORT copied into DETAILED")
     require(len(focus) >= 3, "methods not varied")
     if d["scenarioId"] == "vl80s.diag.gv-no-close":
-        require(sources["gv2018"]["usableForScenario"] is False
-                and sources["gv2018"]["claimScopeStatus"] == "SOURCE_SECTION_MISMATCH_UNRESOLVED",
-                "2018 GV provenance error restored")
+        require(sources["gv2018"]["usableForScenario"] is True
+                and sources["gv2018"]["claimScopeStatus"] == "HISTORICAL_GV_SECTION_FOUND_NO_CURRENT_ACTION_AUTHORITY"
+                and sources["gv2018"]["authorityForCurrentLocomotive"] is False
+                and d["integrationAudit"]["gv2018SourceCorrection"]["safeHistoricalOperationalProceduresImported"] is False,
+                "historical GV section must remain non-operational")
     elif d["scenarioId"] == "vl80s.diag.ekg-stuck":
         require(sources["ekgdepot"]["claimScopeStatus"] == "EXACT_LOCAL_CLAUSE_UNVERIFIED",
                 "Bataisk local instruction wrongly verified")

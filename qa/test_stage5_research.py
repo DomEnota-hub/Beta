@@ -60,9 +60,15 @@ class Stage5ResearchTests(unittest.TestCase):
             sourceRefs=["gvbook2005"]))
     def test_independent_main_graphs(self):
         self.reject(lambda d: d["detailed"].update(nodes=d["short"]["nodes"]))
-    def test_wrong_2018_gv_citation_stays_blocked(self):
-        self.assertFalse(self.fixture()["sourceRecords"]["gv2018"]["usableForScenario"])
-        self.reject(lambda d: d["short"]["extendedRoutes"][1].update(sourceId="gv2018"))
+    def test_gv_2018_section_is_historical_only(self):
+        d=self.fixture()
+        self.assertTrue(d["sourceRecords"]["gv2018"]["usableForScenario"])
+        self.assertFalse(d["sourceRecords"]["gv2018"]["authorityForCurrentLocomotive"])
+        self.assertFalse(d["sourceRecords"]["gv2018"]["safeToExecuteHistoricalProcedures"])
+        self.assertEqual(d["sourceRecords"]["gv2018"]["claimScopeStatus"],
+                         "HISTORICAL_GV_SECTION_FOUND_NO_CURRENT_ACTION_AUTHORITY")
+        self.reject(lambda d:d["sourceRecords"]["gv2018"].update(
+            authorityForCurrentLocomotive=True))
     def test_bataisk_instruction_is_historical(self):
         self.assertEqual(self.fixture("ekg")["sourceRecords"]["ekgdepot"]["claimScopeStatus"],
                          "EXACT_LOCAL_CLAUSE_UNVERIFIED")
