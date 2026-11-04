@@ -309,6 +309,12 @@ jobs:
       - name: Negative Stage 6 historical evidence and source-authority checks
         run: python3 -m unittest discover -s qa -p test_stage6_claim_ledger.py
 
+      - name: Verify Stage 6 historical equipment variants and crew vs repair authority
+        run: python3 qa/validate_stage6_equipment_role_gate.py
+
+      - name: Negative Stage 6 serial number and operational-authority fixtures
+        run: python3 -m unittest discover -s qa -p test_stage6_equipment_role_gate.py
+
       - name: Reconcile Package B generator source labels and rules
         run: python3 qa/reconcile_stepwise_generator_contract.py
 
