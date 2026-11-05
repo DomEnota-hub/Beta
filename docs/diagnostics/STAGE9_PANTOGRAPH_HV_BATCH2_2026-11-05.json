@@ -1,0 +1,2645 @@
+{
+  "ledger": {
+    "schemaVersion": "stage9-hv-pantograph-batch2/1",
+    "date": "2026-11-05",
+    "stage": "9/51",
+    "baseHead": "89a2b4d20e7b8775a742f0a1a4a7e1ba5dab647a",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+    "scenarioIds": [
+      "vl80s.diag.gv-air-loss",
+      "vl80s.diag.pantograph-contact-arcing",
+      "vl80s.diag.pantograph-slow-rise",
+      "vl80s.diag.pantograph-wrong-selection",
+      "vl80s.diag.roof-insulation-signs"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceAudit": "Directly read factory manual 1990 and independently authored 2006 textbook; both historical, neither current operating authority.",
+    "next": "Verify CI then continue remaining distinct high-voltage scenarios transformer-oil-signs and vvk-interlock-fault; no runtime promotion."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_PANTOGRAPH_ROOF_BATCH2",
+      "scenarioId": "vl80s.diag.gv-air-loss",
+      "originalId": "gv-air-loss",
+      "category": "Высоковольтные цепи",
+      "title": "Падает давление в резервуаре ГВ",
+      "summary": "Запас воздуха привода ГВ не сохраняется или восстанавливается слишком медленно.",
+      "canonicalBoundary": "GV_RESERVOIR_AIR_LOSS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.gv-no-close",
+        "vl80s.diag.gv-no-open",
+        "vl80s.diag.main-reservoir-leak",
+        "vl80s.diag.compressor-pressure"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"gv-air-loss\"",
+          "seedFields": {
+            "equipment": "ГВ, резервуар, пневмопривод",
+            "signs": "шипение, падение давления",
+            "danger": "неуправляемое состояние ГВ"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §2, печ. стр. 56–57: ГВ ВОВ-25А-10/400, резервуар и пневмопривод; данные исторического исполнения",
+            "Раздел А, XI, печ. стр. 219: цепь удержания ГВ и реле минимального давления РД; уставки не импортируются"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 6 §6.2, печ. стр. 203–216: ГВ, резервуар и блок управления, историческое учебное описание",
+            "Глава 9, пневматические цепи, печ. стр. 390: разделение запасного воздуха и путей питания аппаратов"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "gv-air-loss-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §2, печ. стр. 56–57: ГВ ВОВ-25А-10/400, резервуар и пневмопривод; данные исторического исполнения",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "gv-air-loss-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI, печ. стр. 219: цепь удержания ГВ и реле минимального давления РД; уставки не импортируются",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "gv-air-loss-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.2, печ. стр. 203–216: ГВ, резервуар и блок управления, историческое учебное описание",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "gv-air-loss-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 9, пневматические цепи, печ. стр. 390: разделение запасного воздуха и путей питания аппаратов",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована невозможность гарантированного отключения ГВ, дым или утечка с угрозой управлению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Снижение давления записано именно для резервуара ГВ, а не только главных резервуаров?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована невозможность гарантированного отключения ГВ, дым или утечка с угрозой управлению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Снижение давления записано именно для резервуара ГВ, а не только главных резервуаров?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сигнал реле минимального давления РД ранее был записан отдельно от показания манометра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В журнале отмечено одновременное падение давления главных резервуаров?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В исходных данных указан момент падения давления после прекращения работы компрессора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известна конкретная секция и точка измерения без нового измерения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сравнивались ранее записанные показания разных приборов, а не предположение об утечке?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Наличие конкретного исполнения ГВ и действующей схемы независимо подтверждено?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "gv-air-loss-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "ГВ и ГР не одно и то же",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §2, печ. стр. 56–57: ГВ ВОВ-25А-10/400, резервуар и пневмопривод; данные исторического исполнения",
+          "text": "Падение давления в резервуаре ГВ не тождественно падению в ГР. Сопоставление старых показаний может лишь локализовать неопределённость, а не подтвердить место утечки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "gv-air-loss-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Реле РД как индикация, а не диагноз",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 9, пневматические цепи, печ. стр. 390: разделение запасного воздуха и путей питания аппаратов",
+          "text": "РД относится к цепи разрешения ГВ, но его состояние без подтверждённого исполнения и независимых показаний не доказывает повреждение пневмопривода.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "gv-air-loss-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Утечка и источник воздуха",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §2, печ. стр. 56–57: ГВ ВОВ-25А-10/400, резервуар и пневмопривод; данные исторического исполнения",
+          "text": "Одинаковое снижение давления может быть связано с подводом воздуха, резервуаром, прибором или приводом; при отсутствии схемы секции все причины остаются гипотезами.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "gv-air-loss-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Не переносить исторические уставки",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI, печ. стр. 219: цепь удержания ГВ и реле минимального давления РД; уставки не импортируются",
+          "text": "Значения и порядок действий из издания 1990 года не являются действующей нормой конкретной машины. Повторный пуск компрессора или ГВ ради диагностики не предлагается.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "gv-air-loss-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Отдельная опасность неотключения",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.2, печ. стр. 203–216: ГВ, резервуар и блок управления, историческое учебное описание",
+          "text": "Если невозможно достоверно установить безопасное состояние ГВ, это отдельная критическая граница, а не обычный отказ наполнения. STOP и передача ответственным.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_PANTOGRAPH_ROOF_BATCH2",
+      "scenarioId": "vl80s.diag.pantograph-contact-arcing",
+      "originalId": "pantograph-contact-arcing",
+      "category": "Высоковольтные цепи",
+      "title": "Повышенное искрение токоприёмника",
+      "summary": "На полозе наблюдается устойчивое или необычно сильное искрение.",
+      "canonicalBoundary": "PANTOGRAPH_CONTACT_ARCING",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.pantograph-slow-rise",
+        "vl80s.diag.roof-insulation-signs",
+        "vl80s.diag.substation-protection-roof",
+        "vl80s.diag.pantograph-no-rise"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"pantograph-contact-arcing\"",
+          "seedFields": {
+            "equipment": "токоприёмник, полоз, контактная сеть",
+            "signs": "искрение, хлопки, следы нагрева",
+            "danger": "дуга, разрушение полоза, повреждение контактного провода"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: полоз, каретки и различия Л-13У1/Л-1У1",
+            "Приложение 19, печ. стр. 433: ухудшение токосъёма и искрение, возможная связь со статическим нажатием; регулировка не импортируется"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 5 §5.2, печ. стр. 148–152, рис. 5.3–5.4: полоз и каретки Л-13У1",
+            "Глава 6 §6.2, печ. стр. 203: дуга при нарушении контакта с проводом, без разрешения испытаний"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "pantograph-contact-arcing-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: полоз, каретки и различия Л-13У1/Л-1У1",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-contact-arcing-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Приложение 19, печ. стр. 433: ухудшение токосъёма и искрение, возможная связь со статическим нажатием; регулировка не импортируется",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-contact-arcing-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 5 §5.2, печ. стр. 148–152, рис. 5.3–5.4: полоз и каретки Л-13У1",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-contact-arcing-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.2, печ. стр. 203: дуга при нарушении контакта с проводом, без разрешения испытаний",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В прежнем сообщении отмечены устойчивая дуга, повреждение провода, дым или вспышка?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Искрение описано как необычно частое при известных погодных условиях, а не кратковременное событие?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В прежнем сообщении отмечены устойчивая дуга, повреждение провода, дым или вспышка?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Искрение описано как необычно частое при известных погодных условиях, а не кратковременное событие?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В журнале есть независимое сообщение о состоянии контактного провода?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указаны секция и токоприёмник, но без предположения о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены погодные условия и участок пути в момент события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В документах известен тип полоза/каретки конкретного токоприёмника?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранилось наблюдение о характере искрения до прекращения нагрузки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть подтверждённые данные, позволяющие отличить повреждение полоза от контактной сети без осмотра крыши?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "pantograph-contact-arcing-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Наблюдение дуги и граница опасности",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: полоз, каретки и различия Л-13У1/Л-1У1",
+          "text": "Устойчивая дуга и сообщение о повреждении провода являются опасными признаками. Ни наблюдение из кабины, ни архивная таблица не разрешают повторять движение для проверки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-contact-arcing-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Полоз, каретка, контактная сеть",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Приложение 19, печ. стр. 433: ухудшение токосъёма и искрение, возможная связь со статическим нажатием; регулировка не импортируется",
+          "text": "Слабое контактное нажатие описано как возможный исторический фактор ухудшения токосъёма, но искрение не доказывает неисправность полоза, каретки или сети.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-contact-arcing-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Погодные условия не доказывают причину",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: полоз, каретки и различия Л-13У1/Л-1У1",
+          "text": "Архивный признак повышенного искрения при хорошей погоде не означает, что плохая погода объясняет любой разряд. Варианты остаются открытыми.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-contact-arcing-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Л-13У1 и Л-1У1 различаются",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Приложение 19, печ. стр. 433: ухудшение токосъёма и искрение, возможная связь со статическим нажатием; регулировка не импортируется",
+          "text": "Руководство 1990 года отдельно описывает изменение каретки и полоза на части локомотивов. Без идентификации аппарата не переносить конструкцию и регулировки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-contact-arcing-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Искрение не равно пробою крыши",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 5 §5.2, печ. стр. 148–152, рис. 5.3–5.4: полоз и каретки Л-13У1",
+          "text": "Контактная дуга у полоза, перекрытие крышевой изоляции и срабатывание подстанции имеют пересекающиеся признаки, но разные диагностические границы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_PANTOGRAPH_ROOF_BATCH2",
+      "scenarioId": "vl80s.diag.pantograph-slow-rise",
+      "originalId": "pantograph-slow-rise",
+      "category": "Высоковольтные цепи",
+      "title": "Токоприёмник поднимается медленно или не удерживает положение",
+      "summary": "Подъём затянут, давление теряется либо токоприёмник самопроизвольно опускается.",
+      "canonicalBoundary": "PANTOGRAPH_SLOW_RISE_OR_LOSS_OF_HOLD",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.pantograph-no-rise",
+        "vl80s.diag.pantograph-contact-arcing",
+        "vl80s.diag.gv-air-loss",
+        "vl80s.diag.pantograph-wrong-selection"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"pantograph-slow-rise\"",
+          "seedFields": {
+            "equipment": "клапан №245, привод токоприёмника, воздушная магистраль",
+            "signs": "шипение, замедленный подъём, падение давления",
+            "danger": "повреждение рамы, дуга, касание контактной сети"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: пневмопривод, опускающие и подъемные пружины, исполнения кареток",
+            "Приложение 19, печ. стр. 433: медленное самопроизвольное опускание и нарушение герметичности; ремонт не импортируется"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 5 §5.2, печ. стр. 148–152: устройство и действие пневмопривода Л-13У1",
+            "Глава 7 §7.9, печ. стр. 261–266: вентиль 245 и цепь подачи воздуха; вариант исполнения требует сверки"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "pantograph-slow-rise-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: пневмопривод, опускающие и подъемные пружины, исполнения кареток",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-slow-rise-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Приложение 19, печ. стр. 433: медленное самопроизвольное опускание и нарушение герметичности; ремонт не импортируется",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-slow-rise-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 5 §5.2, печ. стр. 148–152: устройство и действие пневмопривода Л-13У1",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-slow-rise-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7 §7.9, печ. стр. 261–266: вентиль 245 и цепь подачи воздуха; вариант исполнения требует сверки",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Были записаны самопроизвольное опускание, опасная дуга или повреждение токоприёмника?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Ранее зафиксирован именно замедленный подъём, а не полный отказ подниматься?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Были записаны самопроизвольное опускание, опасная дуга или повреждение токоприёмника?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Ранее зафиксирован именно замедленный подъём, а не полный отказ подниматься?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отдельно зафиксировано опускание после первоначального подъёма?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть запись о падении давления, но без нового воздействия на вентиль?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известно, какой аппарат и на какой секции проявил признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Установлено, что индикация выбора совпадала с фактическим аппаратом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В журнале различены воздушный путь, механизм каретки и блокировка ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Тип Л-13У1/Л-1У1 и состояние схемы конкретной секции подтверждены документально?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "pantograph-slow-rise-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Замедленный подъём и самопроизвольный спуск",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: пневмопривод, опускающие и подъемные пружины, исполнения кареток",
+          "text": "Эти симптомы не равны друг другу: первый относится к динамике подъёма, второй к удержанию после подъёма. Один механизм может участвовать в обоих, но причина не доказана.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-slow-rise-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Воздух и механика различаются",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7 §7.9, печ. стр. 261–266: вентиль 245 и цепь подачи воздуха; вариант исполнения требует сверки",
+          "text": "В историческом описании пневматика противодействует опускающим пружинам; дефект герметичности и механическое заедание требуют разных подтверждений, не новых пробных подъёмов.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-slow-rise-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Отказ подъёма выделен отдельно",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §1, печ. стр. 54–55, рис. 65–67: пневмопривод, опускающие и подъемные пружины, исполнения кареток",
+          "text": "Полное отсутствие подъёма уже относится к `pantograph-no-rise`. Этот сценарий не переписывает эталон и не использует его разрешения или предполагаемые ID.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-slow-rise-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Исполнение каретки и клапана",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Приложение 19, печ. стр. 433: медленное самопроизвольное опускание и нарушение герметичности; ремонт не импортируется",
+          "text": "Издания 1990/2006 описывают конкретные конструкции и клапан 245. Без подтверждения заводского номера и модернизаций нельзя назначать аппарат, уставки и маршрут ремонта.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-slow-rise-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Блокировки не обходить",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 5 §5.2, печ. стр. 148–152: устройство и действие пневмопривода Л-13У1",
+          "text": "Несогласованность выбора, давления или блокировки ВВК не устраняется обходом ПБ1/ПБ2 и реле 248. Любое неизвестное состояние сохраняет STOP/BLOCKED.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_PANTOGRAPH_ROOF_BATCH2",
+      "scenarioId": "vl80s.diag.pantograph-wrong-selection",
+      "originalId": "pantograph-wrong-selection",
+      "category": "Высоковольтные цепи",
+      "title": "Не соответствует выбор токоприёмника",
+      "summary": "Поднимается не выбранный аппарат либо индикация не совпадает с фактическим положением.",
+      "canonicalBoundary": "PANTOGRAPH_SELECTION_MISMATCH",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.pantograph-no-rise",
+        "vl80s.diag.pantograph-slow-rise",
+        "vl80s.diag.section-control-loss",
+        "vl80s.diag.vvk-interlock-fault"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"pantograph-wrong-selection\"",
+          "seedFields": {
+            "equipment": "токоприёмники, цепь выбора, межсекционные соединения",
+            "signs": "несоответствие команды и положения",
+            "danger": "подъём повреждённого аппарата, одновременное нештатное состояние"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, XI, печ. стр. 216–217, рис. 252: цепь выбора переднего/заднего токоприёмника, вентиль 245, реле 248",
+            "Раздел А, XI, печ. стр. 216–217: пневмоблокировки ПБ1/ПБ2 и межсекционные связи, без права переносить схему на все исполнения"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 7 §7.9, печ. стр. 261–266: электропневматические вентили и пневматическая блокировка ВВК",
+            "Глава 10 §10.3, печ. стр. 500, рис. 10.20: расположение крышевого оборудования; не доказывает фактический выбор"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "pantograph-wrong-selection-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI, печ. стр. 216–217, рис. 252: цепь выбора переднего/заднего токоприёмника, вентиль 245, реле 248",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-wrong-selection-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI, печ. стр. 216–217: пневмоблокировки ПБ1/ПБ2 и межсекционные связи, без права переносить схему на все исполнения",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-wrong-selection-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7 §7.9, печ. стр. 261–266: электропневматические вентили и пневматическая блокировка ВВК",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "pantograph-wrong-selection-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 10 §10.3, печ. стр. 500, рис. 10.20: расположение крышевого оборудования; не доказывает фактический выбор",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записано нештатное поднятие повреждённого аппарата, дуга или неопределённое безопасное состояние?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: По прежним данным выбор на пульте расходился с фактически замеченным аппаратом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записано нештатное поднятие повреждённого аппарата, дуга или неопределённое безопасное состояние?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: По прежним данным выбор на пульте расходился с фактически замеченным аппаратом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отдельно зафиксировано только расхождение лампы без независимого наблюдения положения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В журнале есть схема состава секций и указание ведущей кабины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть сведения, что управление одной секцией работало иначе, чем другой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известно, что именно означали «передний» и «задний» в текущей конфигурации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записана работа реле/вентиля только как индикация, а не доказанная причина?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Имеется действующая схема межсекционного соединения конкретного исполнения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "pantograph-wrong-selection-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Команда, индикация, положение",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI, печ. стр. 216–217, рис. 252: цепь выбора переднего/заднего токоприёмника, вентиль 245, реле 248",
+          "text": "Несовпадение лампы с командой не доказывает подъём другого аппарата. Фактическое положение требует независимого уже имеющегося наблюдения; новые подъёмы запрещены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-wrong-selection-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Передний/задний не универсальная карта",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI, печ. стр. 216–217: пневмоблокировки ПБ1/ПБ2 и межсекционные связи, без права переносить схему на все исполнения",
+          "text": "В исторической схеме кнопки, реле 248 и вентиль 245 связаны межсекционными цепями. Переименование секций по направлению движения без схемы может дать ошибку.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-wrong-selection-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Межсекционные соединения и варианты",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI, печ. стр. 216–217, рис. 252: цепь выбора переднего/заднего токоприёмника, вентиль 245, реле 248",
+          "text": "Нельзя переносить номера проводов, реле или соответствие кнопок между изменёнными исполнениями. Авторский `vl80s-general` не является профилем реальной машины.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-wrong-selection-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Блокировки ВВК отдельный сценарий",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 10 §10.3, печ. стр. 500, рис. 10.20: расположение крышевого оборудования; не доказывает фактический выбор",
+          "text": "Отсутствие разрешения подъёма при разомкнутой блокировке не означает ошибочного выбора. Сценарий `vvk-interlock-fault` сохраняет самостоятельную границу.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pantograph-wrong-selection-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Различить команду и физическое событие",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7 §7.9, печ. стр. 261–266: электропневматические вентили и пневматическая блокировка ВВК",
+          "text": "Даже при совпадении команды и индикации физическое положение может оставаться UNKNOWN. Операции с крышей, вентиляторами, разъединителями и блокировками не разрешаются.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_PANTOGRAPH_ROOF_BATCH2",
+      "scenarioId": "vl80s.diag.roof-insulation-signs",
+      "originalId": "roof-insulation-signs",
+      "category": "Высоковольтные цепи",
+      "title": "Признаки пробоя крышевой изоляции",
+      "summary": "Наблюдаются треск, следы перекрытия или необычное свечение на крышевом оборудовании.",
+      "canonicalBoundary": "ROOF_INSULATION_FLASHOVER_SIGNS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.substation-protection-roof",
+        "vl80s.diag.pantograph-contact-arcing",
+        "vl80s.diag.transformer-protection",
+        "vl80s.diag.pantograph-no-rise"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"roof-insulation-signs\"",
+          "seedFields": {
+            "equipment": "крышевые шины, изоляторы, токоприёмник",
+            "signs": "треск, вспышки, следы копоти",
+            "danger": "дуга, пожар, повреждение контактной сети"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §54, печ. стр. 145: исторические аппараты защиты от перенапряжений, не доказательство причины пробоя",
+            "Раздел Б, печ. стр. 305: осмотр изоляторов и повреждений при ремонте; никаких крышевых операций не импортируется"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 10 §10.3, печ. стр. 500, рис. 10.20: крышевые изоляторы, шины и аппаратная компоновка",
+            "Глава 6 §6.1, печ. стр. 202–203: дуга и пробой изоляции как разные аварийные явления"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "roof-insulation-signs-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §54, печ. стр. 145: исторические аппараты защиты от перенапряжений, не доказательство причины пробоя",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "roof-insulation-signs-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 305: осмотр изоляторов и повреждений при ремонте; никаких крышевых операций не импортируется",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "roof-insulation-signs-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 10 §10.3, печ. стр. 500, рис. 10.20: крышевые изоляторы, шины и аппаратная компоновка",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "roof-insulation-signs-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.1, печ. стр. 202–203: дуга и пробой изоляции как разные аварийные явления",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены дуга, устойчивое свечение, дым или признаки продолжающегося перекрытия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В исходном сообщении треск или следы перекрытия локализованы именно на крыше?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены дуга, устойчивое свечение, дым или признаки продолжающегося перекрытия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В исходном сообщении треск или следы перекрытия локализованы именно на крыше?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть отдельное подтверждение повреждения контактной сети?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известна секция и время первого события без выхода на крышу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В журнале отличено искрение на полозе от разряда на изоляторе?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Существуют прежние фотографии или акты осмотра с установленным происхождением?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено срабатывание подстанции, но без вывода о повреждении крыши?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Конкретные изоляторы и оборудование крыши подтверждены схемой данной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно прежних записей либо исполнение не подтверждено. STOP/BLOCKED; никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Зафиксирован опасный признак. Остановить информационный маршрут и передать сведения ответственным согласно действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения только систематизированы. Причина, пригодность аппарата и разрешение на работу НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин не удалось; UNKNOWN/BLOCKED, никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "roof-insulation-signs-extension-1",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Треск и следы не локализуют дефект",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 10 §10.3, печ. стр. 500, рис. 10.20: крышевые изоляторы, шины и аппаратная компоновка",
+          "text": "Треск, свечение и копоть могут относиться к нескольким элементам. Ни один из этих признаков без проверенной локализации не доказывает пробой конкретного изолятора.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "roof-insulation-signs-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Крышевая шина и токоприёмник",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.1, печ. стр. 202–203: дуга и пробой изоляции как разные аварийные явления",
+          "text": "На крыше находятся разные аппараты, шины, изоляторы и шунты. Повреждение полоза или контактной сети нельзя автоматически записывать как пробой крышевой изоляции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "roof-insulation-signs-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Подстанционная защита отдельна",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §54, печ. стр. 145: исторические аппараты защиты от перенапряжений, не доказательство причины пробоя",
+          "text": "Событие на подстанции может совпадать по времени с разрядом, но не устанавливает место дефекта. `substation-protection-roof` хранит самостоятельную причинную границу.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "roof-insulation-signs-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Архивные разрядники и исполнения",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 305: осмотр изоляторов и повреждений при ремонте; никаких крышевых операций не импортируется",
+          "text": "Указанные в книгах ограничители перенапряжений и разрядники относятся к описанным историческим вариантам. Современное оборудование конкретной секции неизвестно.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "roof-insulation-signs-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Никакого осмотра крыши по карточке",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 10 §10.3, печ. стр. 500, рис. 10.20: крышевые изоляторы, шины и аппаратная компоновка",
+          "text": "Даже при наличии старых фотографий эта карточка только помогает оформить доклад. Подъём на крышу, приближение к контактной сети, заземление и измерения не предлагаются.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    }
+  ]
+}
