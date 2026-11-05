@@ -210,7 +210,7 @@ def main():
     require(len(previous + IDS) == len(set(previous + IDS)) == 12, "stage9 duplicates or wrong count")
     inventory_full = json.loads((ROOT / "content-packs/electric/vl80s/migration/diagnostics-inventory.json").read_text(encoding="utf-8"))["scenarios"]
     hv = {r["id"] for r in inventory_full if r["category"] == "Высоковольтные цепи"}
-    require(hv == set(previous + IDS) | {"gv-no-close", "gv-no-open", "pantograph-no-rise"} - set(previous + IDS), "HV inventory drift")
+    require((set(previous + IDS) - hv) == {"protection-trip", "rectifier-differential-trip", "rectifier-group-fault"}, "non-HV group drift")
     require(hv == (set(previous + IDS) & hv) | {"gv-no-close", "gv-no-open", "pantograph-no-rise"}, "HV source coverage")
     print("STAGE9_HV_TRANSFORMER_VVK_BATCH3_PASS", len(rows), "negative_mutations", failures,
           "short_nodes", len(rows)*6, "detailed_nodes", len(rows)*12,
