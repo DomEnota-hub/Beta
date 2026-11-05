@@ -57,7 +57,7 @@ def check(c):
   assert len(seen)==n
   assert sum(x["type"]=="QUESTION" for x in nodes)==(2 if mode=="SHORT" else 8)
   assert by["q1"]["responses"]["YES"]=="stop_danger"
- assert by["q2"]["responses"]["YES"] in ("report","q3")
+  assert by["q2"]["responses"]["YES"] in ("report","q3")
   assert by["stop_unknown"]["type"]==by["stop_danger"]["type"]==by["stop_unresolved"]["type"]=="STOP"
   assert by["report"]["type"]=="OBSERVATION_REPORT" and "НЕ" in by["report"]["text"]
  ext=c["informationExtensions"];assert len(ext)==5 and len({x["id"] for x in ext})==5
