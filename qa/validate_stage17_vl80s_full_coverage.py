@@ -74,7 +74,11 @@ def validate_candidate(c, donor, path):
                 continue
             seen.add(key)
             n = by_id[key]
-            require(n.get("operationRequested") is False, f"{ident}/{mode}: operation")
+            if "operationRequested" in n:
+                require(n["operationRequested"] is False, f"{ident}/{mode}: operation")
+            else:
+                require("stage4-pantograph" in path and n.get("permittedAction") is False,
+                        f"{ident}/{mode}: missing explicit no-action flag")
             if n["type"] == "QUESTION":
                 edges = n.get("responses", {})
                 require(set(edges) == {"YES", "NO", "UNKNOWN"},
