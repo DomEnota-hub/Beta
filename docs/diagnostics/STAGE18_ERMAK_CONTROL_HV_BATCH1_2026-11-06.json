@@ -1,0 +1,1591 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-batch1/1",
+    "date": "2026-11-06",
+    "baseHead": "9efb01baae1356abf664611585f52cb611865d7c",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-001",
+      "ER-DIAG-002",
+      "ER-DIAG-003"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "note": "Three high-risk and non-equivalent electrical cases; current instructions and installed execution not verified."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-source-first/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-001",
+      "scenarioId": "ermak.diag.ER-DIAG-001",
+      "title": "Нет напряжения в цепях управления",
+      "symptom": "После включения SA2/SA1 отсутствует питание цепей управления; возможна потеря питания при нейтральной вставке",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-006",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 1",
+          "role": "legacy_symptom_crosscheck_only"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "role": "current_procedure_crosscheck"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "role": "manufacturer_technical_basis_public_copy"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "role": "manufacturer_technical_basis_public_copy"
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-002",
+        "ER-DIAG-003"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-001",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 2007 и рекомендации 2010 не подтверждают современную комплектацию или эксплуатационные операции.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 имеют разные документальные основания; эквивалентность не установлена.",
+          "resolution": "NO_CROSS_PROFILE_INFERENCE"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "Отмечены дым, искрение или повреждение батарейной цепи?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Записана потеря питания цепей управления, а не только одного индикатора?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак; без переключений, обходов, измерений и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN/BLOCKED: данных недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом зарегистрирован, но причина и применимость не доказаны.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом относится к другому сценарию, не смешивать причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "Отмечены дым, искрение или повреждение батарейной цепи?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "В записи документально установлена ранняя схема МСУД-Н?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Записана потеря питания цепей управления, а не только одного индикатора?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Потеря питания связана по записи с нейтральной вставкой?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Есть независимая запись о состоянии батарейного питания, отличная от показаний индикации?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "legacy",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасность; никаких действий с оборудованием.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP, не считать отрицательным ответом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: ранняя схема не подтверждена; МСУД-Н не равна МСУД-015.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 разделяет питание А25, батареи GB1/GB2 и переход на батарейное питание; причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Рекомендации 2010 года предполагают F1/F2, но причинность и применимость не доказаны.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Записанных признаков недостаточно для выбора причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Другой класс отказа, без переноса гипотез.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-001.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "object.id / applicability",
+          "text": "Исходный ID и ранний профиль сохранены; никаких процедур из донора.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-001.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.1",
+          "text": "РЭ1 разделяет питание А25, батареи GB1/GB2 и переход на батарейное питание; причина не установлена.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-001.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "таблица, п. 1",
+          "text": "Рекомендации 2010 года предполагают F1/F2, но причинность и применимость не доказаны.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-001.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.1 / редакция 2007",
+          "text": "Историческая схема не доказывает комплектацию или неисправность конкретного электровоза.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-001.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "стр. 3–6, МСУД-015",
+          "text": "Буклет 2024 описывает другое поколение управления; схемная эквивалентность и серийные границы не установлены.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-002",
+      "scenarioId": "ermak.diag.ER-DIAG-002",
+      "title": "Не поднимается токоприёмник секции",
+      "symptom": "Не поднимается токоприёмник одной из секций",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-10",
+        "SYS-40",
+        "SYS-50",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-HV-001",
+        "ER-EQ-CT-012",
+        "ER-EQ-PN-010",
+        "ER-EQ-PN-011"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 2",
+          "role": "legacy_symptom_crosscheck_only"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, силовые и управляющие цепи",
+          "role": "manufacturer_technical_basis_public_copy"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025",
+          "role": "current_emergency_regulation"
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-001",
+        "ER-DIAG-003"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-002",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 2007 и рекомендации 2010 не подтверждают современную комплектацию или эксплуатационные операции.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 имеют разные документальные основания; эквивалентность не установлена.",
+          "resolution": "NO_CROSS_PROFILE_INFERENCE"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "Отмечены дуга, повреждение крыши или опасный признак токоприёмника?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Отказ подъёма записан для одной секции, а не для всего электровоза?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак; без переключений, обходов, измерений и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN/BLOCKED: данных недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом зарегистрирован, но причина и применимость не доказаны.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом относится к другому сценарию, не смешивать причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "Отмечены дуга, повреждение крыши или опасный признак токоприёмника?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Установлена ли по исходной документации ранняя схема блокировок МСУД-Н?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Отказ подъёма записан для одной секции, а не для всего электровоза?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Ранее раздельно зафиксированы признаки пневматики и блокировок ВВК?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Зафиксировано отличие отказа одной секции от нарушения межсекционной конфигурации?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "legacy",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасность; никаких действий с оборудованием.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP, не считать отрицательным ответом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: ранняя схема не подтверждена; МСУД-Н не равна МСУД-015.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 разделяет пневматику, защитный вентиль У1 и блокировки ВВК; новые проверки запрещены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "В 2010 году для 2ЭС5К/3ЭС5К приведены разные варианты резервирования; перенос QS-операций запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Записанных признаков недостаточно для выбора причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Другой класс отказа, без переноса гипотез.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-002.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "object.id / applicability",
+          "text": "Исходный ID и ранний профиль сохранены; никаких процедур из донора.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-002.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.2",
+          "text": "РЭ1 разделяет пневматику, защитный вентиль У1 и блокировки ВВК; новые проверки запрещены.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-002.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "таблица, п. 2",
+          "text": "В 2010 году для 2ЭС5К/3ЭС5К приведены разные варианты резервирования; перенос QS-операций запрещён.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-002.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.2 / редакция 2007",
+          "text": "Историческая схема не доказывает комплектацию или неисправность конкретного электровоза.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-002.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "стр. 3–6, МСУД-015",
+          "text": "Буклет 2024 описывает другое поколение управления; схемная эквивалентность и серийные границы не установлены.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-003",
+      "scenarioId": "ermak.diag.ER-DIAG-003",
+      "title": "Не включаются ГВ обеих секций",
+      "symptom": "Главные выключатели обеих секций не включаются",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-10",
+        "SYS-40",
+        "SYS-50"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-HV-004",
+        "ER-EQ-PN-010",
+        "ER-EQ-AU-008",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 3",
+          "role": "legacy_symptom_crosscheck_only"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, силовые и управляющие цепи",
+          "role": "manufacturer_technical_basis_public_copy"
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Практические рекомендации по 2ЭС5К/3ЭС5К, раннее исполнение МСУД-Н",
+          "locator": "СИ СЕТЬ / СИ САУТ / СИ СУЛР / СИ di/dt / СМЕ-МСУД",
+          "role": "legacy_symptom_crosscheck_only"
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-001",
+        "ER-DIAG-002"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-003",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 2007 и рекомендации 2010 не подтверждают современную комплектацию или эксплуатационные операции.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 имеют разные документальные основания; эквивалентность не установлена.",
+          "resolution": "NO_CROSS_PROFILE_INFERENCE"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "В записи есть дуга, дым или повторное защитное отключение ГВ?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Отмечено невключение ГВ обеих секций, а не одной?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак; без переключений, обходов, измерений и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN/BLOCKED: данных недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом зарегистрирован, но причина и применимость не доказаны.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом относится к другому сценарию, не смешивать причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "В записи есть дуга, дым или повторное защитное отключение ГВ?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Подтверждена ли ранняя схема управления ГВ МСУД-Н для этой машины?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Отмечено невключение ГВ обеих секций, а не одной?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Ранее записаны отдельно признаки давления и питания цепей управления?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Имеется отдельная запись о состоянии общей команды и секционных блокировок?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "legacy",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасность; никаких действий с оборудованием.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP, не считать отрицательным ответом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: ранняя схема не подтверждена; МСУД-Н не равна МСУД-015.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 описывает цепи разрешения ГВ и блокировки ВВК; включать ГВ ради проверки запрещено.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Таблица 2010 года различает питание ЦУ, пневматику и органы управления; пороги не переносятся.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Записанных признаков недостаточно для выбора причины.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Другой класс отказа, без переноса гипотез.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-003.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "object.id / applicability",
+          "text": "Исходный ID и ранний профиль сохранены; никаких процедур из донора.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-003.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.3",
+          "text": "РЭ1 описывает цепи разрешения ГВ и блокировки ВВК; включать ГВ ради проверки запрещено.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-003.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "таблица, п. 3",
+          "text": "Таблица 2010 года различает питание ЦУ, пневматику и органы управления; пороги не переносятся.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-003.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "§6.3 / редакция 2007",
+          "text": "Историческая схема не доказывает комплектацию или неисправность конкретного электровоза.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-003.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "стр. 3–6, МСУД-015",
+          "text": "Буклет 2024 описывает другое поколение управления; схемная эквивалентность и серийные границы не установлены.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    }
+  ]
+}
