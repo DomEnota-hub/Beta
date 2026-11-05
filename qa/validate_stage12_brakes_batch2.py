@@ -19,7 +19,7 @@ assert pack["ledger"]["baseHead"] == "88d390d1eb223e44818301acaf81b5b64035deb2"
 assert pack["ledger"]["donorSnapshotBlobSha"] == migration["sourceBlobSha"]
 assert pack["ledger"]["runtimeImport"] is False
 assert pack["ledger"]["actionAuthorityGranted"] is False
-assert set(pack["ledger"]["remainingCategoryIds"]) == {x["id"] for x in donor.values() if x["category"] == "Тормоза"} - set(expected)
+assert set(pack["ledger"]["remainingCategoryIds"]) == {x["id"] for x in donor.values() if x["category"] == "Тормоза"} - set(expected) - {"brake-cylinder-imbalance","brake-lock-state-mismatch","brake-pipe-leak","brake-pipe-no-charge","brake-rigging-damage"}
 
 def check(c):
     sid = c["originalId"]
