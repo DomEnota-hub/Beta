@@ -1,0 +1,1476 @@
+{
+  "ledger": {
+    "schemaVersion": "stage15-running-gear-closeout/1",
+    "date": "2026-11-05",
+    "stage": "15/51",
+    "baseHead": "f63295e2582ccca8d171a6f289a2023c1a184d88",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.traction-gear-noise",
+      "vl80s.diag.wheel-bearing-heat",
+      "vl80s.diag.wheel-flat-impact"
+    ],
+    "categorySourceCount": 8,
+    "remainingCategoryIds": [],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "sourceReview": "1990 archive verified by printed page; 2006 textbook not symptom-verified; modern requirements UNKNOWN",
+    "negativeMutationCount": 105
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage15-running-gear/1",
+      "stage": "15/51",
+      "scenarioId": "vl80s.diag.traction-gear-noise",
+      "originalId": "traction-gear-noise",
+      "category": "Ходовая часть",
+      "title": "Шум тяговой передачи",
+      "summary": "Появился гул, стук или вибрация, связанные со скоростью и тягой.",
+      "canonicalBoundary": "Шум зубчатой тяговой передачи не равен шуму моторно-осевого подшипника, буксы, ползуну колеса или механическому задеванию; зависимость от тяги и скорости лишь описывает признак, а не подтверждает дефект шестерён.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=traction-gear-noise]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 9: зубчатая передача и кожух",
+            "1990, печ. стр. 10–11: буксовый узел и подшипники",
+            "1990, печ. стр. 8: колесная пара и зубчатое колесо"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по старой записи есть сильные удары, быстро нарастающий шум, дым или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и условия возникновения шума?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по старой записи есть сильные удары, быстро нарастающий шум, дым или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и условия возникновения шума?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи шум сопоставлен со скоростью, без вывода о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно отмечена зависимость звука от режима тяги, без новых проб?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указано, что связь с тягой не подтверждена и источник остаётся неизвестным?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: ранее зафиксирован характер звука (гул или периодический стук) без нового осмотра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделены факты от предположений о зубьях, кожухе и смазке?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано, что конкретный узел и эксплуатационный допуск не установлены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "traction-gear-noise-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 9: зубчатая передача и кожух",
+          "text": "Зубчатая передача передаёт момент от вала ТЭД к колёсной паре; шум сам по себе не устанавливает повреждение зубьев.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-gear-noise-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 9: зубчатая передача и кожух",
+          "text": "Архив описывает кожух зубчатой передачи и его роль в размещении смазки; проверка состояния не разрешена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-gear-noise-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 10–11: буксовый узел и подшипники",
+          "text": "Буксовые подшипники описаны отдельно от зубчатой передачи; локализация по одному звуку недостоверна.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-gear-noise-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 8: колесная пара и зубчатое колесо",
+          "text": "Колёсная пара включает зубчатое колесо, но ритмичный удар не доказывает дефект передачи.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-gear-noise-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 9: зубчатая передача и кожух",
+          "text": "Пределы допуска по шуму и актуальные решения о движении по архивному описанию не определяются.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Зубчатая передача передаёт момент от вала ТЭД к колёсной паре; шум сам по себе не устанавливает повреждение зубьев.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 9: зубчатая передача и кожух",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Архив описывает кожух зубчатой передачи и его роль в размещении смазки; проверка состояния не разрешена.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 9: зубчатая передача и кожух",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Буксовые подшипники описаны отдельно от зубчатой передачи; локализация по одному звуку недостоверна.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 10–11: буксовый узел и подшипники",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года описывает зубчатую передачу и моторно-осевые опоры как разные элементы, но не подтверждает источник конкретного шума, состояние смазки, повреждение зубьев, допустимость дальнейшего движения или применимость конструкции к установленному исполнению. Буквальные донорские вопросы и действующие критерии неизвестны.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage15-running-gear/1",
+      "stage": "15/51",
+      "scenarioId": "vl80s.diag.wheel-bearing-heat",
+      "originalId": "wheel-bearing-heat",
+      "category": "Ходовая часть",
+      "title": "Нагрев буксы или подшипникового узла",
+      "summary": "Обнаружены повышенная температура, запах или изменение звука ходовой части.",
+      "canonicalBoundary": "Нагрев буксы, моторно-осевого подшипника и подшипников тягового двигателя имеют разные возможные источники. Запах, звук и температура из старой записи не позволяют установить место и причину нагрева, а тормозное трение рассматривается отдельно.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=wheel-bearing-heat]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 10–11: букса и роликовые подшипники",
+            "1990, печ. стр. 9: зубчатая передача и опоры тягового привода",
+            "1990, печ. стр. 6–7: тележка, буксы и тормозная система"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в прежних записях отмечены дым, сильный запах перегрева или быстрое ухудшение состояния?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны секция, тележка, сторона и время обнаружения признака?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в прежних записях отмечены дым, сильный запах перегрева или быстрое ухудшение состояния?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны секция, тележка, сторона и время обнаружения признака?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: прежние данные отделяют нагрев буксы от общего запаха у тележки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записан именно буксовый узел, а не моторно-осевая опора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что узел не был достоверно локализован?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть отдельная ранее полученная запись о характере звука или запаха?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделены предположения о подшипнике от возможного тормозного трения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено отсутствие подтверждённого температурного предела и допуска?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "wheel-bearing-heat-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 10–11: букса и роликовые подшипники",
+          "text": "Букса в архиве содержит роликовые подшипники; признаки нагрева не устанавливают дефект подшипника.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-bearing-heat-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 10–11: букса и роликовые подшипники",
+          "text": "Исторические типы и размеры подшипников не доказывают комплектацию конкретной секции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-bearing-heat-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 9: зубчатая передача и опоры тягового привода",
+          "text": "Зубчатая передача и моторно-осевые опоры относятся к другой части тягового привода; их нельзя смешивать с буксой.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-bearing-heat-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 6–7: тележка, буксы и тормозная система",
+          "text": "Тормозные элементы тележки описаны отдельно, поэтому запах перегрева не определяет узел.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-bearing-heat-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 10–11: букса и роликовые подшипники",
+          "text": "Действующие температурные пределы и правила ограничения движения по архиву не подтверждены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Букса в архиве содержит роликовые подшипники; признаки нагрева не устанавливают дефект подшипника.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 10–11: букса и роликовые подшипники",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Исторические типы и размеры подшипников не доказывают комплектацию конкретной секции.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 10–11: букса и роликовые подшипники",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Зубчатая передача и моторно-осевые опоры относятся к другой части тягового привода; их нельзя смешивать с буксой.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 9: зубчатая передача и опоры тягового привода",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Архив 1990 года описывает буксовые роликовые подшипники и моторно-осевые опоры раздельно, но не подтверждает фактическую локализацию, современный температурный предел, источник запаха, установленное исполнение или возможность дальнейшего движения. Не переносить ремонтные значения и методы проверки; буквальные донорские вопросы неизвестны.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage15-running-gear/1",
+      "stage": "15/51",
+      "scenarioId": "vl80s.diag.wheel-flat-impact",
+      "originalId": "wheel-flat-impact",
+      "category": "Ходовая часть",
+      "title": "Удары от ползуна или дефекта колеса",
+      "summary": "При движении слышны ритмичные удары, зависящие от скорости.",
+      "canonicalBoundary": "Ритмичный удар, зависящий от скорости, может быть связан с колёсной парой, но не доказывает ползун. Не смешивать с разовым ударом постороннего предмета, шумом зубчатой передачи, дефектом подвешивания или неотпуском тормоза.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=wheel-flat-impact]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 8: колесная пара и бандаж",
+            "1990, печ. стр. 6–7: тележка и тормозная система",
+            "1990, печ. стр. 9: зубчатая передача"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в старой записи отмечены сильные повторные удары, признаки разрушения или нестабильность движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и обстоятельства повторяющегося удара?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в старой записи отмечены сильные повторные удары, признаки разрушения или нестабильность движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и обстоятельства повторяющегося удара?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что удар повторялся ритмично, а не был единичным столкновением?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи есть связь частоты ударов со скоростью, без вывода о ползуне?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что периодичность удара не была подтверждена?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно зафиксированы ранее наблюдавшиеся признаки тормозного трения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделены сведения о колесе от гипотез о зубчатой передаче и подвешивании?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано отсутствие подтверждённых размеров дефекта и допуска к движению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "wheel-flat-impact-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 8: колесная пара и бандаж",
+          "text": "Колёсная пара содержит бандаж и колесный центр; удар не доказывает геометрию дефекта.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-flat-impact-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 8: колесная пара и бандаж",
+          "text": "Архивные описания конструкции колеса не заменяют действующие браковочные критерии.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-flat-impact-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 6–7: тележка и тормозная система",
+          "text": "Тележка включает тормозную систему; неотпуск тормоза нельзя автоматически приравнивать к ползуну.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-flat-impact-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 9: зубчатая передача",
+          "text": "Зубчатая передача является другим источником возможного ритмичного звука.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wheel-flat-impact-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 8: колесная пара и бандаж",
+          "text": "Допустимость движения, размеры ползуна и конкретная локализация остаются UNKNOWN/BLOCKED.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Колёсная пара содержит бандаж и колесный центр; удар не доказывает геометрию дефекта.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 8: колесная пара и бандаж",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Архивные описания конструкции колеса не заменяют действующие браковочные критерии.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 8: колесная пара и бандаж",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Тележка включает тормозную систему; неотпуск тормоза нельзя автоматически приравнивать к ползуну.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 6–7: тележка и тормозная система",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года описывает колесную пару, бандаж и тормозные элементы, но не подтверждает ползун по звуку, его размеры, современные браковочные пределы, место возникновения или возможность движения. Привязка к конкретной колесной паре и исполнению, а также буквальные вопросы донора не проверены.",
+      "originalQuestionTextVerified": false
+    }
+  ]
+}
