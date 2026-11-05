@@ -13,7 +13,7 @@ DONOR = "3176d6ee228f0ed4b78371f45209e10c1c724eff"
 BLOB = "0d94801dcbe1d96e1a551a9dac8fef2a808b9029"
 WARN = {"default":"HIDDEN","extendedEnabled":True,"warningReadToEnd":True,"warningAcknowledged":True,"warningGrantsActionAuthority":False}
 POLICY = {"observationOnly":True,"onlyPreviouslyRecorded":True,"triState":["YES","NO","UNKNOWN"],"unknownMustStop":True,"operationsAllowed":[],"unknownProfile":"BLOCKED"}
-FORBIDDEN = re.compile(r"(?i)\\b(?:включите|перемкните|замкните|вскройте|измерьте|запустите|сбросьте|повторите\\s+пуск|установите\\s+перемычку)\\b")
+FORBIDDEN = re.compile(r"(?i)\b(?:включите|перемкните|замкните|вскройте|измерьте|запустите|сбросьте|повторите\s+пуск|установите\s+перемычку)\b")
 def need(ok, msg):
     if not ok: raise ValueError(msg)
 def graph(nodes, start, sources, count):
