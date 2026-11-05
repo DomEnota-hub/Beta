@@ -13,7 +13,7 @@ EXPECTED=json.loads("{\"substation-protection-roof\":{\"title\":\"Сработа
 IDS=["substation-protection-roof","transformer-protection","protection-trip","rectifier-differential-trip","rectifier-group-fault"]
 DONOR="3176d6ee228f0ed4b78371f45209e10c1c724eff"
 BASE="e38676cbdaebd86ec6650b615425015f7e9560b0"
-FORBIDDEN=re.compile(r"(?i)\b(?:включите|перемкните|замкните|вскройте|измерьте|запустите|сбросьте|повторите\\s+пуск|установите\\s+перемычку)\b")
+FORBIDDEN=re.compile(r"(?i)\b(?:включите|перемкните|замкните|вскройте|измерьте|запустите|сбросьте|повторите\s+пуск|установите\s+перемычку)\b")
 
 def require(condition, reason):
     if not condition: raise ValueError(reason)
@@ -52,6 +52,8 @@ def validate(d, ident):
     for field in ("title","summary","category"):
         require(d[field]==e[field]==src[field],"donor "+field)
     require(d["donorOriginalQuestions"]==e["questions"],"donor question parity")
+    require(d["donorOriginalCategory"]=={"rectifier-differential-trip":"Тяга"}.get(ident,e["category"]),"donor original category")
+    require(d["categoryNormalizationNote"]==("ORIGINAL_AND_MIGRATION_MATCH" if d["donorOriginalCategory"]==d["category"] else "MIGRATION_CATEGORY_DIFFERS_FROM_PINNED_DONOR_KEEP_BOTH"),"category discrepancy")
     require(d["donorPinnedSha"]==DONOR,"donor commit")
     require(d["authoringProfileId"]=="vl80s-general" and d["exactInstalledVariant"]=="UNKNOWN" and d["unknownVariantDisposition"]=="BLOCKED","variant fail closed")
     require(set(d["mustRemainDistinctFrom"])=={"vl80s.diag."+x for x in e["distinct"]},"distinct scenarios")
