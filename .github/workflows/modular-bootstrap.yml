@@ -595,6 +595,9 @@ jobs:
       - name: Validate Stage17 mechanical and rheostatic four candidates with 140 negative mutations
         run: python3 qa/validate_stage17_mechanical_rheostatic_closeout_batch2.py
 
+      - name: Audit all 103 pinned VL80S donor IDs and research-only safety
+        run: python3 qa/validate_stage17_vl80s_full_coverage.py && python3 qa/validate_stage17_vl80s_full_coverage.py --negative
+
       - name: Contract, runtime, assistant, UI routing and policy tests
         run: >-
           gradle
