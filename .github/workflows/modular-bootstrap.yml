@@ -598,6 +598,9 @@ jobs:
       - name: Audit all 103 pinned VL80S donor IDs and research-only safety
         run: python3 qa/validate_stage17_vl80s_full_coverage.py && python3 qa/validate_stage17_vl80s_full_coverage.py --negative
 
+      - name: Validate Stage17 final aux-machines source-first graph and negative gates
+        run: python3 qa/validate_stage17_aux_machines_closeout.py --negative
+
       - name: Contract, runtime, assistant, UI routing and policy tests
         run: >-
           gradle

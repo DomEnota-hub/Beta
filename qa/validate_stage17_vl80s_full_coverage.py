@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DONOR = "3176d6ee228f0ed4b78371f45209e10c1c724eff"
 BLOB = "6ffdfdabf2f467dcdc4958768905f2b675ac0c26"
-BASELINE_ONLY = {"aux-machines"}
+BASELINE_ONLY = set()
 EXPECTED_REPEATS = {"ekg-position-mismatch", "gv-air-loss"}
 
 def require(ok, message):
@@ -111,13 +111,13 @@ def audit(donor, records, baseline):
     require(all(len(by_id[x]) == 2 for x in repeated), "duplicate count changed")
     missing = set(donor) - set(by_id)
     require(missing == BASELINE_ONLY, f"research gaps changed: {missing}")
-    require(set(baseline) == BASELINE_ONLY, "baseline identity changed")
-    for ident in missing:
+    require(set(baseline) == {"aux-machines"}, "legacy baseline identity changed")
+    for ident in baseline:
         require(baseline[ident]["publicationStatus"] == "CANDIDATE",
                 "legacy baseline unexpectedly published")
         require(baseline[ident]["sourceRefs"] == [],
                 "legacy baseline source status changed")
-    require(len(donor) == 103 and len(by_id) == 102,
+    require(len(donor) == 103 and len(by_id) == 103,
             "donor/research coverage changed")
     return by_id, totals
 
@@ -143,8 +143,8 @@ def main():
                 if entry["id"] == "vl80s.diag.aux-machines"}
     by_id, totals = audit(donor, records, baseline)
     cats = Counter(donor[ident]["category"] for ident in by_id)
-    require(cats["Вспомогательные машины"] == 13
-            and sum(cats.values()) == 102, "category research count drift")
+    require(cats["Вспомогательные машины"] == 14
+            and sum(cats.values()) == 103, "category research count drift")
     if args.negative:
         path, first = records[0]
         for field, value in (("runtimeImport", True), ("originalId", "invented-id")):
@@ -156,12 +156,12 @@ def main():
                 continue
             raise AssertionError(f"negative mutation accepted: {field}")
         print("STAGE17_103_AUDIT_NEGATIVE_PASS 2")
-    print(f"STAGE17_103_AUDIT_PASS donor=103 research=102 "
-          f"baseline_only=aux-machines files={len(paths)} "
+    print(f"STAGE17_103_AUDIT_PASS donor=103 research=103 "
+          f"baseline_only=none files={len(paths)} "
           f"records={len(records)} totals={totals} "
           f"intentional_duplicates={sorted(EXPECTED_REPEATS)}")
-    print("NOT_CLOSED: aux-machines needs source-first SHORT/DETAILED and extensions; "
-          "runtime remains blocked; device QA deferred")
+    print("RESEARCH_COVERAGE_COMPLETE: 103/103 distinct pinned donor IDs; "
+          "runtime remains blocked; source/role/safety gates pending; device QA deferred")
 
 if __name__ == "__main__":
     main()
