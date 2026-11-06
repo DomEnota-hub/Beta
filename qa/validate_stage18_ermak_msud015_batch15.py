@@ -26,7 +26,7 @@ def check(c):
     require(c["families"] == src["applicability"]["families"], "families")
     require(c["profileApplicability"] == src["applicability"]["profiles"], "profile")
     require(c["lateProfileRule"] == src["applicability"]["lateProfiles"], "late rule")
-    require(c["sourceObjectStatus"] == "BASE_CONFIRMED", "donor status")
+    require(c["sourceObjectStatus"] == "EVOLUTION_CONFIRMED", "donor status")
     require(c["hazardCategory"] == HAZARDS[id_], "hazard separation")
     require(c["authoringProfileId"] == "ermak-msud-015-axle-control-research-only", "authoring")
     require(c["earlyMsud"] == "MSUD-N_NOT_EQUIVALENT" and c["lateMsud"] == "MSUD-015_PROFILE_SPECIFIC", "early/late")
@@ -91,7 +91,7 @@ def negative(c):
         (["exactInstalledVariant"],"MSUD-015"),(["unknownVariantDisposition"],"ALLOWED"),
         (["earlyMsud"],"MSUD-N"),(["lateMsud"],"MSUD-N"),(["authoringProfileId"],"ermak-general"),
         (["hazardCategory"],"OTHER"),(["title"],"WRONG"),(["symptom"],"WRONG"),
-        (["sourceObjectApplicability"],{}),(["sourceObjectSystemIds"],[]),
+        (["sourceObjectStatus"],"BASE_CONFIRMED"),(["sourceObjectApplicability"],{}),(["sourceObjectSystemIds"],[]),
         (["sourceObjectEquipmentRefs"],[]),(["sourceObjectSourceRefs"],[]),
         (["families"],["3ES5K"]),(["profileApplicability"],["base_early"]),
         (["lateProfileRule"],"APPLICABLE"),(["sourceRecords","donor","commit"],"WRONG"),
