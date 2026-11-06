@@ -1,0 +1,2124 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-pneumatic-batch24/1",
+    "date": "2026-11-06",
+    "baseHead": "f8b857af270e37bc2f947570edb7e1165b2fa0df",
+    "previousCiRun": 42288739276,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-075",
+      "ER-DIAG-076",
+      "ER-DIAG-077"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Pinned sourceObject projection; raw donor gzip not independently decoded",
+    "batchBoundary": "075 compressor cycles, 076 reservoir relief, 077 backflow; 078 purge/condensate and 079 inter-section leakage are separate next."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-pneumatic-batch24-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-075",
+      "scenarioId": "ermak.diag.ER-DIAG-075",
+      "title": "Компрессор слишком часто включается",
+      "symptom": "Компрессор работает с ненормально частыми циклами, возможна утечка воздуха",
+      "hazardCategory": "FREQUENT_COMPRESSOR_CYCLING",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-50",
+        "SYS-70",
+        "SYS-60"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-007",
+        "ER-EQ-PN-003",
+        "ER-EQ-PN-002",
+        "ER-EQ-PN-009"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-007",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV56.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; полнота более поздних изменений требует контроля",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-frequent-cycles-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-073",
+        "ER-DIAG-074",
+        "ER-DIAG-077"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "locator": "diagnostics-04.pack.json ER-DIAG-075; сохранённая проекция, gzip не декодирован независимо",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-075",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5: SP6/KV48/KM14; ранняя электрическая схема управления главным компрессором, не текущий допуск.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "subsystem": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "РЭ6 §5.1 и §6: в HTML-копии доступно оглавление, полного чертежа секции нет; SP6, КО7 и У5 различаются по публичной пневмосхеме.",
+          "status": "ARCHIVAL_PARTIAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "Архивная РЭ7 не подтверждает действующие полномочия для ER-DIAG-075",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: SP6 и повторно-кратковременная работа; уставки исторические.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_2026_PUBLIC_SCOPE_ONLY",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-075 не подтверждены.",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP при продолжающемся событии, недостаточном давлении или неясном состоянии тормозов; нельзя запускать компрессор для проверки, создавать расход, регулировать SP6 или вскрывать магистраль.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "КМ1 в пневмосхеме обозначает компрессор, а М14/КМ14 в РЭ1 относятся к электрической цепи; обозначения не отождествлять.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Раннее МСУД-Н и позднее МСУД-015 не смешивать; исполнение UNKNOWN.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Архивные схемы и техническое описание не дают современных полномочий; применимые пункты Правил 2026 не установлены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Подтверждены частые повторные циклы главного компрессора, а не только падение ПМ или отсутствие набора ГР?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-075; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Частые циклы не доказывают неисправность SP6, КО7 или конкретную утечку. Пневмосхема 3ЭС5К описывает повторно-кратковременную работу компрессора с SP6. Исторические уставки нельзя переносить на неизвестное исполнение. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Подтверждены частые повторные циклы главного компрессора, а не только падение ПМ или отсутствие набора ГР?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённом журнале отдельно записаны несколько циклов, времена включения/отключения и показания ГР без новых запусков или расхода воздуха?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены утечка, расход потребителей, обратный переток, индикация и автоматика SP6 без объявления одной из гипотез доказанной?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены время, секция, исходный документ, исполнение и отсутствие новых операций/измерений?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-075; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: записи недостаточны, воспроизводить неисправность запрещено.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Частые циклы не доказывают неисправность SP6, КО7 или конкретную утечку. Пневмосхема 3ЭС5К описывает повторно-кратковременную работу компрессора с SP6. Исторические уставки нельзя переносить на неизвестное исполнение. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-075-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "title": "Исходный сценарий ER-DIAG-075",
+          "text": "Донор: «Компрессор слишком часто включается»; симптом: «Компрессор работает с ненормально частыми циклами, возможна утечка воздуха». Сохранены точные ID, источники, оборудование и применимость; исходный gzip не распакован независимо.",
+          "locator": "diagnostics-04.pack.json ER-DIAG-075; сохранённая проекция, gzip не декодирован независимо",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-075-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "title": "Техническая схема и границы",
+          "text": "Частые циклы не доказывают неисправность SP6, КО7 или конкретную утечку. Пневмосхема 3ЭС5К описывает повторно-кратковременную работу компрессора с SP6. Исторические уставки нельзя переносить на неизвестное исполнение. РЭ1 §6.5: SP6/KV48/KM14; ранняя электрическая схема управления главным компрессором, не текущий допуск.",
+          "locator": "РЭ1 §6.5: SP6/KV48/KM14; ранняя электрическая схема управления главным компрессором, не текущий допуск.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-075-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "title": "Историческая техническая версия",
+          "text": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: SP6 и повторно-кратковременная работа; уставки исторические. Исторические уставки не превращаются в нормативные пороги.",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: SP6 и повторно-кратковременная работа; уставки исторические.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-075-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "title": "Нормативы и роли",
+          "text": "Правила тормозов введены с 01.07.2026. Пункты и полномочия для конкретного действия не верифицированы; архивная РЭ7 не заменяет текущую инструкцию.",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-075 не подтверждены.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-075-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "title": "Независимость и безопасность",
+          "text": "075 не эквивалентен 073 (падение ПМ), 074 (нет наполнения ГР), 077 (обратный поток). Без временных записей причина UNKNOWN. STOP при продолжающемся событии, недостаточном давлении или неясном состоянии тормозов; нельзя запускать компрессор для проверки, создавать расход, регулировать SP6 или вскрывать магистраль.",
+          "locator": "STOP при продолжающемся событии, недостаточном давлении или неясном состоянии тормозов; нельзя запускать компрессор для проверки, создавать расход, регулировать SP6 или вскрывать магистраль.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5: SP6/KV48/KM14; ранняя электрическая схема управления главным компрессором, не текущий допуск.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "РЭ6 §5.1 и §6: в HTML-копии доступно оглавление, полного чертежа секции нет; SP6, КО7 и У5 различаются по публичной пневмосхеме. Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: SP6 и повторно-кратковременная работа; уставки исторические.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "CURRENT_NORMATIVE_METADATA",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-075 не подтверждены.",
+          "status": "CURRENT_SCOPE_ONLY_NOT_OPERATIONAL_AUTHORITY",
+          "verifiedAt": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-pneumatic-batch24-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-076",
+      "scenarioId": "ermak.diag.ER-DIAG-076",
+      "title": "Срабатывает предохранительный клапан главных резервуаров",
+      "symptom": "Предохранительный клапан ГР периодически/постоянно сбрасывает воздух",
+      "hazardCategory": "RESERVOIR_RELIEF_VS_UNLOADER",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-50",
+        "SYS-90",
+        "SYS-70",
+        "SYS-30"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-PN-004",
+        "ER-EQ-PN-003",
+        "ER-EQ-AU-007",
+        "ER-EQ-PN-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-007",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV56.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; полнота более поздних изменений требует контроля",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-reservoir-relief-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-074",
+        "ER-DIAG-075",
+        "ER-DIAG-077"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "locator": "diagnostics-04.pack.json ER-DIAG-076; сохранённая проекция, gzip не декодирован независимо",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-076",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5 описывает SP6 и У5; электрическая схема не доказывает место фактического сброса.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "subsystem": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "РЭ6 §6.3: предохранительный клапан 2-2 указан в оглавлении; нет подтверждения соответствия КП1/КП2 конкретной секции.",
+          "status": "ARCHIVAL_PARTIAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "Архивная РЭ7 не подтверждает действующие полномочия для ER-DIAG-076",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КП1/КП2 и У5; исторические давления не универсальны.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_2026_PUBLIC_SCOPE_ONLY",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-076 не подтверждены.",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP при срабатывании предохранительного клапана; нельзя заглушать клапан, регулировать, запускать компрессор, стравливать воздух или работать под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Сброс КП1/КП2 и штатная разгрузка У5 различны; по одному звуку нельзя установить аппарат.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Раннее МСУД-Н и позднее МСУД-015 не смешивать; исполнение UNKNOWN.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Архивные схемы и техническое описание не дают современных полномочий; применимые пункты Правил 2026 не установлены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Зафиксирован сброс именно через предохранительный клапан главных резервуаров, а не через разгрузочный клапан У5?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-076; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Пневмосхема 3ЭС5К различает предохранительные клапаны ГР КП1/КП2 и разгрузку У5 участка компрессор–КО7. Сам по себе сброс не доказывает неисправность SP6 или предохранительного клапана. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Зафиксирован сброс именно через предохранительный клапан главных резервуаров, а не через разгрузочный клапан У5?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённых записях независимо указаны место/момент сброса, давление ГР и состояние компрессора без воспроизведения события?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Различены КП1/КП2, разгрузка У5 и управление SP6 без приписывания конкретного неисправного клапана или уставки?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены время, секция, исходный документ, исполнение и отсутствие новых операций/измерений?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-076; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: записи недостаточны, воспроизводить неисправность запрещено.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Пневмосхема 3ЭС5К различает предохранительные клапаны ГР КП1/КП2 и разгрузку У5 участка компрессор–КО7. Сам по себе сброс не доказывает неисправность SP6 или предохранительного клапана. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-076-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "title": "Исходный сценарий ER-DIAG-076",
+          "text": "Донор: «Срабатывает предохранительный клапан главных резервуаров»; симптом: «Предохранительный клапан ГР периодически/постоянно сбрасывает воздух». Сохранены точные ID, источники, оборудование и применимость; исходный gzip не распакован независимо.",
+          "locator": "diagnostics-04.pack.json ER-DIAG-076; сохранённая проекция, gzip не декодирован независимо",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-076-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "title": "Техническая схема и границы",
+          "text": "Пневмосхема 3ЭС5К различает предохранительные клапаны ГР КП1/КП2 и разгрузку У5 участка компрессор–КО7. Сам по себе сброс не доказывает неисправность SP6 или предохранительного клапана. РЭ1 §6.5 описывает SP6 и У5; электрическая схема не доказывает место фактического сброса.",
+          "locator": "РЭ1 §6.5 описывает SP6 и У5; электрическая схема не доказывает место фактического сброса.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-076-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "title": "Историческая техническая версия",
+          "text": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КП1/КП2 и У5; исторические давления не универсальны. Исторические уставки не превращаются в нормативные пороги.",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КП1/КП2 и У5; исторические давления не универсальны.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-076-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "title": "Нормативы и роли",
+          "text": "Правила тормозов введены с 01.07.2026. Пункты и полномочия для конкретного действия не верифицированы; архивная РЭ7 не заменяет текущую инструкцию.",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-076 не подтверждены.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-076-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "title": "Независимость и безопасность",
+          "text": "076 не эквивалентен 075 (циклы), 074 (не набираются ГР), 077 (обратный поток). Место сброса и причина UNKNOWN без независимых данных. STOP при срабатывании предохранительного клапана; нельзя заглушать клапан, регулировать, запускать компрессор, стравливать воздух или работать под давлением.",
+          "locator": "STOP при срабатывании предохранительного клапана; нельзя заглушать клапан, регулировать, запускать компрессор, стравливать воздух или работать под давлением.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5 описывает SP6 и У5; электрическая схема не доказывает место фактического сброса.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "РЭ6 §6.3: предохранительный клапан 2-2 указан в оглавлении; нет подтверждения соответствия КП1/КП2 конкретной секции. Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КП1/КП2 и У5; исторические давления не универсальны.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "CURRENT_NORMATIVE_METADATA",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-076 не подтверждены.",
+          "status": "CURRENT_SCOPE_ONLY_NOT_OPERATIONAL_AUTHORITY",
+          "verifiedAt": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-pneumatic-batch24-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-077",
+      "scenarioId": "ermak.diag.ER-DIAG-077",
+      "title": "Обратный клапан компрессора не держит",
+      "symptom": "После остановки компрессора наблюдается обратный переток/потеря давления через его ветвь",
+      "hazardCategory": "CHECK_VALVE_BACKFLOW_VS_PRESSURE_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-50",
+        "SYS-30",
+        "SYS-60"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-PN-005",
+        "ER-EQ-AU-007",
+        "ER-EQ-PN-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; полнота более поздних изменений требует контроля",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-check-valve-backflow-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-073",
+        "ER-DIAG-075",
+        "ER-DIAG-076"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "locator": "diagnostics-04.pack.json ER-DIAG-077; сохранённая проекция, gzip не декодирован независимо",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-077",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5 описывает управление разгрузкой У5, но не подтверждает герметичность КО7.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "subsystem": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "РЭ6 §6.2 перечисляет обратные клапаны 1-2 и 1-10; соответствие с КО7 не подтверждено.",
+          "status": "ARCHIVAL_PARTIAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "Архивная РЭ7 не подтверждает действующие полномочия для ER-DIAG-077",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КО7 и У5 выполняют разные функции.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_2026_PUBLIC_SCOPE_ONLY",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-077 не подтверждены.",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP при продолжающейся потере давления; запрещены разобщение труб, продувка, изоляция клапана, искусственный запуск или вмешательство под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "РЭ6 §6.2 называет обратные клапаны 1-2/1-10, публичная пневмосхема КО7; без листа исполнения их тождество не доказано.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Раннее МСУД-Н и позднее МСУД-015 не смешивать; исполнение UNKNOWN.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Архивные схемы и техническое описание не дают современных полномочий; применимые пункты Правил 2026 не установлены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Имеется ранее зафиксированное свидетельство обратного потока через ветвь компрессора после остановки, а не только падение давления?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-077; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "В пневмосхеме 3ЭС5К КО7 защищает компрессор от противодавления ГР, а У5 разгружает нагнетательный участок. Падение давления после остановки само по себе не подтверждает обратный поток через КО7. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается или по ранее завершённой записи нельзя подтвердить его окончание?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н и именно эта пневматическая схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Имеется ранее зафиксированное свидетельство обратного потока через ветвь компрессора после остановки, а не только падение давления?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Отдельно записаны остановка компрессора, динамика давления и свидетельство направления потока без новых испытаний?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены КО7, разгрузочный клапан У5, потребители воздуха и ошибки показаний; неисправность КО7 не объявлена доказанной?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены время, секция, исходный документ, исполнение и отсутствие новых операций/измерений?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся пневматическое событие требует действующих процедур вне этой карточки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: не создавать пуски, сбросы, продувки, переключения, измерения или обходы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема секции и раннее исполнение МСУД-Н не подтверждены; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-077; соседние неисправности самостоятельны.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: записи недостаточны, воспроизводить неисправность запрещено.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "В пневмосхеме 3ЭС5К КО7 защищает компрессор от противодавления ГР, а У5 разгружает нагнетательный участок. Падение давления после остановки само по себе не подтверждает обратный поток через КО7. Дата Правил тормозов 2026 подтверждена, но полномочия для данного события отдельно не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-077-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "title": "Исходный сценарий ER-DIAG-077",
+          "text": "Донор: «Обратный клапан компрессора не держит»; симптом: «После остановки компрессора наблюдается обратный переток/потеря давления через его ветвь». Сохранены точные ID, источники, оборудование и применимость; исходный gzip не распакован независимо.",
+          "locator": "diagnostics-04.pack.json ER-DIAG-077; сохранённая проекция, gzip не декодирован независимо",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-077-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "title": "Техническая схема и границы",
+          "text": "В пневмосхеме 3ЭС5К КО7 защищает компрессор от противодавления ГР, а У5 разгружает нагнетательный участок. Падение давления после остановки само по себе не подтверждает обратный поток через КО7. РЭ1 §6.5 описывает управление разгрузкой У5, но не подтверждает герметичность КО7.",
+          "locator": "РЭ1 §6.5 описывает управление разгрузкой У5, но не подтверждает герметичность КО7.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-077-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "title": "Историческая техническая версия",
+          "text": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КО7 и У5 выполняют разные функции. Исторические уставки не превращаются в нормативные пороги.",
+          "locator": "Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КО7 и У5 выполняют разные функции.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-077-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "title": "Нормативы и роли",
+          "text": "Правила тормозов введены с 01.07.2026. Пункты и полномочия для конкретного действия не верифицированы; архивная РЭ7 не заменяет текущую инструкцию.",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-077 не подтверждены.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-077-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "title": "Независимость и безопасность",
+          "text": "077 не эквивалентен 073 (потеря ПМ), 075 (частые циклы) и 076 (предохранительный сброс). Направление потока UNKNOWN без независимых записей. STOP при продолжающейся потере давления; запрещены разобщение труб, продувка, изоляция клапана, искусственный запуск или вмешательство под давлением.",
+          "locator": "STOP при продолжающейся потере давления; запрещены разобщение труб, продувка, изоляция клапана, искусственный запуск или вмешательство под давлением.",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.5 описывает управление разгрузкой У5, но не подтверждает герметичность КО7.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "РЭ6 §6.2 перечисляет обратные клапаны 1-2 и 1-10; соответствие с КО7 не подтверждено. Пневмосхема 3ЭС5К, «Система приготовления сжатого воздуха»: КО7 и У5 выполняют разные функции.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-06"
+        },
+        {
+          "sourceKind": "CURRENT_NORMATIVE_METADATA",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025 действует с 01.07.2026; конкретные процедуры и роли для ER-DIAG-077 не подтверждены.",
+          "status": "CURRENT_SCOPE_ONLY_NOT_OPERATIONAL_AUTHORITY",
+          "verifiedAt": "2026-11-06"
+        }
+      ]
+    }
+  ]
+}
