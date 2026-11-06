@@ -1,0 +1,1813 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-emergency-batch10/1",
+    "date": "2026-11-06",
+    "baseHead": "d5cbf3d48d701dadcd696e95f8739a3a40edef7f",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-033",
+      "ER-DIAG-034",
+      "ER-DIAG-035"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Exact sourceObject projection and gzip Git blob identity; direct independent gzip decoding not performed",
+    "batchBoundary": "033 contact network proximity; 034 traction motor/cable fire; 035 uncontrolled fire and adjacent section threat; no operational steps"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-emergency-source-first/2",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-033",
+      "scenarioId": "ermak.diag.ER-DIAG-033",
+      "title": "Пожар рядом с контактной сетью / электрооборудование под риском напряжения",
+      "symptom": "При пожаре есть риск близости контактной сети, оборванного провода или электрооборудования под напряжением",
+      "hazardCategory": "CONTACT_NETWORK_FIRE_PROXIMITY",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "lateProfiles": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-91",
+        "SYS-C0",
+        "SYS-40",
+        "SYS-10",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-FR-001",
+        "ER-EQ-FR-003",
+        "ER-EQ-HV-001",
+        "ER-EQ-HV-004"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "раздел 19, пп. 19.1–19.8",
+          "libraryPath": "/Приложение/Ермак/01_Источники/Распоряжение_РЖД_2580р_ред_18.02.2025.pdf",
+          "role": "current_general_fire_procedure",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-FIRE247R-FINAL",
+          "document": "Инструкция по обеспечению требований пожарной безопасности на локомотивах, распоряжение ОАО «РЖД» №247/р от 10.02.2021",
+          "locator": "эксплуатация локомотивов; действия при обнаружении пожара; исправность установок пожарной сигнализации и пожаротушения",
+          "url": "https://base.garant.ru/408774287/",
+          "role": "current_fire_safety_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№247/р",
+            "revision": "ред. от 28.08.2023; действующее применение дополнительно подтверждается документами РЖД 2025 г.",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи сигнализации A23/SF29/SA5/SA6/U77/U80/U81; МСУД-Н; КТС-УАСП; тяговые цепи и ослабление возбуждения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка оборудования. Монтаж электрический",
+          "locator": "кабина, пульт управления, пожарное оборудование, размещение аппаратуры",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_layout_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия раннего исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-emergency-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-030",
+        "ER-DIAG-034"
+      ],
+      "sourceRecords": {
+        "emergency": {
+          "kind": "EMERGENCY_REGULATION_VERSION_UNVERIFIED",
+          "title": "Распоряжение РЖД №2580р от 12.12.2017, раздел 19",
+          "revision": "№387/р от 18.02.2025 указан в доноре; полный актуальный текст и полномочия для данного события не подтверждены",
+          "url": "https://www.garant.ru/products/ipo/prime/doc/71754780/",
+          "locator": "§19, архивный публичный текст",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "fire": {
+          "kind": "FIRE_REGULATION_PUBLIC_COPY",
+          "title": "Инструкция по пожарной безопасности локомотивов, №247/р от 10.02.2021",
+          "revision": "публичная редакция 2021; донор указывает ред. 28.08.2023, независимая полнота изменений не установлена",
+          "url": "https://base.garant.ru/408774287/",
+          "locator": "§5.1, включая п.5.1.8",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ1/РЭ2, раннее исполнение МСУД-Н",
+          "revision": "публичные копии; точная серийная применимость не подтверждена",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "sourceKind": "MANUFACTURER",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "variant": {
+          "kind": "LATE_MANUFACTURER_CONTEXT_ONLY",
+          "title": "ТМХ «Ермак», обзор 2024",
+          "revision": "поздняя МСУД-015; не эквивалент ранней МСУД-Н",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "sourceKind": "MANUFACTURER_BROCHURE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "donor": {
+          "kind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-033",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "rawGzipIndependentlyDecoded": false,
+          "proceduresImported": false,
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Донор маркирует общие пожарные нормы CURRENT_RULE_CONFIRMED, но полный текст актуальной редакции и применимость к конкретной роли не сверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "issue": "Даже исчезновение индикации напряжения не доказывает обесточивание КС. Нельзя приближаться к проводам или считать безопасной зону пожара.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "Общие пожарные требования не устанавливают тип пожарной автоматики и фактическую схему конкретного исполнения.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeEmergencyImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о пожаре вблизи контактной сети или электрического оборудования?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: близость контактной сети, оборванного провода или оборудования с неизвестным напряжением. Не проводить диагностику, не приближаться к опасному оборудованию; экстренное реагирование только по действующему порядку уполномоченными работниками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не проверять неизвестные признаки осмотром, повторным включением, измерением или экспериментом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует данному исходному ID. Не подменять другой пожарный сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зафиксировано соответствие только историческому описанию ER-DIAG-033. Причина, безопасное состояние и допустимость действий НЕ установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Для ретроспективной записи подтверждены семейство электровоза, точное исполнение и источник сведений?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о пожаре вблизи контактной сети или электрического оборудования?",
+              "responses": {
+                "YES": "q-record",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record",
+              "type": "QUESTION",
+              "text": "Есть ли независимая ранее составленная запись о времени и месте события, без повторного воспроизведения?",
+              "responses": {
+                "YES": "q-system",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-system",
+              "type": "QUESTION",
+              "text": "Содержит ли запись только наблюдения, без предположения, что напряжение снято, пожар потушен или оборудование безопасно?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Имеется ли независимое архивное подтверждение: местоположение опасного участка и сообщение об угрозе напряжения?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: близость контактной сети, оборванного провода или оборудования с неизвестным напряжением. Никаких осмотров, проверок и переключений из приложения. Реагирование по действующим аварийным инструкциям.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Неизвестные обстоятельства не превращаются в разрешение продолжать.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: профиль, конкретное исполнение или источники не подтверждены; общий пожарный норматив не подтверждает установленную систему.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: не соответствует данному ID. Сохранить исходное описание и выбрать отдельный исследовательский сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация ER-DIAG-033. Не установлены причина, состояние напряжения, эффективность тушения или разрешённые действия.",
+              "responses": {},
+              "sourceRefs": [
+                "fire",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unconfirmed",
+              "type": "STOP",
+              "text": "Недостаточно независимых сведений. UNKNOWN/BLOCKED; нельзя дополнять запись новыми опасными проверками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-033-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный исходный симптом и ID: При пожаре есть риск близости контактной сети, оборванного провода или электрооборудования под напряжением. Только архивная классификация, не эксплуатационное действие.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-033-INFO-2",
+          "version": "SHORT",
+          "title": "Аварийный регламент",
+          "text": "Общий аварийный контекст: Даже исчезновение индикации напряжения не доказывает обесточивание КС. Нельзя приближаться к проводам или считать безопасной зону пожара. Актуальная редакция и полномочия не проверены.",
+          "sourceRefs": [
+            "emergency"
+          ],
+          "locator": "§19, архивный публичный текст",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-033-INFO-3",
+          "version": "DETAILED",
+          "title": "Пожарная инструкция",
+          "text": "№247/р, раздел 5: пожар и контактная сеть требуют действующего порядка и полномочий; не переносить порядок тушения в приложение.",
+          "sourceRefs": [
+            "fire"
+          ],
+          "locator": "§5.1, включая п.5.1.8",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-033-INFO-4",
+          "version": "DETAILED",
+          "title": "Архивная заводская документация",
+          "text": "РЭ1/РЭ2 описывают оборудование и компоновку раннего МСУД-Н, но не подтверждают безопасное расстояние или отсутствие напряжения.",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-033-INFO-5",
+          "version": "DETAILED",
+          "title": "Разделение исполнений",
+          "text": "Общие противопожарные требования нельзя использовать как подтверждение схемы или установленных средств пожаротушения конкретного 2ЭС5К/3ЭС5К.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-emergency-source-first/2",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-034",
+      "scenarioId": "ermak.diag.ER-DIAG-034",
+      "title": "Пожар тягового двигателя или подводящих кабелей",
+      "symptom": "Горит ТЭД либо подводящие к нему кабели",
+      "hazardCategory": "TRACTION_MOTOR_CABLE_FIRE",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "lateProfiles": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-91",
+        "SYS-C0",
+        "SYS-40",
+        "SYS-20",
+        "SYS-21",
+        "SYS-A0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-FR-001",
+        "ER-EQ-FR-003",
+        "ER-EQ-TR-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "раздел 19, пп. 19.1–19.8",
+          "libraryPath": "/Приложение/Ермак/01_Источники/Распоряжение_РЖД_2580р_ред_18.02.2025.pdf",
+          "role": "current_general_fire_procedure",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-FIRE247R-FINAL",
+          "document": "Инструкция по обеспечению требований пожарной безопасности на локомотивах, распоряжение ОАО «РЖД» №247/р от 10.02.2021",
+          "locator": "эксплуатация локомотивов; действия при обнаружении пожара; исправность установок пожарной сигнализации и пожаротушения",
+          "url": "https://base.garant.ru/408774287/",
+          "role": "current_fire_safety_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№247/р",
+            "revision": "ред. от 28.08.2023; действующее применение дополнительно подтверждается документами РЖД 2025 г.",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи сигнализации A23/SF29/SA5/SA6/U77/U80/U81; МСУД-Н; КТС-УАСП; тяговые цепи и ослабление возбуждения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка оборудования. Монтаж электрический",
+          "locator": "кабина, пульт управления, пожарное оборудование, размещение аппаратуры",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_layout_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия раннего исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-emergency-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-032",
+        "ER-DIAG-033"
+      ],
+      "sourceRecords": {
+        "emergency": {
+          "kind": "EMERGENCY_REGULATION_VERSION_UNVERIFIED",
+          "title": "Распоряжение РЖД №2580р от 12.12.2017, раздел 19",
+          "revision": "№387/р от 18.02.2025 указан в доноре; полный актуальный текст и полномочия для данного события не подтверждены",
+          "url": "https://www.garant.ru/products/ipo/prime/doc/71754780/",
+          "locator": "§19, архивный публичный текст",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "fire": {
+          "kind": "FIRE_REGULATION_PUBLIC_COPY",
+          "title": "Инструкция по пожарной безопасности локомотивов, №247/р от 10.02.2021",
+          "revision": "публичная редакция 2021; донор указывает ред. 28.08.2023, независимая полнота изменений не установлена",
+          "url": "https://base.garant.ru/408774287/",
+          "locator": "§5.1, включая п.5.1.8",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ1/РЭ2, раннее исполнение МСУД-Н",
+          "revision": "публичные копии; точная серийная применимость не подтверждена",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "sourceKind": "MANUFACTURER",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "variant": {
+          "kind": "LATE_MANUFACTURER_CONTEXT_ONLY",
+          "title": "ТМХ «Ермак», обзор 2024",
+          "revision": "поздняя МСУД-015; не эквивалент ранней МСУД-Н",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "sourceKind": "MANUFACTURER_BROCHURE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "donor": {
+          "kind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-034",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "rawGzipIndependentlyDecoded": false,
+          "proceduresImported": false,
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Донор маркирует общие пожарные нормы CURRENT_RULE_CONFIRMED, но полный текст актуальной редакции и применимость к конкретной роли не сверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "issue": "Горение ТЭД/кабелей не является разрешением на осмотр тележки, проверку кабелей, включение тяги или измерения.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "Общие пожарные требования не устанавливают тип пожарной автоматики и фактическую схему конкретного исполнения.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeEmergencyImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о горении ТЭД либо подводящих кабелей?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: возгорание тягового двигателя или подводящих кабелей, в том числе под тележкой. Не проводить диагностику, не приближаться к опасному оборудованию; экстренное реагирование только по действующему порядку уполномоченными работниками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не проверять неизвестные признаки осмотром, повторным включением, измерением или экспериментом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует данному исходному ID. Не подменять другой пожарный сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зафиксировано соответствие только историческому описанию ER-DIAG-034. Причина, безопасное состояние и допустимость действий НЕ установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Для ретроспективной записи подтверждены семейство электровоза, точное исполнение и источник сведений?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о горении ТЭД либо подводящих кабелей?",
+              "responses": {
+                "YES": "q-record",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record",
+              "type": "QUESTION",
+              "text": "Есть ли независимая ранее составленная запись о времени и месте события, без повторного воспроизведения?",
+              "responses": {
+                "YES": "q-system",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-system",
+              "type": "QUESTION",
+              "text": "Содержит ли запись только наблюдения, без предположения, что напряжение снято, пожар потушен или оборудование безопасно?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Имеется ли независимое архивное подтверждение: документированное место очага и отличие от нагрева или электрической неисправности без пожара?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: возгорание тягового двигателя или подводящих кабелей, в том числе под тележкой. Никаких осмотров, проверок и переключений из приложения. Реагирование по действующим аварийным инструкциям.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Неизвестные обстоятельства не превращаются в разрешение продолжать.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: профиль, конкретное исполнение или источники не подтверждены; общий пожарный норматив не подтверждает установленную систему.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: не соответствует данному ID. Сохранить исходное описание и выбрать отдельный исследовательский сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация ER-DIAG-034. Не установлены причина, состояние напряжения, эффективность тушения или разрешённые действия.",
+              "responses": {},
+              "sourceRefs": [
+                "fire",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unconfirmed",
+              "type": "STOP",
+              "text": "Недостаточно независимых сведений. UNKNOWN/BLOCKED; нельзя дополнять запись новыми опасными проверками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-034-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный исходный симптом и ID: Горит ТЭД либо подводящие к нему кабели. Только архивная классификация, не эксплуатационное действие.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-034-INFO-2",
+          "version": "SHORT",
+          "title": "Аварийный регламент",
+          "text": "Общий аварийный контекст: Горение ТЭД/кабелей не является разрешением на осмотр тележки, проверку кабелей, включение тяги или измерения. Актуальная редакция и полномочия не проверены.",
+          "sourceRefs": [
+            "emergency"
+          ],
+          "locator": "§19, архивный публичный текст",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-034-INFO-3",
+          "version": "DETAILED",
+          "title": "Пожарная инструкция",
+          "text": "№247/р, раздел 5: действия при пожаре зависят от действующих правил, а не от архивной гипотезы об электрической причине.",
+          "sourceRefs": [
+            "fire"
+          ],
+          "locator": "§5.1, включая п.5.1.8",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-034-INFO-4",
+          "version": "DETAILED",
+          "title": "Архивная заводская документация",
+          "text": "Архивные РЭ1/РЭ2 дают контекст силовой цепи и расположения оборудования, но не подтверждают установленный вариант и не разрешают вмешательство.",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-034-INFO-5",
+          "version": "DETAILED",
+          "title": "Разделение исполнений",
+          "text": "Обозначения тяговых цепей ранней МСУД-Н не переносятся автоматически на позднюю МСУД-015.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-emergency-source-first/2",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-035",
+      "scenarioId": "ermak.diag.ER-DIAG-035",
+      "title": "Пожар не удаётся ликвидировать / угроза соседней секции",
+      "symptom": "Пожар на электровозе не ликвидируется имеющимися средствами либо распространяется между секциями",
+      "hazardCategory": "UNCONTROLLED_FIRE_SPREAD",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "lateProfiles": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-91",
+        "SYS-C0",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-FR-001",
+        "ER-EQ-FR-003"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "раздел 19, пп. 19.1–19.8",
+          "libraryPath": "/Приложение/Ермак/01_Источники/Распоряжение_РЖД_2580р_ред_18.02.2025.pdf",
+          "role": "current_general_fire_procedure",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-FIRE247R-FINAL",
+          "document": "Инструкция по обеспечению требований пожарной безопасности на локомотивах, распоряжение ОАО «РЖД» №247/р от 10.02.2021",
+          "locator": "эксплуатация локомотивов; действия при обнаружении пожара; исправность установок пожарной сигнализации и пожаротушения",
+          "url": "https://base.garant.ru/408774287/",
+          "role": "current_fire_safety_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№247/р",
+            "revision": "ред. от 28.08.2023; действующее применение дополнительно подтверждается документами РЖД 2025 г.",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи сигнализации A23/SF29/SA5/SA6/U77/U80/U81; МСУД-Н; КТС-УАСП; тяговые цепи и ослабление возбуждения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка оборудования. Монтаж электрический",
+          "locator": "кабина, пульт управления, пожарное оборудование, размещение аппаратуры",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_layout_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия раннего исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-emergency-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "APPLICABLE_AS_GENERAL_RZD_FIRE_RULE; locomotive-specific fixed-system details remain profile-dependent",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-032",
+        "ER-DIAG-034"
+      ],
+      "sourceRecords": {
+        "emergency": {
+          "kind": "EMERGENCY_REGULATION_VERSION_UNVERIFIED",
+          "title": "Распоряжение РЖД №2580р от 12.12.2017, раздел 19",
+          "revision": "№387/р от 18.02.2025 указан в доноре; полный актуальный текст и полномочия для данного события не подтверждены",
+          "url": "https://www.garant.ru/products/ipo/prime/doc/71754780/",
+          "locator": "§19, архивный публичный текст",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "fire": {
+          "kind": "FIRE_REGULATION_PUBLIC_COPY",
+          "title": "Инструкция по пожарной безопасности локомотивов, №247/р от 10.02.2021",
+          "revision": "публичная редакция 2021; донор указывает ред. 28.08.2023, независимая полнота изменений не установлена",
+          "url": "https://base.garant.ru/408774287/",
+          "locator": "§5.1, включая п.5.1.8",
+          "sourceKind": "NORMATIVE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactRevisionVerified": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ1/РЭ2, раннее исполнение МСУД-Н",
+          "revision": "публичные копии; точная серийная применимость не подтверждена",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "sourceKind": "MANUFACTURER",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "variant": {
+          "kind": "LATE_MANUFACTURER_CONTEXT_ONLY",
+          "title": "ТМХ «Ермак», обзор 2024",
+          "revision": "поздняя МСУД-015; не эквивалент ранней МСУД-Н",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "sourceKind": "MANUFACTURER_BROCHURE",
+          "verifiedAt": "2026-11-06",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        },
+        "donor": {
+          "kind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-035",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "rawGzipIndependentlyDecoded": false,
+          "proceduresImported": false,
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Донор маркирует общие пожарные нормы CURRENT_RULE_CONFIRMED, но полный текст актуальной редакции и применимость к конкретной роли не сверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "issue": "Нельзя считать пожар ликвидированным из-за исчезновения сигнала. Расцепка, закрепление и отвод секций не являются диагностическими командами приложения.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "Общие пожарные требования не устанавливают тип пожарной автоматики и фактическую схему конкретного исполнения.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeEmergencyImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о неудавшейся ликвидации пожара или угрозе соседней секции?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: пожар не ликвидирован либо есть угроза перехода огня на соседнюю секцию. Не проводить диагностику, не приближаться к опасному оборудованию; экстренное реагирование только по действующему порядку уполномоченными работниками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не проверять неизвестные признаки осмотром, повторным включением, измерением или экспериментом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует данному исходному ID. Не подменять другой пожарный сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зафиксировано соответствие только историческому описанию ER-DIAG-035. Причина, безопасное состояние и допустимость действий НЕ установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-emergency",
+          "nodes": [
+            {
+              "id": "q-emergency",
+              "type": "QUESTION",
+              "text": "По ранее оформленным данным событие продолжается сейчас либо текущая опасность/напряжение неизвестны?",
+              "responses": {
+                "YES": "stop-emergency",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Для ретроспективной записи подтверждены семейство электровоза, точное исполнение и источник сведений?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В завершённой записи действительно отмечена историческая запись о неудавшейся ликвидации пожара или угрозе соседней секции?",
+              "responses": {
+                "YES": "q-record",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record",
+              "type": "QUESTION",
+              "text": "Есть ли независимая ранее составленная запись о времени и месте события, без повторного воспроизведения?",
+              "responses": {
+                "YES": "q-system",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-system",
+              "type": "QUESTION",
+              "text": "Содержит ли запись только наблюдения, без предположения, что напряжение снято, пожар потушен или оборудование безопасно?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Имеется ли независимое архивное подтверждение: записанная динамика распространения и независимое подтверждение, что событие завершено?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "report-unconfirmed",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "fire"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-emergency",
+              "type": "STOP",
+              "text": "STOP: пожар не ликвидирован либо есть угроза перехода огня на соседнюю секцию. Никаких осмотров, проверок и переключений из приложения. Реагирование по действующим аварийным инструкциям.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Неизвестные обстоятельства не превращаются в разрешение продолжать.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: профиль, конкретное исполнение или источники не подтверждены; общий пожарный норматив не подтверждает установленную систему.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: не соответствует данному ID. Сохранить исходное описание и выбрать отдельный исследовательский сценарий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация ER-DIAG-035. Не установлены причина, состояние напряжения, эффективность тушения или разрешённые действия.",
+              "responses": {},
+              "sourceRefs": [
+                "fire",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unconfirmed",
+              "type": "STOP",
+              "text": "Недостаточно независимых сведений. UNKNOWN/BLOCKED; нельзя дополнять запись новыми опасными проверками.",
+              "responses": {},
+              "sourceRefs": [
+                "emergency"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-035-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный исходный симптом и ID: Пожар на электровозе не ликвидируется имеющимися средствами либо распространяется между секциями. Только архивная классификация, не эксплуатационное действие.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-035-INFO-2",
+          "version": "SHORT",
+          "title": "Аварийный регламент",
+          "text": "Общий аварийный контекст: Нельзя считать пожар ликвидированным из-за исчезновения сигнала. Расцепка, закрепление и отвод секций не являются диагностическими командами приложения. Актуальная редакция и полномочия не проверены.",
+          "sourceRefs": [
+            "emergency"
+          ],
+          "locator": "§19, архивный публичный текст",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-035-INFO-3",
+          "version": "DETAILED",
+          "title": "Пожарная инструкция",
+          "text": "№247/р, раздел 5 содержит аварийный порядок; его физические операции не переводятся в интерактивный граф.",
+          "sourceRefs": [
+            "fire"
+          ],
+          "locator": "§5.1, включая п.5.1.8",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-035-INFO-4",
+          "version": "DETAILED",
+          "title": "Архивная заводская документация",
+          "text": "РЭ1/РЭ2 не доказывают фактическую комплектацию систем пожаротушения и допустимость перемещения секций.",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1/РЭ2, архивное описание ранней серии; установленный вариант неизвестен",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-035-INFO-5",
+          "version": "DETAILED",
+          "title": "Разделение исполнений",
+          "text": "Для выбора системы пожаротушения и процедуры разделения секций требуются конкретное исполнение и действующие полномочия.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "ТМХ, обзор семейства 2024; конкретная комплектация и пожарная автоматика не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    }
+  ]
+}
