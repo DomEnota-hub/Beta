@@ -1,0 +1,1220 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-msud-batch14/1",
+    "date": "2026-11-06",
+    "baseHead": "a4becb5559db32070ae5ace535bedce9c7125e0d",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-043",
+      "ER-DIAG-044"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Exact sourceObject projection in Beta with pinned donor gzip Git blob identity; independent raw gzip decoding not performed",
+    "batchBoundary": "043/044 early MSUD-N; 045-048 late MSUD-015 and axle-control profile are a distinct future package."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-msud-batch14-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-043",
+      "scenarioId": "ermak.diag.ER-DIAG-043",
+      "title": "Нет контроля оборудования одной секции",
+      "symptom": "МСУД сообщает об отсутствии контроля оборудования секции, при этом тяга может сохраняться",
+      "hazardCategory": "SINGLE_SECTION_EQUIPMENT_TELEMETRY_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-70",
+        "SYS-71",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-001",
+        "ER-EQ-CT-004",
+        "ER-EQ-CT-008"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, питание, диагностика, синхронизация и датчики скорости",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "МСУД-Н: СИ СЕТЬ / СИ САУТ / питание / связь / скоростные каналы",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старые практические рекомендации; не источник разрешения ремонтных действий",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-n-archival-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-017",
+        "ER-DIAG-041",
+        "ER-DIAG-044"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-043",
+          "rawGzipIndependentlyDecoded": false,
+          "currentOperatingAuthority": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "document": "ИДМБ.661142.009РЭ1, ранний МСУД-Н",
+          "locator": "§6.8, §6.11, §7.1; МСУД-Н, индикация и регистрация",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "memo": {
+          "sourceKind": "TRAINING_HISTORICAL",
+          "document": "Памятка локомотивным бригадам по неисправностям Ермак",
+          "locator": "блок МСУД, абзацы «нет контроля работы оборудования» и SF91/SF89 (историческая неоднозначность)",
+          "url": "https://rcit.su/techinfoW04.html",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false
+        },
+        "practice": {
+          "sourceKind": "PRACTICAL_DONOR_UNVERIFIED",
+          "document": "Практические рекомендации по раннему 2ЭС5К/3ЭС5К",
+          "locator": "ER-SRC-011, раннее МСУД-Н; автор/редакция не подтверждены",
+          "status": "UNVERIFIED_CONTEXT_ONLY",
+          "currentOperatingAuthority": false
+        },
+        "variant": {
+          "sourceKind": "MANUFACTURER_BROCHURE_CONTEXT",
+          "document": "ТМХ «Ермак», обзор 2024",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "status": "LATE_CONTEXT_NOT_EQUIVALENT",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательское ограничение по результатам сопоставления источников",
+          "locator": "Только анализ завершённых записей; при текущем событии STOP, неизвестном исполнении BLOCKED, без сброса SF46/SF91, переключений МПК, проверки под напряжением и повторного прохода вставки.",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Нет контроля оборудования одной секции не доказывает отказ агрегата; обозначения SF91/SF89 в исторической памятке внутренне неоднозначны.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Ранний МСУД-Н и поздний МСУД-015 не взаимозаменяемы, точная конфигурация секции не подтверждена.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Современная редакция №996/р, профильные полномочия и фактическая установленная схема не подтверждены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи МСУД сообщила об отсутствии контроля оборудования именно одной секции, независимо от того, сохранилась ли тяга?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует самостоятельному симптому ER-DIAG-043; соседние сценарии не подменять.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективное сопоставление ER-DIAG-043. Отсутствие контроля одной секции не равно отказу оборудования или исчезновению тяги. Возможны разные состояния телеметрии, связи и исполнительной части; причина не установлена. Точная применимость, причина и разрешённые действия не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждено раннее исполнение МСУД-Н и применимость обозначений цепей контроля к этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи МСУД сообщила об отсутствии контроля оборудования именно одной секции, независимо от того, сохранилась ли тяга?",
+              "responses": {
+                "YES": "q-independent",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-independent",
+              "type": "QUESTION",
+              "text": "В ранее сохранённых данных отдельно отражено, выполняло ли оборудование секции команды, независимо от сообщения МСУД?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "По записи различимы потеря телеметрии, потеря межсекционной связи и фактический отказ оборудования?",
+              "responses": {
+                "YES": "q-record-source",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "practice"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record-source",
+              "type": "QUESTION",
+              "text": "В записи сохранены время, секция, источник сообщения и профиль, без вывода о конкретном автомате?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует самостоятельному симптому ER-DIAG-043; соседние сценарии не подменять.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективное сопоставление ER-DIAG-043. Отсутствие контроля одной секции не равно отказу оборудования или исчезновению тяги. Возможны разные состояния телеметрии, связи и исполнительной части; причина не установлена. Точная применимость, причина и разрешённые действия не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: МСУД-015 и неизвестное исполнение не приравнивать к ранней МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: записи недостаточно для установления причины, источника сигнала, исполнения или полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-043-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Закреплённый исходный симптом ER-DIAG-043: МСУД сообщает об отсутствии контроля оборудования секции, при этом тяга может сохраняться. Совпадение текста не доказывает причину; точный профиль и полномочия не установлены.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "locator": "Pinned sourceObject projection, diagnostics-03.pack.json, ER-DIAG-043"
+        },
+        {
+          "id": "ER-DIAG-043-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная схема",
+          "text": "ИДМБ.661142.009РЭ1: §6.8 МСУД-Н, §6.11 сигнализация, §7.1 диагностика; схема раннего исполнения, не подтверждение конкретного электровоза.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "§6.8, §6.11, §7.1; МСУД-Н, индикация и регистрация",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-043-INFO-3",
+          "version": "DETAILED",
+          "title": "Историческая памятка",
+          "text": "Архивная памятка, блок МСУД, строки о потере контроля одной секции и SF91 «ЦМК». В той же памятке SF91 назван датчиком скорости, а SF89 датчиком скорости отдельно: обозначения противоречат друг другу. Нельзя автоматически определять аппарат. Исторические восстановительные действия и электрические вмешательства не перенесены.",
+          "sourceRefs": [
+            "memo"
+          ],
+          "locator": "блок МСУД, абзацы «нет контроля работы оборудования» и SF91/SF89 (историческая неоднозначность)",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-043-INFO-4",
+          "version": "DETAILED",
+          "title": "Практический подход",
+          "text": "Исторический ER-SRC-011 рассматривает диагностику МСУД-Н, но не подтверждает фактическую причину. Ни сброса автоматов, ни переключения МПК, ни испытаний цепей.",
+          "sourceRefs": [
+            "practice"
+          ],
+          "locator": "ER-SRC-011, ранняя практическая памятка, редакция не подтверждена",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-043-INFO-5",
+          "version": "DETAILED",
+          "title": "Конфликт и применимость",
+          "text": "Нет контроля оборудования одной секции не доказывает отказ агрегата; обозначения SF91/SF89 в исторической памятке внутренне неоднозначны. Поздний МСУД-015 не приравнивать к раннему МСУД-Н; UNKNOWN/BLOCKED. Ни новых измерений, ни повторных включений.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "поздняя система управления МСУД-015; профиль машины не установлен",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "§6.8, §6.11, §7.1; МСУД-Н, индикация и регистрация",
+          "verifiedAt": "2026-11-06",
+          "status": "TECHNICAL_CONTEXT_ONLY"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "блок МСУД, абзацы «нет контроля работы оборудования» и SF91/SF89 (историческая неоднозначность)",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "SECONDARY_PUBLIC_CONTEXT",
+          "url": "https://scbist.com/41959-post1.html",
+          "locator": "перечень книг ИДМБ.661142.009РЭ, публикация 2011; не верифицирует содержание нужной редакции",
+          "verifiedAt": "2026-11-06",
+          "status": "DOCUMENT_EXISTENCE_ONLY"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud-batch14-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-044",
+      "scenarioId": "ermak.diag.ER-DIAG-044",
+      "title": "МСУД перезагружается на нейтральных вставках",
+      "symptom": "При прохождении нейтральной вставки МСУД перезапускается или кратковременно теряет питание",
+      "hazardCategory": "NEUTRAL_SECTION_MSUD_RESTART",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-70",
+        "SYS-71",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-001",
+        "ER-EQ-CT-005",
+        "ER-EQ-CT-006"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, питание, диагностика, синхронизация и датчики скорости",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "МСУД-Н: СИ СЕТЬ / СИ САУТ / питание / связь / скоростные каналы",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старые практические рекомендации; не источник разрешения ремонтных действий",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-n-archival-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-038",
+        "ER-DIAG-043",
+        "ER-DIAG-049"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-044",
+          "rawGzipIndependentlyDecoded": false,
+          "currentOperatingAuthority": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "document": "ИДМБ.661142.009РЭ1, ранний МСУД-Н",
+          "locator": "§6.1, §6.8, §7.1; питание управления, МСУД-Н, диагностическая регистрация",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "memo": {
+          "sourceKind": "TRAINING_HISTORICAL",
+          "document": "Памятка локомотивным бригадам по неисправностям Ермак",
+          "locator": "блок МСУД, фраза «при срабатывании автомата SF46 ... на нейтральных вставках будет перезагружаться МСУД»",
+          "url": "https://rcit.su/techinfoW04.html",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false
+        },
+        "practice": {
+          "sourceKind": "PRACTICAL_DONOR_UNVERIFIED",
+          "document": "Практические рекомендации по раннему 2ЭС5К/3ЭС5К",
+          "locator": "ER-SRC-011, раннее МСУД-Н; автор/редакция не подтверждены",
+          "status": "UNVERIFIED_CONTEXT_ONLY",
+          "currentOperatingAuthority": false
+        },
+        "variant": {
+          "sourceKind": "MANUFACTURER_BROCHURE_CONTEXT",
+          "document": "ТМХ «Ермак», обзор 2024",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "status": "LATE_CONTEXT_NOT_EQUIVALENT",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательское ограничение по результатам сопоставления источников",
+          "locator": "Только анализ завершённых записей; при текущем событии STOP, неизвестном исполнении BLOCKED, без сброса SF46/SF91, переключений МПК, проверки под напряжением и повторного прохода вставки.",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Событие на нейтральной вставке не равно неисправности АКБ или SF46; архивная связь SF46 с перезагрузкой не доказывает конкретный отказ.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Ранний МСУД-Н и поздний МСУД-015 не взаимозаменяемы, точная конфигурация секции не подтверждена.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Современная редакция №996/р, профильные полномочия и фактическая установленная схема не подтверждены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи при прохождении нейтральной вставки отмечен именно перезапуск МСУД или краткая потеря её питания, а не только изменение тяги?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует самостоятельному симптому ER-DIAG-044; соседние сценарии не подменять.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективное сопоставление ER-DIAG-044. Совпадение перезапуска МСУД с нейтральной вставкой не доказывает неисправность конкретного автомата, АКБ или источника питания. Штатное изменение режима и потеря питания МСУД различаются; причина не установлена. Точная применимость, причина и разрешённые действия не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документации этой записи подтверждено раннее исполнение МСУД-Н и соответствующая схема её питания?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи при прохождении нейтральной вставки отмечен именно перезапуск МСУД или краткая потеря её питания, а не только изменение тяги?",
+              "responses": {
+                "YES": "q-independent",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-independent",
+              "type": "QUESTION",
+              "text": "Сохранены независимые отметки времени перезапуска/погасания экрана и прохождения вставки без повторного воспроизведения события?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Запись позволяет различить штатное изменение тягового режима на вставке и отдельный сбой питания либо перезапуск МСУД?",
+              "responses": {
+                "YES": "q-record-source",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "practice"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record-source",
+              "type": "QUESTION",
+              "text": "Зафиксированы секция, время, источник регистрации и профиль, без предположения о неисправности АКБ, SF46 или шкафа питания?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует самостоятельному симптому ER-DIAG-044; соседние сценарии не подменять.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективное сопоставление ER-DIAG-044. Совпадение перезапуска МСУД с нейтральной вставкой не доказывает неисправность конкретного автомата, АКБ или источника питания. Штатное изменение режима и потеря питания МСУД различаются; причина не установлена. Точная применимость, причина и разрешённые действия не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: МСУД-015 и неизвестное исполнение не приравнивать к ранней МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: записи недостаточно для установления причины, источника сигнала, исполнения или полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-044-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Закреплённый исходный симптом ER-DIAG-044: При прохождении нейтральной вставки МСУД перезапускается или кратковременно теряет питание. Совпадение текста не доказывает причину; точный профиль и полномочия не установлены.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "locator": "Pinned sourceObject projection, diagnostics-03.pack.json, ER-DIAG-044"
+        },
+        {
+          "id": "ER-DIAG-044-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная схема",
+          "text": "ИДМБ.661142.009РЭ1: §6.1 питание управления, §6.8 МСУД-Н, §7.1 регистрация; архивная схема не удостоверяет конкретное исполнение и эксплуатационные полномочия.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "§6.1, §6.8, §7.1; питание управления, МСУД-Н, диагностическая регистрация",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-044-INFO-3",
+          "version": "DETAILED",
+          "title": "Историческая памятка",
+          "text": "Историческая памятка упоминает возможную перезагрузку МСУД на нейтральных вставках при срабатывании SF46. Это не подтверждение причины данного события и не разрешение восстанавливать SF46. Исторические восстановительные действия и электрические вмешательства не перенесены.",
+          "sourceRefs": [
+            "memo"
+          ],
+          "locator": "блок МСУД, фраза «при срабатывании автомата SF46 ... на нейтральных вставках будет перезагружаться МСУД»",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-044-INFO-4",
+          "version": "DETAILED",
+          "title": "Практический подход",
+          "text": "ER-SRC-011 и публичная памятка дают исторический подход к признакам питания, но не современный маршрут; не повторять проходы, не переключать питание и не восстанавливать защиты.",
+          "sourceRefs": [
+            "practice"
+          ],
+          "locator": "ER-SRC-011, ранняя практическая памятка, редакция не подтверждена",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-044-INFO-5",
+          "version": "DETAILED",
+          "title": "Конфликт и применимость",
+          "text": "Событие на нейтральной вставке не равно неисправности АКБ или SF46; архивная связь SF46 с перезагрузкой не доказывает конкретный отказ. Поздний МСУД-015 не приравнивать к раннему МСУД-Н; UNKNOWN/BLOCKED. Ни новых измерений, ни повторных включений.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "поздняя система управления МСУД-015; профиль машины не установлен",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "§6.1, §6.8, §7.1; питание управления, МСУД-Н, диагностическая регистрация",
+          "verifiedAt": "2026-11-06",
+          "status": "TECHNICAL_CONTEXT_ONLY"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "блок МСУД, фраза «при срабатывании автомата SF46 ... на нейтральных вставках будет перезагружаться МСУД»",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "SECONDARY_PUBLIC_CONTEXT",
+          "url": "https://scbist.com/41959-post1.html",
+          "locator": "перечень книг ИДМБ.661142.009РЭ, публикация 2011; не верифицирует содержание нужной редакции",
+          "verifiedAt": "2026-11-06",
+          "status": "DOCUMENT_EXISTENCE_ONLY"
+        }
+      ]
+    }
+  ]
+}
