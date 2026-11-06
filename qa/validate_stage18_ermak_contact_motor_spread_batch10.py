@@ -35,6 +35,7 @@ def check(c):
         g=c["versions"][mode];nodes=g["nodes"];by={n["id"]:n for n in nodes}
         req(len(nodes)==count and len(by)==count and g["authoringStatus"]=="RESEARCH_DRAFT_BLOCKED" and g["operatingInstructionsIncluded"] is False,"graph count/status")
         req(g["startNodeId"]=="q-emergency" and by["q-emergency"]["responses"]=={"YES":"stop-emergency","NO":("q-scope" if mode=="SHORT" else "q-profile"),"UNKNOWN":"stop-unknown"},"immediate emergency STOP")
+        req(by["stop-emergency"]["type"]=="STOP" and by["stop-unknown"]["type"]=="STOP" and by["stop-mismatch"]["type"]=="STOP","emergency/unknown/mismatch terminal safety")
         seen=set();stack=[g["startNodeId"]]
         while stack:
             k=stack.pop();req(k in by,"dangling "+k)
