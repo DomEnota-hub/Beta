@@ -96,7 +96,7 @@ def main():
  req(l["donorPinnedSha"]=="3176d6ee228f0ed4b78371f45209e10c1c724eff" and l["donorGzipBlobSha"]=="c3a22c62db42308eb4b7ee44ff2da02f47686625" and l["status"]=="CANDIDATE" and l["runtimeImport"] is False and l["actionAuthorityGranted"] is False,"ledger")
  req(len(SRC)>=3 and len(set(x["hazardCategory"] for x in D["candidates"]))==3,"uniqueness")
  for c in D["candidates"]:check(c)
- for mode in ("SHORT","DETAILED"):req(len({c["versions"][mode]["nodes"][2]["text"] for c in D["candidates"]})==5,"distinct symptoms")
+ for mode in ("SHORT","DETAILED"):req(len({c["versions"][mode]["nodes"][2]["text"] for c in D["candidates"]})==3,"distinct symptoms")
  print("STAGE18_BATCH33_PASS scenarios=3 SHORT=24 DETAILED=36 EXTENSIONS=15")
  if args.negative:print("STAGE18_BATCH33_NEGATIVE_PASS",sum(negatives(c) for c in D["candidates"]))
 if __name__=="__main__":main()
