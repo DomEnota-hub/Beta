@@ -57,7 +57,7 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
@@ -77,11 +77,23 @@ jobs:
       - name: Validate pinned Common first-aid data and publication gate
         run: python3 qa/validate_common_first_aid.py --verify-pinned-output
 
+      - name: Relate historical first-aid audit to candidate cards
+        run: python3 qa/reconcile_first_aid_historical_audit.py --check
+
+      - name: Relate historical acceptance audits to preserved item identities
+        run: python3 qa/reconcile_historical_acceptance_audits.py --check
+
       - name: Validate Common knowledge and safety source packs
         run: python3 qa/validate_common_knowledge.py --verify-pinned-output
 
       - name: Validate lossless Ermak object packs
         run: python3 qa/validate_ermak.py
+
+      - name: Preserve source-derived Ermak acceptance checks
+        run: python3 qa/reconcile_ermak_acceptance_source.py --check
+
+      - name: Reconcile fifteen VL80S required Kotlin checks
+        run: python3 qa/reconcile_vl80s_required_kotlin.py --check
 
       - name: Validate pinned VL80S legacy knowledge cards
         run: python3 qa/validate_vl80s_legacy_knowledge.py
@@ -128,6 +140,9 @@ jobs:
 
       - name: Validate CHME3 family source and variant isolation
         run: python3 qa/validate_chme3.py
+
+      - name: Reconcile CHME3 raw source targets with preserved documentary objects
+        run: python3 qa/reconcile_chme3_raw_targets.py --check
 
       - name: Validate pinned CHME3 source registries and unresolved IDs
         run: python3 qa/validate_chme3_source_registries.py
@@ -180,6 +195,15 @@ jobs:
       - name: Verify complete CHME3 document-ledger coverage
         run: python3 qa/validate_chme3_document_coverage.py
 
+      - name: Validate Stage18 Ermak HV interlocks candidate and negative gates (batch40)
+        run: python3 qa/validate_stage18_ermak_hv_interlocks_batch40.py --negative
+
+      - name: Validate Stage18 Ermak manual brake candidate and negative gates (batch39)
+        run: python3 qa/validate_stage18_ermak_manual_brake_batch39.py --negative
+
+      - name: Validate Stage18 Ermak flange lubricator candidate and negative gates (batch38)
+        run: python3 qa/validate_stage18_ermak_flange_lubricator_batch38.py --negative
+
       - name: Validate pinned shared locomotive family manifest
         run: python3 qa/validate_locomotive_family_manifest.py
 
@@ -225,6 +249,198 @@ jobs:
       - name: Validate cross-block migrated data array
         run: python3 qa/validate_migrated_data_array.py
 
+      - name: Reconcile all model-package links and variant applicability
+        run: python3 qa/reconcile_stage2_model_links.py
+
+      - name: Verify preserved shared scheme source objects
+        run: python3 qa/validate_shared_scheme_pairs.py
+
+      - name: Reconcile Atlas source pairs with model equipment and layout nodes
+        run: python3 qa/reconcile_atlas_pair_bindings.py --check
+
+      - name: Account for unreviewed diagnostic versions against the donor
+        run: python3 qa/reconcile_diagnostic_version_coverage.py --check
+
+      - name: Reconcile per-scenario source and extended-variant coverage
+        run: python3 qa/analyze_diagnostic_corpus.py --check
+
+      - name: Guard diagnostic authoring evidence and exact profiles
+        run: python3 qa/validate_diagnostic_stage1_evidence.py
+
+      - name: Validate pilot diagnostic claim evidence against pinned snapshots
+        run: python3 qa/validate_diagnostic_stage2_claims.py
+
+      - name: Verify Stage 3 diagnostic authoring baseline and source safety
+        run: python3 qa/diagnostic_stage3_preflight.py --check
+
+      - name: Exercise Stage 3 claim/source negative fixtures
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage3_preflight.py
+
+      - name: Verify Stage 4 non-published pilot graphs and source gaps
+        run: python3 qa/diagnostic_stage4_pilot_preflight.py
+
+      - name: Negative Stage 4 pilot and profile/source tests
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage4_pilot_preflight.py
+
+      - name: Validate Stage 5 source-variability research dossiers
+        run: python3 qa/validate_diagnostic_stage5_variability.py
+
+      - name: Negative Stage 5 diversity vs raw source count checks
+        run: python3 -m unittest discover -s qa -p test_diagnostic_stage5_variability.py
+
+      - name: Review integrated Stage 5 research graphs against canonical lineage
+        run: python3 qa/validate_stage5_research.py
+
+      - name: Guard Stage 5 historical evidence, warnings and forbidden actions
+        run: python3 -m unittest discover -s qa -p test_stage5_research.py
+
+      - name: Reconcile original pinned donor Kotlin scenarios with Stage 5 drafts
+        run: python3 qa/validate_stage5_donor_reconciliation.py
+
+      - name: Negative donor-mapping regression on Stage 5
+        run: python3 -m unittest discover -s qa -p test_stage5_donor_reconciliation.py
+
+      - name: Stage 6 original scenarios and similar-fault separation
+        run: python3 qa/validate_stage6_separation.py
+
+      - name: Stage 6 negative source and no-action cases
+        run: python3 -m unittest discover -s qa -p test_stage6_separation.py
+
+      - name: Validate Stage 6 source-only contrasting diagnostic routes
+        run: python3 qa/validate_stage6_routes.py
+
+      - name: Stage 6 negative gates for source, profile and historic alternatives
+        run: python3 -m unittest discover -s qa -p test_stage6_routes.py
+
+      - name: Verify located 1990 and 2005 archival claims remain informational
+        run: python3 qa/validate_stage6_claim_ledger.py
+
+      - name: Negative Stage 6 historical evidence and source-authority checks
+        run: python3 -m unittest discover -s qa -p test_stage6_claim_ledger.py
+
+      - name: Verify Stage 6 historical equipment variants and crew vs repair authority
+        run: python3 qa/validate_stage6_equipment_role_gate.py
+
+      - name: Negative Stage 6 serial number and operational-authority fixtures
+        run: python3 -m unittest discover -s qa -p test_stage6_equipment_role_gate.py
+
+      - name: Verify Stage 7 VL80S source-first GV reservoir and EKG indication drafts
+        run: python3 qa/validate_stage7_source_first.py
+
+      - name: Negative Stage 7 source, profile, warning and action fixtures
+        run: python3 -m unittest discover -s qa -p test_stage7_source_first.py
+
+      - name: Reconcile Package B generator source labels and rules
+        run: python3 qa/reconcile_stepwise_generator_contract.py
+
+      - name: Relate historical Package B checkpoint to preserved sequences
+        run: python3 qa/reconcile_package_b_checkpoint.py --check
+
+      - name: Verify model-owned source presentation labels
+        run: python3 qa/validate_source_presentations.py
+
+      - name: Verify pinned technical presentation vocabulary
+        run: python3 qa/validate_technical_presentation.py
+
+      - name: Verify VL80S equipment catalog root and zones
+        run: python3 qa/validate_vl80s_equipment_context.py
+
+      - name: Verify complete pinned VL80S acceptance source
+        run: python3 qa/validate_vl80s_acceptance_source.py
+
+      - name: Verify five complete VL80S scheme and variant source catalogs
+        run: python3 qa/validate_vl80s_scheme_sources.py
+
+      - name: Verify TEM2 catalog root provenance
+        run: python3 qa/validate_tem2_catalog_roots.py
+
+      - name: Verify complete warned extended emergency candidate source
+        run: python3 qa/validate_extended_emergency_source.py
+
+      - name: Verify diagnostic framework, reference and policy source snapshots
+        run: python3 qa/validate_diagnostic_reference_sources.py
+
+      - name: Verify complete pinned VL80S diagnostic source
+        run: python3 qa/validate_vl80s_diagnostic_source.py
+
+      - name: Reconcile technical discovery groups with preservation evidence
+        run: python3 qa/reconcile_technical_discovery.py --check
+
+      - name: Reconcile documentary discovery groups with exact object maps
+        run: python3 qa/reconcile_document_discovery.py --check
+
+      - name: Account for remaining provisional pending-mapping groups
+        run: python3 qa/reconcile_remaining_pending_mapping.py --check
+
+      - name: Triage provisional pending-extraction source files
+        run: python3 qa/reconcile_pending_extraction.py --check
+
+      - name: Reconcile pinned Ermak pantograph generator constants
+        run: python3 qa/reconcile_ermak_pantograph_generator.py
+
+      - name: Reconcile 28 Ermak enrichment sources and static objects
+        run: python3 qa/reconcile_ermak_enrichment_literals.py --check
+
+      - name: Preserve CHME3 and TEM2 generated display literals
+        run: python3 qa/reconcile_family_projection_literals.py --check
+
+      - name: Replay CHME3 and TEM2 Android asset generators from preserved sources
+        run: python3 qa/replay_family_generators.py
+
+      - name: Relate TEM2 historical Atlas and Acceptance checkpoints to preserved objects
+        run: python3 qa/reconcile_tem2_information_checkpoints.py --check
+
+      - name: Relate early CHME3 Atlas checkpoint and keep distinct contactor identities
+        run: python3 qa/reconcile_chme3_legacy_atlas_checkpoint.py --check
+
+      - name: Relate CHME3E Stage 1 checkpoint without promoting profile actions
+        run: python3 qa/reconcile_chme3e_stage1_checkpoint.py --check
+
+      - name: Relate CHME3E Stage 2 Atlas checkpoint without leaking CHME3T EDB
+        run: python3 qa/reconcile_chme3e_stage2_checkpoint.py --check
+
+      - name: Relate CHME3 interactive Stage 2 without enabling historical runtime
+        run: python3 qa/reconcile_chme3_interactive_stage2_checkpoint.py --check
+
+      - name: Relate TEM2 and TEM2U Stage 1 foundation without enabling runtime
+        run: python3 qa/reconcile_tem2_stage1_checkpoint.py --check
+
+      - name: Verify 46 pinned locomotive reference rows
+        run: python3 qa/migrate_locomotive_reference_source.py --check
+
+      - name: Verify Kotlin-embedded reference source groups
+        run: python3 qa/migrate_embedded_reference_sources.py --check
+
+      - name: Project 18 guarded Kotlin reference card candidates
+        run: python3 qa/project_embedded_reference_cards.py --check
+
+      - name: Verify seven extended-stage source documents
+        run: python3 qa/reconcile_extended_stage_documents.py --check
+
+      - name: Verify 50 historical source documents
+        run: python3 qa/preserve_pending_documents.py
+
+      - name: Index historical document sections without source promotion
+        run: python3 qa/project_historical_sections.py --check
+
+      - name: Classify historical document review phases
+        run: python3 qa/classify_historical_document_phase.py --check
+
+      - name: Route mixed historical document sections by phase
+        run: python3 qa/classify_mixed_historical_sections.py --check
+
+      - name: Route exact assertion lines in mixed historical sections
+        run: python3 qa/classify_mixed_historical_assertions.py --check
+
+      - name: Reconcile all provisional extraction file reviews
+        run: python3 qa/reconcile_pending_extraction_review.py --check
+
+      - name: Reconcile all donor discovery rows to bounded evidence and gates
+        run: python3 qa/reconcile_discovery_outcomes.py --check && python3 -m unittest qa/test_reconcile_discovery_outcomes.py
+
+      - name: Reconcile information acceptance accounting boundaries
+        run: python3 qa/reconcile_information_acceptance.py
+
       - name: Validate pinned candidate inventory
         run: python3 qa/validate_vl80s_candidate_inventory.py
 
@@ -239,6 +455,9 @@ jobs:
 
       - name: Validate migrated VL80S normal values
         run: python3 qa/validate_vl80s_normal_values.py
+
+      - name: Preserve Kotlin confidence and applicability of six VL80S normal values
+        run: python3 qa/reconcile_vl80s_normal_values_source.py --check
 
       - name: Validate migrated VL80S acceptance
         run: python3 qa/validate_vl80s_acceptance.py
@@ -268,8 +487,14 @@ jobs:
       - name: Validate migrated VL80S layout hotspots
         run: python3 qa/validate_vl80s_layout.py
 
+      - name: Reconcile VL80S layout hotspots with pinned Kotlin
+        run: python3 qa/reconcile_vl80s_layout_hotspots.py
+
       - name: Validate migrated VL80S pneumatic stepwise flows
         run: python3 qa/validate_vl80s_pneumatic_flows.py
+
+      - name: Reconcile VL80S pneumatic hotspot text with pinned Kotlin
+        run: python3 qa/reconcile_vl80s_pneumatic_hotspots.py
 
       - name: Validate migrated VL80S electrical functional flows
         run: python3 qa/validate_vl80s_electrical_functional_flows.py
@@ -279,6 +504,233 @@ jobs:
 
       - name: Show project boundaries
         run: gradle projects --console=plain
+
+      - name: Validate Stage7 auxiliary closeout candidates
+        run: python3 qa/validate_stage7_auxiliary_closeout.py
+
+      - name: Stage7 auxiliary negative source and safety regression
+        run: python3 qa/validate_stage7_auxiliary_closeout.py --negative
+
+      - name: Validate Stage7 compressor source-first candidates
+        run: python3 qa/validate_stage7_compressor_source_first.py
+
+      - name: Stage7 compressor negative source and safety regression
+        run: python3 -m unittest discover -s qa -p test_stage7_compressor_source_first.py
+
+      - name: Validate Stage8 auxiliary common-loss source-first
+        run: python3 qa/validate_stage8_aux_common_loss.py
+
+      - name: Stage8 auxiliary common-loss negative source and safety regression
+        run: python3 qa/validate_stage8_aux_common_loss.py --negative
+
+      - name: Validate Stage8 auxiliary contactor chatter source-first
+        run: python3 qa/validate_stage8_aux_contactor_chatter.py
+
+      - name: Stage8 contactor chatter negative source and safety regression
+        run: python3 qa/validate_stage8_aux_contactor_chatter.py --negative
+
+      - name: Validate Stage8 phase splitter source-first candidate and negative QA
+        run: python3 qa/validate_stage8_phase_splitter_no_start.py
+
+      - name: Validate Stage8 motor-fan failure source-first candidate and negative QA
+        run: python3 qa/validate_stage8_motor_fan_failure.py
+
+      - name: Validate Stage8 heater-fault source-first candidate and negative QA
+        run: python3 qa/validate_stage8_heater_fault.py
+
+      - name: Validate Stage8 single auxiliary machine trip and negative QA
+        run: python3 qa/validate_stage8_aux_machine_single_trip.py
+
+      - name: Validate Stage8 auxiliary closeout batch, donor parity and 96 negative mutations
+        run: python3 qa/validate_stage8_auxiliary_closeout_batch.py
+
+      - name: Validate Stage9 HV protections batch and 125 negative mutations
+        run: python3 qa/validate_stage9_hv_protections_batch.py
+
+      - name: Validate Stage9 HV pantograph and roof batch 2, 200 negative mutations
+        run: python3 qa/validate_stage9_pantograph_hv_batch2.py
+
+      - name: Validate Stage9 transformer and VVK closeout batch 3, 80 negative mutations
+        run: python3 qa/validate_stage9_transformer_vvk_closeout_batch3.py
+
+      - name: Validate Stage10 control circuits batch 1 and 180 negative mutations
+        run: python3 qa/validate_stage10_control_circuits_batch1.py
+
+      - name: Validate Stage10 control circuits closeout batch 2 and negative mutations
+        run: python3 qa/validate_stage10_control_circuits_closeout_batch2.py
+
+      - name: Validate Stage11 traction source-first batch and 160 negative mutations
+        run: python3 qa/validate_stage11_traction_batch1.py
+
+      - name: Validate stage11 traction batch2 source-bound candidates
+        run: python3 qa/validate_stage11_traction_batch2.py
+
+      - name: Validate stage11 traction batch3 and 175 negative mutations
+        run: python3 qa/validate_stage11_traction_batch3.py
+
+      - name: Validate stage11 traction closeout batch4, 70 negative mutations and 18 ID coverage
+        run: python3 qa/validate_stage11_traction_closeout_batch4.py
+
+      - name: Validate Stage12 brakes source-first batch1 and 185 negative mutations
+        run: python3 qa/validate_stage12_brakes_batch1.py
+
+      - name: Validate Stage12 brakes batch2 and 185 negative mutations
+        run: python3 qa/validate_stage12_brakes_batch2.py
+
+      - name: Validate Stage12 brake closeout and 74 negative fail-closed mutations
+        run: python3 qa/validate_stage12_brakes_closeout_batch3.py
+
+      - name: Validate Stage13 pneumatic research batch1 and 105 negative mutations
+        run: python3 qa/validate_stage13_pneumatics_batch1.py
+
+      - name: Validate Stage13 pneumatic closeout and 140 negative mutations
+        run: python3 qa/validate_stage13_pneumatics_closeout_batch2.py
+
+      - name: Validate Stage14 cab communication batch1 and 175 negative mutations
+        run: python3 qa/validate_stage14_cab_communication_batch1.py
+
+      - name: Validate Stage15 running gear batch1 and 175 negative mutations
+        run: python3 qa/validate_stage15_running_gear_batch1.py
+
+      - name: Validate Stage15 running gear closeout and 105 negative mutations
+        run: python3 qa/validate_stage15_running_gear_closeout_batch2.py
+
+      - name: Validate Stage16 traffic safety four candidates and 140 negative mutations
+        run: python3 qa/validate_stage16_traffic_safety_batch1.py
+
+      - name: Validate Stage17 fire emergency five candidates and 175 negative mutations
+        run: python3 qa/validate_stage17_fire_emergency_batch1.py
+
+      - name: Validate Stage17 mechanical and rheostatic four candidates with 140 negative mutations
+        run: python3 qa/validate_stage17_mechanical_rheostatic_closeout_batch2.py
+
+      - name: Audit all 103 pinned VL80S donor IDs and research-only safety
+        run: python3 qa/validate_stage17_vl80s_full_coverage.py && python3 qa/validate_stage17_vl80s_full_coverage.py --negative
+
+      - name: Validate Stage17 final aux-machines source-first graph and negative gates
+        run: python3 qa/validate_stage17_aux_machines_closeout.py --negative
+
+      - name: Validate Stage18 Ermak first three candidates and negative QA
+        run: python3 qa/validate_stage18_ermak_batch1.py --negative
+
+      - name: Validate Stage18 Ermak second three source-first candidates and 102 negative mutations
+        run: python3 qa/validate_stage18_ermak_batch2.py --negative
+      - name: Stage18 Ermak BV batch3 source/graph/fail-closed QA
+        run: python3 qa/validate_stage18_ermak_bv_batch3.py --negative
+
+      - name: Stage18 Ermak VIP-BV and QT1 batch4 source/graph/fail-closed QA
+        run: python3 qa/validate_stage18_ermak_vip_qt1_batch4.py --negative
+
+      - name: Stage18 Ermak QT1/load/display batch5 source and 170 negative mutations
+        run: python3 qa/validate_stage18_ermak_qt1_load_display_batch5.py --negative
+
+      - name: Stage18 Ermak compressor/auxiliary batch6 with 175 negative mutations
+        run: python3 qa/validate_stage18_ermak_compressor_aux_batch6.py --negative
+
+      - name: Stage18 Ermak fan and SF26 batch7 with 175 negative mutations
+        run: python3 qa/validate_stage18_ermak_fan_sf26_batch7.py --negative
+
+      - name: Stage18 Ermak single-section MV1/MV2 batch8 with 70 negative mutations
+        run: python3 qa/validate_stage18_ermak_mv_single_section_batch8.py --negative
+
+      - name: Stage18 Ermak roof arc/fire emergency batch9 with 108 negative mutations
+        run: python3 qa/validate_stage18_ermak_roof_arc_fire_batch9.py --negative
+
+      - name: Stage18 Ermak contact network, traction motor and fire spread batch10 negative QA
+        run: python3 qa/validate_stage18_ermak_contact_motor_spread_batch10.py --negative
+
+      - name: Stage18 Ermak wagon fire and unknown cargo-card batch11 negative QA
+        run: python3 qa/validate_stage18_ermak_wagon_fire_batch11.py --negative
+
+      - name: Stage18 Ermak MSUD-Н batch12 source, graph and negative QA
+        run: python3 qa/validate_stage18_ermak_msud_batch12.py --negative
+
+      - name: Stage18 Ermak current transient, inter-section communication and speed indication batch13 QA
+        run: python3 qa/validate_stage18_ermak_msud_batch13.py --negative
+
+      - name: Stage18 Ermak single-section control and neutral-section restart batch14 QA
+        run: python3 qa/validate_stage18_ermak_msud_batch14.py --negative
+
+      - name: Stage18 Ermak late MSUD-015 axle-control batch15 provenance and negative QA
+        run: python3 qa/validate_stage18_ermak_msud015_batch15.py --negative
+
+      - name: Stage18 Ermak early MSUD-N traction/current/reverser batch16 and negative QA
+        run: python3 qa/validate_stage18_ermak_early_traction_batch16.py --negative
+
+      - name: Stage18 Ermak traction contactor and both fast breakers batch17 negative QA
+        run: python3 qa/validate_stage18_ermak_traction_bv_batch17.py --negative
+
+      - name: Stage18 Ermak recuperation batch18 and negative QA
+        run: python3 qa/validate_stage18_ermak_recuperation_batch18.py --negative
+
+      - name: Stage18 Ermak TC/TM brake-pressure batch19 and negative fail-closed QA
+        run: python3 qa/validate_stage18_ermak_brake_pressure_batch19.py --negative
+
+      - name: Stage18 Ermak protection, wheel-slide and TC batch20 negative QA
+        run: python3 qa/validate_stage18_ermak_protection_batch20.py --negative
+
+      - name: Stage18 Ermak cold-oil transformer and cooling batch21 negative QA
+        run: python3 qa/validate_stage18_ermak_aux_cooling_batch21.py --negative
+
+      - name: Stage18 Ermak PCHF M35 and cab climate batch22 negative QA
+        run: python3 qa/validate_stage18_ermak_aux_pchf_cab_batch22.py --negative
+
+      - name: Stage18 Ermak feed-main and main-reservoir batch23 negative QA
+        run: python3 qa/validate_stage18_ermak_pneumatic_batch23.py --negative
+
+      - name: Stage18 Ermak compressor cycles, relief and backflow batch24 negative QA
+        run: python3 qa/validate_stage18_ermak_pneumatic_batch24.py --negative
+
+      - name: Stage18 Ermak condensate purge and inter-section feed-main batch25 negative QA
+        run: python3 qa/validate_stage18_ermak_pneumatic_batch25.py --negative
+
+      - name: Stage18 Ermak pantograph GV control-air batch26 source and negative QA
+        run: python3 qa/validate_stage18_ermak_control_air_batch26.py --negative
+
+      - name: Stage18 Ermak brake batch27 source and negative QA
+        run: python3 qa/validate_stage18_ermak_brake_batch27.py --negative
+
+      - name: Stage18 Ermak automatic/reserve/substitution/EPK batch28 source and negative QA
+        run: python3 qa/validate_stage18_ermak_brake_batch28.py --negative
+
+      - name: Validate Ermak Stage18 brake pipe batch29 and negative gates
+        run: python3 qa/validate_stage18_ermak_brake_batch29.py --negative
+
+      - name: Stage18 Ermak safety systems batch30 source and negative QA
+        run: python3 qa/validate_stage18_ermak_safety_batch30.py --negative
+
+      - name: Stage18 Ermak protections batch31 source and negative QA
+        run: python3 qa/validate_stage18_ermak_protections_batch31.py --negative
+
+      - name: Stage18 Ermak mechanical and sanding batch32 source, graph and negative QA
+        run: python3 qa/validate_stage18_ermak_mechanical_batch32.py --negative
+
+      - name: Stage18 Ermak wheel emergency batch33 negative QA
+        run: python3 qa/validate_stage18_ermak_wheel_emergency_batch33.py --negative
+
+      - name: Stage18 Ermak cab radio horn lights wipers batch34 source and negative QA
+        run: python3 qa/validate_stage18_ermak_cab_systems_batch34.py --negative
+
+      - name: Stage18 Ermak pantograph roof emergency batch35 source, graph and negative QA
+        run: python3 qa/validate_stage18_ermak_pantograph_emergency_batch35.py --negative
+
+      - name: Stage18 Ermak contact-network voltage-loss batch36 source, graph and negative QA
+        run: python3 qa/validate_stage18_ermak_contact_network_voltage_batch36.py --negative
+
+      - name: Stage18 Ermak metering and safety channels batch37 negative QA
+        run: python3 qa/validate_stage18_ermak_metering_safety_batch37.py --negative
+
+      - name: Stage18 Ermak flange lubricator batch38 source and negative QA
+        run: python3 qa/validate_stage18_ermak_flange_lubricator_batch38.py --negative
+
+      - name: Stage18 Ermak manual brake batch39 source and negative QA
+        run: python3 qa/validate_stage18_ermak_manual_brake_batch39.py --negative
+
+      - name: Stage18 Ermak HV interlocks batch40 source and negative QA
+        run: python3 qa/validate_stage18_ermak_hv_interlocks_batch40.py --negative
+
+      - name: Stage18 Ermak cab signaling vs command batch41 source and negative QA
+        run: python3 qa/validate_stage18_ermak_cab_signals_batch41.py --negative
 
       - name: Contract, runtime, assistant, UI routing and policy tests
         run: >-

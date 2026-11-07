@@ -1,0 +1,852 @@
+{
+  "schemaVersion": "diagnostic-stage6-contrasting-research/1",
+  "stage": "6/51",
+  "scenarioId": "vl80s.diag.ekg-slow-transition",
+  "originalId": "ekg-slow-transition",
+  "canonicalGroup": "EKG_TRANSITION_STATE",
+  "title": "ЭКГ медленно переходит между позициями",
+  "authoringProfileId": "vl80s-general",
+  "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorLayer": "DiagnosticExtendedCatalog.kt",
+  "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+  "sourceRecords": {
+    "donorSeed": {
+      "id": "donorSeed",
+      "sourceType": "ARCHIVED_DONOR_OFFLINE_CATALOG",
+      "repository": "DomEnota-hub/Test-",
+      "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "sourcePointer": "Seed(\"ekg-slow-transition\")",
+      "excerptFields": {
+        "category": "Тяга",
+        "summary": "Переход затянут, сопровождается повторными командами или нестабильной индикацией.",
+        "equipment": "ЭКГ, привод, контроллер, цепь управления",
+        "signs": "долгий переход, дребезг индикации",
+        "danger": "застревание между позициями, защитное отключение"
+      },
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "operationalProcedureImported": false
+    },
+    "manual1990": {
+      "id": "manual1990",
+      "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+      "title": "Васько, Девятков, Кучеров и др., Электровоз ВЛ80с: Руководство по эксплуатации, 2-е изд., Транспорт, 1990",
+      "publishedYear": 1990,
+      "sourceType": "HISTORICAL_OPERATING_MANUAL",
+      "verifiedLocator": "Приложение 19, стр. 435; схема управления ГВ, стр. 220-221; показания указателя позиций, стр. 140-141",
+      "sourceTextLocated": true,
+      "completeModernEditionValidated": false,
+      "exactInstalledEquipmentVerified": false,
+      "currentActionAuthorityVerified": false,
+      "operationalProcedureImported": false,
+      "sourceSafetyPolicy": "HISTORICAL_TECHNICAL_CONTEXT_ONLY_NO_REPAIR_PROCEDURES"
+    },
+    "scheme2005": {
+      "id": "scheme2005",
+      "url": "https://djvu.online/file/DjTvFd9wIK3Ok",
+      "title": "Потанин А. А., Куприн В. В. Электрическая схема электровоза переменного тока ВЛ80С и ее обслуживание, 2005",
+      "publishedYear": 2005,
+      "sourceType": "HISTORICAL_TECHNICAL_TRAINING_TEXT",
+      "verifiedLocator": "Раздел 2, подраздел V: Защита главного контроллера при замедленном вращении или застревании, стр. 53; раздел 4.2, стр.75",
+      "sourceTextLocated": true,
+      "completeModernEditionValidated": false,
+      "exactInstalledEquipmentVerified": false,
+      "currentActionAuthorityVerified": false,
+      "operationalProcedureImported": false,
+      "sourceSafetyPolicy": "HISTORICAL_TECHNICAL_CONTEXT_ONLY_NO_REPAIR_PROCEDURES"
+    }
+  },
+  "reportedSummary": "Переход затянут, сопровождается повторными командами или нестабильной индикацией.",
+  "reportedDanger": "застревание между позициями, защитное отключение",
+  "reportedEquipment": "ЭКГ, привод, контроллер, цепь управления",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "executable": false,
+  "sourceAuthorityVerified": false,
+  "exactInstalledVariantConfirmed": false,
+  "technicalClaimsReviewed": false,
+  "substantiveSafetyReviewed": false,
+  "observationOnly": true,
+  "contrastIsDistinctCanonicalScenario": true,
+  "warningGate": {
+    "default": "HIDDEN",
+    "extendedEnabled": true,
+    "warningReadToEnd": true,
+    "warningAcknowledged": true,
+    "warningGrantsActionAuthority": false
+  },
+  "versions": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "slow",
+      "nodes": [
+        {
+          "id": "slow",
+          "type": "QUESTION",
+          "text": "В сохранённых наблюдениях переход был затянутым, а не полностью отсутствовал?",
+          "responses": {
+            "YES": "indicator",
+            "NO": "not-slow",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "indicator",
+          "type": "QUESTION",
+          "text": "Была ли уже зафиксирована нестабильность индикации позиции?",
+          "responses": {
+            "YES": "unstable",
+            "NO": "slow-only",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "not-slow",
+          "type": "OBSERVATION_REPORT",
+          "text": "Затянутый переход не доказан; это может быть другой исходный сценарий.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unstable",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зарегистрированы затянутый переход и нестабильная индикация. Причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "slow-only",
+          "type": "OBSERVATION_REPORT",
+          "text": "Затянутый переход отмечен без зарегистрированного дребезга индикации.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет достоверного исходного признака, не предлагать новые циклы набора.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "short-slow-movement",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-slow-transition\")",
+          "approachFocus": "SLOW_MOVEMENT",
+          "approachSummary": "Источник отмечает длительный переход, отличающийся от полного отсутствия движения.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-short-slow-movement",
+          "nodes": [
+            {
+              "id": "q-short-slow-movement",
+              "type": "QUESTION",
+              "text": "Было ли движение ЭКГ медленным по имеющимся записям?",
+              "responses": {
+                "YES": "yes-short-slow-movement",
+                "NO": "no-short-slow-movement",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-short-slow-movement",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник отмечает длительный переход, отличающийся от полного отсутствия движения.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-short-slow-movement",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "short-indicator-unstable",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-slow-transition\")",
+          "approachFocus": "INDICATION_INSTABILITY",
+          "approachSummary": "Дребезг индикации представлен как самостоятельный наблюдаемый признак.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-short-indicator-unstable",
+          "nodes": [
+            {
+              "id": "q-short-indicator-unstable",
+              "type": "QUESTION",
+              "text": "Уже отмечалась нестабильная индикация?",
+              "responses": {
+                "YES": "yes-short-indicator-unstable",
+                "NO": "no-short-indicator-unstable",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-short-indicator-unstable",
+              "type": "OBSERVATION_REPORT",
+              "text": "Дребезг индикации представлен как самостоятельный наблюдаемый признак.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-short-indicator-unstable",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "slow",
+      "nodes": [
+        {
+          "id": "slow",
+          "type": "QUESTION",
+          "text": "Есть ли уже зафиксированные признаки движения при затянутом переходе ЭКГ?",
+          "responses": {
+            "YES": "indicator",
+            "NO": "other-fault",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "indicator",
+          "type": "QUESTION",
+          "text": "Отмечалась ли нестабильность штатной индикации позиции?",
+          "responses": {
+            "YES": "protection",
+            "NO": "repeat",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "protection",
+          "type": "QUESTION",
+          "text": "По исходной записи при переходе сработала защита?",
+          "responses": {
+            "YES": "protection-risk",
+            "NO": "unstable",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "repeat",
+          "type": "QUESTION",
+          "text": "В журнале уже присутствуют повторные команды, сделанные в момент события?",
+          "responses": {
+            "YES": "recorded-repeat",
+            "NO": "slow-only",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "other-fault",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не доказано, что переход медленный, а не отсутствующий; эти сценарии различаются.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "protection-risk",
+          "type": "STOP",
+          "text": "Защита зафиксирована при переходе. Эта карточка не разрешает повторный набор.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unstable",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отмечена нестабильность индикации в медленном переходе, без подтверждения причины.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "recorded-repeat",
+          "type": "OBSERVATION_REPORT",
+          "text": "В истории отражены повторные команды, но карточка не предлагает их воспроизводить.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "slow-only",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксирован медленный переход; отсутствие других записей не доказывает исправность.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: исходные данные неопределённы, дополнительных операций не запрашивать.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "detailed-slow-vs-stuck",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-slow-transition\")",
+          "approachFocus": "SLOW_VS_STUCK",
+          "approachSummary": "Затянутый переход и застревание между позициями не следует смешивать.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-slow-vs-stuck",
+          "nodes": [
+            {
+              "id": "q-detailed-slow-vs-stuck",
+              "type": "QUESTION",
+              "text": "В первоначальном сообщении подтверждалось движение с задержкой?",
+              "responses": {
+                "YES": "yes-detailed-slow-vs-stuck",
+                "NO": "no-detailed-slow-vs-stuck",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-slow-vs-stuck",
+              "type": "OBSERVATION_REPORT",
+              "text": "Затянутый переход и застревание между позициями не следует смешивать.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-slow-vs-stuck",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-repeat-history",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-slow-transition\")",
+          "approachFocus": "PRIOR_REPEATED_COMMAND_HISTORY",
+          "approachSummary": "Повторные команды присутствуют как возможный признак истории события, а не как рекомендация.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-repeat-history",
+          "nodes": [
+            {
+              "id": "q-detailed-repeat-history",
+              "type": "QUESTION",
+              "text": "Были ли повторные команды записаны ранее при этом событии?",
+              "responses": {
+                "YES": "yes-detailed-repeat-history",
+                "NO": "no-detailed-repeat-history",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-repeat-history",
+              "type": "OBSERVATION_REPORT",
+              "text": "Повторные команды присутствуют как возможный признак истории события, а не как рекомендация.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-repeat-history",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-protective-stop",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-slow-transition\")",
+          "approachFocus": "PROTECTIVE_TRIP_DANGER",
+          "approachSummary": "Источник отмечает риск защитного отключения во время затянутого перехода.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Установленная комплектация и действующие нормы не подтверждены"
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-protective-stop",
+          "nodes": [
+            {
+              "id": "q-detailed-protective-stop",
+              "type": "QUESTION",
+              "text": "Зафиксировалось ли уже защитное отключение во время перехода?",
+              "responses": {
+                "YES": "yes-detailed-protective-stop",
+                "NO": "no-detailed-protective-stop",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "yes-detailed-protective-stop",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник отмечает риск защитного отключения во время затянутого перехода.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "no-detailed-protective-stop",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак не подтверждён. Этот подход нельзя считать выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данные источника не позволяют выбирать гипотезу.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-ekg1990-indicator-vs-shaft",
+          "sourceId": "manual1990",
+          "sourcePointer": "Руководство 1990, раздел 50 'Указатель позиций УП-5', стр. 140-141; изменение конструкции с №1897",
+          "origin": "INDEPENDENT_HISTORICAL_PUBLICATION_NOT_CURRENT_OPERATIONAL_AUTHORITY",
+          "approachFocus": "HISTORICAL_POSITION_INDICATOR_IS_INDIRECT",
+          "approachSummary": "В издании 1990 года позиция передаётся от сельсина на контроллере к указателю; показание индикатора само по себе не является прямым осмотром механического положения.",
+          "alternativeGroup": "EKG_POSITION_INDICATION_INTERPRETATION",
+          "claimId": "S6-EKG-1990-01",
+          "evidenceLevel": "SPECIFIC_HISTORICAL_TEXT_LOCATION_VERIFIED_NOT_CURRENT_APPLICABILITY",
+          "differenceFromSeed": "DEVICE_LEVEL_TECHNICAL_HYPOTHESIS_NOT_REPEATED_SYMPTOM",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Описаны УП-5 и замена на УП-1 с №1897; реальная конструкция и модификация не подтверждены."
+          },
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-ekg1990-indicator-vs-shaft",
+          "nodes": [
+            {
+              "id": "q-detailed-ekg1990-indicator-vs-shaft",
+              "type": "QUESTION",
+              "text": "Из ранее записанных наблюдений известно только колебание указателя, без независимого подтверждения движения вала ЭКГ?",
+              "responses": {
+                "YES": "q-detailed-ekg1990-indicator-vs-shaft-yes",
+                "NO": "q-detailed-ekg1990-indicator-vs-shaft-no",
+                "UNKNOWN": "q-detailed-ekg1990-indicator-vs-shaft-unknown"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg1990-indicator-vs-shaft-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зафиксирован сигнал указателя. Он не доказывает сам по себе заедание механизма или продолжение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg1990-indicator-vs-shaft-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть иные записи; одно описание индикатора не позволяет определить, что именно замедлялось.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg1990-indicator-vs-shaft-unknown",
+              "type": "STOP",
+              "text": "STOP: предыдущая фиксация признака неизвестна, историческая гипотеза не устанавливается и не служит командой к действию.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-ekg2005-delayed-protection",
+          "sourceId": "scheme2005",
+          "sourcePointer": "Раздел 2, подраздел V, стр. 53: реле времени 204 и отключение ГВ при затянувшемся переходе",
+          "origin": "INDEPENDENT_HISTORICAL_PUBLICATION_NOT_CURRENT_OPERATIONAL_AUTHORITY",
+          "approachFocus": "HISTORICAL_TRANSITION_DELAY_PROTECTION",
+          "approachSummary": "Учебное пособие 2005 года связывает опасное замедление/застревание между позициями с действием защитного реле времени и ГВ; связь не устанавливает причины замедления.",
+          "alternativeGroup": "EKG_DELAYED_MOVEMENT_VS_PROTECTION",
+          "claimId": "S6-EKG-2005-01",
+          "evidenceLevel": "SPECIFIC_HISTORICAL_TEXT_LOCATION_VERIFIED_NOT_CURRENT_APPLICABILITY",
+          "differenceFromSeed": "DEVICE_LEVEL_TECHNICAL_HYPOTHESIS_NOT_REPEATED_SYMPTOM",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Редакция 2005 г.; изменения цепей по заводским номерам требуют отдельной сверки, состояние аппаратов неизвестно."
+          },
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "q-detailed-ekg2005-delayed-protection",
+          "nodes": [
+            {
+              "id": "q-detailed-ekg2005-delayed-protection",
+              "type": "QUESTION",
+              "text": "В уже имеющихся записях одновременно отмечены затянутый переход и защитное отключение ГВ?",
+              "responses": {
+                "YES": "q-detailed-ekg2005-delayed-protection-yes",
+                "NO": "q-detailed-ekg2005-delayed-protection-no",
+                "UNKNOWN": "q-detailed-ekg2005-delayed-protection-unknown"
+              },
+              "sourceRefs": [
+                "scheme2005"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg2005-delayed-protection-yes",
+              "type": "OBSERVATION_REPORT",
+              "text": "Совпадение симптомов позволяет отметить архивное описание защиты, но не доказать причину срабатывания или тип установленной схемы.",
+              "responses": {},
+              "sourceRefs": [
+                "scheme2005"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg2005-delayed-protection-no",
+              "type": "OBSERVATION_REPORT",
+              "text": "Связь с защитой в исходном событии не подтверждена, поэтому этот технический вариант нельзя объявлять выбранным.",
+              "responses": {},
+              "sourceRefs": [
+                "scheme2005"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            },
+            {
+              "id": "q-detailed-ekg2005-delayed-protection-unknown",
+              "type": "STOP",
+              "text": "STOP: предыдущая фиксация признака неизвестна, историческая гипотеза не устанавливается и не служит командой к действию.",
+              "responses": {},
+              "sourceRefs": [
+                "scheme2005"
+              ],
+              "causeConfirmed": false,
+              "operationRequested": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "researchReviewStatus": "DRAFT_ONLY_NOT_CONTENT_APPROVED",
+  "remainingVerification": [
+    "Текущая схема конкретного исполнения не установлена",
+    "Методы и гипотезы не прошли независимую предметную экспертизу",
+    "Ограничения допуска и безопасность требуют отдельной проверки",
+    "Реальное отображение расширенного режима в Android не проверено",
+    "Прямое подтверждение актуальности исторических технических гипотез для конкретной схемы и допусков отсутствует"
+  ],
+  "historicalEvidenceReview": {
+    "verifiedAt": "2026-11-04",
+    "sourceReviewStatus": "TWO_SPECIFIC_INDEPENDENT_HISTORICAL_CLAIMS_ATTACHED_NOT_CURRENT_AUTHORITY",
+    "originalDonorSeedAlternatives": {
+      "short": 2,
+      "detailed": 3,
+      "interpretationType": "OBSERVATION_FOCI_NOT_VERIFIED_REPAIR_METHODS"
+    },
+    "separatelyTextAnchoredTechnicalAlternatives": {
+      "short": 0,
+      "detailed": 2,
+      "actionAuthorizationGranted": false
+    },
+    "sourceClaimIds": [
+      "S6-EKG-1990-01",
+      "S6-EKG-2005-01"
+    ],
+    "currentEditionAndInstalledProfileVerified": false,
+    "reviewedCurrentOperatingProcedure": false,
+    "originalPotentiallyUnsafeRepairInstructionsExcluded": true
+  }
+}

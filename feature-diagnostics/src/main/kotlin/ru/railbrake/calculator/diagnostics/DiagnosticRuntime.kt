@@ -119,6 +119,9 @@ data class DiagnosticDescriptor(
 
 data class DiagnosticVisibilitySettings(
     val extendedEnabled: Boolean = false,
+    val warningAcknowledged: Boolean = false,
+    // Independent scroll-to-end confirmation. Acknowledgement alone is insufficient.
+    val warningReadToEnd: Boolean = false,
     val enabledExtendedClasses: Set<ExtendedDiagnosticClass> = emptySet(),
 )
 
@@ -126,8 +129,11 @@ enum class DiagnosticAccessReason {
     AVAILABLE,
     CANDIDATE_NOT_PUBLISHED,
     EXTENDED_DISABLED,
+    EXTENDED_WARNING_NOT_READ_TO_END,
+    EXTENDED_WARNING_NOT_ACKNOWLEDGED,
     EXTENDED_CLASS_DISABLED,
     EXECUTABLE_RUNTIME_UNAVAILABLE,
+    ACTION_AUTHORITY_UNVERIFIED,
 }
 
 data class DiagnosticAccessDecision(
@@ -141,6 +147,7 @@ object DiagnosticAccessPolicy {
         descriptor: DiagnosticDescriptor,
         runtimeAvailability: DiagnosticRuntimeAvailability,
         settings: DiagnosticVisibilitySettings = DiagnosticVisibilitySettings(),
+        actionInputs: DiagnosticActionInputs? = null,
     ): DiagnosticAccessDecision {
         if (descriptor.layer == ContentLayer.EXTENDED) {
             if (!settings.extendedEnabled) {
@@ -148,6 +155,21 @@ object DiagnosticAccessPolicy {
                     visibleInCatalog = false,
                     executable = false,
                     reason = DiagnosticAccessReason.EXTENDED_DISABLED,
+                )
+            }
+
+            if (!settings.warningReadToEnd) {
+                return DiagnosticAccessDecision(
+                    visibleInCatalog = false,
+                    executable = false,
+                    reason = DiagnosticAccessReason.EXTENDED_WARNING_NOT_READ_TO_END,
+                )
+            }
+            if (!settings.warningAcknowledged) {
+                return DiagnosticAccessDecision(
+                    visibleInCatalog = false,
+                    executable = false,
+                    reason = DiagnosticAccessReason.EXTENDED_WARNING_NOT_ACKNOWLEDGED,
                 )
             }
 
@@ -174,6 +196,18 @@ object DiagnosticAccessPolicy {
                 visibleInCatalog = true,
                 executable = false,
                 reason = DiagnosticAccessReason.EXECUTABLE_RUNTIME_UNAVAILABLE,
+            )
+        }
+
+        if (descriptor.layer == ContentLayer.EXTENDED || actionInputs == null ||
+            actionInputs.publicationStatus != descriptor.publicationStatus ||
+            actionInputs.runtimeAvailability != runtimeAvailability ||
+            !DiagnosticActionGate.permits(actionInputs)
+        ) {
+            return DiagnosticAccessDecision(
+                visibleInCatalog = true,
+                executable = false,
+                reason = DiagnosticAccessReason.ACTION_AUTHORITY_UNVERIFIED,
             )
         }
 

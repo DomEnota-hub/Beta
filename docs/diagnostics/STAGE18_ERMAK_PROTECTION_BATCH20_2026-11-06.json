@@ -1,0 +1,2757 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-protection-batch20/1",
+    "date": "2026-11-06",
+    "baseHead": "74e2f6858dbf143ffb41414017dd160286939862",
+    "previousCiRun": 42254191133,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-061",
+      "ER-DIAG-062",
+      "ER-DIAG-063",
+      "ER-DIAG-064"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Pinned sourceObject projection; donor gzip not independently decoded",
+    "batchBoundary": "061 excitation, 062 R10, 063 wheel slide in regen, 064 TC indicator stuck; 065 separate"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-protection-batch20-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-061",
+      "scenarioId": "ermak.diag.ER-DIAG-061",
+      "title": "Срабатывает защита цепи возбуждения при рекуперации",
+      "symptom": "Рекуперация прекращается со срабатыванием защиты цепи возбуждения",
+      "hazardCategory": "REGEN_EXCITATION_PROTECTION",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-21",
+        "SYS-20",
+        "SYS-90",
+        "SYS-A0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-TR-008",
+        "ER-EQ-PR-002",
+        "ER-EQ-TR-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-RECUP",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи тяговых двигателей и управления в режиме рекуперативного торможения; QT1, K1, U3, KM13, KV15, KM41/KM42, SP2/SP3, защиты",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_recuperation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-RECUP-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "рекуперация, защитные разборы, юз, ТЦ/ТМ",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; действия и уставки не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-traction-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-058",
+        "ER-DIAG-062",
+        "ER-DIAG-064"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-061",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-061"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "Только контекст, связь не подтверждена",
+          "status": "CONTEXT_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ТО/ремонт охлаждения, не поездные действия",
+          "status": "MAINTENANCE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит исторические рекомендации по КА8/QS15; они не разрешают переключения или повторные срабатывания.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-DIAG-061 ER-SRC-011, автор и редакция неизвестны",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не восстанавливать защиты, не переключать QS15, не выполнять ВВ-измерения и не инициировать рекуперацию.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле. Не делать вывод о причине по одной индикации.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н/МСУД-015 и конкретные схемы не взаимозаменяемы.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные и исторические источники не разрешают современные операции.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: Рекуперация прекращается со срабатыванием защиты цепи возбуждения?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: Рекуперация прекращается со срабатыванием защиты цепи возбуждения?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В архивной записи отдельно отмечены защита цепи возбуждения и прекращение рекуперации, а не только исчезновение тока?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены сообщения о защите обмоток возбуждения, ВУВ и отключении ГВ без предположения о конкретном реле?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены первичное сообщение, время, секция, профиль и источник записи?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-061-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "ER-DIAG-061: Рекуперация прекращается со срабатыванием защиты цепи возбуждения. Различать с ER-DIAG-058, ER-DIAG-062, ER-DIAG-064. Донор не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-061",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-061-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная электрическая схема",
+          "text": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1 §4.4, §6.7–6.9, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-061-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Памятка содержит исторические рекомендации по КА8/QS15; они не разрешают переключения или повторные срабатывания. ER-SRC-011 не имеет подтверждённой редакции и полномочий.",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "памятка Ермак; ER-SRC-011",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-061-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "Правила тормозов 2026: документ и дата подтверждены, конкретные полномочия не установлены. №3508/р относится к ТО/ремонту. Полнота №996/р после редакции 2024 неизвестна.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "Правила 2026, приложение 65; №996/р; №3508/р",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-061-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и ограничения",
+          "text": "Не восстанавливать защиты, не переключать QS15, не выполнять ВВ-измерения и не инициировать рекуперацию. Только завершённые записи; UNKNOWN→STOP, неподтверждённый профиль BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.4: цепь U3/K1, КА7/КА8; §7.1 содержит разные подписи сообщений защиты. Отдельная метка не доказывает отказ конкретного реле.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит исторические рекомендации по КА8/QS15; они не разрешают переключения или повторные срабатывания.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "NORMATIVE_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, ввод 01.07.2026",
+          "verifiedAt": "2026-11-06",
+          "status": "SPECIFIC_AUTHORITY_UNVERIFIED"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-protection-batch20-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-062",
+      "scenarioId": "ermak.diag.ER-DIAG-062",
+      "title": "Срабатывает защита балластных резисторов",
+      "symptom": "Рекуперация ограничивается/прекращается по цепи блока балластных резисторов",
+      "hazardCategory": "REGEN_BALLAST_RESISTOR_PROTECTION",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-21",
+        "SYS-30",
+        "SYS-B0",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-TR-010",
+        "ER-EQ-AU-005",
+        "ER-EQ-PR-006"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-RECUP",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи тяговых двигателей и управления в режиме рекуперативного торможения; QT1, K1, U3, KM13, KV15, KM41/KM42, SP2/SP3, защиты",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_recuperation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-RECUP-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "рекуперация, защитные разборы, юз, ТЦ/ТМ",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; действия и уставки не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "охлаждение ВУВ, блока балластных резисторов и связанного оборудования",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_cooling_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE8-RECUP",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ8. Инструкция по техническому обслуживанию",
+          "locator": "ВУВ-24, охлаждение блока балластных резисторов и контроль вентиляции",
+          "url": "https://rcit.su/techinfoV58.html",
+          "role": "manufacturer_maintenance_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ8",
+            "revision": "публичная копия; ремонтные процедуры не выдаются как поездные действия",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-traction-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-061",
+        "ER-DIAG-069",
+        "ER-DIAG-058"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-062",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-062"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§3: ВС3 охлаждает ББР, ВУВ, блок диодов",
+          "status": "PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ТО/ремонт охлаждения, не поездные действия",
+          "status": "MAINTENANCE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка описывает КМ13 и охлаждение R10; исторические переключения не разрешены.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-DIAG-062 ER-SRC-011, автор и редакция неизвестны",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не обходить защиты, не проводить новые пробы охлаждения под напряжением, не повторять сбор рекуперации.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР. Не делать вывод о причине по одной индикации.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н/МСУД-015 и конкретные схемы не взаимозаменяемы.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные и исторические источники не разрешают современные операции.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: Рекуперация ограничивается/прекращается по цепи блока балластных резисторов?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: Рекуперация ограничивается/прекращается по цепи блока балластных резисторов?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённой записи зафиксирована защита блока R10, а не просто отключение вентилятора?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены сообщение ББР, состояние охлаждения ВС3/М13 и время прекращения рекуперации?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходная метка, секция, профиль и источник данных о R10/ВС3?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-062-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "ER-DIAG-062: Рекуперация ограничивается/прекращается по цепи блока балластных резисторов. Различать с ER-DIAG-061, ER-DIAG-069, ER-DIAG-058. Донор не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-062",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-062-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная электрическая схема",
+          "text": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1 §4.4, §6.7–6.9, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-062-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Памятка описывает КМ13 и охлаждение R10; исторические переключения не разрешены. ER-SRC-011 не имеет подтверждённой редакции и полномочий.",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "памятка Ермак; ER-SRC-011",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-062-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "Правила тормозов 2026: документ и дата подтверждены, конкретные полномочия не установлены. №3508/р относится к ТО/ремонту. Полнота №996/р после редакции 2024 неизвестна.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "Правила 2026, приложение 65; №996/р; №3508/р",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-062-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и ограничения",
+          "text": "Не обходить защиты, не проводить новые пробы охлаждения под напряжением, не повторять сбор рекуперации. Только завершённые записи; UNKNOWN→STOP, неподтверждённый профиль BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer",
+            "ventilation",
+            "maintenance"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.4 и §7.1: защита R10, сообщение «Перегрев ББР» в тексте описано как токовая защита. РЭ2 §3: ВС3 охлаждает ББР.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка описывает КМ13 и охлаждение R10; исторические переключения не разрешены.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "NORMATIVE_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, ввод 01.07.2026",
+          "verifiedAt": "2026-11-06",
+          "status": "SPECIFIC_AUTHORITY_UNVERIFIED"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-protection-batch20-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-063",
+      "scenarioId": "ermak.diag.ER-DIAG-063",
+      "title": "Юз колёсных пар при рекуперации",
+      "symptom": "В режиме рекуперации МСУД регистрирует юз или возникает заметное проскальзывание колёс",
+      "hazardCategory": "REGEN_WHEEL_SLIDE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-71",
+        "SYS-90",
+        "SYS-A0",
+        "SYS-70"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-PR-007",
+        "ER-EQ-MC-003",
+        "ER-EQ-MC-006",
+        "ER-EQ-MC-007",
+        "ER-EQ-CT-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-RECUP",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи тяговых двигателей и управления в режиме рекуперативного торможения; QT1, K1, U3, KM13, KV15, KM41/KM42, SP2/SP3, защиты",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_recuperation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-RECUP-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "рекуперация, защитные разборы, юз, ТЦ/ТМ",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; действия и уставки не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-traction-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-048",
+        "ER-DIAG-058",
+        "ER-DIAG-064"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-063",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-063"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "Только контекст, связь не подтверждена",
+          "status": "CONTEXT_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ТО/ремонт охлаждения, не поездные действия",
+          "status": "MAINTENANCE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит старые способы реагирования песком и изменением тока; в исследовательскую карточку не переносить.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-DIAG-063 ER-SRC-011, автор и редакция неизвестны",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не воспроизводить юз, не предлагать песок, повторное торможение или отключение ГВ как диагностическую пробу.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика. Не делать вывод о причине по одной индикации.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н/МСУД-015 и конкретные схемы не взаимозаменяемы.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные и исторические источники не разрешают современные операции.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: В режиме рекуперации МСУД регистрирует юз или возникает заметное проскальзывание колёс?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: В режиме рекуперации МСУД регистрирует юз или возникает заметное проскальзывание колёс?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В записи есть сообщение о юзе именно в рекуперации, а не о боксовании при тяге?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Отдельно записаны режим торможения, сообщение А78 и данные токов/скоростей без вывода о причине?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены источник А78, время, секция и подтверждённое исполнение?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-063-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "ER-DIAG-063: В режиме рекуперации МСУД регистрирует юз или возникает заметное проскальзывание колёс. Различать с ER-DIAG-048, ER-DIAG-058, ER-DIAG-064. Донор не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-063",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-063-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная электрическая схема",
+          "text": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1 §4.4, §6.7–6.9, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-063-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Памятка содержит старые способы реагирования песком и изменением тока; в исследовательскую карточку не переносить. ER-SRC-011 не имеет подтверждённой редакции и полномочий.",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "памятка Ермак; ER-SRC-011",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-063-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "Правила тормозов 2026: документ и дата подтверждены, конкретные полномочия не установлены. №3508/р относится к ТО/ремонту. Полнота №996/р после редакции 2024 неизвестна.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "Правила 2026, приложение 65; №996/р; №3508/р",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-063-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и ограничения",
+          "text": "Не воспроизводить юз, не предлагать песок, повторное торможение или отключение ГВ как диагностическую пробу. Только завершённые записи; UNKNOWN→STOP, неподтверждённый профиль BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.8–6.9: защита от юза использует данные скоростей и токов, может снижать тормозной момент. Сигнал не доказывает неисправность датчика.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит старые способы реагирования песком и изменением тока; в исследовательскую карточку не переносить.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "NORMATIVE_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, ввод 01.07.2026",
+          "verifiedAt": "2026-11-06",
+          "status": "SPECIFIC_AUTHORITY_UNVERIFIED"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-protection-batch20-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-064",
+      "scenarioId": "ermak.diag.ER-DIAG-064",
+      "title": "Постоянно горит индикация ТЦ — рекуперация недоступна",
+      "symptom": "На одной секции постоянно присутствует признак давления в тормозных цилиндрах и электрическое торможение не должно включаться",
+      "hazardCategory": "REGEN_TC_INDICATION_STUCK",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60",
+        "SYS-A0",
+        "SYS-21"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-005",
+        "ER-EQ-BR-006",
+        "ER-EQ-BR-013"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-RECUP",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи тяговых двигателей и управления в режиме рекуперативного торможения; QT1, K1, U3, KM13, KV15, KM41/KM42, SP2/SP3, защиты",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_recuperation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-RECUP-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "рекуперация, защитные разборы, юз, ТЦ/ТМ",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; действия и уставки не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83; действует с 01.07.2026",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2026-07-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3508R",
+          "document": "Инструкция ОАО «РЖД» №3508/р от 28.12.2022 по тормозному оборудованию локомотивов",
+          "locator": "БТО, тормозные цилиндры, замещение электрического торможения",
+          "url": "https://base.garant.ru/406821487/",
+          "role": "current_brake_equipment_crosscheck",
+          "sourceKind": "NORMATIVE_TECHNICAL",
+          "version": {
+            "label": "№3508/р",
+            "revision": "действующая публичная версия на дату аудита",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-traction-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-059",
+        "ER-DIAG-060",
+        "ER-DIAG-057"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-064",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-064"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "Только контекст, связь не подтверждена",
+          "status": "CONTEXT_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ТО/ремонт охлаждения, не поездные действия",
+          "status": "MAINTENANCE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка не доказывает отказ SP3 по одному сигналу; ER-SRC-011 исторический.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-DIAG-064 ER-SRC-011, автор и редакция неизвестны",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не наполнять ТЦ ради проверки, не разряжать ТМ, не перемыкать SP2/SP3 и не запускать рекуперацию для подтверждения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине. Не делать вывод о причине по одной индикации.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н/МСУД-015 и конкретные схемы не взаимозаменяемы.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные и исторические источники не разрешают современные операции.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: На одной секции постоянно присутствует признак давления в тормозных цилиндрах и электрическое торможение не должно включаться?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н и схема установленной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В записи подтверждён точный исходный симптом: На одной секции постоянно присутствует признак давления в тормозных цилиндрах и электрическое торможение не должно включаться?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённой записи подтверждена постоянная индикация ТЦ и недоступность рекуперации?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Отдельно различены лампа ТЦ, независимо записанное давление (если есть) и отсутствие первоначального сбора схемы?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены секция, время, источник индикации и документально подтверждённый профиль?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается; исследовательская карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не проводить новых измерений, переключений или испытаний.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестна схема и МСУД-Н; МСУД-015 не эквивалентна.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять соседним маршрутом.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине. Совпадение событий не подтверждает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-064-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "ER-DIAG-064: На одной секции постоянно присутствует признак давления в тормозных цилиндрах и электрическое торможение не должно включаться. Различать с ER-DIAG-059, ER-DIAG-060, ER-DIAG-057. Донор не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-064",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-064-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная электрическая схема",
+          "text": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ИДМБ.661142.009РЭ1 §4.4, §6.7–6.9, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-064-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Памятка не доказывает отказ SP3 по одному сигналу; ER-SRC-011 исторический. ER-SRC-011 не имеет подтверждённой редакции и полномочий.",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "памятка Ермак; ER-SRC-011",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-064-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "Правила тормозов 2026: документ и дата подтверждены, конкретные полномочия не установлены. №3508/р относится к ТО/ремонту. Полнота №996/р после редакции 2024 неизвестна.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "Правила 2026, приложение 65; №996/р; №3508/р",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-064-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и ограничения",
+          "text": "Не наполнять ТЦ ради проверки, не разряжать ТМ, не перемыкать SP2/SP3 и не запускать рекуперацию для подтверждения. Только завершённые записи; UNKNOWN→STOP, неподтверждённый профиль BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.7 и §6.11: пневматическая взаимосвязь и индикация ТЦ. Архивная уставка не доказывает давление на конкретной машине.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка не доказывает отказ SP3 по одному сигналу; ER-SRC-011 исторический.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        },
+        {
+          "sourceKind": "NORMATIVE_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, ввод 01.07.2026",
+          "verifiedAt": "2026-11-06",
+          "status": "SPECIFIC_AUTHORITY_UNVERIFIED"
+        }
+      ]
+    }
+  ]
+}

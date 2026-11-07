@@ -1,5 +1,7 @@
 # Data migration source inventory — discovery checkpoint
 
+Current cross-block accounting (15.10.2026): [DATA_MIGRATION_ACCEPTANCE_2026-10-12.md](DATA_MIGRATION_ACCEPTANCE_2026-10-12.md). Read the later 206-group evidence bridge, 254-file review, 1748 exact documentary destinations, CHME3 raw-target reconciliation and 18 embedded card candidates alongside this early discovery snapshot. The 329 exam questions are excluded from the mandatory Beta information transfer by the user's later decision; older access-policy wording below describes their archival discovery state only.
+
 Pinned donor: `DomEnota-maker/Test-` @ `3176d6ee228f0ed4b78371f45209e10c1c724eff`. Destination: `DomEnota-maker/Beta:modular-rebuild`. All hashes below are Git **blob SHA-1**, not SHA-256 of uncompressed content. Source counts are top-level array lengths; nested objects/fields remain inside those objects and are **not** counted as migrated.
 
 ## Coverage and status

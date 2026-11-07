@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "diagnostic-donor-reconciliation-stage5/1",
+  "reviewDate": "2026-11-04",
+  "donorRepository": "DomEnota-hub/Test-",
+  "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorKotlinPath": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticRepository.kt",
+  "donorKotlinBlobSha": "5f57ff2c98f02a04692e8553700ec8d23077d166",
+  "betaPreReviewHead": "e4187bb58dc6bb8d3f79ef68a08b05f688cb1a40",
+  "scope": "Direct donor Kotlin scenario content versus two source-only authoring drafts. Not a complete executable graph comparison.",
+  "technicalAcceptance": "BLOCKED",
+  "runtimeGraphProvenance": "NOT_VERIFIED_AGAINST_FULL_RUNTIME_GRAPH",
+  "items": [
+    {
+      "scenarioId": "vl80s.diag.gv-no-close",
+      "donorOriginalId": "gv-no-close",
+      "donorSourcePath": "DiagnosticRepository.scenarios",
+      "donorStoredGraphNodeCount": 5,
+      "donorQuestions": [
+        {
+          "question": "ГВ пытается включиться?",
+          "yesInterpretation": "Проверять давление привода, удерживающую цепь и немедленное действие защиты.",
+          "noInterpretation": "Проверять питание команды, нулевое положение контроллера и разрешающие блокировки."
+        },
+        {
+          "question": "Отключение происходит только при наборе позиции?",
+          "yesInterpretation": "Вероятен отказ силовой цепи, ВУ, ТЭД, ЭКГ или токовая/земляная защита.",
+          "noInterpretation": "Вероятнее отказ цепи включения, удержания, давления либо общей блокировки."
+        },
+        {
+          "question": "Известно конкретное сработавшее реле?",
+          "yesInterpretation": "Вести поиск только по цепи этого реле и связанным аппаратам.",
+          "noInterpretation": "Не восстанавливать ГВ сериями включений; сначала определить индикацию и условия отказа."
+        }
+      ],
+      "donorDangerSigns": [
+        "Хлопок, дуга, дым, запах горелой изоляции или масла.",
+        "Газовая, дифференциальная, токовая либо земляная защита без установленной причины.",
+        "Ненормальный шум трансформатора или повреждение высоковольтного ввода."
+      ],
+      "donorStopConditions": [
+        "Повторное защитное отключение.",
+        "Газ, дым, масло, ненормальный гул или признаки внутреннего повреждения трансформатора.",
+        "Не установлена причина защиты, затрагивающей высоковольтную силовую цепь."
+      ],
+      "donorReportFields": [
+        "момент отключения",
+        "позиция ЭКГ",
+        "сработавшее реле/лампа",
+        "давление ГВ",
+        "токи секций",
+        "запах/звук/дым"
+      ],
+      "donorProhibited": [
+        "Многократно включать ГВ после неизвестной защиты.",
+        "Удерживать привод или контактор вручную.",
+        "Шунтировать защитные и дверные блокировки.",
+        "Входить в ВВК при поднятом токоприёмнике либо неподтверждённом снятии напряжения."
+      ],
+      "donorChecksTitles": [
+        "Индикация защиты",
+        "До любых восстановлений записать лампы, реле и показания приборов.",
+        "Причина отключения однозначно локализована.",
+        "Считать повторное включение небезопасным до установления причины.",
+        "Разрешающие условия",
+        "Проверить нулевое положение, давление, штатное положение дверей/штор и органов управления.",
+        "Все условия включения выполнены.",
+        "Не обходить отсутствующее разрешение перемычкой или ручным удержанием аппарата.",
+        "Осмотр оборудования",
+        "После безопасной остановки оценить доступные признаки перегрева, масла, дыма и повреждений без входа в опасную зону.",
+        "Признаков аварийного повреждения нет.",
+        "При признаках пробоя или пожара действовать по аварийной и пожарной карточке.",
+        "Высоковольтная камера",
+        "Диагностика ГВ, трансформатора и силовых цепей внутри ВВК.",
+        "Измерения выполняются по схеме и технологии ремонта.",
+        "Только допущенным персоналом после снятия напряжения, проверки его отсутствия и выполнения местного порядка."
+      ],
+      "questionReconciliation": [
+        {
+          "question": "ГВ пытается включиться?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:attempt-indication"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Источник спрашивает о попытке включения, а черновик — об уже состоявшемся включении; это разные наблюдения."
+        },
+        {
+          "question": "Отключение происходит только при наборе позиции?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:trip-during-notch"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Не выделена отдельная ветка отключения только при наборе позиции, хотя исходный донор требует различать этот случай."
+        },
+        {
+          "question": "Известно конкретное сработавшее реле?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:relay-known"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Сохранение ламп сигнализации не эквивалентно установленному номеру сработавшего реле."
+        }
+      ],
+      "comparisonStatus": "PINNED_DONOR_KOTLIN_QUESTIONS_MAPPED_TO_RESEARCH_ONLY_RUNTIME_TOPOLOGY_NOT_COMPARED",
+      "fullFiveNodeRuntimeGraphCompared": false,
+      "unverifiedContentMayNotBeMarkedComplete": true,
+      "publicationStatus": "CANDIDATE",
+      "actionAuthorityGranted": false,
+      "researchRevision": "STAGE5_DETAILED_20_NODES_EACH",
+      "currentResearchGraphNodeCount": {
+        "short": 10,
+        "detailed": 20
+      }
+    },
+    {
+      "scenarioId": "vl80s.diag.ekg-stuck",
+      "donorOriginalId": "ekg-stuck",
+      "donorSourcePath": "DiagnosticRepository.scenarios",
+      "donorStoredGraphNodeCount": 5,
+      "donorQuestions": [
+        {
+          "question": "Слышна работа серводвигателя?",
+          "yesInterpretation": "Возможны механическое заедание, муфта, редуктор или отсутствие подтверждения позиции.",
+          "noInterpretation": "Проверять питание двигателя, командную цепь, реле и блокировки."
+        },
+        {
+          "question": "Работает сброс при отсутствии набора?",
+          "yesInterpretation": "Локализовать цепь направления вращения/команду набора.",
+          "noInterpretation": "Вероятна общая потеря питания привода либо механический отказ."
+        },
+        {
+          "question": "Отказ совпадает с одной позицией?",
+          "yesInterpretation": "Вероятен дефект контактной последовательности или блок-контакта на переходе.",
+          "noInterpretation": "Проверять общие цепи управления и синхронизации."
+        }
+      ],
+      "donorDangerSigns": [
+        "Треск, дуга или удар внутри ЭКГ.",
+        "Защита срабатывает именно при переходе.",
+        "Указатель завис между позициями или секции показывают разные положения."
+      ],
+      "donorStopConditions": [
+        "ЭКГ находится между позициями.",
+        "Есть дуга, треск, запах или повторная защита.",
+        "Невозможно подтвердить нулевую позицию всех секций."
+      ],
+      "donorReportFields": [
+        "командное направление",
+        "позиция до/после",
+        "работа серводвигателя",
+        "рассогласование секций",
+        "защита при переходе"
+      ],
+      "donorProhibited": [
+        "Проворачивать ЭКГ вручную в эксплуатационной диагностике без установленного порядка.",
+        "Подавать тягу при неопределённой позиции.",
+        "Шунтировать блок-контакты синхронизации."
+      ],
+      "donorChecksTitles": [
+        "Команда и реакция",
+        "Сопоставить команду, звук серводвигателя, указатель и индикацию обеих секций.",
+        "Позиции изменяются синхронно и подтверждаются.",
+        "При рассогласовании не разрешать тяговый режим до предусмотренного восстановления.",
+        "Безопасный сброс",
+        "Использовать только штатную команду сброса, предусмотренную руководством.",
+        "ЭКГ приходит в подтверждённую нулевую позицию.",
+        "Если сброс не происходит или появляется защита — прекратить команды.",
+        "Осмотр привода",
+        "Диагностировать привод, блок-контакты и механическую часть ЭКГ.",
+        "Положение механизма и электрические подтверждения совпадают.",
+        "Только при снятом напряжении и допуске; ручное проворачивание — исключительно по ремонтной технологии."
+      ],
+      "questionReconciliation": [
+        {
+          "question": "Слышна работа серводвигателя?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:audible-motor"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Факт уже наблюдавшегося движения привода не эквивалентен отдельному вопросу о слышимой работе серводвигателя."
+        },
+        {
+          "question": "Работает сброс при отсутствии набора?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:reset-only"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Различение сохранённого сброса при отказе набора не представлено отдельным графовым вопросом."
+        },
+        {
+          "question": "Отказ совпадает с одной позицией?",
+          "coverage": "RESEARCH_QUESTION_ADDED_UNVERIFIED",
+          "draftNodes": [
+            "detailed:position-specific"
+          ],
+          "gap": "Добавлен отдельный вопрос для сохранённых наблюдений; техническая трактовка, профиль исполнения и пользовательская приёмка пока НЕ подтверждены.",
+          "independentSafetyReviewRequired": true,
+          "initialReviewGap": "Зависимость отказа от одной конкретной позиции не представлена отдельным графовым вопросом."
+        }
+      ],
+      "comparisonStatus": "PINNED_DONOR_KOTLIN_QUESTIONS_MAPPED_TO_RESEARCH_ONLY_RUNTIME_TOPOLOGY_NOT_COMPARED",
+      "fullFiveNodeRuntimeGraphCompared": false,
+      "unverifiedContentMayNotBeMarkedComplete": true,
+      "publicationStatus": "CANDIDATE",
+      "actionAuthorityGranted": false,
+      "researchRevision": "STAGE5_DETAILED_20_NODES_EACH",
+      "currentResearchGraphNodeCount": {
+        "short": 12,
+        "detailed": 20
+      }
+    }
+  ],
+  "sourceReviewRequiresHuman": true,
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "reviewStatus": "ALL_DONOR_QUESTIONS_REFLECTED_RESEARCH_ONLY_NOT_SAFETY_APPROVED"
+}

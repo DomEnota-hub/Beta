@@ -1,0 +1,2117 @@
+{
+  "ledger": {
+    "schemaVersion": "stage10-control-circuits-closeout-batch2/1",
+    "date": "2026-11-05",
+    "stage": "10/51",
+    "baseHead": "f35dae8dd1da1a473a9728f8bcbf2d89d49fd805",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "scenarioIds": [
+      "vl80s.diag.control-voltage-low",
+      "vl80s.diag.section-control-loss",
+      "vl80s.diag.battery-no-voltage",
+      "vl80s.diag.relay-panel-overheat"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "donorLayers": [
+      "DiagnosticExpansion.kt (patch tree)",
+      "DiagnosticCompletionCatalog.kt",
+      "DiagnosticExtendedCatalog.kt"
+    ],
+    "sourceAudit": "Two independently authored historical references inspected (factory manual 1990; textbook 2006); neither is current authority; source claims only, no procedures.",
+    "coverage": "9 of 9 migration category Цепи управления = Stage10 batch1 5 + Stage10 closeout batch2 4; no new IDs.",
+    "next": "After successful CI proceed to Stage11 only after live donor coverage/plan verification."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage10-control-closeout-source-first/1",
+      "stage": "10/51",
+      "batch": "CONTROL_CIRCUITS_CLOSEOUT_BATCH2",
+      "scenarioId": "vl80s.diag.control-voltage-low",
+      "originalId": "control-voltage-low",
+      "category": "Цепи управления",
+      "title": "Понижено или пропадает напряжение цепей управления",
+      "summary": "Аппараты работают неустойчиво, контакторы отпадают, освещение и сигнализация изменяются при нагрузке.",
+      "canonicalBoundary": "LOW_OR_UNSTABLE_CONTROL_VOLTAGE",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.battery-no-charge",
+        "vl80s.diag.battery-no-voltage",
+        "vl80s.diag.control-fuse-trip",
+        "vl80s.diag.section-control-loss"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Напряжение заметно падает только при включении нагрузки?",
+        "Неисправность относится только к одной секции?",
+        "Есть признак нормальной зарядки аккумуляторной батареи?"
+      ],
+      "donorOriginLayer": "EXPANDED_PATCH",
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "EXPANDED_PATCH",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "sourcePointer": "id = \"control-voltage-low\"",
+          "originalQuestions": [
+            "Напряжение заметно падает только при включении нагрузки?",
+            "Неисправность относится только к одной секции?",
+            "Есть признак нормальной зарядки аккумуляторной батареи?"
+          ],
+          "originalCategory": "Цепи управления",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "sourceNote": "Donor description/branch questions retained as provenance only; operational directions not imported."
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §56, печ. стр. 146–147: назначение АКБ как источника управления",
+            "Раздел В, §5, печ. стр. 211–215: питание, измерение и защита цепей управления"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8 §8.5, печ. стр. 310–318: питание от АКБ и ТРПШ, защита низковольтных цепей",
+            "Глава 7 §7.13, печ. стр. 278–281: устройство и назначение АКБ"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "control-voltage-low-manual1990-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §56, печ. стр. 146–147: назначение АКБ как источника управления",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "control-voltage-low-manual1990-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание, измерение и защита цепей управления",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "control-voltage-low-textbook2006-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: питание от АКБ и ТРПШ, защита низковольтных цепей",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "control-voltage-low-textbook2006-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7 §7.13, печ. стр. 278–281: устройство и назначение АКБ",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В ранее составленном журнале указаны дым, запах, нагрев АКБ, дребезг аппаратов или защитное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отдельно записано понижение напряжения управления, а не только отказ одного потребителя?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В ранее составленном журнале указаны дым, запах, нагрев АКБ, дребезг аппаратов или защитное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отдельно записано понижение напряжения управления, а не только отказ одного потребителя?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранены ли в записи момент и условия изменения напряжения относительно ранее отмеченной нагрузки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли отдельные сведения о том, что отсутствие напряжения не является единственным признаком?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указана ли секция, к которой относится наблюдение, без предположения о неисправном узле?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сопоставлены ли в журнале прежние показания штатных приборов с наблюдением работы аппаратов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли в записи питание от АКБ и питание от штатного источника, если это было известно?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждено ли исполнение схемы конкретной секции техническим документом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "control-voltage-low-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Различие питания и индикации",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §56, печ. стр. 146–147: назначение АКБ как источника управления",
+          "text": "Сама нестабильность управления не доказывает разряд АКБ: историческое описание различает источник и потребителя.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "control-voltage-low-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Защита низковольтных цепей",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: питание от АКБ и ТРПШ, защита низковольтных цепей",
+          "text": "Учебная схема показывает разные защищаемые ветви. Номер автомата и точная цепь без исполнения не назначаются.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "control-voltage-low-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Условия появления признака",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание, измерение и защита цепей управления",
+          "text": "Архивная схема различает режимы питания, но ранее записанный провал напряжения не подтверждает конкретную неисправность.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "control-voltage-low-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Различение зарядки и просадки",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: питание от АКБ и ТРПШ, защита низковольтных цепей",
+          "text": "Учебное описание питания от ТРПШ и АКБ не позволяет приравнять просадку под нагрузкой к отказу зарядки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "control-voltage-low-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Историческое исполнение АКБ",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7 §7.13, печ. стр. 278–281: устройство и назначение АКБ",
+          "text": "Тип и устройство батареи в учебнике относятся к описанному выпуску; современное оборудование требует отдельной сверки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "CONTROL_CIRCUIT_INTERVENTION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Цепи управления",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage10-control-closeout-source-first/1",
+      "stage": "10/51",
+      "batch": "CONTROL_CIRCUITS_CLOSEOUT_BATCH2",
+      "scenarioId": "vl80s.diag.section-control-loss",
+      "originalId": "section-control-loss",
+      "category": "Цепи управления",
+      "title": "Нет управления одной секцией или нарушена межсекционная связь",
+      "summary": "Команды ведущей секции не исполняются одной секцией либо её индикация противоречит фактическому состоянию.",
+      "canonicalBoundary": "SECTION_WIDE_COMMAND_OR_FEEDBACK_LOSS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.intersection-command-loss",
+        "vl80s.diag.cab-control-mismatch",
+        "vl80s.diag.control-voltage-low",
+        "vl80s.diag.vl80s-ekg-section-desync"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Работают ли на отказавшей секции вспомогательные машины?",
+        "Индикация положения аппаратов этой секции достоверна?",
+        "Отказ сохраняется после штатного перевода органов управления в ноль?"
+      ],
+      "donorOriginLayer": "EXPANDED_PATCH",
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "EXPANDED_PATCH",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "sourcePointer": "id = \"section-control-loss\"",
+          "originalQuestions": [
+            "Работают ли на отказавшей секции вспомогательные машины?",
+            "Индикация положения аппаратов этой секции достоверна?",
+            "Отказ сохраняется после штатного перевода органов управления в ноль?"
+          ],
+          "originalCategory": "Цепи управления",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "sourceNote": "Donor description/branch questions retained as provenance only; operational directions not imported."
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, IX §4–§9, печ. стр. 183–187: оборудование и межсекционные соединения",
+            "Раздел В, §5, печ. стр. 211–215: секционные и общие цепи управления"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8 §8.1 и рис. 8.5, печ. стр. 284–287, 316–318: межсекционные соединения и перекрещивающиеся провода",
+            "Глава 8 §8.15, печ. стр. 347–360: секционные цепи и синхронизация ЭКГ"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "section-control-loss-manual1990-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, IX §4–§9, печ. стр. 183–187: оборудование и межсекционные соединения",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "section-control-loss-manual1990-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел В, §5, печ. стр. 211–215: секционные и общие цепи управления",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "section-control-loss-textbook2006-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.1 и рис. 8.5, печ. стр. 284–287, 316–318: межсекционные соединения и перекрещивающиеся провода",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "section-control-loss-textbook2006-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.15, печ. стр. 347–360: секционные цепи и синхронизация ЭКГ",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В прежних записях есть рассогласование тяги, ЭКГ, дым или повторное защитное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована потеря нескольких команд именно одной секции, а не отдельной функции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В прежних записях есть рассогласование тяги, ЭКГ, дым или повторное защитное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована потеря нескольких команд именно одной секции, а не отдельной функции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранено ли различие между командами ведущей и откликом ведомой секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, что отдельная команда потеряна при сохранении остальных, то есть возможен другой сценарий?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли сведения о работе вспомогательных машин проблемной секции в тот же момент?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли в записи фактическое состояние аппарата и показания сигнальной лампы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указаны ли число секций, ведущая кабина и состояние связи без предположения о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждена ли схема СМЕ и комплектация именно этой группы секций?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "section-control-loss-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Общие и секционные команды",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, IX §4–§9, печ. стр. 183–187: оборудование и межсекционные соединения",
+          "text": "Архивное описание размещения разъёмов не подтверждает обрыв конкретного межсекционного провода.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "section-control-loss-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Перекрещивание проводов",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.1 и рис. 8.5, печ. стр. 284–287, 316–318: межсекционные соединения и перекрещивающиеся провода",
+          "text": "Учебная схема для нескольких секций показывает зависимость разводки от конфигурации, а не универсальный номер цепи.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "section-control-loss-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Отличие от единичной команды",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел В, §5, печ. стр. 211–215: секционные и общие цепи управления",
+          "text": "Отказ всей секции и потеря одной функции должны оставаться разными исходными карточками.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "section-control-loss-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Индикация против факта",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.1 и рис. 8.5, печ. стр. 284–287, 316–318: межсекционные соединения и перекрещивающиеся провода",
+          "text": "Сигнал лампы относится к цепи обратной связи и не доказывает фактическое механическое положение аппарата.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "section-control-loss-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Синхронизация ЭКГ",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.15, печ. стр. 347–360: секционные цепи и синхронизация ЭКГ",
+          "text": "Историческое описание синхронизации не даёт права принудительно синхронизировать или переключать секции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "CONTROL_CIRCUIT_INTERVENTION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Цепи управления",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage10-control-closeout-source-first/1",
+      "stage": "10/51",
+      "batch": "CONTROL_CIRCUITS_CLOSEOUT_BATCH2",
+      "scenarioId": "vl80s.diag.battery-no-voltage",
+      "originalId": "battery-no-voltage",
+      "category": "Цепи управления",
+      "title": "АКБ не даёт напряжения в цепи управления",
+      "summary": "При отсутствии штатного питания батарея не поддерживает цепь управления; это отличается от отказа зарядки при сохранённом напряжении.",
+      "canonicalBoundary": "BATTERY_NOT_SUPPLYING_CONTROL_BUS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.battery-no-charge",
+        "vl80s.diag.control-voltage-low",
+        "vl80s.diag.battery-overcharge",
+        "vl80s.diag.control-fuse-trip"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "При работе штатного зарядного источника напряжение управления восстанавливается?",
+        "Отсутствие напряжения наблюдается только на одной секции?",
+        "Есть нагрев, запах электролита, дым или повреждение батареи?"
+      ],
+      "donorOriginLayer": "COMPLETION_CATALOG",
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "COMPLETION_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt",
+          "blobSha": "0d94801dcbe1d96e1a551a9dac8fef2a808b9029",
+          "sourcePointer": "id = \"battery-no-voltage\"",
+          "originalQuestions": [
+            "При работе штатного зарядного источника напряжение управления восстанавливается?",
+            "Отсутствие напряжения наблюдается только на одной секции?",
+            "Есть нагрев, запах электролита, дым или повреждение батареи?"
+          ],
+          "originalCategory": "Цепи управления",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "sourceNote": "Donor cites 2022 996/r reprint and depot guide; neither independently verified as current operating authority."
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §56, печ. стр. 146–147: АКБ как источник питания цепей управления",
+            "Раздел В, §5, печ. стр. 211–215: питание от АКБ и ТРПШ, отдельные цепи"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 7 §7.13, печ. стр. 278–281: назначение и устройство батареи",
+            "Глава 8 §8.5, печ. стр. 310–318: переход между источниками питания цепей управления"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "battery-no-voltage-manual1990-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §56, печ. стр. 146–147: АКБ как источник питания цепей управления",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "battery-no-voltage-manual1990-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание от АКБ и ТРПШ, отдельные цепи",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "battery-no-voltage-textbook2006-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7 §7.13, печ. стр. 278–281: назначение и устройство батареи",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "battery-no-voltage-textbook2006-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: переход между источниками питания цепей управления",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В предыдущем докладе указаны дым, газовыделение, нагрев или повреждение АКБ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записано отсутствие питания от АКБ, а не только отсутствие зарядки при сохранённом напряжении?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В предыдущем докладе указаны дым, газовыделение, нагрев или повреждение АКБ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записано отсутствие питания от АКБ, а не только отсутствие зарядки при сохранённом напряжении?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранено ли, в какой секции и при каком ранее наблюдавшемся режиме отсутствовало питание?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись лишь о неработающем потребителе без независимого признака питания АКБ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отделены ли показания штатного прибора от предположения о разрыве цепи батареи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известно ли из старого журнала, был ли доступен другой источник питания, без его переключения для опыта?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разграничены ли в записи признаки АКБ, предохранителя и измерительной цепи как неподтверждённые варианты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли подтверждённый документ на установленную батарею и схему её питания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "battery-no-voltage-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Источник при отсутствии ТРПШ",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §56, печ. стр. 146–147: АКБ как источник питания цепей управления",
+          "text": "Историческое руководство описывает резервную роль АКБ, но отсутствие напряжения не устанавливает место обрыва.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "battery-no-voltage-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Устройство АКБ",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7 §7.13, печ. стр. 278–281: назначение и устройство батареи",
+          "text": "Учебное описание конкретной батареи не гарантирует, что на данной секции установлен такой же тип.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "battery-no-voltage-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Отличие от отказа заряда",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание от АКБ и ТРПШ, отдельные цепи",
+          "text": "Отсутствие питания от АКБ и отсутствие зарядного тока являются разными симптомами; одна запись не доказывает оба.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "battery-no-voltage-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Переход питания",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: переход между источниками питания цепей управления",
+          "text": "Схема учебника различает питание от АБ и ТРПШ, но не разрешает переключение для диагностического эксперимента.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "battery-no-voltage-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Пределы исторической схемы",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание от АКБ и ТРПШ, отдельные цепи",
+          "text": "Номера предохранителей и выводов нельзя переносить на неизвестное исполнение без его документации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "CONTROL_CIRCUIT_INTERVENTION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Цепи управления",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage10-control-closeout-source-first/1",
+      "stage": "10/51",
+      "batch": "CONTROL_CIRCUITS_CLOSEOUT_BATCH2",
+      "scenarioId": "vl80s.diag.relay-panel-overheat",
+      "originalId": "relay-panel-overheat",
+      "category": "Цепи управления",
+      "title": "Запах или нагрев на релейной панели",
+      "summary": "Появились запах, потрескивание либо локальный перегрев панели.",
+      "canonicalBoundary": "RELAY_PANEL_THERMAL_OR_ODOR_SIGNS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.control-fuse-trip",
+        "vl80s.diag.battery-overcharge",
+        "vl80s.diag.control-voltage-low",
+        "vl80s.diag.vvk-interlock-fault"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "donorOriginLayer": "GENERATED_SEED",
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "GENERATED_SEED",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"relay-panel-overheat\"",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "originalCategory": "Цепи управления",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "sourceNote": "Donor description/branch questions retained as provenance only; operational directions not imported."
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, IX §6, печ. стр. 184–185: панели аппаратов и размещение",
+            "Раздел В, §5, печ. стр. 211–215: питание и защита цепей управления"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8 §8.5, печ. стр. 310–318: цепи питания управления и защита",
+            "Глава 8 §8.13, печ. стр. 340–345: управление линейными контакторами"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "relay-panel-overheat-manual1990-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, IX §6, печ. стр. 184–185: панели аппаратов и размещение",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "relay-panel-overheat-manual1990-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание и защита цепей управления",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "relay-panel-overheat-textbook2006-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: цепи питания управления и защита",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "relay-panel-overheat-textbook2006-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.13, печ. стр. 340–345: управление линейными контакторами",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В ранее составленном сообщении указаны дым, дуга, пламя или усиливающийся нагрев панели?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены именно локальный запах, треск либо нагрев панели, а не только отключение автомата?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В ранее составленном сообщении указаны дым, дуга, пламя или усиливающийся нагрев панели?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены именно локальный запах, треск либо нагрев панели, а не только отключение автомата?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли место наблюдения без вскрытия или доступа к оборудованию?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли только запись об отключении автомата без локальных тепловых признаков?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли момент и условия возникновения признака без повторного включения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отделены ли показания сигнальных цепей от предположения о конкретной катушке?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли ранее составленный доклад о секции и сопутствующих отказах управления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждена ли по документам конкретная панель и её комплектование?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно ранее записанных сведений или исполнение не установлено. STOP/BLOCKED, никаких новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён; сведения передаются ответственным по действующему порядку без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее зафиксированные сведения систематизированы; причина, пригодность к эксплуатации и разрешение действий НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Разграничение причин невозможно: UNKNOWN/BLOCKED. Повторных включений, измерений, перемычек и вскрытия нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "relay-panel-overheat-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Размещение панелей",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, IX §6, печ. стр. 184–185: панели аппаратов и размещение",
+          "text": "Архивное размещение аппаратов служит контекстом, но не приглашением к осмотру или вскрытию.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "relay-panel-overheat-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Электрические ветви",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.5, печ. стр. 310–318: цепи питания управления и защита",
+          "text": "Учебная схема различает защищённые ветви; запах сам по себе не определяет отказавший аппарат.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "relay-panel-overheat-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Признак и причина",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел В, §5, печ. стр. 211–215: питание и защита цепей управления",
+          "text": "Тепловой признак требует прекращения информационного маршрута при опасности, а не диагностического включения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "relay-panel-overheat-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Контактор и цепь питания",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.13, печ. стр. 340–345: управление линейными контакторами",
+          "text": "Описание цепей контакторов не подтверждает неисправность катушки по запаху или индикации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "relay-panel-overheat-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Исполнение панели",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, IX §6, печ. стр. 184–185: панели аппаратов и размещение",
+          "text": "Позиции и состав аппаратов из архивного руководства не переносятся на модернизированные секции без сверки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "CONTROL_CIRCUIT_INTERVENTION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Цепи управления",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    }
+  ]
+}

@@ -1,0 +1,1033 @@
+{
+  "ledger": {
+    "schemaVersion": "stage11-traction-closeout-batch4/1",
+    "date": "2026-11-05",
+    "stage": "11/51",
+    "baseHead": "f8cdec405ebd49356aef50498df74881573490a5",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.traction-overload-relay-trip",
+      "vl80s.diag.traction-ground-relay-trip"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "verifiedResearchOnly": true,
+    "originalQuestionTextVerified": false,
+    "remainingOriginalIds": [],
+    "coverage": "18 source IDs: 14 in stage11 batches 1-3; 2 in this batch; ekg-stuck in stage5 and ekg-slow-transition in stage6"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage11-traction/4",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.traction-overload-relay-trip",
+      "originalId": "traction-overload-relay-trip",
+      "category": "Тяга",
+      "title": "Сработало реле перегрузки РП1–РП4 тягового двигателя",
+      "summary": "На секции появился сигнал РП; требуется отличить устойчивую перегрузку или повреждение ТЭД от неисправности самого реле и от другого защитного отключения.",
+      "canonicalBoundary": "RP1_RP4_TRACTION_OVERLOAD_INDICATION_NOT_GENERAL_PROTECTION",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=traction-overload-relay-trip]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, печ. стр. 209: РП1–РП4 размыкают цепь реле 264 и отключают ГВ",
+            "Раздел Б, табл. 14, печ. стр. 279: отдельно указаны РП1–РП4, повреждение ТЭД и возможная неисправность самого реле"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 6 §6.3, печ. стр. 217–218: реле перегрузки РП1–РП4, БСА №1/№2 и цепь 264",
+            "Глава 9, печ. стр. 467: сигнал «РП» в расшифровывающем табло"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "traction-overload-relay-trip-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 209: РП1–РП4 размыкают цепь реле 264 и отключают ГВ",
+          "claim": "Архивная схема связывает РП1–РП4 с реле 264 и ГВ; это не доказательство причины конкретного отключения.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-overload-relay-trip-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, табл. 14, печ. стр. 279: отдельно указаны РП1–РП4, повреждение ТЭД и возможная неисправность самого реле",
+          "claim": "Таблица 1990 года различает неисправность ТЭД и самого РП; эксплуатационные действия из таблицы не импортированы.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-overload-relay-trip-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.3, печ. стр. 217–218: реле перегрузки РП1–РП4, БСА №1/№2 и цепь 264",
+          "claim": "Учебник описывает РП1–РП4 и распределение по БСА; наличие именно этой схемы на машине не установлено.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-overload-relay-trip-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 9, печ. стр. 467: сигнал «РП» в расшифровывающем табло",
+          "claim": "Сигнал «РП» служит для классификации исторического наблюдения, но не является самостоятельным доказательством повреждения ТЭД.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли уже зафиксированные дуга, дым, повреждение ТЭД или опасное отключение с признаками аварийного режима?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечен ли в журнале именно сигнал «РП» либо указатель РП1–РП4, а не общий сигнал защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли уже зафиксированные дуга, дым, повреждение ТЭД или опасное отключение с признаками аварийного режима?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечен ли в журнале именно сигнал «РП» либо указатель РП1–РП4, а не общий сигнал защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записано ли, какой из РП1–РП4 сработал и к какой секции относится запись?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отделён ли сигнал РП от РЗ, БРД, РПТ1–РПТ4 и реле 113 в исходном акте?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли уже зарегистрированные показания тягового тока до отключения без новых измерений?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли в старой записи, наблюдались ли ранее признаки неисправности самого реле, без попытки его проверки сейчас?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли, было ли событие однократным или повторным, без новых включений и сбросов защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждены ли исполнение секции, тип РП и схема цепи 264 по её документации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "traction-overload-relay-trip-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 209: РП1–РП4 размыкают цепь реле 264 и отключают ГВ",
+          "text": "Архивная схема связывает РП1–РП4 с реле 264 и ГВ; это не доказательство причины конкретного отключения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-overload-relay-trip-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, табл. 14, печ. стр. 279: отдельно указаны РП1–РП4, повреждение ТЭД и возможная неисправность самого реле",
+          "text": "Таблица 1990 года различает неисправность ТЭД и самого РП; эксплуатационные действия из таблицы не импортированы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-overload-relay-trip-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.3, печ. стр. 217–218: реле перегрузки РП1–РП4, БСА №1/№2 и цепь 264",
+          "text": "Учебник описывает РП1–РП4 и распределение по БСА; наличие именно этой схемы на машине не установлено.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-overload-relay-trip-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 9, печ. стр. 467: сигнал «РП» в расшифровывающем табло",
+          "text": "Сигнал «РП» служит для классификации исторического наблюдения, но не является самостоятельным доказательством повреждения ТЭД.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-overload-relay-trip-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.3, печ. стр. 217–218: реле перегрузки РП1–РП4, БСА №1/№2 и цепь 264",
+          "text": "Срабатывание РП1–РП4 не следует смешивать с РПТ1–РПТ4, РТВ1/РТВ2, БРД или РЗ; современные уставки и схема не подтверждены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "РП1–РП4, БСА №1/№2, реле 264 и фактические изменения схемы UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general исследовательский; схема и исполнение конкретной секции не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "Исторические издания различают срабатывание РП при перегрузке, возможную неисправность самого реле и повреждение ТЭД; по сигналу причина не доказана. Архивные советы повторять включение, отключать ТЭД и продолжать движение исключены."
+    },
+    {
+      "schemaVersion": "diagnostic-stage11-traction/4",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.traction-ground-relay-trip",
+      "originalId": "traction-ground-relay-trip",
+      "category": "Тяга",
+      "title": "Сработало реле заземления РЗ тяговой цепи",
+      "summary": "Отключился ГВ и появился сигнал РЗ секции; возможен пробой изоляции вторичной силовой цепи на корпус.",
+      "canonicalBoundary": "RZ_GROUND_INDICATION_NOT_RP_OR_DIFFERENTIAL_PROTECTION",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=traction-ground-relay-trip]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, печ. стр. 94–96: реле заземления РЗ-303 и двухобмоточное исполнение",
+            "Раздел Б, печ. стр. 209: защита силовых цепей от замыкания на корпус реле 88"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 6 §6.5, печ. стр. 223–225: РЗ-303 (88), сигнальная лампа и удерживающая цепь",
+            "Глава 9, печ. стр. 467: сигнал «РЗ» отдельно от «РП» и «ВУ1/ВУ2»"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "traction-ground-relay-trip-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, печ. стр. 94–96: реле заземления РЗ-303 и двухобмоточное исполнение",
+          "claim": "Руководство 1990 года описывает двухобмоточное реле заземления; фактический аппарат конкретной секции неизвестен.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-ground-relay-trip-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 209: защита силовых цепей от замыкания на корпус реле 88",
+          "claim": "Архивная схема связывает РЗ 88 с защитой при замыкании силовой цепи на корпус, но не подтверждает место повреждения.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-ground-relay-trip-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.5, печ. стр. 223–225: РЗ-303 (88), сигнальная лампа и удерживающая цепь",
+          "claim": "Учебник описывает отдельную лампу «РЗ» и цепь удержания; описание не разрешает сбрасывать или обходить защиту.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-ground-relay-trip-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 9, печ. стр. 467: сигнал «РЗ» отдельно от «РП» и «ВУ1/ВУ2»",
+          "claim": "Раздельные сигналы «РЗ», «РП» и «ВУ» не следует отождествлять без исходной записи события.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в исходной записи дуга, дым, запах изоляции или иные опасные признаки повреждения силовой цепи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирован ли именно сигнал «РЗ» при отключении ГВ, а не только общее отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в исходной записи дуга, дым, запах изоляции или иные опасные признаки повреждения силовой цепи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирован ли именно сигнал «РЗ» при отключении ГВ, а не только общее отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, на какой секции наблюдался сигнал «РЗ» и когда он был зарегистрирован?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли в первичной записи «РЗ», «РП», «ВУ1/ВУ2» и сигнал БРД?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Имеются ли ранее составленные сведения о срабатывании указателя реле 88 без нового доступа в ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли в журнале наличие либо отсутствие повторения сигнала без попыток повторного включения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записаны ли в документах локомотива заводской номер и известные изменения цепи удержания РЗ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждены ли схема РЗ конкретной секции и установленное исполнение по документу машины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "traction-ground-relay-trip-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, печ. стр. 94–96: реле заземления РЗ-303 и двухобмоточное исполнение",
+          "text": "Руководство 1990 года описывает двухобмоточное реле заземления; фактический аппарат конкретной секции неизвестен.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-ground-relay-trip-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 209: защита силовых цепей от замыкания на корпус реле 88",
+          "text": "Архивная схема связывает РЗ 88 с защитой при замыкании силовой цепи на корпус, но не подтверждает место повреждения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-ground-relay-trip-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.5, печ. стр. 223–225: РЗ-303 (88), сигнальная лампа и удерживающая цепь",
+          "text": "Учебник описывает отдельную лампу «РЗ» и цепь удержания; описание не разрешает сбрасывать или обходить защиту.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-ground-relay-trip-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 9, печ. стр. 467: сигнал «РЗ» отдельно от «РП» и «ВУ1/ВУ2»",
+          "text": "Раздельные сигналы «РЗ», «РП» и «ВУ» не следует отождествлять без исходной записи события.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-ground-relay-trip-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.5, печ. стр. 223–225: РЗ-303 (88), сигнальная лампа и удерживающая цепь",
+          "text": "В архивном учебнике встречаются изменения питания РЗ по заводским номерам; ни номер секции, ни конкретная модернизация не установлены. Исторические перемычки и отключение защиты исключены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "РЗ-303/88, схема питания удерживающей обмотки, №1825/2174 и модернизации UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general исследовательский; схема и исполнение конкретной секции не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "Исторические схемы РЗ 88 имеют изменения по заводским номерам (в том числе замена дросселя 78 и питание удерживающей обмотки); нельзя применять единый алгоритм. Архивные способы сброса, размыкания цепи и обхода защиты не импортированы."
+    }
+  ]
+}

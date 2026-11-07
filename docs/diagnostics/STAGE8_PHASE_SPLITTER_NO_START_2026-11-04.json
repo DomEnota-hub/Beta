@@ -1,0 +1,853 @@
+{
+  "ledger": {
+    "schemaVersion": "stage8-phase-splitter-slice/1",
+    "date": "2026-11-04",
+    "stage": "8/51",
+    "baseHead": "64301312498ce41470f44a8ccae08f4d2d5fa8af",
+    "logicalStep": "One source-scoped phase-splitter-no-start research candidate",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "addedScenarioIds": [
+      "vl80s.diag.phase-splitter-no-start"
+    ],
+    "previousStage8Ids": [
+      "vl80s.diag.aux-common-loss",
+      "vl80s.diag.aux-contactor-chatter"
+    ],
+    "stage8OverallStatus": "IN_PROGRESS_NOT_CLOSED",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Continue a distinct source-supported VL80S auxiliary symptom after green CI."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage8-phase-splitter-no-start-source-first/1",
+      "stage": "8/51",
+      "scenarioId": "vl80s.diag.phase-splitter-no-start",
+      "originalId": "phase-splitter-no-start",
+      "canonicalGroup": "PHASE_SPLITTER_START_AND_STABILITY_VS_GROUP_OR_SINGLE_AUX_LOSS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.aux-machines",
+        "vl80s.diag.aux-common-loss",
+        "vl80s.diag.motor-fan-failure",
+        "vl80s.diag.compressor-no-start",
+        "vl80s.diag.aux-contactor-chatter"
+      ],
+      "title": "Фазорасщепитель не запускается или работает ненормально",
+      "summary": "После включения нет устойчивого запуска, слышен тяжёлый разгон, срабатывает защита или не запускаются трёхфазные потребители.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorOriginalBlobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [
+        "Есть попытка вращения?",
+        "Фазорасщепитель разгоняется, но затем отключается?",
+        "Одновременно отказали все трёхфазные вспомогательные машины?"
+      ],
+      "donorQuestionProvenance": "PINNED_EXPANSION_THREE_QUESTIONS_REWRITTEN_AS_RECORDED_ONLY",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "originalId": "phase-splitter-no-start",
+          "sourcePointer": "expandedScenario(id = \"phase-splitter-no-start\")",
+          "excerpt": {
+            "category": "Вспомогательные машины",
+            "title": "Фазорасщепитель не запускается или работает ненормально",
+            "summary": "После включения нет устойчивого запуска, слышен тяжёлый разгон, срабатывает защита или не запускаются трёхфазные потребители."
+          },
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "sourceHasHistoricalOperationalSteps": true
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации, 2-е изд. (Васько и др., 1990)",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "XI §5, печ. стр. 221, рис. 254: контакторы 119/125 и реле 249 при пуске ФР",
+            "XI §5, печ. стр. 221–222, рис. 254–255: реле 259/260 и связь с вспомогательными машинами"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true
+        },
+        "article2005": {
+          "kind": "HISTORICAL_TRAINING_TECHNICAL_ARTICLE_REPOST",
+          "title": "А. А. Потанин. Цепи пуска фазорасщепителей на электровозах ВЛ80С",
+          "sourceIssue": "09-2005 (указано в перепечатке)",
+          "repostDate": "2015-08-03",
+          "url": "https://scbist.com/xx2/44052-09-2005-cepi-puska-fazorasschepitelei-na-elektrovozah-vl80s.html",
+          "verifiedLocators": [
+            "Публикация [09-2005], репост 03.08.2015: ПУСК ФР ПРИ НАЛИЧИИ ПАНЕЛИ ПУСКА",
+            "Публикация [09-2005], репост 03.08.2015: КОНДЕНСАТОРНЫЙ ЗАПУСК ФР"
+          ],
+          "sourceTextLocated": true,
+          "originalPrintIndependentlyVerified": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true,
+          "variantCaveat": "Конденсаторная схема не содержит 119, 249, 260 по описанию статьи; перенос номеров между исполнениями запрещён."
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "phase-splitter-evidence-0",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 221, рис. 254: контакторы 119/125 и реле 249 при пуске ФР",
+          "confidence": "HISTORICAL_CIRCUIT_DESCRIPTION_ONLY",
+          "claim": "Историческая схема связывает 119/125 и 249 с запуском; не доказывает причину отказа.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "phase-splitter-evidence-1",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 221–222, рис. 254–255: реле 259/260 и связь с вспомогательными машинами",
+          "confidence": "HISTORICAL_CIRCUIT_DESCRIPTION_ONLY",
+          "claim": "259/260 участвуют в разрешении вспомогательных машин; групповой отказ не доказывает дефект ФР.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "phase-splitter-evidence-2",
+          "sourceId": "article2005",
+          "locator": "Публикация [09-2005], репост 03.08.2015: ПУСК ФР ПРИ НАЛИЧИИ ПАНЕЛИ ПУСКА",
+          "confidence": "HISTORICAL_SECONDARY_REPOST_ONLY",
+          "claim": "Перепечатка описывает пуск с панелью; применимость к секции не установлена.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "phase-splitter-evidence-3",
+          "sourceId": "article2005",
+          "locator": "Публикация [09-2005], репост 03.08.2015: КОНДЕНСАТОРНЫЙ ЗАПУСК ФР",
+          "confidence": "HISTORICAL_SECONDARY_REPOST_ONLY",
+          "claim": "В конденсаторном варианте отсутствуют 119, 249, 260; нельзя переносить схемы.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходной записи отмечены дым, гул без разгона, опасная вибрация или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрирован неустойчивый запуск самого ФР, а не только остановка других машин?",
+              "responses": {
+                "YES": "report-recorded",
+                "NO": "report-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный исходный признак; не инициировать повторные пуски, переключения или измерения.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходных данных недостаточно; исполнение UNKNOWN/BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Признак ФР сохранён; причина и вариант пусковой схемы не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unverified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отказ самого ФР не подтверждён; групповой симптом остаётся отдельным.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "phase-splitter-no-start-short-donor-attempt",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourceLocator": "expandedScenario(id = \"phase-splitter-no-start\")",
+              "approachFocus": "DONOR_ATTEMPT_VS_NO_ATTEMPT",
+              "approachSummary": "Исходная попытка вращения.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи явно отмечена попытка вращения ФР?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Записанное наблюдение сохранено без подтверждения причины или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходное свидетельство отсутствует; новую проверку не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: данных нет; историческая информация не даёт разрешения на действия.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "phase-splitter-no-start-short-manual-start",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 221, рис. 254: контакторы 119/125 и реле 249 при пуске ФР",
+              "approachFocus": "MANUAL_1990_PANEL_START_CONTEXT",
+              "approachSummary": "Архивная панель пуска.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Ранее документально установлено наличие реле 249 на этой секции?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Записанное наблюдение сохранено без подтверждения причины или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходное свидетельство отсутствует; новую проверку не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: данных нет; историческая информация не даёт разрешения на действия.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходной записи есть дым, запах перегрева, гул без разгона или опасная вибрация?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "single",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "single",
+              "type": "QUESTION",
+              "text": "Ранее отдельно отмечена попытка вращения самого ФР?",
+              "responses": {
+                "YES": "state",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "state",
+              "type": "QUESTION",
+              "text": "Ранее отмечен разгон ФР с последующим отключением?",
+              "responses": {
+                "YES": "identity",
+                "NO": "report-audio",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "identity",
+              "type": "QUESTION",
+              "text": "В исходных данных указана конкретная секция и её схема пуска?",
+              "responses": {
+                "YES": "scope",
+                "NO": "report-unlocated",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "scope",
+              "type": "QUESTION",
+              "text": "В исходных данных одновременно отмечена остановка других трёхфазных потребителей?",
+              "responses": {
+                "YES": "report-group-overlap",
+                "NO": "report-isolated",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасные признаки; новые действия с ФР и защитами запрещены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: сведений недостаточно; новые проверки не инициировать.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Попытка вращения не зафиксирована; команда и механика не разграничены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-audio",
+              "type": "OBSERVATION_REPORT",
+              "text": "Нет доказанного разгона с отключением; звук не подтверждает причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unlocated",
+              "type": "OBSERVATION_REPORT",
+              "text": "Точное исполнение неизвестно; аппараты 119/249/260 нельзя назначать автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-group-overlap",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом ФР и групповое отключение могут сосуществовать без доказанной причинной связи.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-isolated",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом ФР отмечен без подтверждённого группового отказа; причина UNKNOWN.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "phase-splitter-no-start-detailed-donor-hold",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourceLocator": "expandedScenario(id = \"phase-splitter-no-start\")",
+              "approachFocus": "DONOR_START_THEN_STOP",
+              "approachSummary": "Разгон с отключением.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи отмечен разгон с последующим отключением ФР?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Записанное наблюдение сохранено без подтверждения причины или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходное свидетельство отсутствует; новую проверку не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: данных нет; историческая информация не даёт разрешения на действия.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "phase-splitter-no-start-detailed-manual-dependent",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 221–222, рис. 254–255: реле 259/260 и связь с вспомогательными машинами",
+              "approachFocus": "MANUAL_1990_DEPENDENT_AUX_RELATION",
+              "approachSummary": "Архивная связь с потребителями.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "Ранее отмечено одновременное отключение нескольких вспомогательных машин?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Записанное наблюдение сохранено без подтверждения причины или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходное свидетельство отсутствует; новую проверку не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: данных нет; историческая информация не даёт разрешения на действия.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "phase-splitter-no-start-detailed-article-capacitor",
+              "version": "DETAILED",
+              "sourceId": "article2005",
+              "sourceLocator": "Публикация [09-2005], репост 03.08.2015: КОНДЕНСАТОРНЫЙ ЗАПУСК ФР",
+              "approachFocus": "ARTICLE_2005_CAPACITOR_VARIANT",
+              "approachSummary": "Разделение конденсаторного и панельного пуска.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В ранее полученных документах секции указан конденсаторный вариант пуска?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "article2005"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Записанное наблюдение сохранено без подтверждения причины или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "article2005"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходное свидетельство отсутствует; новую проверку не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "article2005"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: данных нет; историческая информация не даёт разрешения на действия.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "article2005"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

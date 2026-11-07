@@ -1,0 +1,2151 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-metering-safety-batch37/1",
+    "date": "2026-11-07",
+    "baseHead": "e440ff33df2c5f3d0de7273ff924ce8b433b3c31",
+    "previousCiRun": 42360315279,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-117",
+      "ER-DIAG-118",
+      "ER-DIAG-119"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Pinned donor pack eight fields per ID checked; independent raw gzip decode NOT_RUN; current exact machine, profile, role, official amendments UNKNOWN/BLOCKED.",
+    "batchBoundary": "117 metering not 116 contact voltage; 118 satellite not 119 safety radio or 111 train radio."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-batch37-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-117",
+      "scenarioId": "ermak.diag.ER-DIAG-117",
+      "title": "Нет учёта / некорректные показания электроэнергии",
+      "symptom": "Счётчик электроэнергии не отображает/не регистрирует ожидаемые данные",
+      "hazardCategory": "METERING_DISPLAY_RECORDING",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-10",
+        "SYS-C0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-HV-010",
+        "ER-EQ-HV-009"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-117-research-only",
+      "earlyMsud": "MSUD_N_ARCHIVAL_SOURCE_ONLY",
+      "lateMsud": "MSUD_015_BLOK_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-116",
+        "ER-DIAG-080",
+        "ER-DIAG-122"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-117; eight exact fields checked; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-117",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.1: PJ1 учитывает потреблённую и рекуперируемую энергию, T7 служит датчиком тока PJ1, T12/U21 связаны с цепью напряжения. Только ранняя схема.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturerApparatus": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §4.1: цепи PJ1/T7/T12/U21 ранней машины.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://base.garant.ru/405042985/",
+          "locator": "ПТЭ №250: публичный нормативный контекст; точный применимый пункт, редакция и полномочия не удостоверены.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "Архивный комплект ИДМБ.661142.009РЭ 2007 года: исторический контекст, не действующая схема конкретной машины.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://base.garant.ru/405042985/",
+          "locator": "Действующая редакция, точные пункты, локальные инструкции, профиль и полномочия не подтверждены; публичный текст не даёт разрешений.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM",
+          "detail": "Отсутствие индикации PJ1 не равно потере напряжения сети",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "CAUSE",
+          "detail": "Отсутствие дисплея не доказывает отсутствие регистрации",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "T7/T12/U21 в РЭ1 не подтверждают поздний профиль",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Учёт потребления и рекуперации различается",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "topic": "UNKNOWN",
+          "detail": "ПТЭ и РЭ1 не разрешают вмешательства в прибор",
+          "resolution": "NO_CAUSE_INFERENCE"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли сейчас неразрешённое эксплуатационное событие, связанное с учётом энергии? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли машина, секция, прибор PJ1, измерительная схема, источники и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрирован отказ отображения/регистрации счётчика, а не исчезновение напряжения контактной сети?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный BASE_CONFIRMED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Счётчик электроэнергии не отображает/не регистрирует ожидаемые данные. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли сейчас неразрешённое эксплуатационное событие, связанное с учётом энергии? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли машина, секция, прибор PJ1, измерительная схема, источники и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрирован отказ отображения/регистрации счётчика, а не исчезновение напряжения контактной сети?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть ли архивная запись показаний счётчика с датой, секцией и источником?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Разделены ли индикация, регистрация, потребление, рекуперация и канал измерения без вывода о причине?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Отмечено ли, что PJ1/T7/T12/U21 относятся к раннему РЭ1, а схема поздней машины не подтверждена?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "official",
+                "training",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: недостаточно независимых архивных сведений или происхождения источника. Не устанавливать причину и не назначать действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный BASE_CONFIRMED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Счётчик электроэнергии не отображает/не регистрирует ожидаемые данные. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-117-INFO-1",
+          "title": "Исходный симптом и профиль",
+          "text": "Исходный ER-DIAG-117, статус BASE_CONFIRMED, применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}; донорский gzip независимо не распакован.",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-117; eight exact fields checked; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-117-INFO-2",
+          "title": "Историческая схема",
+          "text": "РЭ1 §4.1: PJ1 учитывает потреблённую и рекуперируемую энергию, T7 служит датчиком тока PJ1, T12/U21 связаны с цепью напряжения. Только ранняя схема.",
+          "locator": "РЭ1 §4.1: PJ1 учитывает потреблённую и рекуперируемую энергию, T7 служит датчиком тока PJ1, T12/U21 связаны с цепью напряжения. Только ранняя схема.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-117-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "ПТЭ №250: публичный нормативный контекст; точный применимый пункт, редакция и полномочия не удостоверены.",
+          "locator": "ПТЭ №250: публичный нормативный контекст; точный применимый пункт, редакция и полномочия не удостоверены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-117-INFO-4",
+          "title": "Различение признаков",
+          "text": "Отсутствие индикации PJ1 не равно потере напряжения сети; Отсутствие дисплея не доказывает отсутствие регистрации; T7/T12/U21 в РЭ1 не подтверждают поздний профиль; Учёт потребления и рекуперации различается; ПТЭ и РЭ1 не разрешают вмешательства в прибор. Ни одна гипотеза не подтверждена.",
+          "locator": "РЭ1 §4.1: цепи PJ1/T7/T12/U21 ранней машины.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manufacturerApparatus",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-117-INFO-5",
+          "title": "Safety и финальная QA",
+          "text": "Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения. Финальная Android QA отложена.",
+          "locator": "Запрещены вскрытие PJ1, пломб, новые измерения T7/T12/U21, переключения HV и самостоятельное разрешение движения.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-117: eight fields match pinned pack, independent gzip decode NOT_RUN."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_ONLY",
+          "finding": "РЭ1 §4.1: PJ1 учитывает потреблённую и рекуперируемую энергию, T7 служит датчиком тока PJ1, T12/U21 связаны с цепью напряжения. Только ранняя схема."
+        },
+        {
+          "sourceKind": "PUBLIC_NORMATIVE_REVIEW",
+          "url": "https://base.garant.ru/405042985/",
+          "verifiedAt": "2026-11-07",
+          "status": "SECONDARY_COPY_AUTHORITY_UNKNOWN",
+          "finding": "ПТЭ №250: публичный нормативный контекст; точный применимый пункт, редакция и полномочия не удостоверены."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-batch37-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-118",
+      "scenarioId": "ermak.diag.ER-DIAG-118",
+      "title": "Нет спутниковой навигации комплекса безопасности",
+      "symptom": "Комплекс безопасности не получает данные спутниковой навигации",
+      "hazardCategory": "SAFETY_SATELLITE_NAVIGATION",
+      "sourceObjectStatus": "PROFILE_REQUIRED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early",
+          "safety_blok_confirmed_2es5k"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-80"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-SF-008",
+        "ER-EQ-SF-001",
+        "ER-EQ-SF-010"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-031",
+          "role": "technical_basis",
+          "document": "НПО САУТ: каталог комплексов безопасности",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://saut.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "каталог НПО САУТ",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3050R-SAFETY-B12",
+          "document": "Правила по организации ТО и ремонта локомотивных устройств безопасности, средств поездной радиосвязи, систем автоведения и навигационно-связного оборудования, распоряжение ОАО «РЖД» №3050/р от 27.12.2019",
+          "locator": "локомотивные устройства безопасности и навигационно-связное оборудование",
+          "role": "safety_device_maintenance_context",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№3050/р",
+            "revision": "упоминается действующими Правилами радиосвязи №761/р; эксплуатационное решение — по профилю комплекса",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early",
+        "safety_blok_confirmed_2es5k"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-118-research-only",
+      "earlyMsud": "MSUD_N_ARCHIVAL_SOURCE_ONLY",
+      "lateMsud": "MSUD_015_BLOK_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-093",
+        "ER-DIAG-096",
+        "ER-DIAG-097",
+        "ER-DIAG-119"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-118; eight exact fields checked; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-118",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.19: цепи КЛУБ-У/ТСКБМ раннего исполнения; состав GNSS позднего комплекса не установлен.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturerApparatus": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.19: ранний КЛУБ-У/ТСКБМ, поздний комплекс не подтверждён.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://base.garant.ru/409329304/",
+          "locator": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: организация ТО/ремонта устройств безопасности и навигационно-связного оборудования, не эксплуатационный допуск.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "Архивный комплект ИДМБ.661142.009РЭ 2007 года: исторический контекст, не действующая схема конкретной машины.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://base.garant.ru/409329304/",
+          "locator": "Действующая редакция, точные пункты, локальные инструкции, профиль и полномочия не подтверждены; публичный текст не даёт разрешений.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM",
+          "detail": "СНС не равна всем функциям безопасности",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "CAUSE",
+          "detail": "СНС не равна радиоканалу комплекса",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "РЭ1 §6.19 не подтверждает БЛОК-М",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "№3050/р регулирует ТО/ремонт, не разрешение движения",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "topic": "UNKNOWN",
+          "detail": "Нет оснований считать доказанным отказ антенны",
+          "resolution": "NO_CAUSE_INFERENCE"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли неисправность safety-комплекса либо не подтверждено завершение события? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли конкретный КЛУБ-У/БЛОК, версия, СНС-модуль, секция, действующие документы и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрировано именно отсутствие спутниковых данных, а не отказ всей индикации или АЛС?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный PROFILE_REQUIRED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Комплекс безопасности не получает данные спутниковой навигации. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли неисправность safety-комплекса либо не подтверждено завершение события? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли конкретный КЛУБ-У/БЛОК, версия, СНС-модуль, секция, действующие документы и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрировано именно отсутствие спутниковых данных, а не отказ всей индикации или АЛС?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранено ли архивное сообщение комплекса о СНС с временем и источником?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Разделены ли потеря СНС, ошибка координат, отсутствие кодов АЛС и общий отказ комплекса без вывода о причине?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указано ли, что РЭ1 §6.19 описывает ранний КЛУБ-У, не установленный поздний БЛОК-М?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "official",
+                "training",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: недостаточно независимых архивных сведений или происхождения источника. Не устанавливать причину и не назначать действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный PROFILE_REQUIRED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Комплекс безопасности не получает данные спутниковой навигации. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-118-INFO-1",
+          "title": "Исходный симптом и профиль",
+          "text": "Исходный ER-DIAG-118, статус PROFILE_REQUIRED, применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\",\"safety_blok_confirmed_2es5k\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}; донорский gzip независимо не распакован.",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-118; eight exact fields checked; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-118-INFO-2",
+          "title": "Историческая схема",
+          "text": "РЭ1 §6.19: цепи КЛУБ-У/ТСКБМ раннего исполнения; состав GNSS позднего комплекса не установлен.",
+          "locator": "РЭ1 §6.19: цепи КЛУБ-У/ТСКБМ раннего исполнения; состав GNSS позднего комплекса не установлен.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-118-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: организация ТО/ремонта устройств безопасности и навигационно-связного оборудования, не эксплуатационный допуск.",
+          "locator": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: организация ТО/ремонта устройств безопасности и навигационно-связного оборудования, не эксплуатационный допуск.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-118-INFO-4",
+          "title": "Различение признаков",
+          "text": "СНС не равна всем функциям безопасности; СНС не равна радиоканалу комплекса; РЭ1 §6.19 не подтверждает БЛОК-М; №3050/р регулирует ТО/ремонт, не разрешение движения; Нет оснований считать доказанным отказ антенны. Ни одна гипотеза не подтверждена.",
+          "locator": "РЭ1 §6.19: ранний КЛУБ-У/ТСКБМ, поздний комплекс не подтверждён.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manufacturerApparatus",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-118-INFO-5",
+          "title": "Safety и финальная QA",
+          "text": "Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения. Финальная Android QA отложена.",
+          "locator": "Запрещены перезапуск/отключение комплекса, имитация спутниковых сигналов, действия с антеннами, обход защит и разрешение движения.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-118: eight fields match pinned pack, independent gzip decode NOT_RUN."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_ONLY",
+          "finding": "РЭ1 §6.19: цепи КЛУБ-У/ТСКБМ раннего исполнения; состав GNSS позднего комплекса не установлен."
+        },
+        {
+          "sourceKind": "PUBLIC_NORMATIVE_REVIEW",
+          "url": "https://base.garant.ru/409329304/",
+          "verifiedAt": "2026-11-07",
+          "status": "SECONDARY_COPY_AUTHORITY_UNKNOWN",
+          "finding": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: организация ТО/ремонта устройств безопасности и навигационно-связного оборудования, не эксплуатационный допуск."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-batch37-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-119",
+      "scenarioId": "ermak.diag.ER-DIAG-119",
+      "title": "Нет радиоканала комплекса безопасности",
+      "symptom": "Комплекс безопасности сообщает о недоступности своего радиоканала",
+      "hazardCategory": "SAFETY_DATA_RADIO_CHANNEL",
+      "sourceObjectStatus": "PROFILE_REQUIRED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early",
+          "safety_blok_confirmed_2es5k"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-80"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-SF-009",
+        "ER-EQ-SF-001",
+        "ER-EQ-SF-010"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-031",
+          "role": "technical_basis",
+          "document": "НПО САУТ: каталог комплексов безопасности",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://saut.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "каталог НПО САУТ",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3050R-SAFETY-B12",
+          "document": "Правила по организации ТО и ремонта локомотивных устройств безопасности, средств поездной радиосвязи, систем автоведения и навигационно-связного оборудования, распоряжение ОАО «РЖД» №3050/р от 27.12.2019",
+          "locator": "локомотивные устройства безопасности и навигационно-связное оборудование",
+          "role": "safety_device_maintenance_context",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№3050/р",
+            "revision": "упоминается действующими Правилами радиосвязи №761/р; эксплуатационное решение — по профилю комплекса",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early",
+        "safety_blok_confirmed_2es5k"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-119-research-only",
+      "earlyMsud": "MSUD_N_ARCHIVAL_SOURCE_ONLY",
+      "lateMsud": "MSUD_015_BLOK_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-111",
+        "ER-DIAG-093",
+        "ER-DIAG-097",
+        "ER-DIAG-118"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-119; eight exact fields checked; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-119",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.15: поездная радиостанция A60; §6.19: КЛУБ-У/ТСКБМ раннего исполнения. Состав отдельного радиоканала позднего комплекса не подтверждён.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturerApparatus": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §6.19: ранний КЛУБ-У/ТСКБМ, поздний комплекс не подтверждён.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://base.garant.ru/409329304/",
+          "locator": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: правила организации ТО/ремонта, не разрешение на эксплуатационные действия.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "Архивный комплект ИДМБ.661142.009РЭ 2007 года: исторический контекст, не действующая схема конкретной машины.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://base.garant.ru/409329304/",
+          "locator": "Действующая редакция, точные пункты, локальные инструкции, профиль и полномочия не подтверждены; публичный текст не даёт разрешений.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM",
+          "detail": "Радиоканал комплекса не равен A60",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "CAUSE",
+          "detail": "Нет покрытия не доказывает поломку бортовой антенны",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Радиоканал не равен спутниковому каналу",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "КЛУБ-У РЭ1 не доказывает БЛОК-М",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "topic": "UNKNOWN",
+          "detail": "№3050/р не заменяет руководство комплекса",
+          "resolution": "NO_CAUSE_INFERENCE"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли недоступность радиоканала комплекса или не подтверждён безопасный статус? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли установленный КЛУБ-У/БЛОК, радиомодуль, антенна, секция, документы и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрирована недоступность собственного радиоканала safety-комплекса, а не поездной радиостанции A60?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный PROFILE_REQUIRED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Комплекс безопасности сообщает о недоступности своего радиоканала. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Продолжается ли недоступность радиоканала комплекса или не подтверждён безопасный статус? Только ранее оформленные сведения, без новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены ли установленный КЛУБ-У/БЛОК, радиомодуль, антенна, секция, документы и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зарегистрирована недоступность собственного радиоканала safety-комплекса, а не поездной радиостанции A60?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранена ли архивная запись радиоканала комплекса с временем и источником?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Разделены ли радиоканал комплекса, A60, СНС и внешнее радиопокрытие без утверждения причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Отмечено ли, что РЭ1 §6.15/6.19 и №3050/р не подтверждают поздний профиль и полномочия?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "official",
+                "training",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: недостаточно независимых архивных сведений или происхождения источника. Не устанавливать причину и не назначать действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее/неподтверждённо завершённое событие. Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "official"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, профиль, источник и роль не подтверждены; исходный PROFILE_REQUIRED не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: наблюдение относится к другому сценарию; не выводить причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В прошлом зарегистрировано: Комплекс безопасности сообщает о недоступности своего радиоканала. Причина UNKNOWN, профиль и полномочия BLOCKED. Никаких действий приложение не разрешает.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "official",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-119-INFO-1",
+          "title": "Исходный симптом и профиль",
+          "text": "Исходный ER-DIAG-119, статус PROFILE_REQUIRED, применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\",\"safety_blok_confirmed_2es5k\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}; донорский gzip независимо не распакован.",
+          "locator": "Pinned donor gzip → diagnostics-06.pack.json / ER-DIAG-119; eight exact fields checked; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-119-INFO-2",
+          "title": "Историческая схема",
+          "text": "РЭ1 §6.15: поездная радиостанция A60; §6.19: КЛУБ-У/ТСКБМ раннего исполнения. Состав отдельного радиоканала позднего комплекса не подтверждён.",
+          "locator": "РЭ1 §6.15: поездная радиостанция A60; §6.19: КЛУБ-У/ТСКБМ раннего исполнения. Состав отдельного радиоканала позднего комплекса не подтверждён.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-119-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: правила организации ТО/ремонта, не разрешение на эксплуатационные действия.",
+          "locator": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: правила организации ТО/ремонта, не разрешение на эксплуатационные действия.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-119-INFO-4",
+          "title": "Различение признаков",
+          "text": "Радиоканал комплекса не равен A60; Нет покрытия не доказывает поломку бортовой антенны; Радиоканал не равен спутниковому каналу; КЛУБ-У РЭ1 не доказывает БЛОК-М; №3050/р не заменяет руководство комплекса. Ни одна гипотеза не подтверждена.",
+          "locator": "РЭ1 §6.19: ранний КЛУБ-У/ТСКБМ, поздний комплекс не подтверждён.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "manufacturerApparatus",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-119-INFO-5",
+          "title": "Safety и финальная QA",
+          "text": "Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения. Финальная Android QA отложена.",
+          "locator": "Запрещены пробные передачи, отключение радиомодуля, вмешательство в антенны, имитация покрытия, обход защит и разрешение движения.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-119: eight fields match pinned pack, independent gzip decode NOT_RUN."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_ONLY",
+          "finding": "РЭ1 §6.15: поездная радиостанция A60; §6.19: КЛУБ-У/ТСКБМ раннего исполнения. Состав отдельного радиоканала позднего комплекса не подтверждён."
+        },
+        {
+          "sourceKind": "PUBLIC_NORMATIVE_REVIEW",
+          "url": "https://base.garant.ru/409329304/",
+          "verifiedAt": "2026-11-07",
+          "status": "SECONDARY_COPY_AUTHORITY_UNKNOWN",
+          "finding": "№3050/р от 27.12.2019, публичная редакция с №1807/р 12.07.2022: правила организации ТО/ремонта, не разрешение на эксплуатационные действия."
+        }
+      ]
+    }
+  ]
+}

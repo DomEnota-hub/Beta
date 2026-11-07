@@ -1,0 +1,2441 @@
+{
+  "ledger": {
+    "schemaVersion": "stage14-cab-communication/1",
+    "date": "2026-11-05",
+    "stage": "14/51",
+    "baseHead": "47a05fbc2bdafb1e75c918c4edbaf94a0099e8fe",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.cab-heating-smell",
+      "vl80s.diag.door-lock-fault",
+      "vl80s.diag.headlight-fault",
+      "vl80s.diag.radio-communication-loss",
+      "vl80s.diag.wiper-fault"
+    ],
+    "categorySourceCount": 5,
+    "remainingCategoryIds": [],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "sourceReview": "1990 archive located by printed page; 2006 book checked but specific symptom applicability not established; current rules UNKNOWN",
+    "negativeMutationCount": 175
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage14-cab-communication/1",
+      "stage": "14/51",
+      "scenarioId": "vl80s.diag.cab-heating-smell",
+      "originalId": "cab-heating-smell",
+      "category": "Кабина и связь",
+      "title": "Запах или дым от оборудования кабины",
+      "summary": "В кабине появился локальный запах перегрева, дым или треск.",
+      "canonicalBoundary": "Локальный запах перегрева, дым или треск в кабине: не путать с отсутствием нагрева печей, неисправностью калорифера, общим пожарным сигналом или дымом из машинного отделения.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=cab-heating-smell]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Руководство 1990, печ. стр. 16–17: конструкция кабины и отделка",
+            "Руководство 1990, печ. стр. 227, рис. 269: отопление кабины и лобовых стекол",
+            "Руководство 1990, печ. стр. 227: термозащитное реле калорифера"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, искрение, треск или нарастающий запах в кабине, требующие прекращения диагностического маршрута?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно зафиксированы запах без видимого дыма и место его первого появления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, искрение, треск или нарастающий запах в кабине, требующие прекращения диагностического маршрута?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, в какой кабине и при каких ранее зафиксированных обстоятельствах появился признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отличены запах, видимый дым и звук треска без предположения о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: признак не подменён сценарием штатного отсутствия нагрева печей?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, относился ли признак к зоне отопления, освещения или неизвестной зоне?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеются ли независимые записи о срабатывании пожарной сигнализации, без вывода о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделено ли фактическое наблюдение от предположения о проводке или нагревателе?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: известно ли, относится ли событие к конкретной секции, а не ко всему локомотиву?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "cab-heating-smell-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16–17: конструкция кабины и отделка",
+          "text": "Схема 1990 года разделяет группы печей кабины и калорифер лобовых стекол; совпадение запаха по времени не доказывает отказ одного из них.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "cab-heating-smell-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 227, рис. 269: отопление кабины и лобовых стекол",
+          "text": "Отделочные материалы и размещение оборудования в кабине описаны архивно; локальный запах не позволяет определить повреждённый компонент.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "cab-heating-smell-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 227: термозащитное реле калорифера",
+          "text": "Пожарная сигнализация в исторической схеме отдельна от обычного отопления; отсутствие её записи не исключает опасность.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "cab-heating-smell-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16–17: конструкция кабины и отделка",
+          "text": "Неисправность обогрева (heater-fault) не эквивалентна дыму или запаху перегрева. Архивные контакторы 134/159 и 195 и реле 140 нельзя приписывать неподтверждённому исполнению; никаких переключений и принудительных проверок.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "cab-heating-smell-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 227, рис. 269: отопление кабины и лобовых стекол",
+          "text": "Источниковые границы: Локальный запах перегрева, дым или треск в кабине: не путать с отсутствием нагрева печей, неисправностью калорифера, общим пожарным сигналом или дымом из машинного отделения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Схема 1990 года разделяет группы печей кабины и калорифер лобовых стекол; совпадение запаха по времени не доказывает отказ одного из них.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 16–17: конструкция кабины и отделка",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Отделочные материалы и размещение оборудования в кабине описаны архивно; локальный запах не позволяет определить повреждённый компонент.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 227, рис. 269: отопление кабины и лобовых стекол",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Пожарная сигнализация в исторической схеме отдельна от обычного отопления; отсутствие её записи не исключает опасность.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 227: термозащитное реле калорифера",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Неисправность обогрева (heater-fault) не эквивалентна дыму или запаху перегрева. Архивные контакторы 134/159 и 195 и реле 140 нельзя приписывать неподтверждённому исполнению; никаких переключений и принудительных проверок.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage14-cab-communication/1",
+      "stage": "14/51",
+      "scenarioId": "vl80s.diag.door-lock-fault",
+      "originalId": "door-lock-fault",
+      "category": "Кабина и связь",
+      "title": "Неисправна дверь или её фиксация",
+      "summary": "Дверь не закрывается, не удерживается либо мешает безопасной работе.",
+      "canonicalBoundary": "Физическая дверь кабины и её удержание, не двери/блокировки ВВК и не устройство блокировки тормозов; неизвестный механизм фиксации нельзя угадывать.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=door-lock-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+            "Руководство 1990, печ. стр. 16: двери и задвижные щиты ВВК как иной объект"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано открывание двери в движении, невозможность её безопасной фиксации или угроза выпадения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно описано, не закрывается ли дверь, не удерживается ли закрытой либо затрудняет проход?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано открывание двери в движении, невозможность её безопасной фиксации или угроза выпадения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны секция, кабина и конкретная дверь?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: разделены трудность закрытия и самопроизвольное открывание?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: наблюдение относится к двери кабины, а не к двери высоковольтной камеры?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, проявлялся ли дефект только на стоянке либо при движении?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно отмечены признаки повреждения уплотнения и механической фиксации без причинного вывода?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть ли записи о затруднённом проходе или эвакуации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не приписан ли неисправности конкретный замок или заводской вариант без паспорта?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "door-lock-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+          "text": "Архивное руководство различает кабину и ограждения высоковольтной камеры, но не подтверждает модель замка конкретной двери.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "door-lock-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16: двери и задвижные щиты ВВК как иной объект",
+          "text": "Проблема фиксации двери кабины не доказывает неисправность электрической блокировки ВВК.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "door-lock-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+          "text": "При отсутствии подтверждённой конструкции замка допустимо лишь документирование симптома, не настройка.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "door-lock-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16: двери и задвижные щиты ВВК как иной объект",
+          "text": "Слова «дверь» и «блокировка» встречаются и для ВВК, но это другой объект с иной опасностью. Руководство 1990 не даёт доказанной применимости дверного замка к конкретному экземпляру; не переносить схемы блокировок.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "door-lock-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+          "text": "Источниковые границы: Физическая дверь кабины и её удержание, не двери/блокировки ВВК и не устройство блокировки тормозов; неизвестный механизм фиксации нельзя угадывать.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Архивное руководство различает кабину и ограждения высоковольтной камеры, но не подтверждает модель замка конкретной двери.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Проблема фиксации двери кабины не доказывает неисправность электрической блокировки ВВК.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 16: двери и задвижные щиты ВВК как иной объект",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "При отсутствии подтверждённой конструкции замка допустимо лишь документирование симптома, не настройка.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 15–17: кузов и конструкция кабины",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Слова «дверь» и «блокировка» встречаются и для ВВК, но это другой объект с иной опасностью. Руководство 1990 не даёт доказанной применимости дверного замка к конкретному экземпляру; не переносить схемы блокировок.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage14-cab-communication/1",
+      "stage": "14/51",
+      "scenarioId": "vl80s.diag.headlight-fault",
+      "originalId": "headlight-fault",
+      "category": "Кабина и связь",
+      "title": "Не работает прожектор или буферные фонари",
+      "summary": "Освещение не включается, мигает либо отключается защитой.",
+      "canonicalBoundary": "Осветительный прожектор и буферные фонари различаются: нет света, мигание, отдельный цвет/сторона или срабатывание защиты не доказывают одну причину.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=headlight-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+            "Руководство 1990, печ. стр. 224–225, рис. 266: историческая схема прожектора и фонарей"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по ранее записанному событию отсутствовало обязательное освещение или сигнальные огни в условиях, где это угрожало безопасности движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: различены прожектор, левый/правый буферный фонарь и фактический характер нарушения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по ранее записанному событию отсутствовало обязательное освещение или сигнальные огни в условиях, где это угрожало безопасности движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны секция и наблюдаемый световой прибор?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: разделены полный отказ, мигание и неустойчивость по времени?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не объединены яркий и тусклый режим прожектора в одну неподтверждённую причину?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, какой именно буферный фонарь и цвет не соответствовали наблюдению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, был ли одновременно сбой других цепей освещения по уже имеющимся записям?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно зафиксировано сообщение о защитном отключении, если оно действительно было?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не присвоены номера исторических выключателей неподтверждённому исполнению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "headlight-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+          "text": "Руководство 1990 различает прожектор и буферные сигнальные фонари как самостоятельные приборы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "headlight-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 224–225, рис. 266: историческая схема прожектора и фонарей",
+          "text": "В архивной схеме прожектор имеет режимы яркого и тусклого света; это не подтверждает причину мигания.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "headlight-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+          "text": "Историческая схема показывает раздельные цепи фонарей; совпадение отказов требует отдельной проверки исполнения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "headlight-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 224–225, рис. 266: историческая схема прожектора и фонарей",
+          "text": "В источнике 1990 есть отдельные режимы прожектора и буферных фонарей, тогда как исходный донор объединяет их в один симптом. Отсутствие света не доказывает дефект лампы, защитного аппарата или питания. Номера элементов не переносить.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "headlight-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+          "text": "Источниковые границы: Осветительный прожектор и буферные фонари различаются: нет света, мигание, отдельный цвет/сторона или срабатывание защиты не доказывают одну причину.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Руководство 1990 различает прожектор и буферные сигнальные фонари как самостоятельные приборы.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "В архивной схеме прожектор имеет режимы яркого и тусклого света; это не подтверждает причину мигания.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 224–225, рис. 266: историческая схема прожектора и фонарей",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Историческая схема показывает раздельные цепи фонарей; совпадение отказов требует отдельной проверки исполнения.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 16: размещение прожектора и буферных фонарей",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "В источнике 1990 есть отдельные режимы прожектора и буферных фонарей, тогда как исходный донор объединяет их в один симптом. Отсутствие света не доказывает дефект лампы, защитного аппарата или питания. Номера элементов не переносить.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage14-cab-communication/1",
+      "stage": "14/51",
+      "scenarioId": "vl80s.diag.radio-communication-loss",
+      "originalId": "radio-communication-loss",
+      "category": "Кабина и связь",
+      "title": "Нет поездной радиосвязи",
+      "summary": "Не удаётся установить связь либо приём/передача нестабильны.",
+      "canonicalBoundary": "Отсутствие связи, односторонний приём, отсутствие передачи и неустойчивый канал отдельно от общего отказа цепей управления и от отсутствия радиодисциплины.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=radio-communication-loss]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Руководство 1990, печ. стр. 223–224, рис. 265: историческая схема питания радиостанции",
+            "Руководство 1990, приложение 2, печ. стр. 368: радиостанция 42РТМ-А2-4М",
+            "Руководство 1990, приложение 3, печ. стр. 380: отдельная документация радиостанции"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирована утрата требуемой поездной радиосвязи в ситуации, где продолжение движения без связи могло создать угрозу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно описаны отсутствие приёма, отсутствие передачи и неустойчивость канала без новых радиопроб?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирована утрата требуемой поездной радиосвязи в ситуации, где продолжение движения без связи могло создать угрозу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны секция, кабина, направление связи и время записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: разделены отсутствие ответа корреспондента и подтверждённая неисправность приёмника?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, наблюдался ли приём отдельно от передачи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечена ли нестабильность канала по времени без предположений об антенне?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: разделены КВ и УКВ, если это прямо следует из ранее имеющейся записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть ли независимая запись о состоянии питания, не требующая новой проверки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не приписан ли исторический комплект 42РТМ фактически установленной радиостанции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "radio-communication-loss-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 223–224, рис. 265: историческая схема питания радиостанции",
+          "text": "Историческая схема 1990 описывает радиостанцию как отдельный потребитель питания, но отсутствие связи не доказывает отказ цепи питания.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "radio-communication-loss-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, приложение 2, печ. стр. 368: радиостанция 42РТМ-А2-4М",
+          "text": "Руководство 1990 указывает комплект радиостанции 42РТМ-А2-4М; модернизированные локомотивы могут иметь другое оборудование, не проверенное здесь.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "radio-communication-loss-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, приложение 3, печ. стр. 380: отдельная документация радиостанции",
+          "text": "Отсутствие ответа корреспондента не эквивалентно отказу передающего тракта; источник не позволяет установить причину дистанционно.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "radio-communication-loss-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 223–224, рис. 265: историческая схема питания радиостанции",
+          "text": "Архивный комплект 42РТМ-А2-4М и схемы питания 1990 года не доказывают фактическую радиостанцию после модернизации. Современные требования поездной радиосвязи и порядок действий не подтверждены первичными действующими документами; сохранять BLOCKED.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "radio-communication-loss-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, приложение 2, печ. стр. 368: радиостанция 42РТМ-А2-4М",
+          "text": "Источниковые границы: Отсутствие связи, односторонний приём, отсутствие передачи и неустойчивый канал отдельно от общего отказа цепей управления и от отсутствия радиодисциплины.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Историческая схема 1990 описывает радиостанцию как отдельный потребитель питания, но отсутствие связи не доказывает отказ цепи питания.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 223–224, рис. 265: историческая схема питания радиостанции",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Руководство 1990 указывает комплект радиостанции 42РТМ-А2-4М; модернизированные локомотивы могут иметь другое оборудование, не проверенное здесь.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, приложение 2, печ. стр. 368: радиостанция 42РТМ-А2-4М",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Отсутствие ответа корреспондента не эквивалентно отказу передающего тракта; источник не позволяет установить причину дистанционно.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, приложение 3, печ. стр. 380: отдельная документация радиостанции",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Архивный комплект 42РТМ-А2-4М и схемы питания 1990 года не доказывают фактическую радиостанцию после модернизации. Современные требования поездной радиосвязи и порядок действий не подтверждены первичными действующими документами; сохранять BLOCKED.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage14-cab-communication/1",
+      "stage": "14/51",
+      "scenarioId": "vl80s.diag.wiper-fault",
+      "originalId": "wiper-fault",
+      "category": "Кабина и связь",
+      "title": "Не работают стеклоочистители или омыватель",
+      "summary": "Очистка стекла отсутствует либо механизм заедает.",
+      "canonicalBoundary": "Стеклоочиститель, омыватель и ухудшение видимости различаются; архивный СЛ-440Б пневматический, но фактический тип и наличие омывателя неизвестны.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=wiper-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+            "Руководство 1990, приложение 2, печ. стр. 378: перечень стеклоочистителей"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по ранее записанным данным из-за неработающей очистки стекла видимость стала опасно недостаточной?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: различены остановка щётки, заедание и отсутствие омывания без предположения об одном приводе?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: по ранее записанным данным из-за неработающей очистки стекла видимость стала опасно недостаточной?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны кабина, сторона лобового стекла и условия появления симптома?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: разделены неподвижная щётка, рывки и отсутствие очистки при движении щётки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не объединён омыватель с пневматическим приводом щётки без подтверждения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, является ли ухудшение видимости самостоятельным опасным признаком?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сохранено ли наблюдение о запаздывании либо периодическом характере отказа?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: известно ли из документов исполнение привода стеклоочистителя?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделена ли гипотеза о воздухопитании от подтверждённого признака?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "wiper-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+          "text": "В руководстве 1990 стеклоочиститель СЛ-440Б описан как пневматический узел; это не подтверждает фактическую комплектацию каждой машины.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wiper-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, приложение 2, печ. стр. 378: перечень стеклоочистителей",
+          "text": "Исходный донор объединяет стеклоочиститель и омыватель, но архивный раздел про СЛ-440Б не доказывает конструкцию омывателя.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wiper-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+          "text": "Зависимость видимости от очистки стекла не позволяет определить конкретный неисправный клапан или привод.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wiper-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, приложение 2, печ. стр. 378: перечень стеклоочистителей",
+          "text": "Пневматический стеклоочиститель СЛ-440Б из 1990 года нельзя считать установленным без подтверждения; омыватель не идентифицирован в данном разделе. Симптом «не очищает» не равен отказу привода: возможна недостаточная очистка при движении щётки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "wiper-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+          "text": "Источниковые границы: Стеклоочиститель, омыватель и ухудшение видимости различаются; архивный СЛ-440Б пневматический, но фактический тип и наличие омывателя неизвестны.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "В руководстве 1990 стеклоочиститель СЛ-440Б описан как пневматический узел; это не подтверждает фактическую комплектацию каждой машины.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Исходный донор объединяет стеклоочиститель и омыватель, но архивный раздел про СЛ-440Б не доказывает конструкцию омывателя.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, приложение 2, печ. стр. 378: перечень стеклоочистителей",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Зависимость видимости от очистки стекла не позволяет определить конкретный неисправный клапан или привод.",
+          "sourceRef": "manual1990",
+          "locator": "Руководство 1990, печ. стр. 171–173, рис. 224: стеклоочиститель СЛ-440Б и кран Кр-30В",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Пневматический стеклоочиститель СЛ-440Б из 1990 года нельзя считать установленным без подтверждения; омыватель не идентифицирован в данном разделе. Симптом «не очищает» не равен отказу привода: возможна недостаточная очистка при движении щётки.",
+      "originalQuestionTextVerified": false
+    }
+  ]
+}

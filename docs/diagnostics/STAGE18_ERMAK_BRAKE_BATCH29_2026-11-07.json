@@ -1,0 +1,2024 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-brake-batch29/1",
+    "date": "2026-11-07",
+    "baseHead": "d3fabcf233db74c211a33b69e9b4100b00f05f30",
+    "previousCiRun": 42325076195,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "preservedPackBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-090",
+      "ER-DIAG-091",
+      "ER-DIAG-092"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight donor fields per scenario checked against pinned projection, raw gzip not re-decoded; exact current clauses, train profiles and authority unverified.",
+    "batchBoundary": "090 loss vs 091 overcharge vs 092 verified hose damage; 079 PM distinct"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-brake-batch29-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-090",
+      "scenarioId": "ermak.diag.ER-DIAG-090",
+      "title": "Падение давления в тормозной магистрали поезда",
+      "symptom": "Давление ТМ резко падает или поезд останавливается по признаку нарушения целостности магистрали",
+      "hazardCategory": "TRAIN_TM_PRESSURE_LOSS_VS_COMMAND_AND_HOSE",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60",
+        "SYS-C0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-001",
+        "ER-EQ-BR-002",
+        "ER-EQ-CB-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83 Совета по железнодорожному транспорту; действует с 01.07.2026",
+          "url": "https://prg.kz/document/?doc_id=39816410",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2026-07-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3508R",
+          "document": "Инструкция по техническому обслуживанию, ремонту и испытанию тормозного оборудования локомотивов и моторвагонного подвижного состава ОАО «РЖД», №3508/р от 28.12.2022",
+          "locator": "контроль зарядного/сверхзарядного давления, кран машиниста, БТО и датчики давления",
+          "url": "https://base.garant.ru/406821487/",
+          "role": "current_brake_equipment_technical_crosscheck",
+          "sourceKind": "NORMATIVE_TECHNICAL",
+          "version": {
+            "label": "№3508/р",
+            "revision": "действующая публичная версия на дату аудита",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE-250",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России №250 от 23.06.2022",
+          "locator": "требования к опробованию тормозов после разъединения рукавов и после необъяснённого снижения давления ТМ",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "ПТЭ РФ №250",
+            "revision": "действующая публичная редакция; применимость пункта сверять по виду поезда",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-current-rule-profile-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-091",
+        "ER-DIAG-092",
+        "ER-DIAG-089"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → preserved diagnostics-05.pack.json / ER-DIAG-090; 8 identity fields checked, raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-090",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Правила тормозов, приложение №65 к протоколу №83, действуют с 01.07.2026; пункты и полномочия для ER-DIAG-090 не подтверждены",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "Историческая пневмосхема 3ЭС5К различает ТМ, ПМ, УР и тормозные приборы; конкретные датчики и установленный профиль не подтверждены.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Учебная пневмосхема 3ЭС5К: различение ТМ, ПМ и приборов, не эксплуатационный маршрут",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "RZD_EMERGENCY_REGULATION_PUBLIC_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р от 12.12.2017, открытая версия с изменениями №752/р от 25.03.2024; текущая редакция и полномочия неизвестны",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "MAINTENANCE_SCOPE_COMPARISON",
+          "url": "https://meganorm.ru/mega_doc/norm_update_01012026/instrukciya/0/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "Инструкция №3508/р, доступная редакция 14.01.2025; ТО/ремонт, не полномочия в пути",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус CURRENT_RULE_CONFIRMED; точная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"}. Применимость на конкретной машине UNKNOWN/BLOCKED; МСУД-Н ≠ МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Правила 2026 подтверждены по дате; 2580р опубликован с изменениями 2024, 3508/р в редакции 2025; точные действующие пункты, местная редакция и полномочия не удостоверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены по уже оформленным документам поезд, секция и применимый тормозной профиль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее зарегистрированном событии действительно падало давление ТМ поезда, а не ПМ или один индикатор?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-090. Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Давление ТМ резко падает или поезд останавливается по признаку нарушения целостности магистрали. Команда ЭПК/систем безопасности, нелокализованная утечка, разрыв рукава и показание датчика требуют раздельного подтверждения. Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения. Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены по уже оформленным документам поезд, секция и применимый тормозной профиль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее зарегистрированном событии действительно падало давление ТМ поезда, а не ПМ или один индикатор?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Имеются независимые ранее записанные показания ТМ/УР и признаки тормозной реакции без новых проб?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены снижение ТМ, штатная или safety-команда, повреждение рукава (092) и возможная ошибка датчика?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены время, секция, источник показаний, профиль и достоверность наблюдений?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-090. Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: происхождение записи, независимые признаки или различение версий не подтверждены. Новые проверки запрещены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Давление ТМ резко падает или поезд останавливается по признаку нарушения целостности магистрали. Команда ЭПК/систем безопасности, нелокализованная утечка, разрыв рукава и показание датчика требуют раздельного подтверждения. Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения. Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы",
+          "text": "Сверены 8 исходных полей с закреплённой проекцией донора; статус CURRENT_RULE_CONFIRMED не означает разрешение действий. Независимая распаковка gzip для ER-DIAG-090 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-090",
+          "id": "ER-DIAG-090-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивная аппаратная схема и вариант",
+          "text": "Историческая пневмосхема 3ЭС5К различает ТМ, ПМ, УР и тормозные приборы; конкретные датчики и установленный профиль не подтверждены. Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения.",
+          "locator": "Историческая пневмосхема 3ЭС5К различает ТМ, ПМ, УР и тормозные приборы; конкретные датчики и установленный профиль не подтверждены.",
+          "id": "ER-DIAG-090-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения",
+          "text": "Команда ЭПК/систем безопасности, нелокализованная утечка, разрыв рукава и показание датчика требуют раздельного подтверждения. Историческая учебная схема не устанавливает действующую процедуру.",
+          "locator": "RCIT учебная схема 3ЭС5К, историческая",
+          "id": "ER-DIAG-090-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Правила 2026 и редакции",
+          "text": "Правила тормозов введены 01.07.2026; конкретные пункты и полномочия UNKNOWN. 2580р в открытой редакции с изменениями 25.03.2024; 3508/р доступен в редакции 14.01.2025, относится к ТО/ремонту.",
+          "locator": "Приложение №65/83; 2580р; 3508/р",
+          "id": "ER-DIAG-090-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и безопасность",
+          "text": "Падение ТМ не доказывает разрыв рукавов (092): возможны команда торможения, другая утечка или неверная индикация. Перезарядка (091) отличается направлением изменения. Не воспроизводить разрядку ТМ, не переключать краны и не разъединять рукава. При действующем событии действовать только по действующим правилам и полномочиям. Предупреждение не даёт полномочий.",
+          "locator": "Аналитическая safety gate; UNKNOWN/BLOCKED",
+          "id": "ER-DIAG-090-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65/83, действует 01.07.2026; только дата и оглавление, не полномочия",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Историческая пневмосхема 3ЭС5К различает ТМ, ПМ, УР и тормозные приборы; конкретные датчики и установленный профиль не подтверждены.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "RZD_REGULATION_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р с изменениями №752/р от 25.03.2024; актуальная редакция неизвестна; 3508/р редакция 14.01.2025 только для ТО/ремонта",
+          "status": "PUBLIC_REVISION_CURRENT_AUTHORITY_UNKNOWN",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-brake-batch29-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-091",
+      "scenarioId": "ermak.diag.ER-DIAG-091",
+      "title": "Перезарядка тормозной магистрали",
+      "symptom": "Давление ТМ грузового поезда завышено относительно нормального зарядного",
+      "hazardCategory": "TRAIN_TM_OVERCHARGE_VS_NORMAL_RELEASE_AND_PROFILE",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "brake_395",
+          "brake_130_uktol",
+          "brake_130_2_uktol"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-001",
+        "ER-EQ-BR-014",
+        "ER-EQ-BR-015"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83 Совета по железнодорожному транспорту; действует с 01.07.2026",
+          "url": "https://prg.kz/document/?doc_id=39816410",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2026-07-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3508R",
+          "document": "Инструкция по техническому обслуживанию, ремонту и испытанию тормозного оборудования локомотивов и моторвагонного подвижного состава ОАО «РЖД», №3508/р от 28.12.2022",
+          "locator": "контроль зарядного/сверхзарядного давления, кран машиниста, БТО и датчики давления",
+          "url": "https://base.garant.ru/406821487/",
+          "role": "current_brake_equipment_technical_crosscheck",
+          "sourceKind": "NORMATIVE_TECHNICAL",
+          "version": {
+            "label": "№3508/р",
+            "revision": "действующая публичная версия на дату аудита",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "brake_395",
+        "brake_130_uktol",
+        "brake_130_2_uktol"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-brake-395-130-1302-profile-required-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-090",
+        "ER-DIAG-092",
+        "ER-DIAG-086"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → preserved diagnostics-05.pack.json / ER-DIAG-091; 8 identity fields checked, raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-091",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Правила тормозов, приложение №65 к протоколу №83, действуют с 01.07.2026; пункты и полномочия для ER-DIAG-091 не подтверждены",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "Управление №395 и дистанционные системы №130/130-2 различаются. Архивные схемы не устанавливают уставки для конкретного поезда.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Учебная пневмосхема 3ЭС5К: различение ТМ, ПМ и приборов, не эксплуатационный маршрут",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "RZD_EMERGENCY_REGULATION_PUBLIC_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р от 12.12.2017, открытая версия с изменениями №752/р от 25.03.2024; текущая редакция и полномочия неизвестны",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "MAINTENANCE_SCOPE_COMPARISON",
+          "url": "https://meganorm.ru/mega_doc/norm_update_01012026/instrukciya/0/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "Инструкция №3508/р, доступная редакция 14.01.2025; ТО/ремонт, не полномочия в пути",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус CURRENT_RULE_CONFIRMED; точная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"brake_395\",\"brake_130_uktol\",\"brake_130_2_uktol\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"AS_LISTED\"}. Применимость на конкретной машине UNKNOWN/BLOCKED; МСУД-Н ≠ МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Правила 2026 подтверждены по дате; 2580р опубликован с изменениями 2024, 3508/р в редакции 2025; точные действующие пункты, местная редакция и полномочия не удостоверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены вид поезда, применимое зарядное давление и установленный тип управления №395, №130 или №130-2?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В прежней записи давление ТМ было выше применимого зарядного значения, а не только изменялось после штатного отпуска?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-091. Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Давление ТМ грузового поезда завышено относительно нормального зарядного. Различать режим поезда, задание УР, переход после отпуска, регулирование ТМ и ошибку измерения. Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы. Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены вид поезда, применимое зарядное давление и установленный тип управления №395, №130 или №130-2?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В прежней записи давление ТМ было выше применимого зарядного значения, а не только изменялось после штатного отпуска?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены ранее полученные показания ТМ и УР, время и независимое подтверждение без новой пробы?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены устойчивое завышение, переходный процесс после отпуска, ошибка индикации и снижение давления (090)?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указаны вид поезда, источник применимого зарядного значения и фактический профиль крана/БТО?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-091. Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: происхождение записи, независимые признаки или различение версий не подтверждены. Новые проверки запрещены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Давление ТМ грузового поезда завышено относительно нормального зарядного. Различать режим поезда, задание УР, переход после отпуска, регулирование ТМ и ошибку измерения. Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы. Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы",
+          "text": "Сверены 8 исходных полей с закреплённой проекцией донора; статус CURRENT_RULE_CONFIRMED не означает разрешение действий. Независимая распаковка gzip для ER-DIAG-091 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-091",
+          "id": "ER-DIAG-091-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивная аппаратная схема и вариант",
+          "text": "Управление №395 и дистанционные системы №130/130-2 различаются. Архивные схемы не устанавливают уставки для конкретного поезда. Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы.",
+          "locator": "Управление №395 и дистанционные системы №130/130-2 различаются. Архивные схемы не устанавливают уставки для конкретного поезда.",
+          "id": "ER-DIAG-091-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения",
+          "text": "Различать режим поезда, задание УР, переход после отпуска, регулирование ТМ и ошибку измерения. Историческая учебная схема не устанавливает действующую процедуру.",
+          "locator": "RCIT учебная схема 3ЭС5К, историческая",
+          "id": "ER-DIAG-091-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Правила 2026 и редакции",
+          "text": "Правила тормозов введены 01.07.2026; конкретные пункты и полномочия UNKNOWN. 2580р в открытой редакции с изменениями 25.03.2024; 3508/р доступен в редакции 14.01.2025, относится к ТО/ремонту.",
+          "locator": "Приложение №65/83; 2580р; 3508/р",
+          "id": "ER-DIAG-091-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и безопасность",
+          "text": "Без подтверждённого вида поезда и зарядного значения превышение не установлено. Переходный процесс после отпуска не равен неисправности, а №395 и №130/130-2 не взаимозаменяемы. Не менять давление ради проверки, не переводить краны и не регулировать БТО. Числовые значения не назначать по догадке. Предупреждение не даёт полномочий.",
+          "locator": "Аналитическая safety gate; UNKNOWN/BLOCKED",
+          "id": "ER-DIAG-091-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65/83, действует 01.07.2026; только дата и оглавление, не полномочия",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Управление №395 и дистанционные системы №130/130-2 различаются. Архивные схемы не устанавливают уставки для конкретного поезда.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "RZD_REGULATION_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р с изменениями №752/р от 25.03.2024; актуальная редакция неизвестна; 3508/р редакция 14.01.2025 только для ТО/ремонта",
+          "status": "PUBLIC_REVISION_CURRENT_AUTHORITY_UNKNOWN",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-brake-batch29-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-092",
+      "scenarioId": "ermak.diag.ER-DIAG-092",
+      "title": "Разъединение/повреждение рукавов тормозной магистрали",
+      "symptom": "Обнаружена потеря целостности ТМ в составе поезда",
+      "hazardCategory": "TM_HOSE_DAMAGE_VS_UNLOCALIZED_PRESSURE_LOSS",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-001",
+        "ER-EQ-BR-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83 Совета по железнодорожному транспорту; действует с 01.07.2026",
+          "url": "https://prg.kz/document/?doc_id=39816410",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2026-07-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-3508R",
+          "document": "Инструкция по техническому обслуживанию, ремонту и испытанию тормозного оборудования локомотивов и моторвагонного подвижного состава ОАО «РЖД», №3508/р от 28.12.2022",
+          "locator": "контроль зарядного/сверхзарядного давления, кран машиниста, БТО и датчики давления",
+          "url": "https://base.garant.ru/406821487/",
+          "role": "current_brake_equipment_technical_crosscheck",
+          "sourceKind": "NORMATIVE_TECHNICAL",
+          "version": {
+            "label": "№3508/р",
+            "revision": "действующая публичная версия на дату аудита",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE-250",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России №250 от 23.06.2022",
+          "locator": "требования к опробованию тормозов после разъединения рукавов и после необъяснённого снижения давления ТМ",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "ПТЭ РФ №250",
+            "revision": "действующая публичная редакция; применимость пункта сверять по виду поезда",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-SAFETY-2961R",
+          "document": "Инструкция по охране труда для локомотивных бригад ОАО «РЖД», №2961/р от 16.11.2022",
+          "locator": "соединение/разъединение тормозных рукавов; перекрытые концевые краны и безопасное состояние",
+          "url": "https://meganorm.ru/mega_doc/dop1/8/spravochnaya_informatsiya_perechen_pravil_i_instruktsiy_po/0/rasporyazhenie_oao_rzhd_ot_16_11_2022_N_2961_r_red_ot_23_12.html",
+          "role": "current_labor_safety_crosscheck",
+          "sourceKind": "NORMATIVE_SAFETY",
+          "version": {
+            "label": "№2961/р",
+            "revision": "публичная редакция с изменениями; актуальность конкретного пункта проверена по открытой копии",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-current-rule-profile-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-090",
+        "ER-DIAG-091",
+        "ER-DIAG-079"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → preserved diagnostics-05.pack.json / ER-DIAG-092; 8 identity fields checked, raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-092",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Правила тормозов, приложение №65 к протоколу №83, действуют с 01.07.2026; пункты и полномочия для ER-DIAG-092 не подтверждены",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "Архивные схемы различают соединения ТМ и ПМ, но не удостоверяют тип рукава, концевого крана и конкретное исполнение.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Учебная пневмосхема 3ЭС5К: различение ТМ, ПМ и приборов, не эксплуатационный маршрут",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "RZD_EMERGENCY_REGULATION_PUBLIC_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р от 12.12.2017, открытая версия с изменениями №752/р от 25.03.2024; текущая редакция и полномочия неизвестны",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "MAINTENANCE_SCOPE_COMPARISON",
+          "url": "https://meganorm.ru/mega_doc/norm_update_01012026/instrukciya/0/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "Инструкция №3508/р, доступная редакция 14.01.2025; ТО/ремонт, не полномочия в пути",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус CURRENT_RULE_CONFIRMED; точная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"}. Применимость на конкретной машине UNKNOWN/BLOCKED; МСУД-Н ≠ МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Правила 2026 подтверждены по дате; 2580р опубликован с изменениями 2024, 3508/р в редакции 2025; точные действующие пункты, местная редакция и полномочия не удостоверены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены документально поезд, секция и применимый профиль, а событие завершено без действующей угрозы?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В прежнем сообщении действительно обнаружены повреждение или разъединение рукава ТМ, а не только падение давления?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-092. Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Обнаружена потеря целостности ТМ в составе поезда. Разъединение головок, повреждение рукава, дефект крана и иная утечка требуют отдельных фактических свидетельств. Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ. Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами поезда продолжается, есть риск движения либо его завершение не подтверждено ранее оформленными сведениями?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены документально поезд, секция и применимый профиль, а событие завершено без действующей угрозы?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В прежнем сообщении действительно обнаружены повреждение или разъединение рукава ТМ, а не только падение давления?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены место, вид повреждения и результат уже проведённого уполномоченного осмотра без нового выхода к составу?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены разъединение головок, разрыв рукава, дефект крана и нелокализованное снижение ТМ (090)?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Есть источник осмотра, данные соединения, время и подтверждение завершения инцидента по действующим документам?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: продолжающееся нарушение тормозов поезда. Только действующие инструкции и полномочия, исследовательская карточка не маршрут управления.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: неизвестны точный профиль, вид поезда или применимый норматив. CURRENT_RULE_CONFIRMED не даёт эксплуатационных полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-092. Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: происхождение записи, независимые признаки или различение версий не подтверждены. Новые проверки запрещены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКОЕ НАБЛЮДЕНИЕ, НЕ ИНСТРУКЦИЯ. Обнаружена потеря целостности ТМ в составе поезда. Разъединение головок, повреждение рукава, дефект крана и иная утечка требуют отдельных фактических свидетельств. Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ. Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы",
+          "text": "Сверены 8 исходных полей с закреплённой проекцией донора; статус CURRENT_RULE_CONFIRMED не означает разрешение действий. Независимая распаковка gzip для ER-DIAG-092 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-092",
+          "id": "ER-DIAG-092-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивная аппаратная схема и вариант",
+          "text": "Архивные схемы различают соединения ТМ и ПМ, но не удостоверяют тип рукава, концевого крана и конкретное исполнение. Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ.",
+          "locator": "Архивные схемы различают соединения ТМ и ПМ, но не удостоверяют тип рукава, концевого крана и конкретное исполнение.",
+          "id": "ER-DIAG-092-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения",
+          "text": "Разъединение головок, повреждение рукава, дефект крана и иная утечка требуют отдельных фактических свидетельств. Историческая учебная схема не устанавливает действующую процедуру.",
+          "locator": "RCIT учебная схема 3ЭС5К, историческая",
+          "id": "ER-DIAG-092-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Правила 2026 и редакции",
+          "text": "Правила тормозов введены 01.07.2026; конкретные пункты и полномочия UNKNOWN. 2580р в открытой редакции с изменениями 25.03.2024; 3508/р доступен в редакции 14.01.2025, относится к ТО/ремонту.",
+          "locator": "Приложение №65/83; 2580р; 3508/р",
+          "id": "ER-DIAG-092-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и безопасность",
+          "text": "Одно падение давления ТМ (090) не доказывает повреждение рукава. Межсекционная питательная магистраль (079) не тождественна межвагонной ТМ. Не выходить к составу по исследовательской карточке, не соединять/разъединять рукава, не открывать краны и не проводить новые опробования. Предупреждение не даёт полномочий.",
+          "locator": "Аналитическая safety gate; UNKNOWN/BLOCKED",
+          "id": "ER-DIAG-092-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65/83, действует 01.07.2026; только дата и оглавление, не полномочия",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Архивные схемы различают соединения ТМ и ПМ, но не удостоверяют тип рукава, концевого крана и конкретное исполнение.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "RZD_REGULATION_REVISION",
+          "url": "https://internet-law.ru/documents/dop_documents/2/tipov/0/raspo_40323.html",
+          "locator": "2580р с изменениями №752/р от 25.03.2024; актуальная редакция неизвестна; 3508/р редакция 14.01.2025 только для ТО/ремонта",
+          "status": "PUBLIC_REVISION_CURRENT_AUTHORITY_UNKNOWN",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    }
+  ]
+}

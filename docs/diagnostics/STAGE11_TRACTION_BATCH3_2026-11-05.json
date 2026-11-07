@@ -1,0 +1,2550 @@
+{
+  "ledger": {
+    "schemaVersion": "stage11-traction-batch3/1",
+    "date": "2026-11-05",
+    "stage": "11/51",
+    "baseHead": "934c30a0bf87f84e3bb9a0e0d4a0d47104e957de",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.persistent-wheel-slip",
+      "vl80s.diag.traction-current-imbalance",
+      "vl80s.diag.traction-no-assemble",
+      "vl80s.diag.vl80s-ekg-section-desync",
+      "vl80s.diag.ekg-drive-disconnected"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "verifiedResearchOnly": true,
+    "originalQuestionTextVerified": false,
+    "remainingOriginalIds": [
+      "traction-overload-relay-trip",
+      "traction-ground-relay-trip"
+    ]
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage11-traction/3",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.persistent-wheel-slip",
+      "originalId": "persistent-wheel-slip",
+      "category": "Тяга",
+      "title": "Устойчивое боксование или не работает противобоксовочная защита",
+      "summary": "Боксование продолжается после обычных действий, повторяется на одной группе либо защита действует без явного боксования.",
+      "canonicalBoundary": "PERSISTENT_SLIP_OR_UNEXPECTED_ANTISLIP_SIGNAL",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=persistent-wheel-slip]",
+          "sourceOriginLayer": "DiagnosticExpansion.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, печ. стр. 236–237: цепи защиты от боксования, реле 43/44, сигнал ДБ",
+            "Раздел Б, печ. стр. 201–202: силовые цепи и реле боксования в тяговых группах"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 6 §6.9, печ. стр. 239–240: реле боксования РБ-469",
+            "Глава 8, печ. стр. 365–366: работа реле 43/44 и пескоподачи"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "persistent-wheel-slip-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 236–237: цепи защиты от боксования, реле 43/44, сигнал ДБ",
+          "claim": "Реле 43/44 в архивной схеме реагируют на электрические признаки различия тяговых двигателей; это не подтверждает причину конкретного боксования.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "persistent-wheel-slip-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 201–202: силовые цепи и реле боксования в тяговых группах",
+          "claim": "В руководстве 1990 года описаны импульсы сигнализации ДБ и пескоподачи, но их отсутствие не доказывает исправность сцепления.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "persistent-wheel-slip-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 6 §6.9, печ. стр. 239–240: реле боксования РБ-469",
+          "claim": "РБ-469 описано в учебнике как отдельный аппарат; его наличие на конкретной секции необходимо подтвердить.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "persistent-wheel-slip-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8, печ. стр. 365–366: работа реле 43/44 и пескоподачи",
+          "claim": "Схемы 1990 и 2006 годов по-разному формулируют охват пескоподачи; сохраняем разночтение, не делаем эксплуатационный вывод.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли зафиксированное опасное боксование, потеря сцепления, рывок либо действие защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в журнале повторяющееся боксование или сигнал противобоксовочной защиты без подтверждённого боксования?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли зафиксированное опасное боксование, потеря сцепления, рывок либо действие защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в журнале повторяющееся боксование или сигнал противобоксовочной защиты без подтверждённого боксования?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли по записям фактическое боксование и только индикация ДБ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отличён ли признак от отказа пескоподачи или загрязнения рельса?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указаны ли секция и группа колёсных пар в существующем журнале?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сопоставлены ли ранее записанные сигналы РБ и пескоподачи без нового испытания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отличена ли разница токов ТЭД от доказанного буксования колёсной пары?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждён ли вариант противобоксовочной схемы конкретной машины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "persistent-wheel-slip-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 236–237: цепи защиты от боксования, реле 43/44, сигнал ДБ",
+          "text": "Реле 43/44 в архивной схеме реагируют на электрические признаки различия тяговых двигателей; это не подтверждает причину конкретного боксования.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "persistent-wheel-slip-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 201–202: силовые цепи и реле боксования в тяговых группах",
+          "text": "В руководстве 1990 года описаны импульсы сигнализации ДБ и пескоподачи, но их отсутствие не доказывает исправность сцепления.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "persistent-wheel-slip-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.9, печ. стр. 239–240: реле боксования РБ-469",
+          "text": "РБ-469 описано в учебнике как отдельный аппарат; его наличие на конкретной секции необходимо подтвердить.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "persistent-wheel-slip-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8, печ. стр. 365–366: работа реле 43/44 и пескоподачи",
+          "text": "Схемы 1990 и 2006 годов по-разному формулируют охват пескоподачи; сохраняем разночтение, не делаем эксплуатационный вывод.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "persistent-wheel-slip-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 6 §6.9, печ. стр. 239–240: реле боксования РБ-469",
+          "text": "Отказ пескоподачи, повторное боксование и ложный сигнал РБ являются тремя разными гипотезами.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "РБ-469 / реле 43,44 и цепь пескоподачи по исторической схеме; установленный вариант UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general — только исследовательский. Исполнение конкретной секции, модернизации и схема не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "Руководство 1990 года описывает автоматическую подсыпку по схеме; учебник 2006 года в одном месте говорит обо всех тележках, а в подробном разборе — о колёсных парах секции. Конкретную реализацию не считать установленной."
+    },
+    {
+      "schemaVersion": "diagnostic-stage11-traction/3",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.traction-current-imbalance",
+      "originalId": "traction-current-imbalance",
+      "category": "Тяга",
+      "title": "Асимметрия или ненормальный ток тяговых двигателей",
+      "summary": "Токи секций/групп заметно различаются, ток скачет либо не соответствует позиции и тяговому усилию.",
+      "canonicalBoundary": "TRACTION_CURRENT_ASYMMETRY_NOT_SURGE",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=traction-current-imbalance]",
+          "sourceOriginLayer": "DiagnosticExpansion.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, печ. стр. 200–202: группы тяговых двигателей и силовые цепи",
+            "Раздел Б, печ. стр. 210–211: измерение тока и индикация секций"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8 §8.3, печ. стр. 286–305: группы тяговой схемы",
+            "Глава 8, печ. стр. 365–366: токи ТЭД и боксование"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "traction-current-imbalance-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 200–202: группы тяговых двигателей и силовые цепи",
+          "claim": "Разные показания амперметров без сопоставимого режима не доказывают электрический дефект.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-current-imbalance-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 210–211: измерение тока и индикация секций",
+          "claim": "Силовые цепи содержат отдельные группы ТЭД; не смешивать ток группы с общим током секции.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-current-imbalance-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.3, печ. стр. 286–305: группы тяговой схемы",
+          "claim": "Учебное описание боксования связывает изменение скорости якоря и тока, но не устанавливает его в конкретном событии.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-current-imbalance-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8, печ. стр. 365–366: токи ТЭД и боксование",
+          "claim": "Изменение тока при переходе ЭКГ и устойчивая асимметрия являются разными наблюдениями.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в ранее записанном событии опасный бросок тока, дуга, защита либо резкий рывок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли устойчивое различие токов групп или секций при сравнимых режимах, а не единичный бросок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в ранее записанном событии опасный бросок тока, дуга, защита либо резкий рывок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли устойчивое различие токов групп или секций при сравнимых режимах, а не единичный бросок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранены ли время, позиция ЭКГ и скорость для каждого сравниваемого показания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли показания разных секций и разных групп одной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены ли ранее записанные признаки боксования без вывода о причине тока?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли сведения о сигналах ВУ, БСА и РП из того же события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Различены ли отсутствие тяги, пониженная тяга одной секции и именно токовая асимметрия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждены ли схема амперметров и конфигурация секций конкретной машины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "traction-current-imbalance-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 200–202: группы тяговых двигателей и силовые цепи",
+          "text": "Разные показания амперметров без сопоставимого режима не доказывают электрический дефект.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-current-imbalance-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 210–211: измерение тока и индикация секций",
+          "text": "Силовые цепи содержат отдельные группы ТЭД; не смешивать ток группы с общим током секции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-current-imbalance-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.3, печ. стр. 286–305: группы тяговой схемы",
+          "text": "Учебное описание боксования связывает изменение скорости якоря и тока, но не устанавливает его в конкретном событии.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-current-imbalance-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8, печ. стр. 365–366: токи ТЭД и боксование",
+          "text": "Изменение тока при переходе ЭКГ и устойчивая асимметрия являются разными наблюдениями.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-current-imbalance-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.3, печ. стр. 286–305: группы тяговой схемы",
+          "text": "Ни один архивный локатор не задаёт допустимое расхождение для неизвестного исполнения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Измерительные цепи и состав секций/групп ТЭД по фактическому исполнению UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general — только исследовательский. Исполнение конкретной секции, модернизации и схема не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "Не переносить описания групп и приборов из архивных схем на неизвестную комплектацию; при отсутствии сравнимых режимов STOP/BLOCKED."
+    },
+    {
+      "schemaVersion": "diagnostic-stage11-traction/3",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.traction-no-assemble",
+      "originalId": "traction-no-assemble",
+      "category": "Тяга",
+      "title": "Не собирается тяга или отсутствует тяга секции",
+      "summary": "После задания направления и позиции ток ТЭД отсутствует полностью либо только на одной группе/секции.",
+      "canonicalBoundary": "NO_TRACTION_COMMAND_ASSEMBLY",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticRepository.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=traction-no-assemble]",
+          "sourceOriginLayer": "DiagnosticRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 5,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, печ. стр. 224–225: цепи управления тяговыми двигателями и линейными контакторами",
+            "Раздел Б, табл. 14, печ. стр. 279–280: признаки несбора тяги и остановки ГП"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8, печ. стр. 286–305: тяговые цепи и группы ТЭД",
+            "Глава 8, печ. стр. 310–318: цепи управления и разрешения тяги"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "traction-no-assemble-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 224–225: цепи управления тяговыми двигателями и линейными контакторами",
+          "claim": "Отсутствие тягового тока не является доказательством неисправности БСА или конкретного ТЭД.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-no-assemble-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, табл. 14, печ. стр. 279–280: признаки несбора тяги и остановки ГП",
+          "claim": "В архивной схеме линейные контакторы и ЭКГ участвуют в разных этапах формирования тяги.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-no-assemble-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8, печ. стр. 286–305: тяговые цепи и группы ТЭД",
+          "claim": "Учебная схема разделяет силовую цепь и цепи управления; они требуют разных свидетельств.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "traction-no-assemble-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8, печ. стр. 310–318: цепи управления и разрешения тяги",
+          "claim": "Несбор одной группы нельзя автоматически приравнивать к отсутствию команды во всех секциях.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли дым, дуга, опасный рывок, срабатывание защиты или самопроизвольное движение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись отсутствия тягового тока после ранее заданной штатной команды, а не просто слабой тяги?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли дым, дуга, опасный рывок, срабатывание защиты или самопроизвольное движение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись отсутствия тягового тока после ранее заданной штатной команды, а не просто слабой тяги?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, затронуты все секции или только одна группа?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли отсутствие команды тяги и отсутствие подтверждения линейных контакторов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранены ли уже имевшиеся показания позиции ЭКГ и направления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли, было ли разрешение тяги без предположения о причине его отсутствия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отличены ли отсутствие тока от несоответствия указателя ЭКГ и асимметрии токов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждена ли точная схема управления и состав секций этой машины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "traction-no-assemble-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 224–225: цепи управления тяговыми двигателями и линейными контакторами",
+          "text": "Отсутствие тягового тока не является доказательством неисправности БСА или конкретного ТЭД.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-no-assemble-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, табл. 14, печ. стр. 279–280: признаки несбора тяги и остановки ГП",
+          "text": "В архивной схеме линейные контакторы и ЭКГ участвуют в разных этапах формирования тяги.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-no-assemble-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8, печ. стр. 286–305: тяговые цепи и группы ТЭД",
+          "text": "Учебная схема разделяет силовую цепь и цепи управления; они требуют разных свидетельств.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-no-assemble-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8, печ. стр. 310–318: цепи управления и разрешения тяги",
+          "text": "Несбор одной группы нельзя автоматически приравнивать к отсутствию команды во всех секциях.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "traction-no-assemble-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8, печ. стр. 286–305: тяговые цепи и группы ТЭД",
+          "text": "Исторические способы устранения из таблицы неисправностей не импортированы в диагностический граф.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Компоновка линейных контакторов, БСА, ЭКГ и межсекционных цепей UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general — только исследовательский. Исполнение конкретной секции, модернизации и схема не подтверждены."
+      },
+      "donorQuestionCount": 5,
+      "sourceDiscrepancy": "В исходном доноре есть исполняемые подсказки и действия; перенесены только исходный ID/название/контекст, без повторного набора и проверки контакторов."
+    },
+    {
+      "schemaVersion": "diagnostic-stage11-traction/3",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.vl80s-ekg-section-desync",
+      "originalId": "vl80s-ekg-section-desync",
+      "category": "Тяга",
+      "title": "Рассогласование позиций ЭКГ между секциями",
+      "summary": "Указатели или фактически подтверждённые положения ЭКГ разных секций не совпадают при одной команде управления.",
+      "canonicalBoundary": "INTERSECTION_EKG_POSITION_DESYNCHRONIZATION",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticResearchIntegration.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=vl80s-ekg-section-desync]",
+          "sourceOriginLayer": "DiagnosticResearchIntegration.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, печ. стр. 226–227: цепи синхронизации главных контроллеров",
+            "Раздел А, печ. стр. 140–141: указатель позиции и сельсин"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 8 §8.15.2–8.15.3, печ. стр. 351–352: набор и синхронизация ЭКГ",
+            "Глава 8 §8.15.3, печ. стр. 353–354: реле 202 и рассогласование секций"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "vl80s-ekg-section-desync-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 226–227: цепи синхронизации главных контроллеров",
+          "claim": "Реле 202 в архивной схеме связано с согласованием позиций, но его состояние само по себе не устанавливает дефект.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, печ. стр. 140–141: указатель позиции и сельсин",
+          "claim": "Различие стрелок указателей может быть связано с индикацией, а не с фактическим положением валов.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.15.2–8.15.3, печ. стр. 351–352: набор и синхронизация ЭКГ",
+          "claim": "Учебник описывает блокировки ГП1–ГП3 и контактор 194 для согласования; не считать их установленными без сверки.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 8 §8.15.3, печ. стр. 353–354: реле 202 и рассогласование секций",
+          "claim": "Число секций и режим набора/сброса влияют на интерпретацию исторических сигналов.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли неопределённая силовая коммутация, защита, дуга или опасный рывок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли независимые записи о несовпадении позиций ЭКГ двух секций при одной команде?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли неопределённая силовая коммутация, защита, дуга или опасный рывок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли независимые записи о несовпадении позиций ЭКГ двух секций при одной команде?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указаны ли секции и время обеих записей, а не показание только одного указателя?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли фактическое рассогласование и одиночная неисправность указателя УП?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли ранее зафиксированный сигнал синхронизации без нового набора позиции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечены ли режим набора/сброса и число секций?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отличены ли медленный переход одного ЭКГ и рассогласование уже подтверждённых позиций?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждена ли схема синхронизации конкретного состава и исполнение ЭКГ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "vl80s-ekg-section-desync-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 226–227: цепи синхронизации главных контроллеров",
+          "text": "Реле 202 в архивной схеме связано с согласованием позиций, но его состояние само по себе не устанавливает дефект.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, печ. стр. 140–141: указатель позиции и сельсин",
+          "text": "Различие стрелок указателей может быть связано с индикацией, а не с фактическим положением валов.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.15.2–8.15.3, печ. стр. 351–352: набор и синхронизация ЭКГ",
+          "text": "Учебник описывает блокировки ГП1–ГП3 и контактор 194 для согласования; не считать их установленными без сверки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.15.3, печ. стр. 353–354: реле 202 и рассогласование секций",
+          "text": "Число секций и режим набора/сброса влияют на интерпретацию исторических сигналов.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vl80s-ekg-section-desync-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 8 §8.15.2–8.15.3, печ. стр. 351–352: набор и синхронизация ЭКГ",
+          "text": "Не импортировать из учебных аварийных таблиц перемычки, расклинивание реле или ручное выравнивание ЭКГ.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Состав 2/3/4 секций, реле синхронизации 202 и фактические блокировки UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general — только исследовательский. Исполнение конкретной секции, модернизации и схема не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "В учебнике присутствуют аварийные способы отключения синхронизации; они отмечены как запрещённые к импорту и не являются разрешением."
+    },
+    {
+      "schemaVersion": "diagnostic-stage11-traction/3",
+      "stage": "11/51",
+      "scenarioId": "vl80s.diag.ekg-drive-disconnected",
+      "originalId": "ekg-drive-disconnected",
+      "category": "Тяга",
+      "title": "Привод ГП слышен, но вал и позиция не изменяются",
+      "summary": "При уже поданной штатной команде слышна работа серводвигателя, а вал главного переключателя остаётся неподвижен.",
+      "canonicalBoundary": "SERVO_ROTATES_GEAR_SHAFT_STATIONARY",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=ekg-drive-disconnected]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел Б, табл. 14, печ. стр. 282: вращается серводвигатель, вал ГП неподвижен",
+            "Раздел Б, печ. стр. 224–225: питание серводвигателя и управление ГП"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 5 §5.3, печ. стр. 154–155: ЭКГ-8Ж и сервопривод",
+            "Глава 5 §5.3, печ. стр. 159–160: редуктор и передача вращения от сервомотора"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "ekg-drive-disconnected-m0",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, табл. 14, печ. стр. 282: вращается серводвигатель, вал ГП неподвижен",
+          "claim": "В архивной таблице отдельно указан случай вращения сервопривода при неподвижном вале ГП; это только историческая гипотеза.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "ekg-drive-disconnected-m1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, печ. стр. 224–225: питание серводвигателя и управление ГП",
+          "claim": "Нельзя по звуку без независимой записи утверждать механическое рассоединение.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "ekg-drive-disconnected-t0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 5 §5.3, печ. стр. 154–155: ЭКГ-8Ж и сервопривод",
+          "claim": "ЭКГ-8Ж включает сервомотор и редуктор, но конкретное исполнение машины неизвестно.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "ekg-drive-disconnected-t1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 5 §5.3, печ. стр. 159–160: редуктор и передача вращения от сервомотора",
+          "claim": "Учебник описывает передачу вращения через редуктор; его конструкция не даёт права на осмотр под напряжением.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли дуга, защитное отключение, дым или неопределённая переходная позиция?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в ранее составленном акте одновременная запись звука вращения сервопривода и неподвижного вала ГП?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы ли дуга, защитное отключение, дым или неопределённая переходная позиция?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в ранее составленном акте одновременная запись звука вращения сервопривода и неподвижного вала ГП?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отделено ли это наблюдение от полного отсутствия звука сервопривода?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли отсутствие механической передачи и расхождение одного указателя позиции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указана ли секция и позиция из уже существующей записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли, кто и каким допущенным способом ранее зафиксировал движение вала, без нового доступа в ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отличено ли событие от замедленного перехода и застревания ЭКГ без подтверждения вращения привода?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждены ли тип ЭКГ, привод и передача именно на данной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно сведений; STOP/BLOCKED, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, сообщение ответственным без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сведения систематизированы, но причина и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Неизвестная причина: STOP/BLOCKED, без пусков, измерений и переключений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ekg-drive-disconnected-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, табл. 14, печ. стр. 282: вращается серводвигатель, вал ГП неподвижен",
+          "text": "В архивной таблице отдельно указан случай вращения сервопривода при неподвижном вале ГП; это только историческая гипотеза.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ekg-drive-disconnected-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, печ. стр. 224–225: питание серводвигателя и управление ГП",
+          "text": "Нельзя по звуку без независимой записи утверждать механическое рассоединение.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ekg-drive-disconnected-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 5 §5.3, печ. стр. 154–155: ЭКГ-8Ж и сервопривод",
+          "text": "ЭКГ-8Ж включает сервомотор и редуктор, но конкретное исполнение машины неизвестно.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ekg-drive-disconnected-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 5 §5.3, печ. стр. 159–160: редуктор и передача вращения от сервомотора",
+          "text": "Учебник описывает передачу вращения через редуктор; его конструкция не даёт права на осмотр под напряжением.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ekg-drive-disconnected-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 5 §5.3, печ. стр. 154–155: ЭКГ-8Ж и сервопривод",
+          "text": "Ручное проворачивание ГП и переключение режимов из архивных рекомендаций не импортированы и запрещены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "TRACTION_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "ЭКГ-8Ж, привод ДМК-1/50 и фактическая механическая связь UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Профиль vl80s-general — только исследовательский. Исполнение конкретной секции, модернизации и схема не подтверждены."
+      },
+      "donorQuestionCount": 3,
+      "sourceDiscrepancy": "Историческое руководство содержит совет вручную проворачивать вал ГП; он исключён из пользовательского диагностического маршрута."
+    }
+  ]
+}

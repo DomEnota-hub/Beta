@@ -1,0 +1,820 @@
+{
+  "ledger": {
+    "schemaVersion": "stage8-auxiliary-contactor-slice/1",
+    "date": "2026-11-04",
+    "stage": "8/51",
+    "baseHead": "ec3e2366f6b64f6124e1fea312559e9e050af7cd",
+    "logicalStep": "One source-scoped aux-contactor-chatter research candidate",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "addedScenarioIds": [
+      "vl80s.diag.aux-contactor-chatter"
+    ],
+    "previousStage8Ids": [
+      "vl80s.diag.aux-common-loss"
+    ],
+    "stage8OverallStatus": "IN_PROGRESS_NOT_CLOSED",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Source-first phase-splitter subgroup after green CI; keep group-loss and contactor chatter distinct."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage8-aux-contactor-chatter-source-first/1",
+      "stage": "8/51",
+      "scenarioId": "vl80s.diag.aux-contactor-chatter",
+      "originalId": "aux-contactor-chatter",
+      "canonicalGroup": "REPEATED_SINGLE_AUX_CONTACTOR_STATE_VS_GROUP_LOSS_OR_UNVERIFIED_SOUND",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.aux-common-loss",
+        "vl80s.diag.motor-fan-failure",
+        "vl80s.diag.phase-splitter-no-start",
+        "vl80s.diag.aux-machine-single-trip"
+      ],
+      "title": "Дребезг контактора вспомогательной машины",
+      "summary": "Контактор многократно включается и отпадает.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [],
+      "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "originalId": "aux-contactor-chatter",
+          "sourcePointer": "Seed(\"aux-contactor-chatter\")",
+          "excerpt": {
+            "category": "Вспомогательные машины",
+            "title": "Дребезг контактора вспомогательной машины",
+            "summary": "Контактор многократно включается и отпадает."
+          },
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации, 2-е изд. (Васько и др., 1990)",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "XI §5, печ. стр. 222–223, рис. 255: цепи катушек контакторов 124, 127–130, 133",
+            "XI §5, печ. стр. 223: самоподхват контакторов 127–130 и отключение через реле 259/260",
+            "XI §5, печ. стр. 223: тепловые реле 141–148 и запрет автоматического повторного включения"
+          ],
+          "sameDocumentAcrossApproaches": true,
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true,
+          "noDirectChatterDiagnosisInManual": true
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "contactor-chatter-manual-circuit",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 222–223, рис. 255: цепи катушек контакторов 124, 127–130, 133",
+          "claim": "Историческая схема показывает отдельные катушки контакторов вспомогательных машин; не подтверждает причину дребезга.",
+          "confidence": "HISTORICAL_SCHEME_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "contactor-chatter-manual-hold",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 223: самоподхват контакторов 127–130 и отключение через реле 259/260",
+          "claim": "Описаны цепи самоподхвата и отключения. Наличие таких цепей не доказывает их неисправность.",
+          "confidence": "HISTORICAL_CIRCUIT_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "contactor-chatter-manual-protection",
+          "sourceId": "manual1990",
+          "locator": "XI §5, печ. стр. 223: тепловые реле 141–148 и запрет автоматического повторного включения",
+          "claim": "Историческое описание различает защитное отключение и повторное включение; эти явления не следует автоматически называть дребезгом.",
+          "confidence": "HISTORICAL_PROTECTION_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходной записи отмечены дым, искрение, перегрев или другой опасный признак у вспомогательного оборудования?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "В ранее сохранённом сообщении есть повторные включения и отпадания одного контактора, а не только неопределённый звук?",
+              "responses": {
+                "YES": "report-recorded",
+                "NO": "report-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный исходный признак. Не инициировать пуск, переключение или осмотр аппарата.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: данных недостаточно. UNKNOWN не заменять предположением и не проверять аппарат новым действием.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-recorded",
+              "type": "OBSERVATION_REPORT",
+              "text": "Повторяющееся изменение состояния одного контактора зарегистрировано как симптом, причина не доказана.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unverified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Дребезг конкретного контактора исходными данными не подтверждён; не смешивать со звуком и общим отключением.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "aux-contactor-chatter-short-donor-single-contactor-symptom",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourceLocator": "Seed(\"aux-contactor-chatter\")",
+              "approachFocus": "DONOR_SINGLE_CONTACTOR_SYMPTOM",
+              "approachSummary": "Исходная идентичность симптома без назначения причины.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходном описании прямо отмечены многократные включения и отпадания одного контактора?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Симптом сохранён без подтверждения неисправного аппарата или права на вмешательство.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходная формулировка не подтверждена записью, новые проверки не предлагать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: исходного свидетельства недостаточно; этот источник не подтверждает неисправность.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "aux-contactor-chatter-short-historical-individual-coil-circuit",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 222–223, рис. 255: цепи катушек контакторов 124, 127–130, 133",
+              "approachFocus": "HISTORICAL_INDIVIDUAL_COIL_CIRCUIT",
+              "approachSummary": "Разграничить индивидуальную цепь контактора и групповую потерю.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В архивной записи обозначен конкретный контактор, а не только общий сигнал вспомогательных машин?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Историческая схема служит справкой о разделении цепей, но не диагнозом.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Аппарат не установлен; нельзя назначать историческую схему конкретной секции.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: исходного свидетельства недостаточно; этот источник не подтверждает неисправность.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходных сведениях зафиксированы дым, искрение, запах перегрева либо опасная потеря охлаждения?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "single",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "single",
+              "type": "QUESTION",
+              "text": "В исходном сообщении выделен один контактор, а не одновременное отключение нескольких машин?",
+              "responses": {
+                "YES": "state",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "state",
+              "type": "QUESTION",
+              "text": "Есть ранее зарегистрированные повторные изменения состояния контактора, а не только щелчки неизвестного источника?",
+              "responses": {
+                "YES": "identity",
+                "NO": "report-audio",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "identity",
+              "type": "QUESTION",
+              "text": "В исходной записи однозначно указаны секция и обозначение контактора?",
+              "responses": {
+                "YES": "scope",
+                "NO": "report-unlocated",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "scope",
+              "type": "QUESTION",
+              "text": "В тех же исходных данных независимо подтверждено отключение других вспомогательных потребителей?",
+              "responses": {
+                "YES": "report-group-overlap",
+                "NO": "report-isolated",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: исходные опасные признаки. Новые действия, открытие аппаратных шкафов и переключения не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: отсутствие подтверждённых сведений; конкретное исполнение и причина UNKNOWN/BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Не доказан дребезг отдельного контактора; групповой отказ и другие неисправности остаются отдельными сценариями.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-audio",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть акустический признак без подтверждения повторного изменения состояния контактора. Не назначать причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unlocated",
+              "type": "OBSERVATION_REPORT",
+              "text": "Повторный симптом отмечен, но точный аппарат и секция не подтверждены; применимость BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-group-overlap",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отдельный признак и групповой симптом могут сосуществовать в записи; причинная связь не доказана.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-isolated",
+              "type": "OBSERVATION_REPORT",
+              "text": "Записан локальный повторный симптом без независимого подтверждения группового отключения; причина неизвестна.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "aux-contactor-chatter-detailed-donor-audio-vs-state",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourceLocator": "Seed(\"aux-contactor-chatter\")",
+              "approachFocus": "DONOR_AUDIO_VS_STATE",
+              "approachSummary": "Отделить звук от документированного изменения состояния.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходном сообщении повторное изменение состояния подтверждено независимо от звука?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Различение подтверждено записью, причинный механизм неизвестен.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Только звук не подтверждает дребезг именно этого контактора.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: исходного свидетельства недостаточно; этот источник не подтверждает неисправность.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "aux-contactor-chatter-detailed-historical-self-hold",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 223: самоподхват контакторов 127–130 и отключение через реле 259/260",
+              "approachFocus": "HISTORICAL_SELF_HOLD",
+              "approachSummary": "Самоподхват как исторический контекст без поиска неисправности.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В старом журнале имеется запись о повторном отпадании аппарата после зарегистрированного удержания?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Историческое описание самоподхвата не определяет неисправный элемент.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Без исходного факта цепь самоподхвата остаётся только справочным материалом.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: исходного свидетельства недостаточно; этот источник не подтверждает неисправность.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            },
+            {
+              "approachId": "aux-contactor-chatter-detailed-historical-protection-distinction",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §5, печ. стр. 223: тепловые реле 141–148 и запрет автоматического повторного включения",
+              "approachFocus": "HISTORICAL_PROTECTION_DISTINCTION",
+              "approachSummary": "Не смешивать срабатывание тепловой защиты и дребезг.",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "operationalSteps": [],
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              },
+              "startNodeId": "evidence",
+              "nodes": [
+                {
+                  "id": "evidence",
+                  "type": "QUESTION",
+                  "text": "В исходной записи отдельно отмечено срабатывание защиты, а не только повторный звук?",
+                  "responses": {
+                    "YES": "recorded",
+                    "NO": "not-recorded",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Защитное событие зарегистрировано отдельно; его нельзя объявлять причиной дребезга.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "not-recorded",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Срабатывание защиты не подтверждено; никаких попыток повторного пуска.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: исходного свидетельства недостаточно; этот источник не подтверждает неисправность.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

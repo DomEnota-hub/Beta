@@ -1,0 +1,814 @@
+{
+  "ledger": {
+    "schemaVersion": "stage8-heater-fault-slice/1",
+    "date": "2026-11-04",
+    "stage": "8/51",
+    "baseHead": "e2ebe859209de9b2320263d0a5e2c42e629ab90a",
+    "logicalStep": "One source-scoped heater-fault research candidate",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "addedScenarioIds": [
+      "vl80s.diag.heater-fault"
+    ],
+    "previousStage8Ids": [
+      "vl80s.diag.aux-common-loss",
+      "vl80s.diag.aux-contactor-chatter",
+      "vl80s.diag.phase-splitter-no-start",
+      "vl80s.diag.motor-fan-failure"
+    ],
+    "stage8OverallStatus": "IN_PROGRESS_NOT_CLOSED",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Verify CI and continue next independent source-supported Stage8 candidate; no runtime promotion."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage8-heater-fault-source-first/1",
+      "stage": "8/51",
+      "scenarioId": "vl80s.diag.heater-fault",
+      "originalId": "heater-fault",
+      "canonicalGroup": "CAB_HEATER_VS_WINDSCREEN_CALORIFIER_AND_OVERHEAT",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.aux-common-loss",
+        "vl80s.diag.aux-contactor-chatter",
+        "vl80s.diag.motor-fan-failure",
+        "vl80s.diag.fan-low-airflow",
+        "vl80s.diag.fire-alarm-signal"
+      ],
+      "title": "Не работает отопление или появляется перегрев",
+      "summary": "Отопительный прибор не включается, отключается защитой или имеет запах.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [],
+      "donorQuestionProvenance": "SEED_HAS_NO_EXPLICIT_QUESTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "originalId": "heater-fault",
+          "sourcePointer": "Seed(\"heater-fault\")",
+          "originalQuestions": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд. (Васько и др.)",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "§55 «Электрокалорифер. Электропечь», печ. стр. 146–147, рис. 195–196: отдельные приборы обогрева стекла и кабины",
+            "IX §1, печ. стр. 179–180, рис. 231: размещение печей и ограждений в кабине",
+            "XI §2, печ. стр. 205–207, рис. 245: однофазные цепи печей и калорифера; группы печей и контакторы"
+          ],
+          "sourceTextLocated": true,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "heater-fault-evidence-0",
+          "sourceId": "manual1990",
+          "locator": "§55 «Электрокалорифер. Электропечь», печ. стр. 146–147, рис. 195–196: отдельные приборы обогрева стекла и кабины",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивный текст описывает печь кабины и электрокалорифер стекла как разные приборы; их признаки нельзя смешивать.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "heater-fault-evidence-1",
+          "sourceId": "manual1990",
+          "locator": "IX §1, печ. стр. 179–180, рис. 231: размещение печей и ограждений в кабине",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивная схема расположения указывает печи и защитные ограждения; не подтверждает оснащение современной секции.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "heater-fault-evidence-2",
+          "sourceId": "manual1990",
+          "locator": "XI §2, печ. стр. 205–207, рис. 245: однофазные цепи печей и калорифера; группы печей и контакторы",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Архивная схема различает однофазные цепи печей и калорифера; конкретные контакторы не назначаются без схемы секции.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходной записи отмечены дым, запах горелой изоляции, обугливание или сильный перегрев отопительного прибора?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "symptom",
+              "type": "QUESTION",
+              "text": "В прежней записи определён конкретный прибор: печь кабины либо калорифер обогрева стекла?",
+              "responses": {
+                "YES": "report-identified",
+                "NO": "report-unidentified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный тепловой признак. Не включать повторно и не проводить новые проверки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходных данных недостаточно; не подменять UNKNOWN предположением.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-identified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Указан конкретный отопительный прибор; причина неисправности и исполнение не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-unidentified",
+              "type": "OBSERVATION_REPORT",
+              "text": "Прибор не идентифицирован. Не смешивать печи кабины с калорифером обогрева стекла.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.heater-fault.short-1",
+              "approachFocus": "Идентификация отопительного прибора",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourceLocator": "Seed(\"heater-fault\")",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В прежней записи прямо указано, что неисправно: печь кабины или обогрев стекла?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Идентификация отопительного прибора» отмечен, но исторический источник не доказывает причину.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Идентификация отопительного прибора» не подтверждён; новых проверок не назначать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: сведений недостаточно, применимость UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "startNodeId": "fact",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.heater-fault.short-2",
+              "approachFocus": "Архивное описание печи ПЭТ-2",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourceLocator": "§55 «Электрокалорифер. Электропечь», печ. стр. 146–147, рис. 195–196: отдельные приборы обогрева стекла и кабины",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В ранее сохранённой документации установлен тип печи, а не только общее название «отопление»?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Архивное описание печи ПЭТ-2» отмечен, но исторический источник не доказывает причину.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Архивное описание печи ПЭТ-2» не подтверждён; новых проверок не назначать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: сведений недостаточно, применимость UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "startNodeId": "fact",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В исходном сообщении есть дым, запах перегретой изоляции, следы оплавления или иной опасный тепловой признак?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "scope",
+              "type": "QUESTION",
+              "text": "По прежней записи неисправность относится именно к печам обогрева кабины, а не к калориферу стекла?",
+              "responses": {
+                "YES": "cabin",
+                "NO": "glass",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "cabin",
+              "type": "QUESTION",
+              "text": "В ранее записанных наблюдениях подтверждено отсутствие нагрева печей кабины?",
+              "responses": {
+                "YES": "report-cabin-noheat",
+                "NO": "protection",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "protection",
+              "type": "QUESTION",
+              "text": "До составления карточки было зафиксировано срабатывание защиты цепи печей без последующих повторных включений?",
+              "responses": {
+                "YES": "report-protection",
+                "NO": "report-cabin-unclear",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "glass",
+              "type": "QUESTION",
+              "text": "В исходной записи отдельно отмечено отсутствие потока воздуха калорифера стекла?",
+              "responses": {
+                "YES": "report-glass-air",
+                "NO": "report-glass-heat",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: признак возможной тепловой опасности. Никаких повторных включений, вскрытий, измерений или обходов защит.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: источник наблюдения или установленное исполнение не подтверждены; применимость BLOCKED.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-cabin-noheat",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отсутствие нагрева печей кабины отмечено; причина, питание и конкретная группа не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-protection",
+              "type": "OBSERVATION_REPORT",
+              "text": "В исходной записи есть действие защиты. Не назначать причиной саму защиту и не предлагать её сброс.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-cabin-unclear",
+              "type": "OBSERVATION_REPORT",
+              "text": "Наблюдение о работе печей неполное; отсутствие тепла не доказывает дефект конкретного элемента.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-glass-air",
+              "type": "OBSERVATION_REPORT",
+              "text": "Зарегистрировано отсутствие обдува стекла; нельзя автоматически считать это отказом нагревателя.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-glass-heat",
+              "type": "OBSERVATION_REPORT",
+              "text": "Обдув и нагрев стекла не разграничены исходной записью; причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.heater-fault.detailed-1",
+              "approachFocus": "Различие печи и электрокалорифера",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "§55 «Электрокалорифер. Электропечь», печ. стр. 146–147, рис. 195–196: отдельные приборы обогрева стекла и кабины",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "По исходной записи различены обогрев кабины и обогрев лобового стекла?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Различие печи и электрокалорифера» отмечен, но исторический источник не доказывает причину.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Различие печи и электрокалорифера» не подтверждён; новых проверок не назначать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: сведений недостаточно, применимость UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "startNodeId": "fact",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.heater-fault.detailed-2",
+              "approachFocus": "Размещение печей и ограждений",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "IX §1, печ. стр. 179–180, рис. 231: размещение печей и ограждений в кабине",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Есть ранее подтверждённая схема оборудования конкретной кабины, а не перенос схемы с другой секции?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Размещение печей и ограждений» отмечен, но исторический источник не доказывает причину.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Размещение печей и ограждений» не подтверждён; новых проверок не назначать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: сведений недостаточно, применимость UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "startNodeId": "fact",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.heater-fault.detailed-3",
+              "approachFocus": "Историческая цепь отопления и контакторов",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "XI §2, печ. стр. 205–207, рис. 245: однофазные цепи печей и калорифера; группы печей и контакторы",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В документах именно установленного исполнения уже указан тип цепи отопления?",
+                  "responses": {
+                    "YES": "record-yes",
+                    "NO": "record-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Историческая цепь отопления и контакторов» отмечен, но исторический источник не доказывает причину.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "record-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Исходный факт по теме «Историческая цепь отопления и контакторов» не подтверждён; новых проверок не назначать.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: сведений недостаточно, применимость UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "startNodeId": "fact",
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

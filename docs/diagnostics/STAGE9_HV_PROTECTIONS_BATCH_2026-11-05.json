@@ -1,0 +1,2354 @@
+{
+  "ledger": {
+    "schemaVersion": "stage9-hv-protections-batch/1",
+    "date": "2026-11-05",
+    "stage": "9/51",
+    "baseHead": "e38676cbdaebd86ec6650b615425015f7e9560b0",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "scenarioIds": [
+      "vl80s.diag.substation-protection-roof",
+      "vl80s.diag.transformer-protection",
+      "vl80s.diag.protection-trip",
+      "vl80s.diag.rectifier-differential-trip",
+      "vl80s.diag.rectifier-group-fault"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Verify CI; then continue the next distinct VL80S donor category; no runtime promotion."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/1",
+      "stage": "9/51",
+      "scenarioId": "vl80s.diag.substation-protection-roof",
+      "originalId": "substation-protection-roof",
+      "category": "Высоковольтные цепи",
+      "title": "Сработала защита подстанции: подозрение на крышевое оборудование",
+      "summary": "После вспышки или повреждения на крыше пропало напряжение контактной сети; возможны повреждение токоприёмника, изолятора, крышевой шины или ГВ.",
+      "canonicalBoundary": "SUBSTATION_PROTECTION_ROOF",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.pantograph-no-rise",
+        "vl80s.diag.roof-insulation-signs",
+        "vl80s.diag.protection-trip"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Есть повреждение контактного провода, выход токоприёмника за габарит, провисание или сохраняющаяся дуга?",
+        "Удалось по уже имеющимся показаниям установить секцию и поднятый токоприёмник в момент события?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt",
+          "blobSha": "0d94801dcbe1d96e1a551a9dac8fef2a808b9029",
+          "sourcePointer": "id = \"substation-protection-roof\"",
+          "originalQuestions": [
+            "Есть повреждение контактного провода, выход токоприёмника за габарит, провисание или сохраняющаяся дуга?",
+            "Удалось по уже имеющимся показаниям установить секцию и поднятый токоприёмник в момент события?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §54, печ. стр. 145: ОПН-25УХЛ1 и разрядник РВМК-IV, историческое описание защиты от перенапряжений",
+            "Раздел Б, табл. 14, печ. стр. 275–276: подстанционная защита и возможные крышевые повреждения; операции по разъединителям НЕ импортированы"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "substation-protection-roof-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §54, печ. стр. 145: ОПН-25УХЛ1 и разрядник РВМК-IV, историческое описание защиты от перенапряжений",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "substation-protection-roof-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, табл. 14, печ. стр. 275–276: подстанционная защита и возможные крышевые повреждения; операции по разъединителям НЕ импортированы",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть повреждение контактного провода, выход токоприёмника за габарит, провисание или сохраняющаяся дуга?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Удалось по уже имеющимся показаниям установить секцию и поднятый токоприёмник в момент события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть повреждение контактного провода, выход токоприёмника за габарит, провисание или сохраняющаяся дуга?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "q3",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Удалось по уже имеющимся показаниям установить секцию и поднятый токоприёмник в момент события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: По ранее записанным данным указана секция события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Зафиксировано положение токоприёмника в момент отключения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q7",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть запись о вспышке вне кузова?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Контактный провод мог быть повреждён по сообщению диспетчера?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Данные по другим секциям согласуются с первым событием?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "q8",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Причина отнесена к контактной сети лишь предположительно?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "substation-protection-roof-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Граница подстанционного и локомотивного события",
+          "sourceRefs": [
+            "donor",
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §54, печ. стр. 145: ОПН-25УХЛ1 и разрядник РВМК-IV, историческое описание защиты от перенапряжений",
+          "text": "Историческая справка по теме «Граница подстанционного и локомотивного события». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "substation-protection-roof-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Сопоставление времени дуги и исчезновения напряжения",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, табл. 14, печ. стр. 275–276: подстанционная защита и возможные крышевые повреждения; операции по разъединителям НЕ импортированы",
+          "text": "Историческая справка по теме «Сопоставление времени дуги и исчезновения напряжения». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "substation-protection-roof-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Секция и токоприёмник только по ранее записанной индикации",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §54, печ. стр. 145: ОПН-25УХЛ1 и разрядник РВМК-IV, историческое описание защиты от перенапряжений",
+          "text": "Историческая справка по теме «Секция и токоприёмник только по ранее записанной индикации». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "substation-protection-roof-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Различие крыши, контактной сети и ГВ",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, табл. 14, печ. стр. 275–276: подстанционная защита и возможные крышевые повреждения; операции по разъединителям НЕ импортированы",
+          "text": "Историческая справка по теме «Различие крыши, контактной сети и ГВ». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "substation-protection-roof-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Недопустимость вывода о пригодности крышевого разъединителя",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §54, печ. стр. 145: ОПН-25УХЛ1 и разрядник РВМК-IV, историческое описание защиты от перенапряжений",
+          "text": "Историческая справка по теме «Недопустимость вывода о пригодности крышевого разъединителя». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/1",
+      "stage": "9/51",
+      "scenarioId": "vl80s.diag.transformer-protection",
+      "originalId": "transformer-protection",
+      "category": "Высоковольтные цепи",
+      "title": "Признаки неисправности тягового трансформатора или действие его защиты",
+      "summary": "ГВ отключается по связанной защите, появляется ненормальный гул, масло, запах или нагрев трансформатора.",
+      "canonicalBoundary": "TRANSFORMER_PROTECTION",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.oil-pump-failure",
+        "vl80s.diag.rectifier-differential-trip",
+        "vl80s.diag.protection-trip"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Есть физические признаки: масло, дым, запах или ненормальный гул?",
+        "Однозначно установлена защита трансформатора?",
+        "Отключение повторилось после единственного разрешённого восстановления?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "sourcePointer": "id = \"transformer-protection\"",
+          "originalQuestions": [
+            "Есть физические признаки: масло, дым, запах или ненормальный гул?",
+            "Однозначно установлена защита трансформатора?",
+            "Отключение повторилось после единственного разрешённого восстановления?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, IV §1, печ. стр. 40–42, рис. 45: тяговый трансформатор ОДЦЭ-5000/25Б, масло и принудительное охлаждение",
+            "Раздел А, XI §3, печ. стр. 208–209: защиты силовых цепей; отдельная современная схема защиты трансформатора НЕ установлена"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "transformer-protection-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, IV §1, печ. стр. 40–42, рис. 45: тяговый трансформатор ОДЦЭ-5000/25Б, масло и принудительное охлаждение",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "transformer-protection-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защиты силовых цепей; отдельная современная схема защиты трансформатора НЕ установлена",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть физические признаки: масло, дым, запах или ненормальный гул?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Однозначно установлена защита трансформатора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть физические признаки: масло, дым, запах или ненормальный гул?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "q3",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Однозначно установлена защита трансформатора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отключение повторилось после единственного разрешённого восстановления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: По архивной записи есть признак масла вне бака?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q7",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть ранее зафиксированный ненормальный гул?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Показания температуры сохранены до отключения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Указатель конкретной защиты был записан?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "q8",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Событие затронуло только одну секцию?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "transformer-protection-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Различие физического признака и подтверждённой защиты",
+          "sourceRefs": [
+            "donor",
+            "manual1990"
+          ],
+          "locator": "Раздел А, IV §1, печ. стр. 40–42, рис. 45: тяговый трансформатор ОДЦЭ-5000/25Б, масло и принудительное охлаждение",
+          "text": "Историческая справка по теме «Различие физического признака и подтверждённой защиты». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-protection-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Масло, запах и гул как отдельные наблюдения",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защиты силовых цепей; отдельная современная схема защиты трансформатора НЕ установлена",
+          "text": "Историческая справка по теме «Масло, запах и гул как отдельные наблюдения». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-protection-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Трансформатор против неисправности ВУ",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, IV §1, печ. стр. 40–42, рис. 45: тяговый трансформатор ОДЦЭ-5000/25Б, масло и принудительное охлаждение",
+          "text": "Историческая справка по теме «Трансформатор против неисправности ВУ». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-protection-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Защита общей первичной цепи и защита группы",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защиты силовых цепей; отдельная современная схема защиты трансформатора НЕ установлена",
+          "text": "Историческая справка по теме «Защита общей первичной цепи и защита группы». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-protection-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Неподтверждённый тип трансформатора и охлаждения",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, IV §1, печ. стр. 40–42, рис. 45: тяговый трансформатор ОДЦЭ-5000/25Б, масло и принудительное охлаждение",
+          "text": "Историческая справка по теме «Неподтверждённый тип трансформатора и охлаждения». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/1",
+      "stage": "9/51",
+      "scenarioId": "vl80s.diag.protection-trip",
+      "originalId": "protection-trip",
+      "category": "Защиты",
+      "title": "Сработала токовая, земляная или перегрузочная защита",
+      "summary": "ГВ или отдельная группа отключились по сигналу защиты; причина не очевидна.",
+      "canonicalBoundary": "PROTECTION_TRIP",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.traction-ground-relay-trip",
+        "vl80s.diag.rectifier-differential-trip",
+        "vl80s.diag.aux-relay-113-trip"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Защита сработала повторно после разрешённого восстановления?",
+        "Отказ связан с одной секцией/группой?",
+        "Есть признаки дыма, запаха или дуги?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticRepository.kt",
+          "blobSha": "5f57ff2c98f02a04692e8553700ec8d23077d166",
+          "sourcePointer": "id = \"protection-trip\"",
+          "originalQuestions": [
+            "Защита сработала повторно после разрешённого восстановления?",
+            "Отказ связан с одной секцией/группой?",
+            "Есть признаки дыма, запаха или дуги?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §23, печ. стр. 94–95: реле заземления, контроля земли и перегрузки различаются по назначению",
+            "Раздел А, XI §3, печ. стр. 208–209: защита силовых и вспомогательных цепей, РМТ и реле заземления 88"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "protection-trip-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §23, печ. стр. 94–95: реле заземления, контроля земли и перегрузки различаются по назначению",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "protection-trip-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защита силовых и вспомогательных цепей, РМТ и реле заземления 88",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Защита сработала повторно после разрешённого восстановления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отказ связан с одной секцией/группой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Защита сработала повторно после разрешённого восстановления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "q3",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отказ связан с одной секцией/группой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть признаки дыма, запаха или дуги?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: В журнале указано точное обозначение первого сработавшего реле?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q7",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Сигнал РЗ относится к силовой цепи по подтверждённой схеме?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть запись о повторном отключении до начала анализа?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Секция и группа определены из старых показаний?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "q8",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Данные о токе относятся к моменту первого события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "protection-trip-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Общая лампа не равна идентифицированному реле",
+          "sourceRefs": [
+            "donor",
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §23, печ. стр. 94–95: реле заземления, контроля земли и перегрузки различаются по назначению",
+          "text": "Историческая справка по теме «Общая лампа не равна идентифицированному реле». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "protection-trip-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Повторность только по уже произошедшему событию",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защита силовых и вспомогательных цепей, РМТ и реле заземления 88",
+          "text": "Историческая справка по теме «Повторность только по уже произошедшему событию». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "protection-trip-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Силовая земля против вспомогательной земли",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §23, печ. стр. 94–95: реле заземления, контроля земли и перегрузки различаются по назначению",
+          "text": "Историческая справка по теме «Силовая земля против вспомогательной земли». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "protection-trip-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Токовая перегрузка против дифференциальной защиты",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: защита силовых и вспомогательных цепей, РМТ и реле заземления 88",
+          "text": "Историческая справка по теме «Токовая перегрузка против дифференциальной защиты». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "protection-trip-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Неполная последовательность защитных сигналов",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §23, печ. стр. 94–95: реле заземления, контроля земли и перегрузки различаются по назначению",
+          "text": "Историческая справка по теме «Неполная последовательность защитных сигналов». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Защиты",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/1",
+      "stage": "9/51",
+      "scenarioId": "vl80s.diag.rectifier-differential-trip",
+      "originalId": "rectifier-differential-trip",
+      "category": "Защиты",
+      "title": "ГВ отключился с сигналом БРД и ВУ-1 или ВУ-2",
+      "summary": "Сработала дифференциальная защита, ГВ отключился и появилась индикация одной выпрямительной установки.",
+      "canonicalBoundary": "RECTIFIER_DIFFERENTIAL_TRIP",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.rectifier-group-fault",
+        "vl80s.diag.protection-trip",
+        "vl80s.diag.traction-ground-relay-trip"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Совпали отключение ГВ, указатель БРД и сигнал ВУ-1 либо ВУ-2?",
+        "Были хлопок, вспышка, запах, дым или повторное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt",
+          "blobSha": "0d94801dcbe1d96e1a551a9dac8fef2a808b9029",
+          "sourcePointer": "id = \"rectifier-differential-trip\"",
+          "originalQuestions": [
+            "Совпали отключение ГВ, указатель БРД и сигнал ВУ-1 либо ВУ-2?",
+            "Были хлопок, вспышка, запах, дым или повторное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, VI §26, печ. стр. 102–104, рис. 138–140: БРД-356 и два дифференциальных реле",
+            "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; раздел Б, печ. стр. 240: сигналы ВУ1/ВУ2"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "rectifier-differential-trip-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, VI §26, печ. стр. 102–104, рис. 138–140: БРД-356 и два дифференциальных реле",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "rectifier-differential-trip-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; раздел Б, печ. стр. 240: сигналы ВУ1/ВУ2",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Совпали отключение ГВ, указатель БРД и сигнал ВУ-1 либо ВУ-2?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Были хлопок, вспышка, запах, дым или повторное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Совпали отключение ГВ, указатель БРД и сигнал ВУ-1 либо ВУ-2?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "q3",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Были хлопок, вспышка, запах, дым или повторное отключение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Указатель БРД записан отдельно от лампы ВУ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Номер ВУ1 либо ВУ2 сохранён в первичной записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q7",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отключение ГВ совпало по времени с сигналом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть запись о вспышке или дыме?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Защита отличена от РЗ и перегрузочной?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "q8",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Указатель реле 21/22 подтверждён в документах секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "rectifier-differential-trip-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Совпадение БРД и ВУ1/ВУ2 не равно доказанной причине",
+          "sourceRefs": [
+            "donor",
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §26, печ. стр. 102–104, рис. 138–140: БРД-356 и два дифференциальных реле",
+          "text": "Историческая справка по теме «Совпадение БРД и ВУ1/ВУ2 не равно доказанной причине». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-differential-trip-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Реле 21 и 22 в исторической схеме",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; раздел Б, печ. стр. 240: сигналы ВУ1/ВУ2",
+          "text": "Историческая справка по теме «Реле 21 и 22 в исторической схеме». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-differential-trip-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Одна ВУ против общесилового события",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §26, печ. стр. 102–104, рис. 138–140: БРД-356 и два дифференциальных реле",
+          "text": "Историческая справка по теме «Одна ВУ против общесилового события». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-differential-trip-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Индикатор дифференциальной защиты против теплового признака",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; раздел Б, печ. стр. 240: сигналы ВУ1/ВУ2",
+          "text": "Историческая справка по теме «Индикатор дифференциальной защиты против теплового признака». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-differential-trip-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Нельзя переносить БРД-356 на модернизированную секцию без сверки",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, VI §26, печ. стр. 102–104, рис. 138–140: БРД-356 и два дифференциальных реле",
+          "text": "Историческая справка по теме «Нельзя переносить БРД-356 на модернизированную секцию без сверки». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Тяга",
+      "categoryNormalizationNote": "MIGRATION_CATEGORY_DIFFERS_FROM_PINNED_DONOR_KEEP_BOTH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/1",
+      "stage": "9/51",
+      "scenarioId": "vl80s.diag.rectifier-group-fault",
+      "originalId": "rectifier-group-fault",
+      "category": "Силовые цепи",
+      "title": "Подозрение на неисправность выпрямительной установки",
+      "summary": "Отсутствует ток одной группы, выражена асимметрия, срабатывает защита либо появляется ненормальный нагрев ВУ.",
+      "canonicalBoundary": "RECTIFIER_GROUP_FAULT",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.rectifier-differential-trip",
+        "vl80s.diag.traction-current-imbalance",
+        "vl80s.diag.motor-fan-failure"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Отказ относится к одной группе одной секции?",
+        "Проявление зависит от позиции ЭКГ?",
+        "Есть токовая или земляная защита?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "patch/app/src/main/java/ru/railbrake/calculator/core/DiagnosticExpansion.kt",
+          "blobSha": "7a222f1eca7be9438d8a8dbad937235dec83b7ff",
+          "sourcePointer": "id = \"rectifier-group-fault\"",
+          "originalQuestions": [
+            "Отказ относится к одной группе одной секции?",
+            "Проявление зависит от позиции ЭКГ?",
+            "Есть токовая или земляная защита?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, V §1, печ. стр. 51, выпрямители ВУК-4000Т-02 и В-ОППД-3,15к-1,4к-02: конструктивно разные исполнения",
+            "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; различать отказ охлаждения и электрическую защиту"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "rectifier-group-fault-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, V §1, печ. стр. 51, выпрямители ВУК-4000Т-02 и В-ОППД-3,15к-1,4к-02: конструктивно разные исполнения",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "rectifier-group-fault-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; различать отказ охлаждения и электрическую защиту",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отказ относится к одной группе одной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Проявление зависит от позиции ЭКГ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Отказ относится к одной группе одной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q2",
+                "NO": "q3",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Проявление зависит от позиции ЭКГ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть токовая или земляная защита?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: По архивным данным отсутствует ток одной группы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q7",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Позиция ЭКГ в момент проявления сохранена?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "q6",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Токи другой группы были записаны одновременно?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: Есть отдельный сигнал дифференциальной защиты?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "q8",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным: В журнале указан перегрев без отключения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "Недостаточно ранее записанных данных; причина UNKNOWN/BLOCKED, дальнейшие операции не предлагать.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Есть потенциально опасные признаки; прекратить диагностический маршрут, передать сведения ответственным по действующему порядку.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сопоставлены только прежние записи; причина не подтверждена, передать данные ответственным.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Признаки неоднозначны; нет разрешения на проверочные пуски, измерения и вмешательство.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "rectifier-group-fault-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Отсутствие тока группы не подтверждает неисправность диодов",
+          "sourceRefs": [
+            "donor",
+            "manual1990"
+          ],
+          "locator": "Раздел А, V §1, печ. стр. 51, выпрямители ВУК-4000Т-02 и В-ОППД-3,15к-1,4к-02: конструктивно разные исполнения",
+          "text": "Историческая справка по теме «Отсутствие тока группы не подтверждает неисправность диодов». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-group-fault-extension-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Различия типов ВУК и В-ОППД",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; различать отказ охлаждения и электрическую защиту",
+          "text": "Историческая справка по теме «Различия типов ВУК и В-ОППД». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-group-fault-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Связь с позицией ЭКГ не равна дефекту ВУ",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, V §1, печ. стр. 51, выпрямители ВУК-4000Т-02 и В-ОППД-3,15к-1,4к-02: конструктивно разные исполнения",
+          "text": "Историческая справка по теме «Связь с позицией ЭКГ не равна дефекту ВУ». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-group-fault-extension-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Перегрев против токовой несимметрии",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, XI §3, печ. стр. 208–209: дифференциальная защита ВУ; различать отказ охлаждения и электрическую защиту",
+          "text": "Историческая справка по теме «Перегрев против токовой несимметрии». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rectifier-group-fault-extension-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Не путать с БРД и отказом охлаждения",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, V §1, печ. стр. 51, выпрямители ВУК-4000Т-02 и В-ОППД-3,15к-1,4к-02: конструктивно разные исполнения",
+          "text": "Историческая справка по теме «Не путать с БРД и отказом охлаждения». Сопоставление ранее зафиксированных признаков не подтверждает причину, пригодность аппарата, вариант исполнения или разрешение на операции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Силовые цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    }
+  ]
+}

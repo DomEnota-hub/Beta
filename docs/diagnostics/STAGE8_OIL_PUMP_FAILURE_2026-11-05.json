@@ -1,0 +1,814 @@
+{
+  "ledger": {
+    "schemaVersion": "stage8-auxiliary-closeout-batch/1",
+    "date": "2026-11-05",
+    "stage": "8/51",
+    "baseHead": "8c4d4918bcf09298a81dfe10222aa73cb0028568",
+    "logicalStep": "Remaining three distinct pinned-donor auxiliary-machine scenarios",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "addedScenarioIds": [
+      "vl80s.diag.oil-pump-failure"
+    ],
+    "stage8OverallStatus": "RESEARCH_AUTHORING_COMPLETE_PENDING_CI_AND_INDEPENDENT_REVIEW",
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "next": "Verify CI and Stage8 category coverage, then begin Stage9 on next run; no runtime promotion."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage8-auxiliary-source-first/1",
+      "stage": "8/51",
+      "scenarioId": "vl80s.diag.oil-pump-failure",
+      "originalId": "oil-pump-failure",
+      "canonicalGroup": "TRANSFORMER_OIL_CIRCULATION_NOT_AUX_COMMON_LOSS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.aux-common-loss",
+        "vl80s.diag.aux-machine-single-trip",
+        "vl80s.diag.motor-fan-failure",
+        "vl80s.diag.transformer-oil-signs"
+      ],
+      "title": "Отказ масляного насоса трансформатора",
+      "summary": "Маслонасос трансформатора не запускается, отключается после пуска либо работа системы циркуляции масла не подтверждается.",
+      "category": "Вспомогательные машины",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorOriginalBlobSha": "0d94801dcbe1d96e1a551a9dac8fef2a808b9029",
+      "donorGraphNodeCount": 3,
+      "donorOriginalQuestions": [
+        "Маслонасос совсем не запускается при штатной команде?",
+        "После запуска насос отключается, гудит, вибрирует или работает с необычным шумом?",
+        "Есть отсутствие подтверждённой циркуляции масла, рост температуры, запах, дым или действие защиты трансформатора?"
+      ],
+      "donorQuestionProvenance": "PINNED_DONOR_QUESTION_TEXT_ONLY_NO_ACTIONS",
+      "authoringProfileId": "vl80s-general",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_OFFLINE_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticCompletionCatalog.kt",
+          "blobSha": "0d94801dcbe1d96e1a551a9dac8fef2a808b9029",
+          "originalId": "oil-pump-failure",
+          "sourcePointer": "id = \"oil-pump-failure\"",
+          "originalQuestions": [
+            "Маслонасос совсем не запускается при штатной команде?",
+            "После запуска насос отключается, гудит, вибрирует или работает с необычным шумом?",
+            "Есть отсутствие подтверждённой циркуляции масла, рост температуры, запах, дым или действие защиты трансформатора?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н.М. и др. Электровоз ВЛ80С. Руководство по эксплуатации. 2-е изд.",
+          "year": 1990,
+          "isbn": "5-277-01048-3",
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "containsHistoricalUnsafeProcedures": true,
+          "verifiedLocators": [
+            "Раздел А, печ. стр. 205: маслонасос МН как потребитель трёхфазных вспомогательных цепей охлаждения трансформатора",
+            "Раздел А, печ. стр. 223, рис. 255: историческая связь контактора 133 с МВ3/МВ4 и цепью маслонасоса",
+            "Раздел Б, табл. 14, печ. стр. 281–282: сигнал МН, тепловая защита и исторические методы восстановления, не переносимые в сценарий"
+          ]
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "oil-pump-failure-manual1990-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, печ. стр. 205: маслонасос МН как потребитель трёхфазных вспомогательных цепей охлаждения трансформатора",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Историческое описание конструкции/защиты, не доказательство установленного исполнения и причины.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "oil-pump-failure-manual1990-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, печ. стр. 223, рис. 255: историческая связь контактора 133 с МВ3/МВ4 и цепью маслонасоса",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Историческое описание конструкции/защиты, не доказательство установленного исполнения и причины.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "oil-pump-failure-manual1990-2",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, табл. 14, печ. стр. 281–282: сигнал МН, тепловая защита и исторические методы восстановления, не переносимые в сценарий",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "claim": "Историческое описание конструкции/защиты, не доказательство установленного исполнения и причины.",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "extendedEnabled": true,
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "unknownProfile": "BLOCKED"
+      },
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "versions": {
+        "SHORT": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В прежнем сообщении есть дым, запах, опасный рост температуры трансформатора или срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "scope",
+              "type": "QUESTION",
+              "text": "По старой записи работа маслонасоса или циркуляция масла не подтверждена?",
+              "responses": {
+                "YES": "report-primary",
+                "NO": "report-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Никаких новых пусков, переключений, вскрытий и обходов защиты.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: исходный факт или профиль UNKNOWN/BLOCKED. Новые проверки не назначаются.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-primary",
+              "type": "OBSERVATION_REPORT",
+              "text": "По прежней записи маслонасос или циркуляция не подтверждены; неисправный аппарат не установлен.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Неясно, отсутствовал ли пуск или подтверждение циркуляции; эти признаки различаются.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.oil-pump-failure.short-1",
+              "approachFocus": "Разделение отказа пуска и отсутствия циркуляции",
+              "version": "SHORT",
+              "sourceId": "donor",
+              "sourceLocator": "id = \"oil-pump-failure\"",
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В старом журнале отдельно указано отсутствие пуска, а не только отсутствие подтверждения циркуляции?",
+                  "responses": {
+                    "YES": "report-yes",
+                    "NO": "report-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Ранее записанный факт по теме «Разделение отказа пуска и отсутствия циркуляции» отмечен; причина и применимость конкретной секции не доказаны.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт по теме «Разделение отказа пуска и отсутствия циркуляции» не подтверждён; новые операции и воспроизведение отказа не предлагаются.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: нет исходного подтверждения; UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.oil-pump-failure.short-2",
+              "approachFocus": "Маслонасос в составе собственных нужд",
+              "version": "SHORT",
+              "sourceId": "manual1990",
+              "sourceLocator": "Раздел А, печ. стр. 223, рис. 255: историческая связь контактора 133 с МВ3/МВ4 и цепью маслонасоса",
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В ранее записанных признаках маслонасос выделен отдельно от вентиляторов и компрессора?",
+                  "responses": {
+                    "YES": "report-yes",
+                    "NO": "report-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Ранее записанный факт по теме «Маслонасос в составе собственных нужд» отмечен; причина и применимость конкретной секции не доказаны.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт по теме «Маслонасос в составе собственных нужд» не подтверждён; новые операции и воспроизведение отказа не предлагаются.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: нет исходного подтверждения; UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            }
+          ]
+        },
+        "DETAILED": {
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "independentTechnicalReview": "REQUIRED",
+          "operatingInstructionsIncluded": false,
+          "startNodeId": "danger",
+          "nodes": [
+            {
+              "id": "danger",
+              "type": "QUESTION",
+              "text": "В прежнем сообщении есть дым, запах, опасный рост температуры трансформатора или срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "scope",
+              "type": "QUESTION",
+              "text": "В исходном журнале отдельно зафиксирован отказ пуска маслонасоса?",
+              "responses": {
+                "YES": "signal",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "signal",
+              "type": "QUESTION",
+              "text": "Есть запись об отключении уже работавшего маслонасоса?",
+              "responses": {
+                "YES": "detail",
+                "NO": "report-no-signal",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "detail",
+              "type": "QUESTION",
+              "text": "Отмечены сигнал МН или отдельное срабатывание защиты насоса?",
+              "responses": {
+                "YES": "variant",
+                "NO": "report-different",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "variant",
+              "type": "QUESTION",
+              "text": "В прежних данных указано состояние связанных вентиляторов МВ3/МВ4?",
+              "responses": {
+                "YES": "report-supported",
+                "NO": "report-uncertain",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак, не возобновлять работу для уточнения причины; допуск и схема не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "STOP: сведения или применимость UNKNOWN/BLOCKED; только фиксация ранее записанного.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Неясно, отсутствовал ли пуск или подтверждение циркуляции; эти признаки различаются.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-no-signal",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отключение после запуска не доказано; не предполагать механический дефект.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-different",
+              "type": "OBSERVATION_REPORT",
+              "text": "Сигнал МН и действие защиты требуют независимой проверки источника, не являются диагнозом.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-supported",
+              "type": "OBSERVATION_REPORT",
+              "text": "По прежней записи маслонасос или циркуляция не подтверждены; неисправный аппарат не установлен. Документально подтверждена схема управления и контроль циркуляции конкретной секции? Точное исполнение не подтверждено.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-uncertain",
+              "type": "OBSERVATION_REPORT",
+              "text": "Связь с МВ3/МВ4 зависит от схемы исполнения и не подтверждена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "extendedRoutes": [
+            {
+              "approachId": "vl80s.oil-pump-failure.detailed-3",
+              "approachFocus": "Историческая зависимость контактора 133",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "Раздел Б, табл. 14, печ. стр. 281–282: сигнал МН, тепловая защита и исторические методы восстановления, не переносимые в сценарий",
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "Имеется архивная запись о состоянии МВ3/МВ4 при отказе МН?",
+                  "responses": {
+                    "YES": "report-yes",
+                    "NO": "report-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Ранее записанный факт по теме «Историческая зависимость контактора 133» отмечен; причина и применимость конкретной секции не доказаны.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт по теме «Историческая зависимость контактора 133» не подтверждён; новые операции и воспроизведение отказа не предлагаются.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: нет исходного подтверждения; UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.oil-pump-failure.detailed-4",
+              "approachFocus": "Сигнал МН и тепловая защита",
+              "version": "DETAILED",
+              "sourceId": "manual1990",
+              "sourceLocator": "Раздел Б, табл. 14, печ. стр. 281–282: сигнал МН, тепловая защита и исторические методы восстановления, не переносимые в сценарий",
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В прежнем протоколе указана лампа МН или отдельный признак защиты?",
+                  "responses": {
+                    "YES": "report-yes",
+                    "NO": "report-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Ранее записанный факт по теме «Сигнал МН и тепловая защита» отмечен; причина и применимость конкретной секции не доказаны.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт по теме «Сигнал МН и тепловая защита» не подтверждён; новые операции и воспроизведение отказа не предлагаются.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: нет исходного подтверждения; UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "manual1990"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            },
+            {
+              "approachId": "vl80s.oil-pump-failure.detailed-5",
+              "approachFocus": "Опасный нагрев не равен доказанной причине",
+              "version": "DETAILED",
+              "sourceId": "donor",
+              "sourceLocator": "id = \"oil-pump-failure\"",
+              "startNodeId": "fact",
+              "nodes": [
+                {
+                  "id": "fact",
+                  "type": "QUESTION",
+                  "text": "В журнале отделены температура масла, признаки циркуляции и индикация насоса?",
+                  "responses": {
+                    "YES": "report-yes",
+                    "NO": "report-no",
+                    "UNKNOWN": "stop-unknown"
+                  },
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-yes",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Ранее записанный факт по теме «Опасный нагрев не равен доказанной причине» отмечен; причина и применимость конкретной секции не доказаны.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "report-no",
+                  "type": "OBSERVATION_REPORT",
+                  "text": "Факт по теме «Опасный нагрев не равен доказанной причине» не подтверждён; новые операции и воспроизведение отказа не предлагаются.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                },
+                {
+                  "id": "stop-unknown",
+                  "type": "STOP",
+                  "text": "STOP: нет исходного подтверждения; UNKNOWN/BLOCKED.",
+                  "responses": {},
+                  "sourceRefs": [
+                    "donor"
+                  ],
+                  "recordedOnly": true,
+                  "operationRequested": false,
+                  "causeConfirmed": false
+                }
+              ],
+              "questionType": "ALREADY_RECORDED_FACT_ONLY",
+              "publicationStatus": "CANDIDATE",
+              "actionDisposition": "INFORMATION_ONLY",
+              "technicalClaimReview": "REQUIRES_EXPERT",
+              "operationalSteps": [],
+              "executable": false,
+              "actionAuthorityGranted": false,
+              "applicability": {
+                "profileId": "vl80s-general",
+                "exactEquipmentProfileConfirmed": false,
+                "modernSchemeConfirmed": false
+              },
+              "visibility": {
+                "default": "HIDDEN",
+                "extendedEnabled": true,
+                "warningReadToEnd": true,
+                "warningAcknowledged": true,
+                "warningGrantsActionAuthority": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

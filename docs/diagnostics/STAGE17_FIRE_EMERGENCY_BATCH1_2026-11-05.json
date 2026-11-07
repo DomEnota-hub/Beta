@@ -1,0 +1,2487 @@
+{
+  "ledger": {
+    "schemaVersion": "stage17-fire-emergency/1",
+    "date": "2026-11-05",
+    "stage": "17/51",
+    "baseHead": "d77e3e22312e196d722319fe12b45fe74464c967",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.extinguisher-system-fault",
+      "vl80s.diag.fire-loop-fault",
+      "vl80s.diag.machine-room-smoke",
+      "vl80s.diag.fire-alarm-signal",
+      "vl80s.diag.smoke-fire-flashover"
+    ],
+    "categorySourceCounts": {
+      "Пожарная безопасность": 3,
+      "Аварийные ситуации": 2
+    },
+    "remainingCategoryIds": [],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "sourceReview": "1990 printed pages 185, 217, 227 verified only for fire alarm; extinguisher installation not verified; current rules and installed equipment UNKNOWN",
+    "negativeMutationCount": 175
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage17-fire-emergency/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.extinguisher-system-fault",
+      "originalId": "extinguisher-system-fault",
+      "category": "Пожарная безопасность",
+      "title": "Не готова штатная система пожаротушения",
+      "summary": "Индикация или осмотр показывает отсутствие готовности системы.",
+      "canonicalBoundary": "Неизвестная готовность штатной системы пожаротушения не доказывает неисправность и не равна пожарной сигнализации; архив 1990 года описывает сигнализацию, но не подтверждает установленную систему тушения.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=extinguisher-system-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+            "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+            "1990, печ. стр. 227: термореле К1–К7, реле 442",
+            "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архив подтверждает только сигнализацию, НЕ систему пожаротушения, не действующие нормы и не конкретную модернизацию."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие инструкции и установленное оборудование не подтверждены; операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть дым, пламя, аварийный сигнал или опасный нагрев?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно записана неопределённость именно системы тушения, а не сигнализации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть дым, пламя, аварийный сигнал или опасный нагрев?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно записана неопределённость именно системы тушения, а не сигнализации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирован тип системы тушения по документации конкретной секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сведения о сигнализации отделены от сведений об установке тушения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: схема 1990 года не принята за доказательство системы тушения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отсутствие данных не названо отказом конкретного устройства?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: не приписаны датчики сигнализации установке тушения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указано, что проверка системы тушения и эксплуатационный допуск не разрешены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "extinguisher-system-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Архивное размещение аппаратуры сигнализации на панели №2 не подтверждает наличие установки тушения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "extinguisher-system-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "text": "Рис. 251 описывает сигнализацию, а не исполнительное устройство тушения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "extinguisher-system-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "text": "К1–К7 и реле 442 относятся к сигнализации, не к готовности баллонов или составу огнетушащего вещества.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "extinguisher-system-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371",
+          "text": "Лампа 443 ПС не подтверждает готовность установки тушения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "extinguisher-system-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Первичный источник для конкретной системы тушения отсутствует; применимость UNKNOWN/BLOCKED.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Архивное размещение аппаратуры сигнализации на панели №2 не подтверждает наличие установки тушения.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Рис. 251 описывает сигнализацию, а не исполнительное устройство тушения.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "К1–К7 и реле 442 относятся к сигнализации, не к готовности баллонов или составу огнетушащего вещества.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор называет систему пожаротушения, а архив 1990 года подтверждает лишь пожарную сигнализацию. Смешение двух систем недопустимо. Тип установки, изготовитель, модернизация и действующие требования не установлены.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-fire-emergency/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.fire-loop-fault",
+      "originalId": "fire-loop-fault",
+      "category": "Пожарная безопасность",
+      "title": "Неисправность шлейфа пожарной сигнализации",
+      "summary": "Есть обрыв, ложный сигнал либо отсутствует контроль датчиков.",
+      "canonicalBoundary": "Обрыв или ложное срабатывание шлейфа пожарной сигнализации не доказывается одной лампой; не смешивать с реальным пожаром, сигналом без видимого очага, состоянием тушения или дымом машинного отделения.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=fire-loop-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+            "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+            "1990, печ. стр. 227: термореле К1–К7, реле 442",
+            "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архив подтверждает только сигнализацию, НЕ систему пожаротушения, не действующие нормы и не конкретную модернизацию."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие инструкции и установленное оборудование не подтверждены; операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирован сигнал пожара, дым, пламя или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано нарушение контроля шлейфа отдельно от факта срабатывания сигнализации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирован сигнал пожара, дым, пламя или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано нарушение контроля шлейфа отдельно от факта срабатывания сигнализации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указана секция по прежним записям?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделены признаки контроля шлейфа от сигнала пожарной опасности?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: архивная схема не выдана за подтверждение места обрыва?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: датчики К1–К7 не названы неисправными по одному показанию?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сведения о модификации аппаратуры проверены отдельно?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: состояние шлейфа осталось неизвестным без допустимого источника?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "fire-loop-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Панель №2 по архиву содержит аппаратуру сигнализации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-loop-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "text": "Рис. 251 выделяет цепь пожарной сигнализации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-loop-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "text": "К1–К7 описаны как температурные датчики, но их исправность неизвестна.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-loop-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371",
+          "text": "Реле 442 связано с индикацией, что не доказывает ложный сигнал.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-loop-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Отсутствие очага не доказывает обрыв шлейфа и не разрешает отключение защиты.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Панель №2 по архиву содержит аппаратуру сигнализации.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Рис. 251 выделяет цепь пожарной сигнализации.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "К1–К7 описаны как температурные датчики, но их исправность неизвестна.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор объединяет обрыв, ложный сигнал и потерю контроля, но это разные наблюдения. Архивная схема К1–К7/442/443 не доказывает место повреждения или применимость к модернизированной секции.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-fire-emergency/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.machine-room-smoke",
+      "originalId": "machine-room-smoke",
+      "category": "Пожарная безопасность",
+      "title": "Дым или запах в машинном отделении",
+      "summary": "Источник не определён, но есть признаки нагрева или горения.",
+      "canonicalBoundary": "Дым или запах в машинном отделении является самостоятельным опасным признаком, но не доказательством источника; не смешивать с неисправностью шлейфа, сигналом без очага, отказом тушения или общим пробоем.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=machine-room-smoke]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+            "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+            "1990, печ. стр. 227: термореле К1–К7, реле 442",
+            "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архив подтверждает только сигнализацию, НЕ систему пожаротушения, не действующие нормы и не конкретную модернизацию."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие инструкции и установленное оборудование не подтверждены; операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, запах горения, пламя, дуга или нарастающий нагрев?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеются старые записи времени и секции без повторного входа в машинное отделение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, запах горения, пламя, дуга или нарастающий нагрев?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеются старые записи времени и секции без повторного входа в машинное отделение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указана секция без нового осмотра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: дым, запах и сигнализация записаны раздельно?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: источник не приписан трансформатору или машине автоматически?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сигнал 443 ПС не использован для локализации очага?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: неизвестная готовность тушения не выдана за разрешение на вмешательство?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отсутствует решение о продолжении движения по одному признаку?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "machine-room-smoke-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Аппаратура сигнализации на панели №2 не локализует дым.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "machine-room-smoke-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "text": "Рис. 251 является схемой сигнализации, а не картой причин запаха.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "machine-room-smoke-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "text": "Термореле К1–К7 и реле 442 не определяют источник дыма.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "machine-room-smoke-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371",
+          "text": "Отсутствие лампы 443 ПС не опровергает наблюдение дыма.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "machine-room-smoke-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Архив не даёт современного разрешения на вход в опасную зону.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Аппаратура сигнализации на панели №2 не локализует дым.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Рис. 251 является схемой сигнализации, а не картой причин запаха.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Термореле К1–К7 и реле 442 не определяют источник дыма.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Сжатый донор не содержит подтверждённого источника дыма. Архивная схема сигнализации не позволяет установить источник пожара, доступность машинного отделения и безопасный порядок действий.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-fire-emergency/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.fire-alarm-signal",
+      "originalId": "fire-alarm-signal",
+      "category": "Аварийные ситуации",
+      "title": "Сработала пожарная сигнализация, но очаг не обнаружен",
+      "summary": "Появился сигнал пожарной системы без видимого дыма либо с неопределённой зоной срабатывания.",
+      "canonicalBoundary": "Сигнал пожарной системы при необнаруженном очаге не означает ложного срабатывания; это отдельный аварийный вход, не равный повреждению шлейфа, дыму машинного отделения или отказу тушения.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=fire-alarm-signal]",
+          "sourceOriginLayer": "DiagnosticExpansion.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+            "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+            "1990, печ. стр. 227: термореле К1–К7, реле 442",
+            "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архив подтверждает только сигнализацию, НЕ систему пожаротушения, не действующие нормы и не конкретную модернизацию."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие инструкции и установленное оборудование не подтверждены; операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано срабатывание пожарной сигнализации даже без видимого очага?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и вид сигнала без повторного поиска очага?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано срабатывание пожарной сигнализации даже без видимого очага?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция и вид сигнала без повторного поиска очага?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: показание лампы отделено от факта наличия дыма?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отсутствие очага не названо ложным сигналом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: секция не принята за точную локализацию датчика?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: архивные номера не перенесены на неизвестную модернизацию?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: обрыв шлейфа не выведен из одного сигнала?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: эксплуатационное решение не сформировано без действующих правил?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "fire-alarm-signal-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Панель №2 по архиву содержит аппаратуру сигнализации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-alarm-signal-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "text": "Рис. 251 показывает цепь пожарной сигнализации, а не ложность срабатывания.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-alarm-signal-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "text": "К1–К7 связаны с реле 442 в архивном описании.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-alarm-signal-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371",
+          "text": "Лампа 443 ПС и сигнал 371 не устанавливают место очага.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "fire-alarm-signal-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Отсутствие видимого дыма не разрешает отключать сигнализацию.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Панель №2 по архиву содержит аппаратуру сигнализации.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Рис. 251 показывает цепь пожарной сигнализации, а не ложность срабатывания.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "К1–К7 связаны с реле 442 в архивном описании.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донорское «очаг не обнаружен» не доказывает отсутствия пожара. Реле 442 и лампа 443 ПС описаны в архиве 1990 года; современное исполнение, источник сигнала и применимость неизвестны.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-fire-emergency/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.smoke-fire-flashover",
+      "originalId": "smoke-fire-flashover",
+      "category": "Аварийные ситуации",
+      "title": "Дым, запах, дуга, пробой или пожар",
+      "summary": "Аварийные признаки электрического/механического повреждения либо открытое горение.",
+      "canonicalBoundary": "Широкий аварийный сценарий дыма, дуги, пробоя или пожара сохраняется отдельно от узких карточек дыма машинного отделения и пожарной сигнализации; признаки не устанавливают единую причину.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticRepository.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=smoke-fire-flashover]",
+          "sourceOriginLayer": "DiagnosticRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+            "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+            "1990, печ. стр. 227: термореле К1–К7, реле 442",
+            "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архив подтверждает только сигнализацию, НЕ систему пожаротушения, не действующие нормы и не конкретную модернизацию."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие инструкции и установленное оборудование не подтверждены; операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, открытый огонь, дуга, пробой или сильный запах горения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеется ранее составленная запись вида события и времени без новых осмотров?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы дым, открытый огонь, дуга, пробой или сильный запах горения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеется ранее составленная запись вида события и времени без новых осмотров?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделено наблюдение дыма от гипотезы пробоя?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: место указано только по старой записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: видимая дуга не смешана с сигнальной лампой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: причина не приписана трансформатору или ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отсутствие сигнала не принято за отсутствие пожара?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: дальнейшее движение и вмешательство не разрешены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный пожарный или аварийный признак: STOP; без новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: данных недостаточно; никаких новых осмотров, отключений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "smoke-fire-flashover-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Аппаратура сигнализации на панели №2 не определяет источник аварийного события.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "smoke-fire-flashover-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "text": "Рис. 251 не является схемой диагностики дуги или пробоя.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "smoke-fire-flashover-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "text": "К1–К7 и реле 442 не исключают пожар при отсутствии сигнала.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "smoke-fire-flashover-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 227: сигнальная лампа 443 ПС и звуковой сигнал 371",
+          "text": "Лампа 443 ПС не устанавливает источник пробоя.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "smoke-fire-flashover-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "text": "Архив не заменяет действующие аварийные инструкции и не разрешает вход в ВВК.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Аппаратура сигнализации на панели №2 не определяет источник аварийного события.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 185: панель №2 содержит аппаратуру пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Рис. 251 не является схемой диагностики дуги или пробоя.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 217, рис. 251: цепь пожарной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "К1–К7 и реле 442 не исключают пожар при отсутствии сигнала.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 227: термореле К1–К7, реле 442",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор объединяет дым, запах, дугу, пробой и пожар как общий аварийный вход. Эти признаки не взаимозаменяемы; архивная пожарная сигнализация не диагностирует все виды повреждений и не подтверждает современные процедуры.",
+      "originalQuestionTextVerified": false
+    }
+  ]
+}

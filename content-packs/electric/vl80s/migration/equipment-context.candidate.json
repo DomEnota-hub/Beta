@@ -1,0 +1,1236 @@
+{
+  "schemaVersion": 1,
+  "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "sourcePath": "app/src/main/assets/technical/vl80s_equipment.json.gz",
+  "sourceBlobSha": "a6d00459e18ca428601b4a0cd32ee95a7d1551e7",
+  "modelOwner": "vl80s",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "recordCountPreservedInEquipmentPacks": 89,
+  "sourceRootSha256": "0598c404b8ae0f92da37763d85cd2c9d9cca31ef8db86aec687c3ace608fe9d8",
+  "sourceRootWithoutRecords": {
+    "schemaVersion": 2,
+    "catalogVersion": "stage2-final-v1.8-vl80-brake-pneumatic-core",
+    "project": "VL80S",
+    "generatedAt": "2026-09-22",
+    "status": "FINAL_PASS",
+    "purpose": "Stable equipment and functional-node identity layer for equipment ↔ article ↔ diagnostics ↔ scheme navigation.",
+    "idPolicy": {
+      "format": "VL-EQ-<DOMAIN>-<NNN>",
+      "immutable": true,
+      "neverReuse": true,
+      "legacyIdsAreAliases": true
+    },
+    "variantPolicy": {
+      "status": "STAGE1_FINAL_CONSUMED",
+      "sectionAware": true,
+      "defaultBucket": "vl80s_unknown",
+      "physicalBuckets": [
+        "vl80s_unknown",
+        "vl80s_pre697",
+        "vl80s_697_1260",
+        "vl80s_1261_1405",
+        "vl80s_1406_2318",
+        "vl80s_2319_2348",
+        "vl80s_2349_2653",
+        "vl80s_2654plus",
+        "vl80s_modified_or_mixed"
+      ],
+      "featureFlags": [
+        "sme_three_section_capable",
+        "third_section_rheostatic_brake_unavailable",
+        "pr_isolation_on_working_positions",
+        "ekg_sme_sync_updated",
+        "burt16",
+        "vu_protection_rp21_22",
+        "aux_compressor_pvu7",
+        "fr_late_scheme",
+        "fire_signalization_present"
+      ],
+      "sourceReferenceTags": [
+        "ref_scheme_937_1260"
+      ],
+      "sectionContract": "section.variantBucket + section.featureFlags[] + section.actualEquipmentOverrides[]",
+      "identityRule": "VL-EQ id is immutable across scheme revisions. Exact model, designation, placement and composition are section/profile data, not identity.",
+      "mixedRule": "For unknown, recomposed or modified sections do not infer exact equipment from the consist number alone; use vl80s_unknown or vl80s_modified_or_mixed and verify actual section documentation.",
+      "deepModificationRule": "VL80SM/VL80SK are not silently merged into the base VL80S profile."
+    },
+    "domainLabels": {
+      "HV": "Высоковольтный ввод и токосъём",
+      "TR": "Тяговая цепь и реостатное торможение",
+      "AU": "Вспомогательные машины и охлаждение",
+      "CT": "Цепи управления и питание 50 В",
+      "PN": "Пневматическое питание и управление",
+      "BR": "Тормозное оборудование",
+      "SF": "Безопасность, сигнализация и связь",
+      "PR": "Защиты и контроль",
+      "FR": "Пожарная защита",
+      "MC": "Механическая часть и экипаж",
+      "CB": "Кабина и служебные системы"
+    },
+    "sources": {
+      "VL-SRC-001": {
+        "class": "A-for-current-implementation",
+        "type": "app_source",
+        "title": "Актуальный код приложения «Железнодорожный помощник»",
+        "repository": "DomEnota-hub/Test-",
+        "commit": "8b1fffb7f3e28ae489b9b037f46f4b02be1e3253",
+        "version": "1.2.2-dev13",
+        "locator": "patch/app/.../Vl80sObservationCatalog.kt; KnowledgeRepository.kt; InteractiveSchematics.kt; Diagnostic*.kt",
+        "note": "Каноническая точка реализации Stage 1/2."
+      },
+      "VL-SRC-004": {
+        "class": "B/C",
+        "type": "pneumatic_reference",
+        "title": "Пневматическая схема ВЛ80С / КМ №395",
+        "library": "VL80S_pnevmaticheskaya_skhema_i_kran_395.pdf",
+        "url": "https://rcit.su/techinfo63.html",
+        "locator": "схема ВЛ80С, рис. 2.17 и описание тормозного оборудования"
+      },
+      "VL-SRC-006": {
+        "class": "B",
+        "type": "manual",
+        "title": "Электровоз ВЛ80С. Руководство по эксплуатации / техническое описание",
+        "url": "https://poezdvl.com/vl80c/vl80c_1.html",
+        "locator": "разделы по расположению оборудования, электрическим аппаратам, пневматике и экипажной части"
+      },
+      "VL-SRC-007": {
+        "class": "B",
+        "type": "historical_technical",
+        "title": "В. А. Раков. Локомотивы отечественных железных дорог 1976–1985",
+        "url": "https://djvu.online/file/5TQ9h1aKQrIU1",
+        "locator": "серийные и опытные изменения ВЛ80С"
+      },
+      "VL-SRC-008": {
+        "class": "B/C",
+        "type": "training_scheme",
+        "title": "Пособие по электрической схеме ВЛ80С, РГУПС",
+        "url": "https://studfile.net/preview/9700891/",
+        "locator": "базовая схема ВЛ80С №937–1260 и поздние изменения"
+      },
+      "VL-SRC-009": {
+        "class": "C/B-pending-origin-check",
+        "type": "fault_reference",
+        "title": "Руководство по устранению неисправностей электрических/пневматических цепей ВЛ80С",
+        "url": "https://studfile.net/preview/13510548/",
+        "locator": "границы №967, №1017, №1261, №1406, №2260, №2275, №2319, №2349 и др.",
+        "note": "Не использовать как единственное основание рабочего переключения."
+      },
+      "VL-SRC-010": {
+        "class": "C",
+        "type": "training_reference",
+        "title": "Учебный материал «Электрические схемы ВЛ80С»",
+        "url": "https://studfile.net/preview/12624985/",
+        "locator": "изменения ФР, синхронизации ЭКГ, ГВ и поздних цепей"
+      },
+      "VL-SRC-011": {
+        "class": "D/C",
+        "type": "secondary_crosscheck",
+        "title": "Дополнительные изменения электрических схем ВЛ80С",
+        "url": "https://scbist.com/xx2/51802-09-2018-nekotorye-izmeneniya-v-elektricheskih-shemah-elektrovozov-vl80s.html",
+        "locator": "cross-check границ №2349 и №2654",
+        "note": "Не использовать как единственную эксплуатационную основу."
+      },
+      "VL-SRC-014": {
+        "class": "A/B",
+        "type": "maintenance_manual",
+        "title": "ПКБ ЦТ.06.0039. Руководство по ТО и ТР электровозов серии ВЛ80 в/и",
+        "publisher": "ОАО «РЖД» / ПКБ ЦТ",
+        "approved": "23.11.2011",
+        "url": "https://rcit.su/techinfoR5.html",
+        "locator": "разделы 8.3–8.5: механическое, тормозное/пневматическое и электрическое оборудование",
+        "note": "Дополнительный источник Stage 2; не меняет закрытый source index Stage 1."
+      },
+      "VL-SRC-015": {
+        "class": "A/B",
+        "type": "maintenance_instruction",
+        "title": "ЦТ-ЦШ-857. Инструкция по техническому обслуживанию АЛСН и устройств контроля бдительности машиниста",
+        "approved": "24.09.2001",
+        "publisher": "МПС России",
+        "url": "https://rcit.su/techinfo99.html",
+        "locator": "разделы 1.1, 2.2, 2.15 и 2.22: состав АЛСН, приёмные катушки, ЭПК-150 и электропитание",
+        "note": "Нормативный источник для параметров АЛСН, приёмных катушек и ЭПК; конкретное исполнение оборудования секции имеет приоритет."
+      }
+    },
+    "zones": [
+      {
+        "id": "VL-ZONE-CAB-001",
+        "name": "Кабина и кабинный отсек",
+        "kind": "layout_zone",
+        "sourceRefs": [
+          "VL-SRC-001",
+          "VL-SRC-006"
+        ]
+      },
+      {
+        "id": "VL-ZONE-HV-001",
+        "name": "ВВК1",
+        "kind": "layout_zone",
+        "sourceRefs": [
+          "VL-SRC-001",
+          "VL-SRC-006"
+        ]
+      },
+      {
+        "id": "VL-ZONE-HV-002",
+        "name": "ВВК2",
+        "kind": "layout_zone",
+        "sourceRefs": [
+          "VL-SRC-001",
+          "VL-SRC-006"
+        ]
+      }
+    ],
+    "reverseIndex": {
+      "legacyEquipmentId": {
+        "alsn": [
+          "VL-EQ-SF-001"
+        ],
+        "anti-slip": [
+          "VL-EQ-PR-002"
+        ],
+        "aux-contactor": [
+          "VL-EQ-AU-004"
+        ],
+        "battery": [
+          "VL-EQ-CT-001"
+        ],
+        "bogie": [
+          "VL-EQ-MC-002"
+        ],
+        "brake-lock": [
+          "VL-EQ-BR-009"
+        ],
+        "brake-pipe": [
+          "VL-EQ-BR-003"
+        ],
+        "brake-resistors": [
+          "VL-EQ-TR-009"
+        ],
+        "brake-rigging": [
+          "VL-EQ-BR-006"
+        ],
+        "bsa": [
+          "VL-EQ-TR-002"
+        ],
+        "burt": [
+          "VL-EQ-TR-005"
+        ],
+        "cab-lighting": [
+          "VL-EQ-CB-002"
+        ],
+        "charging-unit": [
+          "VL-EQ-CT-002"
+        ],
+        "compressor": [
+          "VL-EQ-AU-003"
+        ],
+        "ekg": [
+          "VL-EQ-TR-001"
+        ],
+        "epk": [
+          "VL-EQ-SF-002"
+        ],
+        "equalizing-reservoir": [
+          "VL-EQ-BR-007"
+        ],
+        "feed-line": [
+          "VL-EQ-PN-004"
+        ],
+        "fire-suppression": [
+          "VL-EQ-FR-002"
+        ],
+        "fire-system": [
+          "VL-EQ-FR-001"
+        ],
+        "gv": [
+          "VL-EQ-HV-001"
+        ],
+        "handbrake": [
+          "VL-EQ-BR-008"
+        ],
+        "instrument-lines": [
+          "VL-EQ-PN-006"
+        ],
+        "km395": [
+          "VL-EQ-BR-001"
+        ],
+        "kvt254": [
+          "VL-EQ-BR-002"
+        ],
+        "main-reservoirs": [
+          "VL-EQ-PN-001"
+        ],
+        "motor-fans": [
+          "VL-EQ-AU-002"
+        ],
+        "pantograph": [
+          "VL-EQ-HV-002"
+        ],
+        "phase-splitter": [
+          "VL-EQ-AU-001"
+        ],
+        "pressure-gauges": [
+          "VL-EQ-CB-001"
+        ],
+        "pressure-regulator": [
+          "VL-EQ-PN-003"
+        ],
+        "pressure-relay": [
+          "VL-EQ-BR-005"
+        ],
+        "protection": [
+          "VL-EQ-PR-001"
+        ],
+        "radio": [
+          "VL-EQ-SF-003"
+        ],
+        "rectifier": [
+          "VL-EQ-TR-003"
+        ],
+        "relay-panel": [
+          "VL-EQ-CT-003"
+        ],
+        "reverser": [
+          "VL-EQ-TR-008"
+        ],
+        "safety-valve": [
+          "VL-EQ-PN-005"
+        ],
+        "sanders": [
+          "VL-EQ-MC-001"
+        ],
+        "tc": [
+          "VL-EQ-BR-004"
+        ],
+        "traction-drive": [
+          "VL-EQ-TR-007"
+        ],
+        "traction-motors": [
+          "VL-EQ-TR-006"
+        ],
+        "transformer": [
+          "VL-EQ-TR-004"
+        ],
+        "valve245": [
+          "VL-EQ-PN-002"
+        ],
+        "ventilation-ducts": [
+          "VL-EQ-AU-005"
+        ],
+        "vvk": [
+          "VL-EQ-HV-003"
+        ]
+      },
+      "articleId": {
+        "vl80-detail-alsn": [
+          "VL-EQ-SF-001"
+        ],
+        "vl80-detail-bsa1": [
+          "VL-EQ-TR-002"
+        ],
+        "vl80-detail-bsa2": [
+          "VL-EQ-TR-002"
+        ],
+        "vl80-detail-burt": [
+          "VL-EQ-TR-005"
+        ],
+        "vl80-detail-mk": [
+          "VL-EQ-AU-003"
+        ],
+        "vl80-detail-mv3": [
+          "VL-EQ-AU-002"
+        ],
+        "vl80-detail-mv4": [
+          "VL-EQ-AU-002"
+        ],
+        "vl80-detail-phase-splitter": [
+          "VL-EQ-AU-001"
+        ],
+        "vl80-detail-rectifier-left": [
+          "VL-EQ-TR-003"
+        ],
+        "vl80-detail-rectifier-right": [
+          "VL-EQ-TR-003"
+        ],
+        "vl80-detail-relay-panels": [
+          "VL-EQ-PR-001",
+          "VL-EQ-PR-002",
+          "VL-EQ-CT-003",
+          "VL-EQ-AU-004"
+        ],
+        "vl80-detail-vvk1": [
+          "VL-EQ-HV-003"
+        ],
+        "vl80-eq-air-distributor483": [
+          "VL-EQ-BR-010"
+        ],
+        "vl80-eq-air-filter114": [
+          "VL-EQ-PN-015"
+        ],
+        "vl80-eq-air-flow-switch": [
+          "VL-EQ-AU-007"
+        ],
+        "vl80-eq-alsn": [
+          "VL-EQ-SF-001"
+        ],
+        "vl80-eq-alsn-coils": [
+          "VL-EQ-SF-005"
+        ],
+        "vl80-eq-anti-slip": [
+          "VL-EQ-PR-002"
+        ],
+        "vl80-eq-auto-breaker-block": [
+          "VL-EQ-CT-006"
+        ],
+        "vl80-eq-aux-compressor": [
+          "VL-EQ-PN-007"
+        ],
+        "vl80-eq-aux-contactor": [
+          "VL-EQ-AU-004"
+        ],
+        "vl80-eq-axlebox": [
+          "VL-EQ-MC-004"
+        ],
+        "vl80-eq-battery": [
+          "VL-EQ-CT-001"
+        ],
+        "vl80-eq-bogie": [
+          "VL-EQ-MC-002"
+        ],
+        "vl80-eq-brake-lock": [
+          "VL-EQ-BR-009"
+        ],
+        "vl80-eq-brake-pipe": [
+          "VL-EQ-BR-003"
+        ],
+        "vl80-eq-brake-resistors": [
+          "VL-EQ-TR-009"
+        ],
+        "vl80-eq-brake-rigging": [
+          "VL-EQ-BR-006"
+        ],
+        "vl80-eq-brake-switches": [
+          "VL-EQ-TR-014"
+        ],
+        "vl80-eq-bsa": [
+          "VL-EQ-TR-002"
+        ],
+        "vl80-eq-burt": [
+          "VL-EQ-TR-005"
+        ],
+        "vl80-eq-cab-lighting": [
+          "VL-EQ-CB-002"
+        ],
+        "vl80-eq-charging-unit": [
+          "VL-EQ-CT-002"
+        ],
+        "vl80-eq-compressor": [
+          "VL-EQ-AU-003"
+        ],
+        "vl80-eq-condensate-collector": [
+          "VL-EQ-PN-011"
+        ],
+        "vl80-eq-control-50v": [
+          "VL-EQ-CT-005"
+        ],
+        "vl80-eq-control-air-line": [
+          "VL-EQ-PN-016"
+        ],
+        "vl80-eq-control-reservoir": [
+          "VL-EQ-PN-013"
+        ],
+        "vl80-eq-differential-relay-block": [
+          "VL-EQ-PR-003"
+        ],
+        "vl80-eq-driver-controller": [
+          "VL-EQ-CT-004"
+        ],
+        "vl80-eq-earth-relay": [
+          "VL-EQ-PR-005"
+        ],
+        "vl80-eq-ekg": [
+          "VL-EQ-TR-001"
+        ],
+        "vl80-eq-electric-blocking-valve": [
+          "VL-EQ-BR-013"
+        ],
+        "vl80-eq-end-cocks-hoses": [
+          "VL-EQ-BR-015"
+        ],
+        "vl80-eq-epk": [
+          "VL-EQ-SF-002"
+        ],
+        "vl80-eq-equalizing-reservoir": [
+          "VL-EQ-BR-007"
+        ],
+        "vl80-eq-excitation-rectifier": [
+          "VL-EQ-TR-013"
+        ],
+        "vl80-eq-feed-line": [
+          "VL-EQ-PN-004"
+        ],
+        "vl80-eq-fire-suppression": [
+          "VL-EQ-FR-002"
+        ],
+        "vl80-eq-fire-system": [
+          "VL-EQ-FR-001"
+        ],
+        "vl80-eq-gv": [
+          "VL-EQ-HV-001"
+        ],
+        "vl80-eq-handbrake": [
+          "VL-EQ-BR-008"
+        ],
+        "vl80-eq-horn-whistle": [
+          "VL-EQ-CB-003"
+        ],
+        "vl80-eq-impulse-line": [
+          "VL-EQ-BR-012"
+        ],
+        "vl80-eq-inductive-shunt": [
+          "VL-EQ-TR-012"
+        ],
+        "vl80-eq-instrument-lines": [
+          "VL-EQ-PN-006"
+        ],
+        "vl80-eq-interference-choke": [
+          "VL-EQ-HV-007"
+        ],
+        "vl80-eq-km395": [
+          "VL-EQ-BR-001"
+        ],
+        "vl80-eq-kvt254": [
+          "VL-EQ-BR-002"
+        ],
+        "vl80-eq-main-current-transformer": [
+          "VL-EQ-HV-005"
+        ],
+        "vl80-eq-main-reservoirs": [
+          "VL-EQ-PN-001"
+        ],
+        "vl80-eq-motor-axle-bearing": [
+          "VL-EQ-MC-006"
+        ],
+        "vl80-eq-motor-fans": [
+          "VL-EQ-AU-002"
+        ],
+        "vl80-eq-oil-pump": [
+          "VL-EQ-AU-006"
+        ],
+        "vl80-eq-oil-separator": [
+          "VL-EQ-PN-010"
+        ],
+        "vl80-eq-overload-relays": [
+          "VL-EQ-PR-004"
+        ],
+        "vl80-eq-pantograph": [
+          "VL-EQ-HV-002"
+        ],
+        "vl80-eq-phase-splitter": [
+          "VL-EQ-AU-001"
+        ],
+        "vl80-eq-pressure-gauges": [
+          "VL-EQ-CB-001"
+        ],
+        "vl80-eq-pressure-regulator": [
+          "VL-EQ-PN-003"
+        ],
+        "vl80-eq-pressure-relay": [
+          "VL-EQ-BR-005"
+        ],
+        "vl80-eq-protection": [
+          "VL-EQ-PR-001"
+        ],
+        "vl80-eq-purge-valves": [
+          "VL-EQ-PN-012"
+        ],
+        "vl80-eq-pvu-group": [
+          "VL-EQ-BR-014"
+        ],
+        "vl80-eq-radio": [
+          "VL-EQ-SF-003"
+        ],
+        "vl80-eq-rectifier": [
+          "VL-EQ-TR-003"
+        ],
+        "vl80-eq-reducer348": [
+          "VL-EQ-PN-014"
+        ],
+        "vl80-eq-relay-panel": [
+          "VL-EQ-CT-003"
+        ],
+        "vl80-eq-reverse-valve": [
+          "VL-EQ-PN-008"
+        ],
+        "vl80-eq-reverser": [
+          "VL-EQ-TR-008"
+        ],
+        "vl80-eq-roof-bus": [
+          "VL-EQ-HV-008"
+        ],
+        "vl80-eq-roof-disconnector": [
+          "VL-EQ-HV-004"
+        ],
+        "vl80-eq-safety-valve": [
+          "VL-EQ-PN-005"
+        ],
+        "vl80-eq-sanders": [
+          "VL-EQ-MC-001"
+        ],
+        "vl80-eq-smoothing-reactor": [
+          "VL-EQ-TR-010"
+        ],
+        "vl80-eq-spare-reservoir": [
+          "VL-EQ-BR-011"
+        ],
+        "vl80-eq-speedometer": [
+          "VL-EQ-SF-004"
+        ],
+        "vl80-eq-surge-arrester": [
+          "VL-EQ-HV-006"
+        ],
+        "vl80-eq-suspension": [
+          "VL-EQ-MC-005"
+        ],
+        "vl80-eq-tc": [
+          "VL-EQ-BR-004"
+        ],
+        "vl80-eq-traction-current-sensor": [
+          "VL-EQ-TR-015"
+        ],
+        "vl80-eq-traction-drive": [
+          "VL-EQ-TR-007"
+        ],
+        "vl80-eq-traction-motors": [
+          "VL-EQ-TR-006"
+        ],
+        "vl80-eq-transformer": [
+          "VL-EQ-TR-004"
+        ],
+        "vl80-eq-transition-reactor": [
+          "VL-EQ-TR-011"
+        ],
+        "vl80-eq-unloading-valve": [
+          "VL-EQ-PN-009"
+        ],
+        "vl80-eq-valve245": [
+          "VL-EQ-PN-002"
+        ],
+        "vl80-eq-ventilation-ducts": [
+          "VL-EQ-AU-005"
+        ],
+        "vl80-eq-vvk": [
+          "VL-EQ-HV-003"
+        ],
+        "vl80-eq-wheelset": [
+          "VL-EQ-MC-003"
+        ],
+        "vl80-eq-wiper": [
+          "VL-EQ-CB-004"
+        ]
+      },
+      "diagnosticScenarioId": {
+        "alsn-code-loss": [
+          "VL-EQ-SF-005"
+        ],
+        "alsn-epk": [
+          "VL-EQ-SF-001",
+          "VL-EQ-SF-002",
+          "VL-EQ-SF-005"
+        ],
+        "aux-common-loss": [
+          "VL-EQ-AU-001",
+          "VL-EQ-AU-004"
+        ],
+        "aux-contactor-chatter": [
+          "VL-EQ-AU-004"
+        ],
+        "aux-machine-single-trip": [
+          "VL-EQ-AU-004",
+          "VL-EQ-AU-006"
+        ],
+        "aux-machines": [
+          "VL-EQ-AU-001"
+        ],
+        "battery-no-charge": [
+          "VL-EQ-CT-001",
+          "VL-EQ-CT-002"
+        ],
+        "battery-overcharge": [
+          "VL-EQ-CT-001",
+          "VL-EQ-CT-002"
+        ],
+        "brake-cylinder-imbalance": [
+          "VL-EQ-BR-004",
+          "VL-EQ-BR-005",
+          "VL-EQ-CB-001",
+          "VL-EQ-PN-014"
+        ],
+        "brake-lock-state-mismatch": [
+          "VL-EQ-BR-009"
+        ],
+        "brake-pipe-leak": [
+          "VL-EQ-BR-001",
+          "VL-EQ-BR-003",
+          "VL-EQ-BR-015"
+        ],
+        "brake-pipe-no-charge": [
+          "VL-EQ-BR-001",
+          "VL-EQ-BR-003",
+          "VL-EQ-BR-009",
+          "VL-EQ-BR-015"
+        ],
+        "brakes-no-apply-release": [
+          "VL-EQ-BR-001",
+          "VL-EQ-BR-002",
+          "VL-EQ-BR-004",
+          "VL-EQ-BR-005",
+          "VL-EQ-BR-007",
+          "VL-EQ-BR-010",
+          "VL-EQ-BR-011",
+          "VL-EQ-BR-012",
+          "VL-EQ-CB-001"
+        ],
+        "cab-control-mismatch": [
+          "VL-EQ-CT-004"
+        ],
+        "compressor-long-run": [
+          "VL-EQ-AU-003",
+          "VL-EQ-PN-003",
+          "VL-EQ-PN-005",
+          "VL-EQ-PN-009"
+        ],
+        "compressor-no-start": [
+          "VL-EQ-AU-003",
+          "VL-EQ-PN-001",
+          "VL-EQ-PN-003",
+          "VL-EQ-PN-009"
+        ],
+        "compressor-pressure": [
+          "VL-EQ-AU-003",
+          "VL-EQ-CB-001",
+          "VL-EQ-PN-003",
+          "VL-EQ-PN-007",
+          "VL-EQ-PN-008",
+          "VL-EQ-PN-010",
+          "VL-EQ-PN-013"
+        ],
+        "control-fuse-trip": [
+          "VL-EQ-CT-003",
+          "VL-EQ-CT-005",
+          "VL-EQ-CT-006"
+        ],
+        "control-voltage-low": [
+          "VL-EQ-CT-001",
+          "VL-EQ-CT-002",
+          "VL-EQ-CT-005"
+        ],
+        "ekg-slow-transition": [
+          "VL-EQ-TR-001",
+          "VL-EQ-TR-011"
+        ],
+        "ekg-stuck": [
+          "VL-EQ-CT-004",
+          "VL-EQ-TR-001",
+          "VL-EQ-TR-011"
+        ],
+        "epk-leak": [
+          "VL-EQ-PN-015"
+        ],
+        "equalizing-reservoir-mismatch": [
+          "VL-EQ-BR-001",
+          "VL-EQ-BR-003",
+          "VL-EQ-BR-007",
+          "VL-EQ-CB-001",
+          "VL-EQ-PN-006"
+        ],
+        "extinguisher-system-fault": [
+          "VL-EQ-FR-002"
+        ],
+        "fan-low-airflow": [
+          "VL-EQ-AU-002",
+          "VL-EQ-AU-005",
+          "VL-EQ-AU-007"
+        ],
+        "feed-line-leak": [
+          "VL-EQ-BR-015",
+          "VL-EQ-PN-004"
+        ],
+        "field-weakening-fault": [
+          "VL-EQ-TR-012"
+        ],
+        "fire-alarm-signal": [
+          "VL-EQ-FR-001"
+        ],
+        "gv-air-loss": [
+          "VL-EQ-PN-016"
+        ],
+        "gv-no-close": [
+          "VL-EQ-HV-001",
+          "VL-EQ-HV-003",
+          "VL-EQ-HV-004",
+          "VL-EQ-PR-001",
+          "VL-EQ-TR-004"
+        ],
+        "handbrake-not-release": [
+          "VL-EQ-BR-008"
+        ],
+        "headlight-fault": [
+          "VL-EQ-CB-002"
+        ],
+        "independent-brake-no-apply": [
+          "VL-EQ-BR-002",
+          "VL-EQ-BR-004",
+          "VL-EQ-BR-005",
+          "VL-EQ-BR-009",
+          "VL-EQ-PN-014"
+        ],
+        "independent-brake-no-release": [
+          "VL-EQ-BR-002",
+          "VL-EQ-BR-004",
+          "VL-EQ-BR-005"
+        ],
+        "main-reservoir-leak": [
+          "VL-EQ-AU-003",
+          "VL-EQ-PN-001",
+          "VL-EQ-PN-004",
+          "VL-EQ-PN-008",
+          "VL-EQ-PN-011",
+          "VL-EQ-PN-012"
+        ],
+        "main-reservoir-safety-valve": [
+          "VL-EQ-PN-005"
+        ],
+        "main-reservoir-slow-fill": [
+          "VL-EQ-PN-010"
+        ],
+        "mechanical-noise-heating": [
+          "VL-EQ-BR-006",
+          "VL-EQ-MC-002",
+          "VL-EQ-MC-004",
+          "VL-EQ-MC-005",
+          "VL-EQ-TR-007"
+        ],
+        "motor-fan-failure": [
+          "VL-EQ-AU-002",
+          "VL-EQ-AU-005",
+          "VL-EQ-AU-007",
+          "VL-EQ-TR-005",
+          "VL-EQ-TR-009"
+        ],
+        "pantograph-contact-arcing": [
+          "VL-EQ-HV-008"
+        ],
+        "pantograph-no-rise": [
+          "VL-EQ-HV-002",
+          "VL-EQ-PN-002",
+          "VL-EQ-PN-007",
+          "VL-EQ-PN-013",
+          "VL-EQ-PN-016"
+        ],
+        "persistent-wheel-slip": [
+          "VL-EQ-MC-001",
+          "VL-EQ-MC-002",
+          "VL-EQ-PR-002",
+          "VL-EQ-TR-006",
+          "VL-EQ-TR-007"
+        ],
+        "phase-splitter-no-start": [
+          "VL-EQ-AU-001"
+        ],
+        "pneumatic-instrument-line-leak": [
+          "VL-EQ-PN-006",
+          "VL-EQ-PN-015"
+        ],
+        "pressure-gauge-mismatch": [
+          "VL-EQ-CB-001",
+          "VL-EQ-PN-006"
+        ],
+        "protection-trip": [
+          "VL-EQ-HV-001",
+          "VL-EQ-HV-005",
+          "VL-EQ-PR-001",
+          "VL-EQ-PR-003",
+          "VL-EQ-PR-004",
+          "VL-EQ-PR-005",
+          "VL-EQ-TR-002",
+          "VL-EQ-TR-010"
+        ],
+        "radio-communication-loss": [
+          "VL-EQ-SF-003"
+        ],
+        "rectifier-group-fault": [
+          "VL-EQ-TR-003"
+        ],
+        "relay-panel-overheat": [
+          "VL-EQ-CT-003"
+        ],
+        "reverser-no-confirm": [
+          "VL-EQ-TR-008"
+        ],
+        "rheostatic-brake": [
+          "VL-EQ-AU-002",
+          "VL-EQ-BR-013",
+          "VL-EQ-BR-014",
+          "VL-EQ-CT-004",
+          "VL-EQ-TR-005",
+          "VL-EQ-TR-009",
+          "VL-EQ-TR-013",
+          "VL-EQ-TR-014"
+        ],
+        "rheostatic-resistor-overheat": [
+          "VL-EQ-AU-005",
+          "VL-EQ-TR-009"
+        ],
+        "roof-insulation-signs": [
+          "VL-EQ-HV-004",
+          "VL-EQ-HV-006",
+          "VL-EQ-HV-007",
+          "VL-EQ-HV-008"
+        ],
+        "sanding-failure": [
+          "VL-EQ-MC-001",
+          "VL-EQ-PR-002"
+        ],
+        "section-control-loss": [
+          "VL-EQ-CT-003",
+          "VL-EQ-CT-005",
+          "VL-EQ-CT-006"
+        ],
+        "smoke-fire-flashover": [
+          "VL-EQ-FR-001",
+          "VL-EQ-FR-002",
+          "VL-EQ-HV-002",
+          "VL-EQ-HV-003",
+          "VL-EQ-HV-006",
+          "VL-EQ-PR-005",
+          "VL-EQ-TR-004"
+        ],
+        "speed-indication-fault": [
+          "VL-EQ-SF-004"
+        ],
+        "suspension-damage": [
+          "VL-EQ-MC-005"
+        ],
+        "traction-current-imbalance": [
+          "VL-EQ-TR-001",
+          "VL-EQ-TR-002",
+          "VL-EQ-TR-003",
+          "VL-EQ-TR-006",
+          "VL-EQ-TR-010",
+          "VL-EQ-TR-015"
+        ],
+        "traction-current-surge": [
+          "VL-EQ-PR-004",
+          "VL-EQ-TR-015"
+        ],
+        "traction-gear-noise": [
+          "VL-EQ-MC-006",
+          "VL-EQ-TR-007"
+        ],
+        "traction-no-assemble": [
+          "VL-EQ-TR-001",
+          "VL-EQ-TR-002",
+          "VL-EQ-TR-006",
+          "VL-EQ-TR-008",
+          "VL-EQ-TR-014"
+        ],
+        "transformer-oil-signs": [
+          "VL-EQ-AU-006",
+          "VL-EQ-TR-004"
+        ],
+        "transformer-protection": [
+          "VL-EQ-HV-001",
+          "VL-EQ-HV-003",
+          "VL-EQ-PR-003",
+          "VL-EQ-TR-004"
+        ],
+        "uncommanded-braking": [
+          "VL-EQ-BR-001",
+          "VL-EQ-BR-003",
+          "VL-EQ-BR-010",
+          "VL-EQ-BR-012",
+          "VL-EQ-BR-013",
+          "VL-EQ-BR-014",
+          "VL-EQ-SF-001",
+          "VL-EQ-SF-002"
+        ],
+        "ventilation-duct-damage": [
+          "VL-EQ-AU-005"
+        ],
+        "wheel-bearing-heat": [
+          "VL-EQ-MC-004",
+          "VL-EQ-MC-006"
+        ],
+        "wheel-dragging": [
+          "VL-EQ-BR-002",
+          "VL-EQ-BR-004",
+          "VL-EQ-BR-005",
+          "VL-EQ-BR-006",
+          "VL-EQ-BR-008",
+          "VL-EQ-MC-002",
+          "VL-EQ-MC-003"
+        ],
+        "wheel-flat-impact": [
+          "VL-EQ-MC-003"
+        ],
+        "wiper-fault": [
+          "VL-EQ-CB-004"
+        ],
+        "traction-motor-flashover": [
+          "VL-EQ-PR-001",
+          "VL-EQ-TR-006"
+        ],
+        "ekg-position-mismatch": [
+          "VL-EQ-CT-004",
+          "VL-EQ-TR-001"
+        ],
+        "traction-intermittent": [
+          "VL-EQ-CT-003",
+          "VL-EQ-CT-004",
+          "VL-EQ-TR-002"
+        ],
+        "rectifier-overheat": [
+          "VL-EQ-AU-002",
+          "VL-EQ-AU-005",
+          "VL-EQ-TR-003"
+        ],
+        "traction-one-section-low": [
+          "VL-EQ-TR-001",
+          "VL-EQ-TR-002",
+          "VL-EQ-TR-003",
+          "VL-EQ-TR-006"
+        ],
+        "traction-motor-overheat": [
+          "VL-EQ-AU-002",
+          "VL-EQ-TR-006"
+        ],
+        "brake-rigging-damage": [
+          "VL-EQ-BR-006"
+        ],
+        "compressor-overheat": [
+          "VL-EQ-AU-003"
+        ],
+        "external-object-impact": [
+          "VL-EQ-MC-002"
+        ],
+        "fan-vibration": [
+          "VL-EQ-AU-002"
+        ],
+        "fire-loop-fault": [
+          "VL-EQ-FR-001"
+        ],
+        "gv-no-open": [
+          "VL-EQ-HV-001"
+        ],
+        "intersection-command-loss": [
+          "VL-EQ-CT-003",
+          "VL-EQ-CT-005"
+        ],
+        "machine-room-smoke": [
+          "VL-EQ-FR-001",
+          "VL-EQ-FR-002"
+        ],
+        "pantograph-slow-rise": [
+          "VL-EQ-HV-002",
+          "VL-EQ-PN-002"
+        ],
+        "pantograph-wrong-selection": [
+          "VL-EQ-HV-002"
+        ],
+        "sand-nozzle-blocked": [
+          "VL-EQ-MC-001"
+        ],
+        "vigilance-control-fault": [
+          "VL-EQ-SF-001",
+          "VL-EQ-SF-002"
+        ],
+        "vvk-interlock-fault": [
+          "VL-EQ-HV-003"
+        ]
+      },
+      "schemeNodeId": {
+        "airPrep": [
+          "VL-EQ-PN-016"
+        ],
+        "battery": [
+          "VL-EQ-CT-001"
+        ],
+        "bp": [
+          "VL-EQ-TR-014"
+        ],
+        "brakeRes": [
+          "VL-EQ-TR-009"
+        ],
+        "brakeSwitch": [
+          "VL-EQ-TR-014"
+        ],
+        "bt": [
+          "VL-EQ-BR-009"
+        ],
+        "burt": [
+          "VL-EQ-TR-005"
+        ],
+        "control50": [
+          "VL-EQ-CT-005"
+        ],
+        "ekg": [
+          "VL-EQ-TR-001"
+        ],
+        "excitation": [
+          "VL-EQ-TR-013"
+        ],
+        "fans12": [
+          "VL-EQ-AU-002"
+        ],
+        "fans34": [
+          "VL-EQ-AU-002"
+        ],
+        "gr": [
+          "VL-EQ-PN-001"
+        ],
+        "gv": [
+          "VL-EQ-HV-001"
+        ],
+        "impulse": [
+          "VL-EQ-BR-012"
+        ],
+        "km": [
+          "VL-EQ-BR-001"
+        ],
+        "km84": [
+          "VL-EQ-CT-004"
+        ],
+        "kvt": [
+          "VL-EQ-BR-002"
+        ],
+        "motorCompressor": [
+          "VL-EQ-AU-003"
+        ],
+        "oilPump": [
+          "VL-EQ-AU-006"
+        ],
+        "pantograph": [
+          "VL-EQ-HV-002"
+        ],
+        "phaseSplitter": [
+          "VL-EQ-AU-001"
+        ],
+        "pm": [
+          "VL-EQ-PN-004"
+        ],
+        "protection": [
+          "VL-EQ-PR-001"
+        ],
+        "pvu": [
+          "VL-EQ-BR-014"
+        ],
+        "rd": [
+          "VL-EQ-BR-005"
+        ],
+        "reactor": [
+          "VL-EQ-TR-010"
+        ],
+        "rectifier": [
+          "VL-EQ-TR-003"
+        ],
+        "rvn": [
+          "VL-EQ-HV-004"
+        ],
+        "sensors": [
+          "VL-EQ-PR-001"
+        ],
+        "switchgear": [
+          "VL-EQ-TR-002"
+        ],
+        "tc1": [
+          "VL-EQ-BR-004"
+        ],
+        "tc2": [
+          "VL-EQ-BR-004"
+        ],
+        "ted": [
+          "VL-EQ-TR-006"
+        ],
+        "tm": [
+          "VL-EQ-BR-003"
+        ],
+        "transformer": [
+          "VL-EQ-TR-004"
+        ],
+        "trpsh": [
+          "VL-EQ-CT-002"
+        ],
+        "ur": [
+          "VL-EQ-BR-007"
+        ],
+        "valve245": [
+          "VL-EQ-PN-002"
+        ],
+        "vr": [
+          "VL-EQ-BR-010"
+        ],
+        "zr": [
+          "VL-EQ-BR-011"
+        ]
+      },
+      "hotspotId": {
+        "bsa1": [
+          "VL-EQ-TR-002"
+        ],
+        "bsa2": [
+          "VL-EQ-TR-002"
+        ],
+        "rectifier-left": [
+          "VL-EQ-TR-003"
+        ],
+        "rectifier-right": [
+          "VL-EQ-TR-003"
+        ],
+        "phase-splitter": [
+          "VL-EQ-AU-001"
+        ],
+        "mv3": [
+          "VL-EQ-AU-002"
+        ],
+        "mv4": [
+          "VL-EQ-AU-002"
+        ],
+        "mk": [
+          "VL-EQ-AU-003"
+        ],
+        "alsn": [
+          "VL-EQ-SF-001"
+        ],
+        "burt": [
+          "VL-EQ-TR-005"
+        ],
+        "relay-panels": [
+          "VL-EQ-PR-001",
+          "VL-EQ-PR-002",
+          "VL-EQ-CT-003",
+          "VL-EQ-AU-004"
+        ],
+        "vvk1": [
+          "VL-EQ-HV-003"
+        ]
+      }
+    },
+    "canonicalAppSnapshot": {
+      "repository": "DomEnota-hub/Test-",
+      "commit": "8b1fffb7f3e28ae489b9b037f46f4b02be1e3253",
+      "version": "1.2.2-dev13",
+      "buildRule": "RailBrakeCalculator.zip + patch/",
+      "verifiedFiles": {
+        "Vl80sObservationCatalog.kt": "a5d337adfda22161cc31779a93fdc04e18f5ad31",
+        "InteractiveSchematics.kt": "2dd927c6ede60d63482a88f0df811f837a15d718",
+        "DiagnosticRepository.kt": "9598037aa9964992bfb06dd15ca2bbd6f8cafc9b",
+        "DiagnosticCatalogRepository.kt": "bfd614d05bd044a46c6cbf125c52d1706a5fd423",
+        "KnowledgeRepository.kt": "ef71d65a1903226a4b4c4743d6c497d3613d0dc9"
+      },
+      "note": "Stage 2 rechecked against canonical dev13. Legacy equipment catalog and layout/electrical-pneumatic interactive layer identities were verified on the pinned commit; current knowledge-base hotspot detail articles are generated from the same hotspot IDs."
+    }
+  },
+  "note": "Original catalog status and source claims are donor data, not current approval."
+}

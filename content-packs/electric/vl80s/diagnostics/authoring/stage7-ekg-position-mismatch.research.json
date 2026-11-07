@@ -1,0 +1,720 @@
+{
+  "schemaVersion": "diagnostic-stage7-source-first/1",
+  "stage": "7/51",
+  "scenarioId": "vl80s.diag.ekg-position-mismatch",
+  "originalId": "ekg-position-mismatch",
+  "canonicalGroup": "EKG_INDICATION_VS_ACTUAL_POSITION",
+  "mustRemainDistinctFrom": [
+    "vl80s.diag.ekg-stuck",
+    "vl80s.diag.ekg-slow-transition"
+  ],
+  "title": "Положение ЭКГ не соответствует указателю",
+  "authoringProfileId": "vl80s-general",
+  "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "donorLayer": "DiagnosticExtendedCatalog.kt",
+  "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+  "sourceRecords": {
+    "donorSeed": {
+      "sourceType": "PINNED_DONOR_OFFLINE_CATALOG",
+      "repository": "DomEnota-hub/Test-",
+      "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+      "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+      "sourcePointer": "Seed(\"ekg-position-mismatch\")",
+      "excerptFields": {
+        "category": "Тяга",
+        "summary": "Фактическое или звуковое состояние группового переключателя расходится с индикацией.",
+        "equipment": "ЭКГ, сельсин/указатель, цепь контроля",
+        "signs": "разная позиция по секциям, нет подтверждения",
+        "danger": "коммутация при неопределённой позиции"
+      },
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "operationalProcedureImported": false
+    },
+    "manual1990": {
+      "sourceType": "HISTORICAL_OPERATION_AND_MAINTENANCE_MANUAL",
+      "title": "Васько Н. М., Девятков А. С., Кучеров А. Ф. и др. Электровоз ВЛ80С. Руководство по эксплуатации, 2-е изд., 1990",
+      "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+      "isbn": "5-277-01048-3",
+      "publishedYear": 1990,
+      "verifiedLocators": [
+        "§50 «Указатель позиций», печ. стр. 140–141",
+        "§50 «Указатель позиций», печ. стр. 140–141"
+      ],
+      "sourceTextLocated": true,
+      "currentActionAuthorityVerified": false,
+      "exactInstalledEquipmentVerified": false,
+      "completeModernEditionValidated": false,
+      "operationalProcedureImported": false
+    }
+  },
+  "historicalClaims": [
+    {
+      "claimId": "S7-EKG-1990-01",
+      "sourceId": "manual1990",
+      "sourcePointer": "§50 «Указатель позиций», печ. стр. 140–141",
+      "scope": "HISTORICAL_INDICATOR_SIGNAL_CHAIN",
+      "claim": "Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции.",
+      "historicalTextLocated": true,
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false,
+      "operationalSteps": []
+    },
+    {
+      "claimId": "S7-EKG-1990-02",
+      "sourceId": "manual1990",
+      "sourcePointer": "§50 «Указатель позиций», печ. стр. 140–141",
+      "scope": "HISTORICAL_INTERCHANGEABLE_INDICATOR_VARIANTS",
+      "claim": "УП-1 описан для номеров начиная с 1897, но прямо указан как взаимозаменяемый с УП-5; номер не доказывает фактическую установку.",
+      "historicalTextLocated": true,
+      "provesCurrentEquipment": false,
+      "provesFaultCause": false,
+      "authorizesAction": false,
+      "operationalSteps": []
+    }
+  ],
+  "reportedSummary": "Фактическое или звуковое состояние группового переключателя расходится с индикацией.",
+  "reportedDanger": "коммутация при неопределённой позиции",
+  "reportedEquipment": "ЭКГ, сельсин/указатель, цепь контроля",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "executable": false,
+  "sourceAuthorityVerified": false,
+  "exactInstalledVariantConfirmed": false,
+  "technicalClaimsReviewed": false,
+  "substantiveSafetyReviewed": false,
+  "observationOnly": true,
+  "warningGate": {
+    "default": "HIDDEN",
+    "extendedEnabled": true,
+    "warningReadToEnd": true,
+    "warningAcknowledged": true,
+    "warningGrantsActionAuthority": false
+  },
+  "versions": {
+    "SHORT": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "s7-ekg-position-mismatch-short-q0",
+      "nodes": [
+        {
+          "id": "s7-ekg-position-mismatch-short-q0",
+          "type": "QUESTION",
+          "text": "В сохранённом сообщении описано несоответствие указателя другому уже имеющемуся подтверждению позиции?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-short-yes0",
+            "NO": "s7-ekg-position-mismatch-short-q1",
+            "UNKNOWN": "s7-ekg-position-mismatch-short-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-short-yes0",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записано рассогласование признаков; фактическое положение механизма не доказано.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-short-q1",
+          "type": "QUESTION",
+          "text": "В записи отмечены разные показания позиций по секциям?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-short-yes1",
+            "NO": "s7-ekg-position-mismatch-short-unresolved",
+            "UNKNOWN": "s7-ekg-position-mismatch-short-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-short-yes1",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксировано межсекционное различие показаний, а не доказанное механическое рассогласование.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-short-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-short-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "short-ekg-position-mismatch-donor",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-position-mismatch\")",
+          "approachFocus": "DONOR_REPORTED_SYMPTOM_SHORT",
+          "approachSummary": "Отдельная фиксация исходного симптома без технической причинности.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-short-ekg-position-mismatch-donor-q0",
+          "nodes": [
+            {
+              "id": "s7-short-ekg-position-mismatch-donor-q0",
+              "type": "QUESTION",
+              "text": "Сохранён ли в исходной записи симптом «Положение ЭКГ не соответствует указателю» без подтверждения причины?",
+              "responses": {
+                "YES": "s7-short-ekg-position-mismatch-donor-yes0",
+                "NO": "s7-short-ekg-position-mismatch-donor-unresolved",
+                "UNKNOWN": "s7-short-ekg-position-mismatch-donor-stop"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-donor-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник фиксирует только симптом, а не подтверждённую причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-donor-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-donor-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "short-ekg-position-mismatch-historical",
+          "sourceId": "manual1990",
+          "sourcePointer": "§50 «Указатель позиций», печ. стр. 140–141",
+          "claimId": "S7-EKG-1990-01",
+          "approachFocus": "SHORT_HISTORICAL_INDICATOR_SIGNAL_CHAIN",
+          "approachSummary": "Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-short-ekg-position-mismatch-historical-q0",
+          "nodes": [
+            {
+              "id": "s7-short-ekg-position-mismatch-historical-q0",
+              "type": "QUESTION",
+              "text": "Есть ли в источнике прямое описание предмета: Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции.",
+              "responses": {
+                "YES": "s7-short-ekg-position-mismatch-historical-yes0",
+                "NO": "s7-short-ekg-position-mismatch-historical-unresolved",
+                "UNKNOWN": "s7-short-ekg-position-mismatch-historical-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-historical-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторический контекст: Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции. Это не диагноз и не разрешение на действие.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-historical-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-short-ekg-position-mismatch-historical-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    },
+    "DETAILED": {
+      "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+      "startNodeId": "s7-ekg-position-mismatch-detailed-q0",
+      "nodes": [
+        {
+          "id": "s7-ekg-position-mismatch-detailed-q0",
+          "type": "QUESTION",
+          "text": "Есть ли независимое ранее зафиксированное подтверждение фактической позиции, отличное от показания указателя?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-detailed-yes0",
+            "NO": "s7-ekg-position-mismatch-detailed-q1",
+            "UNKNOWN": "s7-ekg-position-mismatch-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-yes0",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наличие двух различных свидетельств ещё не устанавливает, какое из них достоверно.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-q1",
+          "type": "QUESTION",
+          "text": "Отмечено ли различие показаний указателей между секциями?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-detailed-yes1",
+            "NO": "s7-ekg-position-mismatch-detailed-q2",
+            "UNKNOWN": "s7-ekg-position-mismatch-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-yes1",
+          "type": "OBSERVATION_REPORT",
+          "text": "Разные показания не являются доказательством механической разницы позиций.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-q2",
+          "type": "QUESTION",
+          "text": "В записи упоминается нестабильная или скачущая индикация без подтверждённого движения ЭКГ?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-detailed-yes2",
+            "NO": "s7-ekg-position-mismatch-detailed-q3",
+            "UNKNOWN": "s7-ekg-position-mismatch-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-yes2",
+          "type": "OBSERVATION_REPORT",
+          "text": "Индикационный признак не равен подтверждённому движению механизма.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-q3",
+          "type": "QUESTION",
+          "text": "Описано ли расхождение ранее услышанного звука с отображённой позицией?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-detailed-yes3",
+            "NO": "s7-ekg-position-mismatch-detailed-q4",
+            "UNKNOWN": "s7-ekg-position-mismatch-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-yes3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Звуковой признак не является независимым подтверждением точной позиции.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-q4",
+          "type": "QUESTION",
+          "text": "Есть ли запись о защитном отключении одновременно с несоответствием показаний?",
+          "responses": {
+            "YES": "s7-ekg-position-mismatch-detailed-yes4",
+            "NO": "s7-ekg-position-mismatch-detailed-unresolved",
+            "UNKNOWN": "s7-ekg-position-mismatch-detailed-stop"
+          },
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-yes4",
+          "type": "OBSERVATION_REPORT",
+          "text": "Совпадение событий по времени не определяет причину защиты и не разрешает команды ЭКГ.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7-ekg-position-mismatch-detailed-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+          "responses": {},
+          "sourceRefs": [
+            "donorSeed"
+          ],
+          "operationRequested": false,
+          "causeConfirmed": false
+        }
+      ],
+      "independentTechnicalReview": "REQUIRED",
+      "operatingInstructionsIncluded": false,
+      "extendedRoutes": [
+        {
+          "approachId": "detailed-ekg-position-mismatch-donor",
+          "sourceId": "donorSeed",
+          "sourcePointer": "Seed(\"ekg-position-mismatch\")",
+          "approachFocus": "DONOR_REPORTED_SYMPTOM_DETAILED",
+          "approachSummary": "Отдельная фиксация исходного симптома без технической причинности.",
+          "origin": "PINNED_DONOR_OFFLINE_REFERENCE",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-ekg-position-mismatch-donor-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-ekg-position-mismatch-donor-q0",
+              "type": "QUESTION",
+              "text": "Сохранён ли в исходной записи симптом «Положение ЭКГ не соответствует указателю» без подтверждения причины?",
+              "responses": {
+                "YES": "s7-detailed-ekg-position-mismatch-donor-yes0",
+                "NO": "s7-detailed-ekg-position-mismatch-donor-unresolved",
+                "UNKNOWN": "s7-detailed-ekg-position-mismatch-donor-stop"
+              },
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-donor-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Источник фиксирует только симптом, а не подтверждённую причину.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-donor-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-donor-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "donorSeed"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-ekg-position-mismatch-historical-a",
+          "sourceId": "manual1990",
+          "sourcePointer": "§50 «Указатель позиций», печ. стр. 140–141",
+          "claimId": "S7-EKG-1990-01",
+          "approachFocus": "DETAILED_HISTORICAL_INDICATOR_SIGNAL_CHAIN",
+          "approachSummary": "Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-ekg-position-mismatch-historical-a-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-a-q0",
+              "type": "QUESTION",
+              "text": "В архивной публикации описан отдельный технический элемент, но отсутствует документально установленная связь с конкретной секцией: Руководство описывает взаимодействие сельсина-датчика и сельсина-приёмника при индикации позиции.",
+              "responses": {
+                "YES": "s7-detailed-ekg-position-mismatch-historical-a-yes0",
+                "NO": "s7-detailed-ekg-position-mismatch-historical-a-unresolved",
+                "UNKNOWN": "s7-detailed-ekg-position-mismatch-historical-a-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-a-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Историческое описание подтверждает лишь наличие такого элемента в схеме издания 1990 года. Не доказаны его фактическая установка, причина текущего симптома и право на вмешательство.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-a-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-a-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        },
+        {
+          "approachId": "detailed-ekg-position-mismatch-historical-b",
+          "sourceId": "manual1990",
+          "sourcePointer": "§50 «Указатель позиций», печ. стр. 140–141",
+          "claimId": "S7-EKG-1990-02",
+          "approachFocus": "DETAILED_HISTORICAL_INTERCHANGEABLE_INDICATOR_VARIANTS",
+          "approachSummary": "УП-1 описан для номеров начиная с 1897, но прямо указан как взаимозаменяемый с УП-5; номер не доказывает фактическую установку.",
+          "origin": "HISTORICAL_OPERATING_MANUAL_1990",
+          "publicationStatus": "CANDIDATE",
+          "actionDisposition": "INFORMATION_ONLY",
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "technicalClaimReview": "REQUIRES_EXPERT",
+          "applicability": {
+            "profileId": "vl80s-general",
+            "exactEquipmentProfileConfirmed": false,
+            "limitation": "Исполнение, модернизация, схема и фактически установленное оборудование неизвестны."
+          },
+          "visibility": {
+            "extendedEnabled": true,
+            "warningReadToEnd": true,
+            "warningAcknowledged": true
+          },
+          "startNodeId": "s7-detailed-ekg-position-mismatch-historical-b-q0",
+          "nodes": [
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-b-q0",
+              "type": "QUESTION",
+              "text": "В архивной публикации описан отдельный технический элемент, но отсутствует документально установленная связь с конкретной секцией: УП-1 описан для номеров начиная с 1897, но прямо указан как взаимозаменяемый с УП-5; номер не доказывает фактическую установку.",
+              "responses": {
+                "YES": "s7-detailed-ekg-position-mismatch-historical-b-yes0",
+                "NO": "s7-detailed-ekg-position-mismatch-historical-b-unresolved",
+                "UNKNOWN": "s7-detailed-ekg-position-mismatch-historical-b-stop"
+              },
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-b-yes0",
+              "type": "OBSERVATION_REPORT",
+              "text": "Историческое описание подтверждает лишь наличие такого элемента в схеме издания 1990 года. Не доказаны его фактическая установка, причина текущего симптома и право на вмешательство.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-b-unresolved",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исходных признаков недостаточно для выбора интерпретации. Не делать вывод о неисправном аппарате.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "s7-detailed-ekg-position-mismatch-historical-b-stop",
+              "type": "STOP",
+              "text": "STOP: неизвестные исходные данные не разрешают диагностику, действия или вывод о безопасном состоянии.",
+              "responses": {},
+              "sourceRefs": [
+                "manual1990"
+              ],
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "researchReviewStatus": "SOURCE_FIRST_RESEARCH_NOT_CURRENT_ACTION_AUTHORITY",
+  "remainingVerification": [
+    "фактическая секция, исполнение и модернизации",
+    "точная заводская схема установленного оборудования",
+    "раздельная оценка исторических технических утверждений и симптома",
+    "действующие местные инструкции и роль",
+    "независимая safety-проверка",
+    "финальный device QA после тестового выпуска"
+  ]
+}

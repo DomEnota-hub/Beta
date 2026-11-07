@@ -1,0 +1,1960 @@
+{
+  "ledger": {
+    "schemaVersion": "stage16-traffic-safety/1",
+    "date": "2026-11-05",
+    "stage": "16/51",
+    "baseHead": "32474803e9b919db47d5dc8269f74034a9007a59",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.alsn-code-loss",
+      "vl80s.diag.alsn-epk",
+      "vl80s.diag.speed-indication-fault",
+      "vl80s.diag.vigilance-control-fault"
+    ],
+    "categorySourceCount": 4,
+    "remainingCategoryIds": [],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "sourceReview": "1990 historical manual printed pages 21, 180-181, 234, 374 verified for construction; modern operating rules and installed equipment UNKNOWN",
+    "negativeMutationCount": 140
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage16-traffic-safety/1",
+      "stage": "16/51",
+      "scenarioId": "vl80s.diag.alsn-code-loss",
+      "originalId": "alsn-code-loss",
+      "category": "Безопасность движения",
+      "title": "Пропал или нестабилен код АЛСН",
+      "summary": "Показание локомотивного светофора неожиданно изменилось или мигает.",
+      "canonicalBoundary": "Нестабильность или исчезновение кода на локомотивном светофоре рассматривается как наблюдение о сигнализации, а не как доказанный отказ приёмной катушки, дешифратора, фильтра или пути. Не смешивать с ЭПК и контролем бдительности.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=alsn-code-loss]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 180–181, рис. 231: аппаратура и светофор локомотивной сигнализации в кабине",
+            "1990, печ. стр. 234, рис. 261: схема локомотивной сигнализации",
+            "1990, печ. стр. 234: связь сигнализации с ЭПК и реле 267"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы запрещающее показание, экстренное воздействие или другой опасный сигнал?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы время, участок, показание и условия без новых проверок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы запрещающее показание, экстренное воздействие или другой опасный сигнал?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксированы время, участок, показание и условия без новых проверок?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи указано, какой именно сигнал изменялся, без интерпретации причины?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в старых данных отделено изменение кода от факта срабатывания ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что показание не доказывает неисправность путевого кода?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано, что локомотивный светофор и аппаратура не отождествлены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что достоверность конкретного исполнения АЛСН не установлена?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, что эксплуатационное решение и источник сбоя остаются неподтверждёнными?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "alsn-code-loss-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: аппаратура и светофор локомотивной сигнализации в кабине",
+          "text": "Архивная схема выделяет локомотивную сигнализацию как отдельный комплекс; нестабильный код не устанавливает место неисправности.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-code-loss-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234, рис. 261: схема локомотивной сигнализации",
+          "text": "На рис. 231 локомотивный светофор и аппаратура сигнализации показаны раздельно; это не подтверждает исправность любого из них.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-code-loss-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: связь сигнализации с ЭПК и реле 267",
+          "text": "На рис. 261 приведены электрические связи комплекса; по внешнему показанию нельзя делать вывод о конкретном проводе или фильтре.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-code-loss-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: аппаратура и светофор локомотивной сигнализации в кабине",
+          "text": "Связь с ЭПК и реле 267 описана отдельно от визуального признака смены кода; их срабатывание нельзя предполагать автоматически.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-code-loss-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234, рис. 261: схема локомотивной сигнализации",
+          "text": "Архив не даёт современного допуска продолжать движение при нестабильном коде; эксплуатационное решение не формируется.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Архивная схема выделяет локомотивную сигнализацию как отдельный комплекс; нестабильный код не устанавливает место неисправности.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 180–181, рис. 231: аппаратура и светофор локомотивной сигнализации в кабине",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "На рис. 231 локомотивный светофор и аппаратура сигнализации показаны раздельно; это не подтверждает исправность любого из них.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234, рис. 261: схема локомотивной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "На рис. 261 приведены электрические связи комплекса; по внешнему показанию нельзя делать вывод о конкретном проводе или фильтре.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234: связь сигнализации с ЭПК и реле 267",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года показывает аппаратуру локомотивной сигнализации и её связи, но не устанавливает по миганию показания источник сбоя, исправность путевого кода, точное исполнение комплекса или действующий порядок действий. Буквальные вопросы донора и современная инструкция неизвестны.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage16-traffic-safety/1",
+      "stage": "16/51",
+      "scenarioId": "vl80s.diag.alsn-epk",
+      "originalId": "alsn-epk",
+      "category": "Безопасность движения",
+      "title": "Неисправность АЛСН, ЭПК или контроля бдительности",
+      "summary": "Пропадают коды, показания не соответствуют ожидаемым, срабатывает ЭПК либо комплекс не проходит проверку.",
+      "canonicalBoundary": "Комплексный донорский сценарий АЛСН/ЭПК/бдительности остаётся самостоятельной широкой карточкой сопоставления уже записанных признаков, но не заменяет узкие карточки пропадания кода, скоростемера и контроля бдительности. Срабатывание ЭПК не доказывает дефект самого клапана.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticRepository.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=alsn-epk]",
+          "sourceOriginLayer": "DiagnosticRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 180–181, рис. 231: ЭПК, рукоятка бдительности, скоростемер и сигнализация как разные элементы",
+            "1990, печ. стр. 234: описание воздействия ЭПК и реле 267",
+            "1990, печ. стр. 234, рис. 261: цепи локомотивной сигнализации"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано экстренное торможение, запрещающий сигнал или неожиданное воздействие ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, участок, вид сигнала и реакция комплекса по прежнему наблюдению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано экстренное торможение, запрещающий сигнал или неожиданное воздействие ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, участок, вид сигнала и реакция комплекса по прежнему наблюдению?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи разделены пропадание кода, воздействие ЭПК и отказ контроля бдительности?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно зафиксирован факт торможения, а не предположение о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, что срабатывание ЭПК не равно его неисправности?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи отсутствует смешение с отдельной карточкой утечки ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указано, что состояние современной аппаратуры и её модификация неизвестны?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, что нельзя определять разрешение на движение из архивной схемы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "alsn-epk-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: ЭПК, рукоятка бдительности, скоростемер и сигнализация как разные элементы",
+          "text": "Архив отдельно показывает аппаратуру сигнализации, ЭПК и рукоятку бдительности; объединённое название донора не подтверждает единую причину.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-epk-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: описание воздействия ЭПК и реле 267",
+          "text": "Описание 1990 года связывает срабатывание ЭПК с пневматическим торможением и снятием тяги; это историческое описание, не алгоритм вмешательства.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-epk-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234, рис. 261: цепи локомотивной сигнализации",
+          "text": "Историческое упоминание перемычки в цепи ЭПК не переносится и не разрешает обход защиты.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-epk-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: ЭПК, рукоятка бдительности, скоростемер и сигнализация как разные элементы",
+          "text": "Рис. 261 отражает схему своего времени; фактическая комплектация и модернизации не подтверждены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "alsn-epk-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: описание воздействия ЭПК и реле 267",
+          "text": "Карточка остаётся обзорной: конкретный отказ и допустимость действий не выводятся из совместного симптома.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Архив отдельно показывает аппаратуру сигнализации, ЭПК и рукоятку бдительности; объединённое название донора не подтверждает единую причину.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 180–181, рис. 231: ЭПК, рукоятка бдительности, скоростемер и сигнализация как разные элементы",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Описание 1990 года связывает срабатывание ЭПК с пневматическим торможением и снятием тяги; это историческое описание, не алгоритм вмешательства.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234: описание воздействия ЭПК и реле 267",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Историческое упоминание перемычки в цепи ЭПК не переносится и не разрешает обход защиты.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234, рис. 261: цепи локомотивной сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "В архиве 1990 года ЭПК связан с торможением и снятием тяги, однако схема содержит историческое упоминание перемычки, которое запрещено переносить как процедуру. Невозможно подтвердить по донорскому summary, какое звено комплекса неисправно; действующие правила, модификация, точные вопросы и полномочия UNKNOWN.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage16-traffic-safety/1",
+      "stage": "16/51",
+      "scenarioId": "vl80s.diag.speed-indication-fault",
+      "originalId": "speed-indication-fault",
+      "category": "Безопасность движения",
+      "title": "Неисправна индикация скорости",
+      "summary": "Показание отсутствует, скачет или противоречит фактическому движению.",
+      "canonicalBoundary": "Отсутствие, скачки или противоречие показаний скорости относятся к достоверности индикации и регистрации, но не доказывают отказ механического привода, прибора, электрической цепи или датчика модернизированной системы. Не смешивать с изменением кода АЛСН.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=speed-indication-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 21, рис. 22: привод скоростемера ЗСЛ2М-150",
+            "1990, печ. стр. 180–181, рис. 231–232: скоростемер и указатель скорости на посту",
+            "1990, печ. стр. 234: контакт скоростемера в схеме сигнализации"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана недостоверная скорость в движении или другое опасное расхождение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция, тип показания и обстоятельства без повторного движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана недостоверная скорость в движении или другое опасное расхождение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны время, секция, тип показания и обстоятельства без повторного движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, какой именно прибор показывал скорость и на какой секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделено отсутствие показания от его скачков или расхождения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указано, что фактическая скорость не измерялась заново?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи различены механический привод и сам прибор без предположения о дефекте?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечена неизвестная модернизация скоростемера или системы регистрации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано, что точность показаний и эксплуатационный допуск не установлены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "speed-indication-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 21, рис. 22: привод скоростемера ЗСЛ2М-150",
+          "text": "Руководство 1990 года описывает механический привод скоростемера; это не подтверждает, что такой привод установлен на рассматриваемом локомотиве.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "speed-indication-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231–232: скоростемер и указатель скорости на посту",
+          "text": "На посту машиниста показаны скоростемер и указатель скорости, но совпадение их показаний не проверено.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "speed-indication-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: контакт скоростемера в схеме сигнализации",
+          "text": "В исторической схеме сигнализации присутствует контакт скоростемера; отсутствие показаний не доказывает неисправность этого контакта.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "speed-indication-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 21, рис. 22: привод скоростемера ЗСЛ2М-150",
+          "text": "Отдельный механический привод и прибор могут иметь разные неисправности; удалённый диагноз по описанию невозможен.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "speed-indication-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231–232: скоростемер и указатель скорости на посту",
+          "text": "Нормы допустимой погрешности и порядок движения не заимствуются из архивной конструкции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Руководство 1990 года описывает механический привод скоростемера; это не подтверждает, что такой привод установлен на рассматриваемом локомотиве.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 21, рис. 22: привод скоростемера ЗСЛ2М-150",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "На посту машиниста показаны скоростемер и указатель скорости, но совпадение их показаний не проверено.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 180–181, рис. 231–232: скоростемер и указатель скорости на посту",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "В исторической схеме сигнализации присутствует контакт скоростемера; отсутствие показаний не доказывает неисправность этого контакта.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234: контакт скоростемера в схеме сигнализации",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года описывает механический привод ЗСЛ2М-150, но реальное установленное устройство, модернизации и независимый эталон скорости не подтверждены. Нельзя по старому устройству вывести причину скачка показаний, исправность контроля скорости или разрешение на движение; современные процедуры и буквальные вопросы донора неизвестны.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage16-traffic-safety/1",
+      "stage": "16/51",
+      "scenarioId": "vl80s.diag.vigilance-control-fault",
+      "originalId": "vigilance-control-fault",
+      "category": "Безопасность движения",
+      "title": "Неисправность контроля бдительности",
+      "summary": "Система не принимает штатное подтверждение либо воздействует неожиданно.",
+      "canonicalBoundary": "Отказ приёма штатного подтверждения бдительности или неожиданное воздействие рассматриваются как отдельный признак устройства контроля бдительности, не как доказанный отказ рукоятки, ЭПК, сигнализации либо скоростемера. Комплексный сценарий АЛСН/ЭПК не заменяет эту узкую карточку.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=vigilance-control-fault]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 180–181, рис. 231: рукоятка бдительности и ЭПК на посту машиниста",
+            "1990, печ. стр. 234: цепи сигнализации и воздействие ЭПК",
+            "1990, печ. стр. 374, приложение 2: рукоятка бдительности РБ-80 и приборы АЛСН"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Действующие требования для данной неисправности не подтверждены по первичным документам; архивное руководство не заменяет их."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано неожиданное торможение, отсутствие контроля или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны время, участок, тип предупреждения и реакция по старой записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано неожиданное торможение, отсутствие контроля или иной опасный признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указаны время, участок, тип предупреждения и реакция по старой записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, какое именно штатное подтверждение не принималось по старой записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделено непринятие подтверждения от неожиданного воздействия ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: указано, что тип рукоятки или устройства контроля не установлен документально?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи нет вывода о неисправности конкретного контакта или реле?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно описан вид сигнала и реакция системы без нового теста?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, что действующие интервалы и эксплуатационный допуск неизвестны?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать сведения ответственному, без новых действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только запись ранее наблюдавшихся признаков; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: наблюдений недостаточно; запрещены новые проверки и вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "vigilance-control-fault-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: рукоятка бдительности и ЭПК на посту машиниста",
+          "text": "На историческом рисунке рукоятка бдительности показана отдельно от ЭПК; один признак не доказывает неисправность другого.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vigilance-control-fault-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: цепи сигнализации и воздействие ЭПК",
+          "text": "Руководство 1990 года перечисляет РБ-80, но конкретное установленное устройство и его модификация не подтверждены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vigilance-control-fault-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 374, приложение 2: рукоятка бдительности РБ-80 и приборы АЛСН",
+          "text": "Архивное описание связи ЭПК с торможением не позволяет определить причину отказа приёма подтверждения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vigilance-control-fault-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 180–181, рис. 231: рукоятка бдительности и ЭПК на посту машиниста",
+          "text": "Срабатывание системы и неверное показание сигнала не являются одним и тем же наблюдением.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vigilance-control-fault-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 234: цепи сигнализации и воздействие ЭПК",
+          "text": "Уставки, временные интервалы и порядок проверки бдительности не импортируются из архива.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "На историческом рисунке рукоятка бдительности показана отдельно от ЭПК; один признак не доказывает неисправность другого.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 180–181, рис. 231: рукоятка бдительности и ЭПК на посту машиниста",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Руководство 1990 года перечисляет РБ-80, но конкретное установленное устройство и его модификация не подтверждены.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 234: цепи сигнализации и воздействие ЭПК",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Архивное описание связи ЭПК с торможением не позволяет определить причину отказа приёма подтверждения.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 374, приложение 2: рукоятка бдительности РБ-80 и приборы АЛСН",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года показывает рукоятку бдительности РБ-80 и ЭПК, но не подтверждает конкретную современную схему контроля, временные уставки, причину непринятия подтверждения или допустимость дальнейшей работы. Точные вопросы сжатого донора и действующая инструкция по безопасности движения не проверены.",
+      "originalQuestionTextVerified": false
+    }
+  ]
+}

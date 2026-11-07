@@ -1,0 +1,2027 @@
+{
+  "ledger": {
+    "schemaVersion": "stage17-mechanical-rheostatic/1",
+    "date": "2026-11-05",
+    "stage": "17/51",
+    "baseHead": "54447be4010adeab9c82983a31957899c9a0e49a",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.ext-coupler-damage",
+      "vl80s.diag.rheostatic-brake",
+      "vl80s.diag.rheostatic-resistor-overheat",
+      "vl80s.diag.rheostatic-rpt-trip"
+    ],
+    "categorySourceCounts": {
+      "Механическая часть": 1,
+      "Электрическое торможение": 3
+    },
+    "remainingCategoryIds": [],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "sourceReview": "1990 manual printed pp 6,15,17,124-125,189,233,245,279,442,446; practical RPT setpoint conflict unresolved; modern profile and procedures UNKNOWN",
+    "negativeMutationCount": 140
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage17-mechanical-rheostatic/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.ext-coupler-damage",
+      "originalId": "ext-coupler-damage",
+      "category": "Механическая часть",
+      "title": "Повреждение автосцепки или ударно-тягового устройства",
+      "summary": "После удара/рывка есть подозрение на трещину, перекос, ненормальное положение или неисправность сцепления.",
+      "canonicalBoundary": "Повреждение автосцепки или ударно-тягового устройства после рывка не равно разовому удару постороннего предмета под локомотивом; внешние признаки не подтверждают целостность замка, тягового хомута или рамы и не разрешают движение.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansionRepository.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=ext-coupler-damage]",
+          "sourceOriginLayer": "DiagnosticExpansionRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 6: соединение секций автосцепкой СА-3",
+            "1990, печ. стр. 15: рама кузова и коробка автосцепки",
+            "1990, печ. стр. 17, рис. 14: автосцепка и предохранительное устройство",
+            "1990, печ. стр. 17: передача продольных растягивающих и сжимающих усилий"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архивная конструкция и схемы НЕ подтверждают действующие нормы, установленное исполнение, причину неисправности или право на действия."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Современные инструкции, точное исполнение и профильные ограничения не подтверждены; UNKNOWN/BLOCKED, операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: после удара есть ранее зафиксированный признак расцепления, перекоса или угрозы целостности сцепки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: описанный признак относится к автосцепке или ударно-тяговому узлу, а не только к удару снизу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: после удара есть ранее зафиксированный признак расцепления, перекоса или угрозы целостности сцепки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: описанный признак относится к автосцепке или ударно-тяговому узлу, а не только к удару снизу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть запись, с какой стороны и на какой секции обнаружен признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в исходной записи различены автосцепка и рама буферного бруса?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть отдельное документальное указание, что повреждение НЕ локализовано?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сведения о предохранительном устройстве не приняты за подтверждение исправности?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отсутствие трещины на записи не приравнено к отсутствию скрытого дефекта?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано, что дальнейшая эксплуатация не разрешается исследовательской карточкой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ext-coupler-damage-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 6: соединение секций автосцепкой СА-3",
+          "text": "СА-3 связывает секции; сам факт сцепления не доказывает исправность узла после удара.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ext-coupler-damage-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 15: рама кузова и коробка автосцепки",
+          "text": "Коробка автосцепки является частью силовой структуры кузова; признак перекоса не локализует повреждение.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ext-coupler-damage-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 17, рис. 14: автосцепка и предохранительное устройство",
+          "text": "Архивный рис. 14 описывает конструкцию, но не является протоколом приёмки конкретного узла.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ext-coupler-damage-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 17: передача продольных растягивающих и сжимающих усилий",
+          "text": "Передача продольных усилий объясняет опасность рывка, но не подтверждает причину повреждения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "ext-coupler-damage-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 6: соединение секций автосцепкой СА-3",
+          "text": "Историческая конструкция не даёт права на проверку сцепления, расцепление, движение или ремонт.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "СА-3 связывает секции; сам факт сцепления не доказывает исправность узла после удара.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 6: соединение секций автосцепкой СА-3",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Коробка автосцепки является частью силовой структуры кузова; признак перекоса не локализует повреждение.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 15: рама кузова и коробка автосцепки",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Архивный рис. 14 описывает конструкцию, но не является протоколом приёмки конкретного узла.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 17, рис. 14: автосцепка и предохранительное устройство",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH",
+          "COUPLER_INTERVENTION",
+          "UNCOUPLING",
+          "BRAKE_RETRY",
+          "PROTECTION_RESET",
+          "RESISTOR_ACCESS",
+          "FAN_TEST",
+          "UNDERFRAME_ENTRY",
+          "TRACTION_TEST"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор имеет гранулярную карточку с приёмочным пунктом VL80-ACC-010, но не имеет канонического Equipment ID автосцепки. Руководство 1990 года описывает СА-3 и передачу усилий, но не удостоверяет состояние конкретного узла или действующий допуск. Условия осмотра и нормы 2026 UNKNOWN.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-mechanical-rheostatic/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.rheostatic-brake",
+      "originalId": "rheostatic-brake",
+      "category": "Электрическое торможение",
+      "title": "Не собирается или срывается реостатное торможение",
+      "summary": "Тормозная схема не переходит в режим, нет/нестабильна тормозная сила либо включается пневматическое замещение.",
+      "canonicalBoundary": "Общий отказ сборки, срыв или отсутствие тормозной силы при реостатном торможении не означает автоматически срабатывание РПТ, перегрев резисторов или отказ пневматического тормоза; пневматическое замещение требует самостоятельного источникового разбора.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticRepository.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=rheostatic-brake]",
+          "sourceOriginLayer": "DiagnosticRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 124–125: БУРТ-125, датчики и блоки управления реостатным торможением",
+            "1990, печ. стр. 125: индивидуальные тормозные резисторы и ВУВ",
+            "1990, печ. стр. 233: сбор цепей режима электрического торможения",
+            "1990, печ. стр. 245: пневматическое замещение при срыве электрического тормоза"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архивная конструкция и схемы НЕ подтверждают действующие нормы, установленное исполнение, причину неисправности или право на действия."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Современные инструкции, точное исполнение и профильные ограничения не подтверждены; UNKNOWN/BLOCKED, операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записан опасный срыв электрического тормоза или неожиданная потеря тормозной силы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи отмечен общий отказ реостатного торможения, а не только отдельная защита РПТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записан опасный срыв электрического тормоза или неожиданная потеря тормозной силы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи отмечен общий отказ реостатного торможения, а не только отдельная защита РПТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: раздельно зафиксированы сбор цепей и наличие тормозной силы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отмечено, был ли признак пневматического замещения, без вывода о причине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана секция, на которой проявился признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: историческая конфигурация БУРТ/ВУВ отделена от фактически установленной?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отказ охлаждения резисторов не выдан за доказанный отказ БУРТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: подтверждено, что карточка не предписывает повторное торможение и переключения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "rheostatic-brake-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 124–125: БУРТ-125, датчики и блоки управления реостатным торможением",
+          "text": "БУРТ-125 исторически объединяет несколько функциональных блоков; один симптом не локализует отказ.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-brake-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 125: индивидуальные тормозные резисторы и ВУВ",
+          "text": "Тяговые двигатели в архивной схеме работают на индивидуальные тормозные резисторы; это не инструкция по их проверке.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-brake-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 233: сбор цепей режима электрического торможения",
+          "text": "Сбор цепей торможения отличается от формирования тормозной силы; отсутствие силы не доказывает несборку.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-brake-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 245: пневматическое замещение при срыве электрического тормоза",
+          "text": "Замещение пневматическим тормозом исторически связано со срывом электрического; сам факт замещения не устанавливает первопричину.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-brake-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 124–125: БУРТ-125, датчики и блоки управления реостатным торможением",
+          "text": "Архивное описание не подтверждает современную конфигурацию ВУВ, БУРТ и разрешение действий.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "БУРТ-125 исторически объединяет несколько функциональных блоков; один симптом не локализует отказ.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 124–125: БУРТ-125, датчики и блоки управления реостатным торможением",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Тяговые двигатели в архивной схеме работают на индивидуальные тормозные резисторы; это не инструкция по их проверке.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 125: индивидуальные тормозные резисторы и ВУВ",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Сбор цепей торможения отличается от формирования тормозной силы; отсутствие силы не доказывает несборку.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 233: сбор цепей режима электрического торможения",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH",
+          "COUPLER_INTERVENTION",
+          "UNCOUPLING",
+          "BRAKE_RETRY",
+          "PROTECTION_RESET",
+          "RESISTOR_ACCESS",
+          "FAN_TEST",
+          "UNDERFRAME_ENTRY",
+          "TRACTION_TEST"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор связывает общую карточку с БУРТ, ВУВ, силовыми цепями и пневматическим замещением; архив 1990 года описывает функциональные узлы, но их фактическое исполнение, секционность и актуальная последовательность работы не подтверждены. Не переносить алгоритм переключений из архива.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-mechanical-rheostatic/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.rheostatic-resistor-overheat",
+      "originalId": "rheostatic-resistor-overheat",
+      "category": "Электрическое торможение",
+      "title": "Перегрев тормозных резисторов или потеря их охлаждения",
+      "summary": "При реостатном торможении появляются запах, дым, необычный нагрев либо защитное отключение, связанное с резисторами и вентиляцией.",
+      "canonicalBoundary": "Перегрев или дым тормозных резисторов и потеря их охлаждения являются отдельным опасным случаем; это не равнозначно общему срыву реостатного торможения, неисправности отдельного мотор-вентилятора либо доказанному срабатыванию РПТ.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=rheostatic-resistor-overheat]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 189: охлаждение тормозных резисторов воздушным потоком",
+            "1990, печ. стр. 189: переключение направления воздуха в режиме торможения",
+            "1990, печ. стр. 125: индивидуальные тормозные резисторы тяговых двигателей",
+            "1990, печ. стр. 245: отдельный механизм срыва и замещения электрического тормоза"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архивная конструкция и схемы НЕ подтверждают действующие нормы, установленное исполнение, причину неисправности или право на действия."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Современные инструкции, точное исполнение и профильные ограничения не подтверждены; UNKNOWN/BLOCKED, операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть ранее зафиксированный дым, запах гари или опасный нагрев у тормозных резисторов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: описан именно резисторный блок или его охлаждение, а не общий отказ вентиляции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть ранее зафиксированный дым, запах гари или опасный нагрев у тормозных резисторов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: описан именно резисторный блок или его охлаждение, а не общий отказ вентиляции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана секция, где наблюдался признак, без дополнительного осмотра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирован признак потери охлаждения отдельно от предполагаемого электрического повреждения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в исходной записи не приписана причина одному вентилятору без подтверждения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: положение заслонок в архиве не принято за факт на данной машине?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: срабатывание РПТ не названо обязательным следствием перегрева?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записано, что дым/нагрев не допускает новых проб торможения и осмотров ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "rheostatic-resistor-overheat-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 189: охлаждение тормозных резисторов воздушным потоком",
+          "text": "Архив связывает охлаждение резисторов с направлением воздушного потока, но не даёт способа безопасной проверки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-resistor-overheat-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 189: переключение направления воздуха в режиме торможения",
+          "text": "Положение заслонки в описании 1990 года не подтверждает её положение на конкретной секции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-resistor-overheat-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 125: индивидуальные тормозные резисторы тяговых двигателей",
+          "text": "Наличие индивидуальных резисторов не позволяет по запаху определить конкретный элемент.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-resistor-overheat-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 245: отдельный механизм срыва и замещения электрического тормоза",
+          "text": "Срыв электрического тормоза и перегрев резистора имеют разные диагностические границы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-resistor-overheat-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 189: охлаждение тормозных резисторов воздушным потоком",
+          "text": "Дым или опасный нагрев требуют STOP; расширение не даёт разрешения на осмотр ВВК и повторное торможение.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Архив связывает охлаждение резисторов с направлением воздушного потока, но не даёт способа безопасной проверки.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 189: охлаждение тормозных резисторов воздушным потоком",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Положение заслонки в описании 1990 года не подтверждает её положение на конкретной секции.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 189: переключение направления воздуха в режиме торможения",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Наличие индивидуальных резисторов не позволяет по запаху определить конкретный элемент.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 125: индивидуальные тормозные резисторы тяговых двигателей",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH",
+          "COUPLER_INTERVENTION",
+          "UNCOUPLING",
+          "BRAKE_RETRY",
+          "PROTECTION_RESET",
+          "RESISTOR_ACCESS",
+          "FAN_TEST",
+          "UNDERFRAME_ENTRY",
+          "TRACTION_TEST"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Руководство 1990 года описывает переключение воздушного потока к тормозным резисторам, но не подтверждает фактическое положение заслонок, исправность вентилятора или причину дыма. Донор связывает карточку с мотор-вентиляторами и аварийным дымом; их нельзя автоматически объединять.",
+      "originalQuestionTextVerified": false
+    },
+    {
+      "schemaVersion": "diagnostic-stage17-mechanical-rheostatic/1",
+      "stage": "17/51",
+      "scenarioId": "vl80s.diag.rheostatic-rpt-trip",
+      "originalId": "rheostatic-rpt-trip",
+      "category": "Электрическое торможение",
+      "title": "Отключились линейные контакторы в реостатном торможении: РПТ",
+      "summary": "Во время электрического торможения отключились линейные контакторы и сработала защита РПТ-1…РПТ-4.",
+      "canonicalBoundary": "Отключение линейных контакторов с документированным срабатыванием РПТ1–РПТ4 при реостатном торможении является отдельным признаком защиты, а не общим отказом электрического тормоза или доказательством перегрева тормозных резисторов.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=rheostatic-rpt-trip]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "1990, печ. стр. 233: РПТ1–РПТ4 в цепи контакторов 46/47 и 51–54",
+            "1990, печ. стр. 279: отдельная строка о срабатывании РПТ в режиме торможения",
+            "1990, прил. 23, печ. стр. 442: РПТ1–РПТ4, тип РТ-465-01",
+            "1990, прил. 28, печ. стр. 446: архивная таблица уставок РПТ"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "scopeLimitation": "Архивная конструкция и схемы НЕ подтверждают действующие нормы, установленное исполнение, причину неисправности или право на действия."
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "relevance": "NOT_VERIFIED_FOR_THIS_SPECIFIC_SYMPTOM"
+        },
+        "currentRequirements": {
+          "kind": "NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false,
+          "notes": "Современные инструкции, точное исполнение и профильные ограничения не подтверждены; UNKNOWN/BLOCKED, операции запрещены."
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: ранее записано срабатывание РПТ при торможении с отключением линейных контакторов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи прямо указан РПТ, а не только исчезновение тормозной силы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: ранее записано срабатывание РПТ при торможении с отключением линейных контакторов?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи прямо указан РПТ, а не только исчезновение тормозной силы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сохранено обозначение конкретного РПТ без подстановки неизвестного номера?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q4",
+                "NO": "q5",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отделены события защиты РПТ от общего отказа БУРТ и ВУВ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно зафиксировано, что перегрев резисторов не доказан?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "q7",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: тип РТ-465-01 не принят за подтверждённый тип на этой секции?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: архивная уставка не представлена как современная норма?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирован запрет повторных включений, перемычек и сброса защиты по исследовательской карточке?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: исходные данные не подтверждены; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный механический или электротормозной признак: STOP; никаких новых проверок и вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ранее записанные признаки; причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: недостаточно источников или данных; никакого повторного включения, осмотра или ремонта.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "rheostatic-rpt-trip-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 233: РПТ1–РПТ4 в цепи контакторов 46/47 и 51–54",
+          "text": "Контакты РПТ в архивной схеме связаны с отключением контакторов электрического тормоза; это не разрешение на повторное включение.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-rpt-trip-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 279: отдельная строка о срабатывании РПТ в режиме торможения",
+          "text": "Таблица неисправностей 1990 года рассматривает РПТ отдельно от общего отсутствия тормозной силы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-rpt-trip-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, прил. 23, печ. стр. 442: РПТ1–РПТ4, тип РТ-465-01",
+          "text": "Обозначение РТ-465-01 относится к архивному исполнению и не доказывает тип на конкретной секции.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-rpt-trip-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, прил. 28, печ. стр. 446: архивная таблица уставок РПТ",
+          "text": "Архивная уставка из приложения не переносится как действующая норма; численный конфликт с практическим конспектом остаётся открытым.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "rheostatic-rpt-trip-ext-5",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "1990, печ. стр. 233: РПТ1–РПТ4 в цепи контакторов 46/47 и 51–54",
+          "text": "Факт срабатывания защиты не подтверждает короткое замыкание или перегрев без отдельного источника и данных.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "claim": "Контакты РПТ в архивной схеме связаны с отключением контакторов электрического тормоза; это не разрешение на повторное включение.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 233: РПТ1–РПТ4 в цепи контакторов 46/47 и 51–54",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Таблица неисправностей 1990 года рассматривает РПТ отдельно от общего отсутствия тормозной силы.",
+          "sourceRef": "manual1990",
+          "locator": "1990, печ. стр. 279: отдельная строка о срабатывании РПТ в режиме торможения",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        },
+        {
+          "claim": "Обозначение РТ-465-01 относится к архивному исполнению и не доказывает тип на конкретной секции.",
+          "sourceRef": "manual1990",
+          "locator": "1990, прил. 23, печ. стр. 442: РПТ1–РПТ4, тип РТ-465-01",
+          "status": "HISTORICAL_CONTEXT_NOT_CURRENT_AUTHORITY",
+          "proceduresImported": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_ACTUATION",
+          "RADIO_TEST_TRANSMISSION",
+          "DOOR_ADJUSTMENT",
+          "ELECTRICAL_SWITCHING",
+          "FIRE_ALARM_DISABLE",
+          "FIRE_SYSTEM_ACTUATION",
+          "FIRE_SUPPRESSION_TEST",
+          "MACHINE_ROOM_ENTRY",
+          "VVK_ENTRY",
+          "SMOKE_SOURCE_SEARCH",
+          "COUPLER_INTERVENTION",
+          "UNCOUPLING",
+          "BRAKE_RETRY",
+          "PROTECTION_RESET",
+          "RESISTOR_ACCESS",
+          "FAN_TEST",
+          "UNDERFRAME_ENTRY",
+          "TRACTION_TEST"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "disposition": "BLOCKED",
+        "installedEquipment": "UNKNOWN",
+        "section": "UNKNOWN",
+        "manufacturerRevision": "UNKNOWN"
+      },
+      "sourceDiscrepancy": "Донор отдельно фиксирует РПТ1–РПТ4. Руководство 1990 года (стр. 233, 279 и прил. 23/28) описывает цепь и аппараты, но не подтверждает реальную уставку/исполнение. В найденном практическом конспекте приведена иная численная уставка; конфликт не разрешён, численные значения в карточку не переносятся.",
+      "originalQuestionTextVerified": false
+    }
+  ]
+}

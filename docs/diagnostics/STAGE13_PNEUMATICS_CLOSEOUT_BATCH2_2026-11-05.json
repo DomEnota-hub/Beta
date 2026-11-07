@@ -1,0 +1,2123 @@
+{
+  "ledger": {
+    "schemaVersion": "stage13-pneumatics-closeout-batch2/1",
+    "date": "2026-11-05",
+    "stage": "13/51",
+    "baseHead": "a26f9695dc005a031a8e98f2e7fd0dd6825b318c",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.brakes-no-apply-release",
+      "vl80s.diag.main-reservoir-leak",
+      "vl80s.diag.main-reservoir-slow-fill",
+      "vl80s.diag.pneumatic-instrument-line-leak"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "originalQuestionTextVerified": false,
+    "categorySourceCount": 9,
+    "priorStage7Ids": [
+      "compressor-no-start",
+      "compressor-pressure"
+    ],
+    "priorStage13Ids": [
+      "feed-line-leak",
+      "main-reservoir-safety-valve",
+      "pressure-gauge-mismatch"
+    ],
+    "coveredCategoryIds": [
+      "brakes-no-apply-release",
+      "compressor-no-start",
+      "compressor-pressure",
+      "feed-line-leak",
+      "main-reservoir-leak",
+      "main-reservoir-safety-valve",
+      "main-reservoir-slow-fill",
+      "pneumatic-instrument-line-leak",
+      "pressure-gauge-mismatch"
+    ],
+    "remainingCategoryIds": [],
+    "closureCondition": "CI_SUCCESS_ON_FINAL_HEAD; RESEARCH_ONLY; NO_RUNTIME_OR_OPERATING_AUTHORITY"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage13-pneumatics/2",
+      "stage": "13/51",
+      "scenarioId": "vl80s.diag.brakes-no-apply-release",
+      "originalId": "brakes-no-apply-release",
+      "category": "Пневматика",
+      "title": "Тормоза не срабатывают, не отпускают или тележки работают неодинаково",
+      "summary": "Нет ожидаемого давления ТЦ, тормоз не отпускает либо давление первой и второй тележек различается.",
+      "canonicalBoundary": "Составной симптом: нет действия тормоза, неотпуск либо асимметрия тележек; не заменяет отдельные Stage12 карточки и не подтверждает единый отказ.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticRepository.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=brakes-no-apply-release]",
+          "sourceOriginLayer": "DiagnosticRepository.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел VIII, печ. стр. 155–159: кран машиниста 395-3",
+            "Раздел X, печ. стр. 193–195: пневматическая схема ТМ и ТЦ"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "§8.25, печ. стр. 388–390: пневматическое питание",
+            "§8.25, рис. 8.10: схема воздушных цепей"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования"
+          ],
+          "scopeOnly": true,
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно отсутствует действие тормозов или зафиксирован неотпуск?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно отмечено отсутствие действия, неотпуск либо асимметрия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно отсутствует действие тормозов или зафиксирован неотпуск?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно отмечено отсутствие действия, неотпуск либо асимметрия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть запись о команде торможения до отсутствия действия?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть запись о неотпуске после штатного торможения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана разница действия тележек?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сохранены показания ТМ и ТЦ того же события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: известны секция и кабина наблюдения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: наблюдения отделены от гипотез о КРМ, КВТ и рычажной передаче?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "brakes-no-apply-release-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел VIII, печ. стр. 155–159: кран машиниста 395-3",
+          "text": "Архивное описание крана машиниста не доказывает его неисправность при общем симптоме.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "brakes-no-apply-release-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.25, печ. стр. 388–390: пневматическое питание",
+          "text": "Учебная схема питания воздухом не подтверждает конкретную причину неотпуска.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "brakes-no-apply-release-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел X, печ. стр. 193–195: пневматическая схема ТМ и ТЦ",
+          "text": "Архивная схема ТМ и ТЦ различает контуры, но не доказывает неисправность узла.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "brakes-no-apply-release-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.25, рис. 8.10: схема воздушных цепей",
+          "text": "Общая учебная схема не заменяет независимые узкие карточки Stage12.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "brakes-no-apply-release-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "text": "Современные правила учтены лишь по области: процедуры и допуск не верифицированы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "id": "brakes-no-apply-release-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел VIII, печ. стр. 155–159: кран машиниста 395-3",
+          "claim": "Архивное описание крана машиниста не доказывает его неисправность при общем симптоме.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "brakes-no-apply-release-claim-2",
+          "sourceId": "textbook2006",
+          "locator": "§8.25, печ. стр. 388–390: пневматическое питание",
+          "claim": "Учебная схема питания воздухом не подтверждает конкретную причину неотпуска.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "brakes-no-apply-release-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Раздел X, печ. стр. 193–195: пневматическая схема ТМ и ТЦ",
+          "claim": "Архивная схема ТМ и ТЦ различает контуры, но не доказывает неисправность узла.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "brakes-no-apply-release-claim-4",
+          "sourceId": "textbook2006",
+          "locator": "§8.25, рис. 8.10: схема воздушных цепей",
+          "claim": "Общая учебная схема не заменяет независимые узкие карточки Stage12.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "brakes-no-apply-release-claim-5",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "claim": "Современные правила учтены лишь по области: процедуры и допуск не верифицированы.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_VALVE_ACTUATION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "КРМ, КВТ, ТЦ, тормозная блокировка и секция не установлены.",
+        "disposition": "BLOCKED"
+      },
+      "sourceDiscrepancy": "Составной симптом: нет действия тормоза, неотпуск либо асимметрия тележек; не заменяет отдельные Stage12 карточки и не подтверждает единый отказ. Донорский заголовок не доказывает причину; альтернативные объяснения сохранены. Буквальные вопросы из gzip не извлечены, новое дерево авторское. Историческая комплектация не подтверждает установленное исполнение."
+    },
+    {
+      "schemaVersion": "diagnostic-stage13-pneumatics/2",
+      "stage": "13/51",
+      "scenarioId": "vl80s.diag.main-reservoir-leak",
+      "originalId": "main-reservoir-leak",
+      "category": "Пневматика",
+      "title": "Давление в главных резервуарах растёт медленно или быстро падает",
+      "summary": "Компрессоры работают, но запас воздуха не создаётся либо теряется после их остановки.",
+      "canonicalBoundary": "Недостаточный запас или падение давления ГР после остановки компрессора; не равняется медленному наполнению при работе, утечке ПМ или ошибке манометра.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExpansion.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=main-reservoir-leak]",
+          "sourceOriginLayer": "DiagnosticExpansion.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел X, печ. стр. 191–196: главные резервуары и соединения",
+            "Раздел VIII, печ. стр. 179: манометры"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "§8.25, печ. стр. 388–390: воздушное питание",
+            "§8.9, печ. стр. 333–334: мотор-компрессоры"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования"
+          ],
+          "scopeOnly": true,
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно снижен запас воздуха в ГР?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: давление ГР падало после остановки компрессора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно снижен запас воздуха в ГР?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: давление ГР падало после остановки компрессора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записана временная последовательность падения давления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записан режим компрессора в момент события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: показания относятся к ГР, а не к ТМ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: известны секция и прибор наблюдения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: имеется отдельный ранее записанный признак утечки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: факты отделены от гипотез о соединении, клапане и регуляторе?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "main-reservoir-leak-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел X, печ. стр. 191–196: главные резервуары и соединения",
+          "text": "Архивная сеть ГР не позволяет установить место утечки по одному падению давления.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-leak-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.25, печ. стр. 388–390: воздушное питание",
+          "text": "Учебная схема различает накопление и расход воздуха без диагноза.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-leak-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел VIII, печ. стр. 179: манометры",
+          "text": "Архивное описание манометра не гарантирует достоверность прежнего показания.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-leak-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.9, печ. стр. 333–334: мотор-компрессоры",
+          "text": "Схема автоматики компрессора не доказывает неисправность регулятора.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-leak-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "text": "Современные правила не подтверждают конкретные действия для этого исполнения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "id": "main-reservoir-leak-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел X, печ. стр. 191–196: главные резервуары и соединения",
+          "claim": "Архивная сеть ГР не позволяет установить место утечки по одному падению давления.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-leak-claim-2",
+          "sourceId": "textbook2006",
+          "locator": "§8.25, печ. стр. 388–390: воздушное питание",
+          "claim": "Учебная схема различает накопление и расход воздуха без диагноза.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-leak-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Раздел VIII, печ. стр. 179: манометры",
+          "claim": "Архивное описание манометра не гарантирует достоверность прежнего показания.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-leak-claim-4",
+          "sourceId": "textbook2006",
+          "locator": "§8.9, печ. стр. 333–334: мотор-компрессоры",
+          "claim": "Схема автоматики компрессора не доказывает неисправность регулятора.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-leak-claim-5",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "claim": "Современные правила не подтверждают конкретные действия для этого исполнения.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_VALVE_ACTUATION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Число секций, соединения ГР, клапаны и достоверность приборов не установлены.",
+        "disposition": "BLOCKED"
+      },
+      "sourceDiscrepancy": "Недостаточный запас или падение давления ГР после остановки компрессора; не равняется медленному наполнению при работе, утечке ПМ или ошибке манометра. Донорский заголовок не доказывает причину; альтернативные объяснения сохранены. Буквальные вопросы из gzip не извлечены, новое дерево авторское. Историческая комплектация не подтверждает установленное исполнение."
+    },
+    {
+      "schemaVersion": "diagnostic-stage13-pneumatics/2",
+      "stage": "13/51",
+      "scenarioId": "vl80s.diag.main-reservoir-slow-fill",
+      "originalId": "main-reservoir-slow-fill",
+      "category": "Пневматика",
+      "title": "Главные резервуары наполняются слишком медленно",
+      "summary": "При работающем компрессоре давление растёт медленнее ожидаемого характера.",
+      "canonicalBoundary": "Медленный рост давления ГР при ранее подтверждённой работе компрессора; не тождественен падению после остановки и не доказывает дефект компрессора.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=main-reservoir-slow-fill]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел X, печ. стр. 191–196: схема ГР и компрессоров",
+            "Раздел VIII, печ. стр. 179: приборы давления"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "§8.9, печ. стр. 333–334: управление компрессорами",
+            "§8.25, печ. стр. 388–390: воздушное питание"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования"
+          ],
+          "scopeOnly": true,
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно недостаточно давление ГР?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: медленный рост ГР отмечен именно при работе компрессора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: опасно недостаточно давление ГР?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: медленный рост ГР отмечен именно при работе компрессора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть временные отметки начала и конца наблюдения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: режим компрессора подтверждён записью, а не догадкой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны секция и прибор наблюдения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксирована работа другой секции в тот же период?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: отдельно отмечено отсутствие данных о падении после остановки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: вывод не опирается на непроверенную норму времени или уставку?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "main-reservoir-slow-fill-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел X, печ. стр. 191–196: схема ГР и компрессоров",
+          "text": "Архивная схема ГР не делает исторический темп наполнения действующей нормой.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.9, печ. стр. 333–334: управление компрессорами",
+          "text": "Учебное описание компрессорной автоматики не подтверждает реальный режим.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел VIII, печ. стр. 179: приборы давления",
+          "text": "Архивное описание манометров не доказывает точность измерения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.25, печ. стр. 388–390: воздушное питание",
+          "text": "Учебная пневмосхема не доказывает утечку по медленному росту давления.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "text": "Действующие правила не дают здесь подтверждённой нормы времени наполнения.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "id": "main-reservoir-slow-fill-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел X, печ. стр. 191–196: схема ГР и компрессоров",
+          "claim": "Архивная схема ГР не делает исторический темп наполнения действующей нормой.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-claim-2",
+          "sourceId": "textbook2006",
+          "locator": "§8.9, печ. стр. 333–334: управление компрессорами",
+          "claim": "Учебное описание компрессорной автоматики не подтверждает реальный режим.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Раздел VIII, печ. стр. 179: приборы давления",
+          "claim": "Архивное описание манометров не доказывает точность измерения.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-claim-4",
+          "sourceId": "textbook2006",
+          "locator": "§8.25, печ. стр. 388–390: воздушное питание",
+          "claim": "Учебная пневмосхема не доказывает утечку по медленному росту давления.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "main-reservoir-slow-fill-claim-5",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "claim": "Действующие правила не дают здесь подтверждённой нормы времени наполнения.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_VALVE_ACTUATION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Исполнение компрессора, число секций, прибор и фактическая нагрузка не подтверждены.",
+        "disposition": "BLOCKED"
+      },
+      "sourceDiscrepancy": "Медленный рост давления ГР при ранее подтверждённой работе компрессора; не тождественен падению после остановки и не доказывает дефект компрессора. Донорский заголовок не доказывает причину; альтернативные объяснения сохранены. Буквальные вопросы из gzip не извлечены, новое дерево авторское. Историческая комплектация не подтверждает установленное исполнение."
+    },
+    {
+      "schemaVersion": "diagnostic-stage13-pneumatics/2",
+      "stage": "13/51",
+      "scenarioId": "vl80s.diag.pneumatic-instrument-line-leak",
+      "originalId": "pneumatic-instrument-line-leak",
+      "category": "Пневматика",
+      "title": "Утечка или засорение импульсной линии манометра",
+      "summary": "Один прибор запаздывает, остаётся на прежнем значении или показывает иначе, чем фактическое действие системы.",
+      "canonicalBoundary": "Запаздывание, застывание или расхождение одного прибора, возможная импульсная линия; не доказаны ни засорение, ни утечка, ни поломка манометра.",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticCompletionCatalog.kt",
+      "donorQuestionCount": 3,
+      "donorOriginalQuestions": null,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=pneumatic-instrument-line-leak]",
+          "sourceOriginLayer": "DiagnosticCompletionCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел VIII, печ. стр. 179: манометры и линии",
+            "Раздел X, печ. стр. 191–196: пневматические контуры"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_BOOK",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "§8.25, печ. стр. 388–390: воздушные контуры",
+            "§8.9, печ. стр. 333–334: управление компрессорами"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования"
+          ],
+          "scopeOnly": true,
+          "exactSectionProceduresVerified": false,
+          "actionAuthorityGranted": false
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано опасное расхождение показания и действия системы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: один прибор запаздывал или оставался на прежнем значении?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: зафиксировано опасное расхождение показания и действия системы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: один прибор запаздывал или оставался на прежнем значении?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: в записи указан контур отбора давления?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: записаны моменты начала и конца задержки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: сохранено показание второго прибора того же события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: известны кабина и секция наблюдения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: есть независимые сведения о действии системы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: факты отделены от гипотез об утечке, засоре и манометре?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: недостаточно данных; STOP/BLOCKED.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный признак: STOP, передать запись ответственному, без действий.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только описание наблюдений, причина и эксплуатационный допуск НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: причина не установлена, новых измерений или испытаний нет.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "pneumatic-instrument-line-leak-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел VIII, печ. стр. 179: манометры и линии",
+          "text": "Руководство по манометрам не доказывает повреждение импульсной линии по одному показанию.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.25, печ. стр. 388–390: воздушные контуры",
+          "text": "Учебная пневмосхема не подтверждает подключение установленного прибора.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел X, печ. стр. 191–196: пневматические контуры",
+          "text": "Архивная схема не устанавливает, что задержка вызвана именно утечкой.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-ext-4",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "§8.9, печ. стр. 333–334: управление компрессорами",
+          "text": "Схема компрессора не подтверждает точность прибора и не оправдывает демонтаж.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "text": "Точные современные процедуры для импульсных линий не проверены.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "historicalEvidenceClaims": [
+        {
+          "id": "pneumatic-instrument-line-leak-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел VIII, печ. стр. 179: манометры и линии",
+          "claim": "Руководство по манометрам не доказывает повреждение импульсной линии по одному показанию.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-claim-2",
+          "sourceId": "textbook2006",
+          "locator": "§8.25, печ. стр. 388–390: воздушные контуры",
+          "claim": "Учебная пневмосхема не подтверждает подключение установленного прибора.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Раздел X, печ. стр. 191–196: пневматические контуры",
+          "claim": "Архивная схема не устанавливает, что задержка вызвана именно утечкой.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-claim-4",
+          "sourceId": "textbook2006",
+          "locator": "§8.9, печ. стр. 333–334: управление компрессорами",
+          "claim": "Схема компрессора не подтверждает точность прибора и не оправдывает демонтаж.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "pneumatic-instrument-line-leak-claim-5",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025, действует с 01.07.2026: область тормозного оборудования",
+          "claim": "Точные современные процедуры для импульсных линий не проверены.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR",
+          "FORCED_VALVE_ACTUATION"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Место отбора давления, трубки, секция и исполнение манометра неизвестны.",
+        "disposition": "BLOCKED"
+      },
+      "sourceDiscrepancy": "Запаздывание, застывание или расхождение одного прибора, возможная импульсная линия; не доказаны ни засорение, ни утечка, ни поломка манометра. Донорский заголовок не доказывает причину; альтернативные объяснения сохранены. Буквальные вопросы из gzip не извлечены, новое дерево авторское. Историческая комплектация не подтверждает установленное исполнение."
+    }
+  ]
+}

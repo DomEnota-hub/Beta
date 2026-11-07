@@ -1,0 +1,2605 @@
+{
+  "ledger": {
+    "schemaVersion": "stage12-brakes-batch2/1",
+    "date": "2026-11-05",
+    "stage": "12/51",
+    "baseHead": "88d390d1eb223e44818301acaf81b5b64035deb2",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorSnapshotBlobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+    "migrationBlobSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+    "scenarioIds": [
+      "vl80s.diag.epk-leak",
+      "vl80s.diag.equalizing-reservoir-mismatch",
+      "vl80s.diag.handbrake-not-release",
+      "vl80s.diag.independent-brake-no-apply",
+      "vl80s.diag.independent-brake-no-release"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "verifiedResearchOnly": true,
+    "originalQuestionTextVerified": false,
+    "remainingCategoryIds": [
+      "uncommanded-braking",
+      "wheel-dragging"
+    ]
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage12-brakes/1",
+      "stage": "12/51",
+      "scenarioId": "vl80s.diag.epk-leak",
+      "originalId": "epk-leak",
+      "category": "Тормоза",
+      "title": "Утечка или нестабильная работа ЭПК",
+      "summary": "Слышна утечка либо возникают необъяснимые воздействия на ТМ.",
+      "canonicalBoundary": "EPK_LEAK_NOT_ALSN_ACTIVATION_OR_PIPE_LEAK",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalQuestions": null,
+      "donorQuestionCount": 3,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=epk-leak]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Пневматическая схема, печ. стр. 193–194: ЭПК и ТМ",
+            "Приложение 2, печ. стр. 376: ЭПК-150 в кабине"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_INTERSTATE_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "approval": "Протокол №83, приложение №65, 25–26.11.2025",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+            "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)"
+          ],
+          "exactSectionProceduresVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "actionAuthorityGranted": false,
+          "scopeOnly": true
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в журнале уже отмеченное экстренное торможение или потеря контроля ТМ в связи с ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована ли именно утечка или нестабильное действие ЭПК, а не общее снижение ТМ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли в журнале уже отмеченное экстренное торможение или потеря контроля ТМ в связи с ЭПК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксирована ли именно утечка или нестабильное действие ЭПК, а не общее снижение ТМ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о свистке ЭПК или сигнале автостопа со временем события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли сохранённые данные о давлении ТМ до и после события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Различает ли запись утечку воздуха возле ЭПК и срабатывание по сигнализации?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указаны ли кабина и секция, где наблюдалось событие?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли прежние сообщения АЛСН без повторного испытания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждён ли установленный тип ЭПК отдельным документом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "epk-leak-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Пневматическая схема, печ. стр. 193–194: ЭПК и ТМ",
+          "text": "Архивная пневмосхема связывает ЭПК с тормозной магистралью; слышимая утечка не доказывает неисправность ЭПК.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "epk-leak-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Приложение 2, печ. стр. 376: ЭПК-150 в кабине",
+          "text": "В перечне оборудования 1990 года назван ЭПК-150; фактический установленный тип неизвестен.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "epk-leak-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Пневматическая схема, печ. стр. 193–194: ЭПК и ТМ",
+          "text": "Срабатывание автостопа, утечка пневматики и нарушение сигнализации являются разными гипотезами.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "epk-leak-ext-4",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "text": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "epk-leak-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "text": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "ЭПК-150 указан в архивном перечне; установленный тип и система АЛСН на секции UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Историческая схема не подтверждает конкретную секцию и модернизацию."
+      },
+      "sourceDiscrepancy": "Донор объединяет утечку и нестабильное воздействие ЭПК на ТМ. Архивное руководство различает ЭПК-150 и систему автостопа; причина, команда АЛСН и установленный тип не подтверждены.",
+      "historicalEvidenceClaims": [
+        {
+          "id": "epk-leak-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Пневматическая схема, печ. стр. 193–194: ЭПК и ТМ",
+          "claim": "Архивная пневмосхема связывает ЭПК с тормозной магистралью; слышимая утечка не доказывает неисправность ЭПК.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "epk-leak-claim-2",
+          "sourceId": "manual1990",
+          "locator": "Приложение 2, печ. стр. 376: ЭПК-150 в кабине",
+          "claim": "В перечне оборудования 1990 года назван ЭПК-150; фактический установленный тип неизвестен.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "epk-leak-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Пневматическая схема, печ. стр. 193–194: ЭПК и ТМ",
+          "claim": "Срабатывание автостопа, утечка пневматики и нарушение сигнализации являются разными гипотезами.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "epk-leak-claim-4",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "claim": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "epk-leak-claim-5",
+          "sourceId": "rules2026",
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "claim": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ]
+    },
+    {
+      "schemaVersion": "diagnostic-stage12-brakes/1",
+      "stage": "12/51",
+      "scenarioId": "vl80s.diag.equalizing-reservoir-mismatch",
+      "originalId": "equalizing-reservoir-mismatch",
+      "category": "Тормоза",
+      "title": "Давление УР и ТМ изменяется несогласованно",
+      "summary": "Изменение уравнительного резервуара не даёт ожидаемой реакции ТМ.",
+      "canonicalBoundary": "EQUALIZING_RESERVOIR_NOT_PIPE_LEAK_OR_NO_CHARGE",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalQuestions": null,
+      "donorQuestionCount": 3,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=equalizing-reservoir-mismatch]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Кран машиниста 395-3, печ. стр. 155–157: УР и ТМ",
+            "Пневматическая схема, печ. стр. 193–194: ТМ через АБТ и КРМ"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_INTERSTATE_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "approval": "Протокол №83, приложение №65, 25–26.11.2025",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+            "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)"
+          ],
+          "exactSectionProceduresVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "actionAuthorityGranted": false,
+          "scopeOnly": true
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о неконтролируемом торможении или опасном расхождении ТМ с ранее зарегистрированной командой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли расхождение изменений УР и ТМ, а не утечка одной магистрали?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о неконтролируемом торможении или опасном расхождении ТМ с ранее зарегистрированной командой?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли расхождение изменений УР и ТМ, а не утечка одной магистрали?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Сохранены ли одновременные показания УР и ТМ одного события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, что расхождение было при ранее выполненном штатном управлении КРМ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли показания УР, ТМ и ГР в журнале?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известны ли рабочая кабина и исходный режим из старой записи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечена ли задержка реакции ТМ относительно УР, а не ненабор ТМ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли независимая запись о состоянии манометров без нового измерения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "equalizing-reservoir-mismatch-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран машиниста 395-3, печ. стр. 155–157: УР и ТМ",
+          "text": "Руководство 1990 года описывает УР и ТМ как связанные, но разные объекты.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Пневматическая схема, печ. стр. 193–194: ТМ через АБТ и КРМ",
+          "text": "Архивная схема содержит несколько узлов между КРМ и ТМ; расхождение не локализует причину.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран машиниста 395-3, печ. стр. 155–157: УР и ТМ",
+          "text": "Ненабор ТМ, утечка ТМ и несогласованное изменение УР/ТМ требуют разных наблюдений.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-ext-4",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "text": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "text": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "КРМ 395-3 и приборы УР/ТМ по архиву; реальная схема и модернизация UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Историческая схема не подтверждает конкретную секцию и модернизацию."
+      },
+      "sourceDiscrepancy": "Донор описывает несогласованное изменение УР и ТМ, архивное руководство показывает их связь через КРМ. Это не тождественно утечке ТМ или отсутствию зарядки.",
+      "historicalEvidenceClaims": [
+        {
+          "id": "equalizing-reservoir-mismatch-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Кран машиниста 395-3, печ. стр. 155–157: УР и ТМ",
+          "claim": "Руководство 1990 года описывает УР и ТМ как связанные, но разные объекты.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-claim-2",
+          "sourceId": "manual1990",
+          "locator": "Пневматическая схема, печ. стр. 193–194: ТМ через АБТ и КРМ",
+          "claim": "Архивная схема содержит несколько узлов между КРМ и ТМ; расхождение не локализует причину.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Кран машиниста 395-3, печ. стр. 155–157: УР и ТМ",
+          "claim": "Ненабор ТМ, утечка ТМ и несогласованное изменение УР/ТМ требуют разных наблюдений.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-claim-4",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "claim": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "equalizing-reservoir-mismatch-claim-5",
+          "sourceId": "rules2026",
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "claim": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ]
+    },
+    {
+      "schemaVersion": "diagnostic-stage12-brakes/1",
+      "stage": "12/51",
+      "scenarioId": "vl80s.diag.handbrake-not-release",
+      "originalId": "handbrake-not-release",
+      "category": "Тормоза",
+      "title": "Не отпущен или неисправен ручной тормоз",
+      "summary": "После команды отпуска сохраняется механическое затормаживание.",
+      "canonicalBoundary": "HAND_BRAKE_MECHANICAL_NOT_KVT_OR_RIGGING",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalQuestions": null,
+      "donorQuestionCount": 3,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=handbrake-not-release]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Описание кабины, печ. стр. 17: ручной тормоз каждой секции",
+            "Рис. 13, печ. стр. 14–15: механическая рычажная передача"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_INTERSTATE_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "approval": "Протокол №83, приложение №65, 25–26.11.2025",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+            "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)"
+          ],
+          "exactSectionProceduresVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "actionAuthorityGranted": false,
+          "scopeOnly": true
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о механическом удержании колёс, нагреве или угрозе движения при неизвестном состоянии ручного тормоза?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли именно неотпущенное состояние ручного тормоза, а не давление ТЦ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о механическом удержании колёс, нагреве или угрозе движения при неизвестном состоянии ручного тормоза?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли именно неотпущенное состояние ручного тормоза, а не давление ТЦ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли указание на секцию, к которой относится наблюдение?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделяет ли журнал ручной тормоз и отпуск пневматического тормоза?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли положение колонки в ранее оформленном акте без нового осмотра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о механическом затормаживании после ранее оформленного отпуска?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено ли повреждение рычажной передачи отдельно от ручного тормоза?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждён ли механизм конкретной секции отдельным документом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "handbrake-not-release-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Описание кабины, печ. стр. 17: ручной тормоз каждой секции",
+          "text": "В архивном описании ручной тормоз каждой секции является отдельным от пневматического.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "handbrake-not-release-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Рис. 13, печ. стр. 14–15: механическая рычажная передача",
+          "text": "Рычажная передача и ручной тормоз могут давать похожие признаки, но не являются одним устройством.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "handbrake-not-release-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Описание кабины, печ. стр. 17: ручной тормоз каждой секции",
+          "text": "Неотпуск ручного тормоза нельзя выводить из одного показания давления ТЦ.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "handbrake-not-release-ext-4",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "text": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "handbrake-not-release-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "text": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "Механизм ручного тормоза конкретной секции, привод и ремонты UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Историческая схема не подтверждает конкретную секцию и модернизацию."
+      },
+      "sourceDiscrepancy": "Донор говорит о неотпущенном ручном тормозе; архивное руководство разделяет ручной тормоз и пневматическую передачу. Установленное исполнение не подтверждено.",
+      "historicalEvidenceClaims": [
+        {
+          "id": "handbrake-not-release-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Описание кабины, печ. стр. 17: ручной тормоз каждой секции",
+          "claim": "В архивном описании ручной тормоз каждой секции является отдельным от пневматического.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "handbrake-not-release-claim-2",
+          "sourceId": "manual1990",
+          "locator": "Рис. 13, печ. стр. 14–15: механическая рычажная передача",
+          "claim": "Рычажная передача и ручной тормоз могут давать похожие признаки, но не являются одним устройством.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "handbrake-not-release-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Описание кабины, печ. стр. 17: ручной тормоз каждой секции",
+          "claim": "Неотпуск ручного тормоза нельзя выводить из одного показания давления ТЦ.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "handbrake-not-release-claim-4",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "claim": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "handbrake-not-release-claim-5",
+          "sourceId": "rules2026",
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "claim": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ]
+    },
+    {
+      "schemaVersion": "diagnostic-stage12-brakes/1",
+      "stage": "12/51",
+      "scenarioId": "vl80s.diag.independent-brake-no-apply",
+      "originalId": "independent-brake-no-apply",
+      "category": "Тормоза",
+      "title": "Не действует вспомогательный тормоз локомотива",
+      "summary": "Команда КВТ не создаёт ожидаемого давления ТЦ.",
+      "canonicalBoundary": "INDEPENDENT_BRAKE_NO_APPLY_NOT_AUTO_OR_HAND_BRAKE",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalQuestions": null,
+      "donorQuestionCount": 3,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=independent-brake-no-apply]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+            "Пневматическая схема, печ. стр. 194–195: КВТ и РД для разных тележек"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_INTERSTATE_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "approval": "Протокол №83, приложение №65, 25–26.11.2025",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+            "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)"
+          ],
+          "exactSectionProceduresVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "actionAuthorityGranted": false,
+          "scopeOnly": true
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись об отсутствии тормозного действия локомотива или угрозе безопасности после команды КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли отсутствие ожидаемого действия вспомогательного тормоза после ранее выполненной команды КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись об отсутствии тормозного действия локомотива или угрозе безопасности после команды КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли отсутствие ожидаемого действия вспомогательного тормоза после ранее выполненной команды КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли сохранённые показания ТЦ в момент события?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, что речь о вспомогательном тормозе, а не автоматическом тормозе состава?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Разделены ли давление ТЦ и состояние рычажной передачи?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известны ли кабина и секция, где ранее отмечено отсутствие действия КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о работе другой тележки в тот же момент?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждены ли тип КВТ и РД конкретной машины отдельным документом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "independent-brake-no-apply-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "text": "В руководстве 1990 года КВТ назван 254-1; запись донора не подтверждает установленную модификацию.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-apply-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Пневматическая схема, печ. стр. 194–195: КВТ и РД для разных тележек",
+          "text": "В архивной схеме КВТ и реле давления обслуживают разные тележки; отсутствие действия не локализует причину.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-apply-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "text": "Отсутствие действия КВТ не равно утечке ТМ или неисправности ручного тормоза.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-apply-ext-4",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "text": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-apply-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "text": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "КВТ 254-1 в архиве; реальный тип КВТ и РД на машине UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Историческая схема не подтверждает конкретную секцию и модернизацию."
+      },
+      "sourceDiscrepancy": "Донор использует общий термин КВТ, руководство 1990 года называет 254-1; совпадение с установленным прибором не доказано. Отсутствие действия не доказывает дефект КВТ.",
+      "historicalEvidenceClaims": [
+        {
+          "id": "independent-brake-no-apply-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "claim": "В руководстве 1990 года КВТ назван 254-1; запись донора не подтверждает установленную модификацию.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-apply-claim-2",
+          "sourceId": "manual1990",
+          "locator": "Пневматическая схема, печ. стр. 194–195: КВТ и РД для разных тележек",
+          "claim": "В архивной схеме КВТ и реле давления обслуживают разные тележки; отсутствие действия не локализует причину.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-apply-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "claim": "Отсутствие действия КВТ не равно утечке ТМ или неисправности ручного тормоза.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-apply-claim-4",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "claim": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-apply-claim-5",
+          "sourceId": "rules2026",
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "claim": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ]
+    },
+    {
+      "schemaVersion": "diagnostic-stage12-brakes/1",
+      "stage": "12/51",
+      "scenarioId": "vl80s.diag.independent-brake-no-release",
+      "originalId": "independent-brake-no-release",
+      "category": "Тормоза",
+      "title": "Не отпускает вспомогательный тормоз",
+      "summary": "После отпуска КВТ давление ТЦ сохраняется.",
+      "canonicalBoundary": "INDEPENDENT_BRAKE_NO_RELEASE_NOT_HAND_BRAKE_OR_WHEEL_DRAG",
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginLayer": "DiagnosticExtendedCatalog.kt",
+      "donorOriginalQuestions": null,
+      "donorQuestionCount": 3,
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_COMPRESSED_SNAPSHOT",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/vl80s_diagnostics.json.gz",
+          "blobSha": "6ffdfdabf2f467dcdc4958768905f2b675ac0c26",
+          "sourcePointer": "sourceObject.scenarios[id=independent-brake-no-release]",
+          "sourceOriginLayer": "DiagnosticExtendedCatalog.kt",
+          "sourceProfileIds": [
+            "vl80s-general"
+          ],
+          "originalQuestionCount": 3,
+          "originalQuestionTextVerified": false,
+          "sourceMetadataArtifact": "content-packs/electric/vl80s/diagnostics/migration/diagnostics-source.candidate.json",
+          "sourceMetadataSha": "1b4b9f175274f4738e6463bd756b9783471e73a2",
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "year": 1990,
+          "url": "https://ru.djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+            "Пневматическая схема, печ. стр. 194–195: отпуск через КВТ и РД"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "rules2026": {
+          "kind": "CURRENT_INTERSTATE_RULES_SCOPE_ONLY",
+          "effectiveDate": "2026-07-01",
+          "approval": "Протокол №83, приложение №65, 25–26.11.2025",
+          "url": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+          "verifiedLocators": [
+            "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+            "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)"
+          ],
+          "exactSectionProceduresVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "actionAuthorityGranted": false,
+          "scopeOnly": true
+        }
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о неотпущенном тормозе, нагреве колёс или иной угрозе движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли сохранение торможения после ранее выполненного отпуска КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о неотпущенном тормозе, нагреве колёс или иной угрозе движения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "stop_danger",
+                "NO": "q2",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано ли сохранение торможения после ранее выполненного отпуска КВТ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли сохранённые показания ТЦ после отпуска, отличающие давление от механического заклинивания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "q6",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Указано ли, что команда относилась к КВТ, а не КРМ или ручному тормозу?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечена ли секция и тележка с сохранённым торможением?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть ли запись о разной реакции двух тележек без нового испытания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечен ли механический неотход колодок отдельно от давления ТЦ?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "report",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Подтверждена ли схема КВТ/РД конкретной машины документом?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {
+                "YES": "report",
+                "NO": "stop_unresolved",
+                "UNKNOWN": "stop_unknown"
+              }
+            },
+            {
+              "id": "stop_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: сведений недостаточно; STOP/BLOCKED. Новые проверки и действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_danger",
+              "type": "STOP",
+              "text": "Опасный ранее зафиксированный признак: STOP, передача информации ответственным, без вмешательства.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "report",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исторические наблюдения структурированы; причина, исполнение и допуск НЕ установлены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "stop_unresolved",
+              "type": "STOP",
+              "text": "Причина не установлена: STOP/BLOCKED. Никаких новых переключений, измерений или испытаний.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "rules2026"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "independent-brake-no-release-ext-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "text": "Архивное описание КВТ 254-1 различает действие и отпуск; это не разрешение повторной команды.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-release-ext-2",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Пневматическая схема, печ. стр. 194–195: отпуск через КВТ и РД",
+          "text": "В схеме 1990 года отпуск ТЦ связан с КВТ и РД; сохранённое давление не устанавливает дефект прибора.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-release-ext-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "text": "Неотпуск КВТ, ручного тормоза и механический неотход колодок имеют разные границы.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-release-ext-4",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "text": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "independent-brake-no-release-ext-5",
+          "version": "DETAILED",
+          "kind": "CURRENT_RULES_SCOPE_ONLY",
+          "sourceRefs": [
+            "rules2026"
+          ],
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "text": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "JUMPER",
+          "PROTECTION_BYPASS",
+          "HV_INTERVENTION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT",
+          "BRAKE_VALVE_SWITCHING",
+          "PRESSURE_TEST",
+          "REPAIR"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "variantEvidence": {
+        "unverifiedInstalledVariant": "КВТ 254-1 в архиве; реальный тип КВТ, РД и тележка UNKNOWN",
+        "disposition": "BLOCKED",
+        "notes": "Историческая схема не подтверждает конкретную секцию и модернизацию."
+      },
+      "sourceDiscrepancy": "Донор описывает неотпуск КВТ, руководство 1990 года показывает отпуск через КВТ и РД; неотпуск нельзя автоматически приписать одному аппарату. Тип установленного КВТ неизвестен.",
+      "historicalEvidenceClaims": [
+        {
+          "id": "independent-brake-no-release-claim-1",
+          "sourceId": "manual1990",
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "claim": "Архивное описание КВТ 254-1 различает действие и отпуск; это не разрешение повторной команды.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-release-claim-2",
+          "sourceId": "manual1990",
+          "locator": "Пневматическая схема, печ. стр. 194–195: отпуск через КВТ и РД",
+          "claim": "В схеме 1990 года отпуск ТЦ связан с КВТ и РД; сохранённое давление не устанавливает дефект прибора.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-release-claim-3",
+          "sourceId": "manual1990",
+          "locator": "Кран вспомогательного тормоза 254-1, печ. стр. 158–159, рис. 212",
+          "claim": "Неотпуск КВТ, ручного тормоза и механический неотход колодок имеют разные границы.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-release-claim-4",
+          "sourceId": "rules2026",
+          "locator": "Приложение №65, протокол №83 от 25–26.11.2025; действует с 01.07.2026, раздел 3.1 (перечень работ на локомотиве)",
+          "claim": "Действующие Правила охватывают обслуживание тормозов, но конкретная процедура по данному дефекту не подтверждена.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        },
+        {
+          "id": "independent-brake-no-release-claim-5",
+          "sourceId": "rules2026",
+          "locator": "То же, раздел 3.2 (проверка и регулировка); раздел 4 (смена кабин)",
+          "claim": "Разделы проверки, регулировки и смены кабин не разрешают исследовательской карточке назначать действия.",
+          "authorizesAction": false,
+          "provesFaultCause": false
+        }
+      ]
+    }
+  ]
+}

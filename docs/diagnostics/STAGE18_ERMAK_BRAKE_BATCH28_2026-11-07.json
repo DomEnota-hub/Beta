@@ -1,0 +1,2732 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-brake-batch28/1",
+    "date": "2026-11-07",
+    "baseHead": "e6b1c874ef34946fcb66a884b9bee428cd6f0caf",
+    "previousCiRun": 42318570963,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "preservedPackBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-086",
+      "ER-DIAG-087",
+      "ER-DIAG-088",
+      "ER-DIAG-089"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight exact fields per scenario matched preserved pinned donor projection; gzip raw parity NOT independently repeated for 086–089; profile/authority/safety blocked",
+    "batchBoundary": "086 automatic vs 085 direct; 087 remote reserve №130/130-2 vs №395; 088 pneumatic substitution vs 058 recuperation loss; 089 EPK vs safety-system command"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-brake-batch28-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-086",
+      "scenarioId": "ermak.diag.ER-DIAG-086",
+      "title": "Не работает автоматический тормоз локомотива",
+      "symptom": "Изменение давления ТМ не вызывает ожидаемого торможения локомотива",
+      "hazardCategory": "AUTOMATIC_BRAKE_NO_RESPONSE_VS_DIRECT_BRAKE_AND_TC",
+      "sourceObjectStatus": "PROFILE_REQUIRED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "profile_required"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60",
+        "SYS-A0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-001",
+        "ER-EQ-BR-004",
+        "ER-EQ-BR-003",
+        "ER-EQ-BR-006"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-007",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV56.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83; действует с 01.07.2026",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED",
+            "effectiveFrom": "2026-07-01"
+          },
+          "url": "https://prg.kz/m/amp/document/39816410/"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "profile_required"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-brake-profile-required-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-085",
+        "ER-DIAG-082",
+        "ER-DIAG-087"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- @ 3176d6ee / ermak_diagnostics.json.gz → preserved diagnostics-05.pack.json / entries[ER-DIAG-086].sourceObject.object; eight identity fields checked; raw gzip NOT independently decoded for ER-DIAG-086",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-086",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 (25–26.11.2025), действует с 01.07.2026; структура разделов 3, 10 и 16 проверена. Конкретный пункт, профиль и полномочия для ER-DIAG-086 НЕ подтверждены.",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6 и РЭ1: архивные описания пневматической и электрической частей, соответствие установленному исполнению не проверено.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Историческая учебная схема «Тормозная система»: ТМ, ВРГ, РД1/РД2, ТЦ; не современный маршрут действий.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "РЭ7 архивная; не проверены действующая редакция, профиль, должностные полномочия и разрешённый маршрут.",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "SOURCE_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Пневматическая схема различает каналы автоматического и прямодействующего тормоза, но не подтверждает установленные приборы.",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP: Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции. Запрещены обходы защит, перемычки, высоковольтные вмешательства и действия с пневмооборудованием под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус PROFILE_REQUIRED, профиль {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"profile_required\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"AS_LISTED\"}. Он не подтверждает установленную конфигурацию; МСУД-Н и МСУД-015 не смешивать.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Новые Правила тормозов действуют с 01.07.2026, но точный пункт и полномочия не проверены. Архивные материалы и схема производителя не разрешают действий.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждён установленный тип автоматического тормозного управления и конкретная секция; №395 и дистанционные №130/130-2 не приравниваются?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В уже завершённой записи изменение давления ТМ не сопровождалось ожидаемым торможением локомотива, а не только отказал прямодействующий тормоз?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-086. Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Изменение давления ТМ не вызывает ожидаемого торможения локомотива. Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки. Учебная пневмосхема раннего 3ЭС5К различает ТМ, воздухораспределитель грузового типа и реле давления; архивные РЭ1/РЭ6 не устанавливают конфигурацию конкретной машины. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждён установленный тип автоматического тормозного управления и конкретная секция; №395 и дистанционные №130/130-2 не приравниваются?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В уже завершённой записи изменение давления ТМ не сопровождалось ожидаемым торможением локомотива, а не только отказал прямодействующий тормоз?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть раздельные прежние показания ТМ и ТЦ, время события, секция и сведения о канале автоматического торможения без новых проб?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены изменение ТМ, фактическое давление ТЦ и тормозной эффект; отказ автоматического канала не подменён неисправностью прямодействующего тормоза ER-DIAG-085?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указаны источник показаний, конфигурация воздухораспределителя, секция и степень достоверности архивной схемы?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-086. Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежние записи не позволяют разделить наблюдения и возможные причины; никаких новых проб торможения и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Изменение давления ТМ не вызывает ожидаемого торможения локомотива. Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки. Учебная пневмосхема раннего 3ЭС5К различает ТМ, воздухораспределитель грузового типа и реле давления; архивные РЭ1/РЭ6 не устанавливают конфигурацию конкретной машины. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы ER-DIAG-086",
+          "text": "Точные поля id/title/symptom/status/applicability/systemIds/equipmentRefs/sourceRefs сверены с сохранённой проекцией закреплённого донора. Исходный статус PROFILE_REQUIRED. Независимая распаковка gzip именно для ER-DIAG-086 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-086",
+          "id": "ER-DIAG-086-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивное описание аппаратуры и вариант",
+          "text": "Учебная пневмосхема раннего 3ЭС5К различает ТМ, воздухораспределитель грузового типа и реле давления; архивные РЭ1/РЭ6 не устанавливают конфигурацию конкретной машины. ИДМБ.661142.009РЭ6 и РЭ1: архивные описания пневматической и электрической частей, соответствие установленному исполнению не проверено.",
+          "locator": "ИДМБ.661142.009РЭ6 и РЭ1: архивные описания пневматической и электрической частей, соответствие установленному исполнению не проверено.",
+          "id": "ER-DIAG-086-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения и различение",
+          "text": "Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки. Историческая учебная схема «Тормозная система»: ТМ, ВРГ, РД1/РД2, ТЦ; не современный маршрут действий.",
+          "locator": "Историческая учебная схема «Тормозная система»: ТМ, ВРГ, РД1/РД2, ТЦ; не современный маршрут действий.",
+          "id": "ER-DIAG-086-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Норматив 2026 и граница полномочий",
+          "text": "Приложение №65 к протоколу №83 действует с 01.07.2026. Конкретный пункт, редакция для организации и полномочия для ER-DIAG-086 не подтверждены. Архивное РЭ7 не даёт разрешений.",
+          "locator": "Правила 2026, разделы 3/10/16 (оглавление); РЭ7 архивная",
+          "id": "ER-DIAG-086-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и запреты",
+          "text": "Отсутствие ожидаемого автоматического торможения при изменении ТМ не доказывает неисправность воздухораспределителя или БЭПП. Прямодействующий тормоз (085) и отказ одной тележки (082) имеют иные признаки. Не проводить пробное торможение, изменение давления ТМ, переключение кранов или разобщение магистралей; при действующем отказе использовать только применимые действующие инструкции. Подтверждение предупреждения не разрешает действий.",
+          "locator": "Аналитическая safety gate; источник/профиль неизвестен",
+          "id": "ER-DIAG-086-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65, 01.07.2026; только действующая дата и оглавление, не полномочия для ER-DIAG-086",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Историческая учебная схема «Тормозная система»: ТМ, ВРГ, РД1/РД2, ТЦ; не современный маршрут действий.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6 и РЭ1: архивные описания пневматической и электрической частей, соответствие установленному исполнению не проверено.",
+          "status": "ARCHIVAL_OR_PRODUCT_SCHEME_PROFILE_UNVERIFIED",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-brake-batch28-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-087",
+      "scenarioId": "ermak.diag.ER-DIAG-087",
+      "title": "Не работает резервное управление тормозами",
+      "symptom": "Основное дистанционное тормозное управление недоступно, требуется оценить резервный канал",
+      "hazardCategory": "RESERVE_BRAKE_CHANNEL_UNAVAILABLE_VS_UNVERIFIED_REMOTE_PROFILE",
+      "sourceObjectStatus": "PROFILE_REQUIRED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "brake_130_uktol",
+          "brake_130_2_uktol",
+          "base_remote_brake_control"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60",
+        "SYS-C0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-008",
+        "ER-EQ-BR-010",
+        "ER-EQ-BR-015"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-022",
+          "role": "technical_basis",
+          "document": "МТЗ ТРАНСМАШ: УКТОЛ / кран №130",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://www.mtz-transmash.ru/files/presscentr/publikacii/2010/UKTOL.pdf",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "УКТОЛ",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83; действует с 01.07.2026",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED",
+            "effectiveFrom": "2026-07-01"
+          },
+          "url": "https://prg.kz/m/amp/document/39816410/"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "brake_130_uktol",
+        "brake_130_2_uktol",
+        "base_remote_brake_control"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-brake-profile-required-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-086",
+        "ER-DIAG-091",
+        "ER-DIAG-085"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- @ 3176d6ee / ermak_diagnostics.json.gz → preserved diagnostics-05.pack.json / entries[ER-DIAG-087].sourceObject.object; eight identity fields checked; raw gzip NOT independently decoded for ER-DIAG-087",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-087",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 (25–26.11.2025), действует с 01.07.2026; структура разделов 3, 10 и 16 проверена. Конкретный пункт, профиль и полномочия для ER-DIAG-087 НЕ подтверждены.",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://www.mtz-transmash.ru/info/plans/lokomotiv_ermak/",
+          "locator": "МТЗ ТРАНСМАШ: схема размещения на «Ермаке» 130.52/130.10/130.20; фактическая комплектация машины неизвестна.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://mtz-transmash.ru/news/2022/01/25/tol__novaja_sistema_upravlenija_tormozami_dlja_lokomotivov/",
+          "locator": "Публикация изготовителя 2022 года сравнивает УКТОЛ №130-2 и новую ТОЛ; исторический обзор, не руководство перехода.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "РЭ7 архивная; не проверены действующая редакция, профиль, должностные полномочия и разрешённый маршрут.",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "SOURCE_COMPARISON",
+          "url": "https://mtz-transmash.ru/news/2022/01/25/tol__novaja_sistema_upravlenija_tormozami_dlja_lokomotivov/",
+          "locator": "Официальная схема размещения показывает резервный прибор для варианта №130, но не подтверждает установленную версию и эксплуатационный алгоритм.",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP: Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке. Запрещены обходы защит, перемычки, высоковольтные вмешательства и действия с пневмооборудованием под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус PROFILE_REQUIRED, профиль {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"brake_130_uktol\",\"brake_130_2_uktol\",\"base_remote_brake_control\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"AS_LISTED\"}. Он не подтверждает установленную конфигурацию; МСУД-Н и МСУД-015 не смешивать.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Новые Правила тормозов действуют с 01.07.2026, но точный пункт и полномочия не проверены. Архивные материалы и схема производителя не разрешают действий.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документации именно этой машины подтверждено дистанционное тормозное управление с УКТОЛ и конкретное исполнение №130 или №130-2, а не №395?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи основное дистанционное управление недоступно и отдельно описано состояние резервного канала, без попыток его включения?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-087. Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Основное дистанционное тормозное управление недоступно, требуется оценить резервный канал. Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного. Изготовитель МТЗ ТРАНСМАШ показывает для «Ермака» контроллер 130.52, БЭПП 130.10 и кран резервного управления 130.20. Публикация 2022 года отдельно обсуждает №130-2 и не подтверждает его установку на данной машине. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документации именно этой машины подтверждено дистанционное тормозное управление с УКТОЛ и конкретное исполнение №130 или №130-2, а не №395?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи основное дистанционное управление недоступно и отдельно описано состояние резервного канала, без попыток его включения?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены ранее полученные сообщения системы, исполнение ККМ/КРУ, секция и время отказа без новой команды резервному управлению?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены недоступность основного электронного управления, неисправность резервного канала и неподтверждённый профиль; отсутствие основной функции не доказывает отказ резерва?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указано, какая версия УКТОЛ и документация изготовителя применялась; отличия №130 от №130-2 оставлены открытыми?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-087. Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежние записи не позволяют разделить наблюдения и возможные причины; никаких новых проб торможения и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Основное дистанционное тормозное управление недоступно, требуется оценить резервный канал. Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного. Изготовитель МТЗ ТРАНСМАШ показывает для «Ермака» контроллер 130.52, БЭПП 130.10 и кран резервного управления 130.20. Публикация 2022 года отдельно обсуждает №130-2 и не подтверждает его установку на данной машине. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы ER-DIAG-087",
+          "text": "Точные поля id/title/symptom/status/applicability/systemIds/equipmentRefs/sourceRefs сверены с сохранённой проекцией закреплённого донора. Исходный статус PROFILE_REQUIRED. Независимая распаковка gzip именно для ER-DIAG-087 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-087",
+          "id": "ER-DIAG-087-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивное описание аппаратуры и вариант",
+          "text": "Изготовитель МТЗ ТРАНСМАШ показывает для «Ермака» контроллер 130.52, БЭПП 130.10 и кран резервного управления 130.20. Публикация 2022 года отдельно обсуждает №130-2 и не подтверждает его установку на данной машине. МТЗ ТРАНСМАШ: схема размещения на «Ермаке» 130.52/130.10/130.20; фактическая комплектация машины неизвестна.",
+          "locator": "МТЗ ТРАНСМАШ: схема размещения на «Ермаке» 130.52/130.10/130.20; фактическая комплектация машины неизвестна.",
+          "id": "ER-DIAG-087-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения и различение",
+          "text": "Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного. Публикация изготовителя 2022 года сравнивает УКТОЛ №130-2 и новую ТОЛ; исторический обзор, не руководство перехода.",
+          "locator": "Публикация изготовителя 2022 года сравнивает УКТОЛ №130-2 и новую ТОЛ; исторический обзор, не руководство перехода.",
+          "id": "ER-DIAG-087-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Норматив 2026 и граница полномочий",
+          "text": "Приложение №65 к протоколу №83 действует с 01.07.2026. Конкретный пункт, редакция для организации и полномочия для ER-DIAG-087 не подтверждены. Архивное РЭ7 не даёт разрешений.",
+          "locator": "Правила 2026, разделы 3/10/16 (оглавление); РЭ7 архивная",
+          "id": "ER-DIAG-087-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и запреты",
+          "text": "Резервный канал относится к определённым вариантам дистанционного управления. Обычный кран №395 нельзя автоматически описывать схемой УКТОЛ; отказ основного канала не подтверждает неисправность резервного. Не выполнять переход на резерв, переключения КРУ/ВЦУ, изменение положений контроллеров или проверочные торможения по исследовательской карточке. Подтверждение предупреждения не разрешает действий.",
+          "locator": "Аналитическая safety gate; источник/профиль неизвестен",
+          "id": "ER-DIAG-087-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65, 01.07.2026; только действующая дата и оглавление, не полномочия для ER-DIAG-087",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://mtz-transmash.ru/news/2022/01/25/tol__novaja_sistema_upravlenija_tormozami_dlja_lokomotivov/",
+          "locator": "Публикация изготовителя 2022 года сравнивает УКТОЛ №130-2 и новую ТОЛ; исторический обзор, не руководство перехода.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "url": "https://www.mtz-transmash.ru/info/plans/lokomotiv_ermak/",
+          "locator": "МТЗ ТРАНСМАШ: схема размещения на «Ермаке» 130.52/130.10/130.20; фактическая комплектация машины неизвестна.",
+          "status": "ARCHIVAL_OR_PRODUCT_SCHEME_PROFILE_UNVERIFIED",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-brake-batch28-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-088",
+      "scenarioId": "ermak.diag.ER-DIAG-088",
+      "title": "Не работает замещение электрического тормоза",
+      "symptom": "При разборе электрического торможения не формируется ожидаемое пневматическое замещение",
+      "hazardCategory": "PNEUMATIC_SUBSTITUTION_MISSING_VS_ELECTRIC_BRAKE_DISASSEMBLY",
+      "sourceObjectStatus": "PROFILE_REQUIRED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "profile_required"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-21",
+        "SYS-60",
+        "SYS-20"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-013",
+        "ER-EQ-BR-003",
+        "ER-EQ-TR-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83; действует с 01.07.2026",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED",
+            "effectiveFrom": "2026-07-01"
+          },
+          "url": "https://prg.kz/m/amp/document/39816410/"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "profile_required"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-brake-profile-required-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-058",
+        "ER-DIAG-059",
+        "ER-DIAG-086"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- @ 3176d6ee / ermak_diagnostics.json.gz → preserved diagnostics-05.pack.json / entries[ER-DIAG-088].sourceObject.object; eight identity fields checked; raw gzip NOT independently decoded for ER-DIAG-088",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-088",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 (25–26.11.2025), действует с 01.07.2026; структура разделов 3, 10 и 16 проверена. Конкретный пункт, профиль и полномочия для ER-DIAG-088 НЕ подтверждены.",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "Архивное ИДМБ.661142.009РЭ5 об электронном оборудовании; публичная версия неполная и не подтверждает алгоритм данного исполнения.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Учебная пневмосхема 3ЭС5К, описание совместного действия тормозов; не текущие уставки и не инструкция.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "РЭ7 архивная; не проверены действующая редакция, профиль, должностные полномочия и разрешённый маршрут.",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "SOURCE_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Публичная пневмосхема описывает связь электрического и пневматического торможения, но не подтверждает установленный вариант замещения.",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP: Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки. Запрещены обходы защит, перемычки, высоковольтные вмешательства и действия с пневмооборудованием под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус PROFILE_REQUIRED, профиль {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"profile_required\"],\"variantSelectionRequired\":true,\"lateProfiles\":\"AS_LISTED\"}. Он не подтверждает установленную конфигурацию; МСУД-Н и МСУД-015 не смешивать.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Новые Правила тормозов действуют с 01.07.2026, но точный пункт и полномочия не проверены. Архивные материалы и схема производителя не разрешают действий.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены исполнение электрического торможения и соответствующая пневматическая схема замещения для данной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи зафиксированы разбор электрического торможения и отсутствие ожидаемого пневматического замещения, а не обычное выключение рекуперации?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-088. Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. При разборе электрического торможения не формируется ожидаемое пневматическое замещение. Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059. Историческая схема 3ЭС5К описывает совместную работу электрического и пневматического тормозов и ограничения по давлению, но конкретные архивные уставки не переносятся на современную машину. РЭ5 и РЭ6 имеют разные предметы описания. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены исполнение электрического торможения и соответствующая пневматическая схема замещения для данной секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи зафиксированы разбор электрического торможения и отсутствие ожидаемого пневматического замещения, а не обычное выключение рекуперации?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены прежние показания режима электрического тормоза, ТЦ, ТМ, секции и сообщения защиты без повторного торможения?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены штатный разбор рекуперации, защитное отключение, совместное действие тормозов и именно отсутствие замещения; не объединены ER-DIAG-058/059/088?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указаны источники событий МСУД и пневмосхемы, неизвестные варианты клапанов и привязка по времени?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (PROFILE_REQUIRED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-088. Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежние записи не позволяют разделить наблюдения и возможные причины; никаких новых проб торможения и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. При разборе электрического торможения не формируется ожидаемое пневматическое замещение. Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059. Историческая схема 3ЭС5К описывает совместную работу электрического и пневматического тормозов и ограничения по давлению, но конкретные архивные уставки не переносятся на современную машину. РЭ5 и РЭ6 имеют разные предметы описания. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы ER-DIAG-088",
+          "text": "Точные поля id/title/symptom/status/applicability/systemIds/equipmentRefs/sourceRefs сверены с сохранённой проекцией закреплённого донора. Исходный статус PROFILE_REQUIRED. Независимая распаковка gzip именно для ER-DIAG-088 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-088",
+          "id": "ER-DIAG-088-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивное описание аппаратуры и вариант",
+          "text": "Историческая схема 3ЭС5К описывает совместную работу электрического и пневматического тормозов и ограничения по давлению, но конкретные архивные уставки не переносятся на современную машину. РЭ5 и РЭ6 имеют разные предметы описания. Архивное ИДМБ.661142.009РЭ5 об электронном оборудовании; публичная версия неполная и не подтверждает алгоритм данного исполнения.",
+          "locator": "Архивное ИДМБ.661142.009РЭ5 об электронном оборудовании; публичная версия неполная и не подтверждает алгоритм данного исполнения.",
+          "id": "ER-DIAG-088-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения и различение",
+          "text": "Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059. Учебная пневмосхема 3ЭС5К, описание совместного действия тормозов; не текущие уставки и не инструкция.",
+          "locator": "Учебная пневмосхема 3ЭС5К, описание совместного действия тормозов; не текущие уставки и не инструкция.",
+          "id": "ER-DIAG-088-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Норматив 2026 и граница полномочий",
+          "text": "Приложение №65 к протоколу №83 действует с 01.07.2026. Конкретный пункт, редакция для организации и полномочия для ER-DIAG-088 не подтверждены. Архивное РЭ7 не даёт разрешений.",
+          "locator": "Правила 2026, разделы 3/10/16 (оглавление); РЭ7 архивная",
+          "id": "ER-DIAG-088-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и запреты",
+          "text": "Разбор электрического тормоза сам по себе не доказывает неисправность пневматического замещения. Нельзя смешивать ER-DIAG-088 с защитным отключением рекуперации ER-DIAG-058 или давлением ТЦ ER-DIAG-059. Не инициировать электрическое торможение, переходы режимов, принудительное замещение, изменение клапанов или проверочные поездки. Подтверждение предупреждения не разрешает действий.",
+          "locator": "Аналитическая safety gate; источник/профиль неизвестен",
+          "id": "ER-DIAG-088-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65, 01.07.2026; только действующая дата и оглавление, не полномочия для ER-DIAG-088",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Учебная пневмосхема 3ЭС5К, описание совместного действия тормозов; не текущие уставки и не инструкция.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "Архивное ИДМБ.661142.009РЭ5 об электронном оборудовании; публичная версия неполная и не подтверждает алгоритм данного исполнения.",
+          "status": "ARCHIVAL_OR_PRODUCT_SCHEME_PROFILE_UNVERIFIED",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-brake-batch28-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-089",
+      "scenarioId": "ermak.diag.ER-DIAG-089",
+      "title": "ЭПК срабатывает / не восстанавливается",
+      "symptom": "Электропневматический клапан автостопа вызывает торможение или остаётся в состоянии срабатывания",
+      "hazardCategory": "EPK_ACTUATION_VS_SAFETY_SYSTEM_CAUSE_AND_RESET",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-60",
+        "SYS-80",
+        "SYS-20",
+        "SYS-21",
+        "SYS-70",
+        "SYS-C0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-BR-012",
+        "ER-EQ-SF-001",
+        "ER-EQ-SF-004",
+        "ER-EQ-CT-007"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-brake-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-084",
+        "ER-DIAG-090",
+        "ER-DIAG-093"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- @ 3176d6ee / ermak_diagnostics.json.gz → preserved diagnostics-05.pack.json / entries[ER-DIAG-089].sourceObject.object; eight identity fields checked; raw gzip NOT independently decoded for ER-DIAG-089",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "69945cc0e6c5c316911ffab1489da9dfd3e8ba9a",
+          "objectId": "ER-DIAG-089",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE_CONFIRMED",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 (25–26.11.2025), действует с 01.07.2026; структура разделов 3, 10 и 16 проверена. Конкретный пункт, профиль и полномочия для ER-DIAG-089 НЕ подтверждены.",
+          "status": "EFFECTIVE_DATE_CONFIRMED_ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_COPY",
+          "url": "https://www.mtz-transmash.ru/info/plans/lokomotiv_ermak/",
+          "locator": "Схема изготовителя тормозного оборудования на «Ермаке» обозначает ЭПК 153А; привязка к серии/секции не подтверждена.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Историческая пневмосхема обозначает ЭПК автостопа У25; обозначение не переносить на современную комплектацию.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "РЭ7 архивная; не проверены действующая редакция, профиль, должностные полномочия и разрешённый маршрут.",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "SOURCE_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Обозначения У25 и 153А из разных публичных источников не признаны взаимозаменяемыми без профиля.",
+          "status": "PROFILE_COMPARISON_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP: Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию. Запрещены обходы защит, перемычки, высоковольтные вмешательства и действия с пневмооборудованием под давлением.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "Исходный статус BASE_CONFIRMED, профиль {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}. Он не подтверждает установленную конфигурацию; МСУД-Н и МСУД-015 не смешивать.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Новые Правила тормозов действуют с 01.07.2026, но точный пункт и полномочия не проверены. Архивные материалы и схема производителя не разрешают действий.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждено раннее исполнение base_early и состав КЛУБ-У/САУТ/ЭПК по документам именно этой машины, без переноса на МСУД-015?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи отмечено срабатывание ЭПК либо сохранение состояния после события, а не только падение давления ТМ без идентификации ЭПК?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (BASE_CONFIRMED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-089. Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Электропневматический клапан автостопа вызывает торможение или остаётся в состоянии срабатывания. Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки. Историческая пневмосхема 3ЭС5К описывает электропневматический клапан автостопа У25; производитель тормозного оборудования приводит в своей схеме «Ермака» ЭПК 153А. Соответствие У25 и 153А конкретной машине не доказано. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с тормозами или системой безопасности продолжается, есть риск движения либо завершение не подтверждено прежней записью?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждено раннее исполнение base_early и состав КЛУБ-У/САУТ/ЭПК по документам именно этой машины, без переноса на МСУД-015?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи отмечено срабатывание ЭПК либо сохранение состояния после события, а не только падение давления ТМ без идентификации ЭПК?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены ранее полученные сообщения КЛУБ-У/САУТ, состояние индикации ЭПК, время и давление ТМ без новых проверок?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены команда системы безопасности, фактическое срабатывание ЭПК, индикация и невозможность восстановления; не объявлен аппаратный отказ по одному признаку?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "training",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Есть источник записи о срабатывании, установленный тип ЭПК, профиль безопасности и временная последовательность событий?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее нарушение тормозов или системы безопасности. Следовать только действующим правилам и полномочиям, не исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию. Запрещены обходы защит, перемычки и действия с аппаратурой под давлением.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точный профиль и установленная комплектация не подтверждены (BASE_CONFIRMED). Нельзя переносить схему другой серии, версии тормозного крана или МСУД.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-089. Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежние записи не позволяют разделить наблюдения и возможные причины; никаких новых проб торможения и вмешательств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИСТОРИЧЕСКАЯ ИНФОРМАЦИЯ, НЕ ЭКСПЛУАТАЦИОННАЯ ИНСТРУКЦИЯ. Электропневматический клапан автостопа вызывает торможение или остаётся в состоянии срабатывания. Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки. Историческая пневмосхема 3ЭС5К описывает электропневматический клапан автостопа У25; производитель тормозного оборудования приводит в своей схеме «Ермака» ЭПК 153А. Соответствие У25 и 153А конкретной машине не доказано. Правила 2026 подтверждены по дате, конкретные полномочия неизвестны. Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "training",
+                "manufacturer",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "title": "Исходный объект и границы ER-DIAG-089",
+          "text": "Точные поля id/title/symptom/status/applicability/systemIds/equipmentRefs/sourceRefs сверены с сохранённой проекцией закреплённого донора. Исходный статус BASE_CONFIRMED. Независимая распаковка gzip именно для ER-DIAG-089 не выполнялась.",
+          "locator": "Test- @ 3176d6ee; diagnostics-05.pack.json / ER-DIAG-089",
+          "id": "ER-DIAG-089-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Архивное описание аппаратуры и вариант",
+          "text": "Историческая пневмосхема 3ЭС5К описывает электропневматический клапан автостопа У25; производитель тормозного оборудования приводит в своей схеме «Ермака» ЭПК 153А. Соответствие У25 и 153А конкретной машине не доказано. Схема изготовителя тормозного оборудования на «Ермаке» обозначает ЭПК 153А; привязка к серии/секции не подтверждена.",
+          "locator": "Схема изготовителя тормозного оборудования на «Ермаке» обозначает ЭПК 153А; привязка к серии/секции не подтверждена.",
+          "id": "ER-DIAG-089-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Альтернативные объяснения и различение",
+          "text": "Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки. Историческая пневмосхема обозначает ЭПК автостопа У25; обозначение не переносить на современную комплектацию.",
+          "locator": "Историческая пневмосхема обозначает ЭПК автостопа У25; обозначение не переносить на современную комплектацию.",
+          "id": "ER-DIAG-089-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Норматив 2026 и граница полномочий",
+          "text": "Приложение №65 к протоколу №83 действует с 01.07.2026. Конкретный пункт, редакция для организации и полномочия для ER-DIAG-089 не подтверждены. Архивное РЭ7 не даёт разрешений.",
+          "locator": "Правила 2026, разделы 3/10/16 (оглавление); РЭ7 архивная",
+          "id": "ER-DIAG-089-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "title": "Fail-closed и запреты",
+          "text": "Срабатывание ЭПК может быть следствием команды системы безопасности, а не отказом самого клапана. Сохранение состояния после события и потеря давления ТМ ER-DIAG-090 требуют самостоятельной оценки. Не отключать ЭПК, КЛУБ-У, САУТ, не выполнять сбросы/восстановление, обход блокировок или пробное движение по исследовательскому сценарию. Подтверждение предупреждения не разрешает действий.",
+          "locator": "Аналитическая safety gate; источник/профиль неизвестен",
+          "id": "ER-DIAG-089-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "NORMATIVE_CURRENT_SCOPE",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65, 01.07.2026; только действующая дата и оглавление, не полномочия для ER-DIAG-089",
+          "status": "EFFECTIVE_DATE_CONFIRMED_SCOPE_ONLY",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_OR_MANUFACTURER_COMPARISON",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Историческая пневмосхема обозначает ЭПК автостопа У25; обозначение не переносить на современную комплектацию.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "url": "https://www.mtz-transmash.ru/info/plans/lokomotiv_ermak/",
+          "locator": "Схема изготовителя тормозного оборудования на «Ермаке» обозначает ЭПК 153А; привязка к серии/секции не подтверждена.",
+          "status": "ARCHIVAL_OR_PRODUCT_SCHEME_PROFILE_UNVERIFIED",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    }
+  ]
+}

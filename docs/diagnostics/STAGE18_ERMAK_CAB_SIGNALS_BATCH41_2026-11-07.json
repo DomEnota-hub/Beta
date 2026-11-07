@@ -1,0 +1,1459 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-cab-signals-batch41/1",
+    "date": "2026-11-07",
+    "baseHead": "a53ba262a99cb0751e90f4d63e5f43c71a992224",
+    "previousCiRun": 42377190979,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-123",
+      "ER-DIAG-124"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight donor projection fields matched for each candidate; raw gzip NOT independently decoded; exact installed profiles and current operational clauses UNKNOWN.",
+    "batchBoundary": "Two related but distinct signal-vs-command scenarios. ER-DIAG-125 mechanical suspension deferred."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-batch41-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-123",
+      "scenarioId": "ermak.diag.ER-DIAG-123",
+      "title": "Блок сигнализации показывает противоречивое состояние",
+      "symptom": "Лампы/индикаторы блока сигнализации не соответствуют фактическому состоянию оборудования",
+      "hazardCategory": "SIGNAL_INDICATION_CONTRADICTION",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-40",
+        "SYS-C0",
+        "SYS-90",
+        "SYS-70",
+        "SYS-71"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-013",
+        "ER-EQ-CT-005",
+        "ER-EQ-CT-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи сигнализации A23/SF29/SA5/SA6/U77/U80/U81; МСУД-Н; КТС-УАСП; тяговые цепи и ослабление возбуждения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка оборудования. Монтаж электрический",
+          "locator": "кабина, пульт управления, пожарное оборудование, размещение аппаратуры",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_layout_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия раннего исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-123-research-only",
+      "earlyMsud": "EARLY_RE1_RE5_ARCHIVAL_ONLY",
+      "lateMsud": "NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-001",
+        "ER-DIAG-003",
+        "ER-DIAG-015",
+        "ER-DIAG-122",
+        "ER-DIAG-124",
+        "ER-DIAG-129"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-07.pack.json / ER-DIAG-123; eight fields compared; raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-07.pack.json",
+          "objectId": "ER-DIAG-123",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "re1": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE1",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1 §6.11 сигнализация; §6.8 МСУД-Н, БИ (А78)",
+          "status": "HISTORICAL_EARLY_CIRCUIT_NOT_INSTALLED_PROFILE",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "re2": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE2",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "ИДМБ.661142.009РЭ2 §1.2: компоновка кабины; не подтверждает точное исполнение",
+          "status": "ARCHIVAL_LAYOUT_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "re5": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE5",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "ИДМБ.661142.009РЭ5 §1.16: БС-173; §1.1: МСУД-Н, БИ",
+          "status": "ARCHIVAL_ELECTRONICS_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_POLICY",
+          "url": "",
+          "locator": "Не повторять команды, не вскрывать пульты/шкафы, не применять перемычки, не сбрасывать защиты, не проводить измерения и не выполнять движения по неподтверждённой индикации",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "INDICATOR_VS_EQUIPMENT",
+          "detail": "Показание лампы не равно подтверждённому физическому состоянию аппарата.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "BS173_VS_BI",
+          "detail": "Блок сигнализации БС-173 и БИ (А78) МСУД-Н не отождествляются.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PANEL_VS_SIGNAL",
+          "detail": "Отсутствие команды с пульта относится к другому сценарию.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "EARLY_VS_LATE",
+          "detail": "РЭ1/РЭ5 описывают архивное раннее исполнение, позднее не подтверждено.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "NO_CAUSE_INFERENCE",
+          "detail": "Несогласованность не позволяет определить причину или элемент.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Сведения РЭ не подтверждают действующие полномочия для проверки/ремонта.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Есть действующий опасный признак, отказ безопасности или не подтверждено завершение события по уже записанным данным? Никаких новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Из документов установлены точная секция, вариант блока сигнализации, схемы индикации и полномочия? В исследовательском пакете этого подтверждения нет.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re2",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зафиксировано именно противоречие ламп/индикаторов и другого документированного состояния, а не только отсутствие команды с пульта?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: опасное событие или неизвестная безопасность. Действовать только по действующему подтверждённому регламенту и полномочиям.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: недостаточно подтверждённых ранее записанных признаков; причина не установлена.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точная машина, секция, профиль, действующий источник и роль не подтверждены.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: Отсутствие команды с пульта, потеря питания или одиночная лампа не доказывают неисправность блока сигнализации.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: Блок сигнализации показывает противоречивое состояние. Только классификация ранее оформленных признаков; причина UNKNOWN, эксплуатационные действия BLOCKED.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re5",
+                "safety"
+              ]
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Есть действующий опасный признак, отказ безопасности или не подтверждено завершение события по уже записанным данным? Никаких новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Из документов установлены точная секция, вариант блока сигнализации, схемы индикации и полномочия? В исследовательском пакете этого подтверждения нет.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re2",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее зафиксировано именно противоречие ламп/индикаторов и другого документированного состояния, а не только отсутствие команды с пульта?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены прежние отметки времени, секции и двух независимых признаков без нового тестирования?",
+              "responses": {
+                "YES": "q-mode",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-mode",
+              "type": "QUESTION",
+              "text": "Различены собственная сигнализация, отображение МСУД-Н на БИ и фактическое состояние аппарата, без объявления причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указано, какие данные относятся к РЭ1 §6.11, РЭ5 §1.16 и к конкретной неподтверждённой машине, без переноса архивных обозначений?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re2",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: опасное событие или неизвестная безопасность. Действовать только по действующему подтверждённому регламенту и полномочиям.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: недостаточно подтверждённых ранее записанных признаков; причина не установлена.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точная машина, секция, профиль, действующий источник и роль не подтверждены.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: Отсутствие команды с пульта, потеря питания или одиночная лампа не доказывают неисправность блока сигнализации.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: нет достаточной исторической записи или источниковой привязки; не проводить новые испытания и не определять причину.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: Блок сигнализации показывает противоречивое состояние. Только классификация ранее оформленных признаков; причина UNKNOWN, эксплуатационные действия BLOCKED.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re5",
+                "safety"
+              ]
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ermak-123-s-1",
+          "version": "SHORT",
+          "title": "Несовпадение сигналов и состояния",
+          "body": "Индикатор, состояние аппарата и сообщение МСУД-Н являются разными наблюдениями; расхождение не устанавливает дефект БС-173.",
+          "sourceRefs": [
+            "donor",
+            "re1",
+            "re5"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-123-s-2",
+          "version": "SHORT",
+          "title": "Не путать с отказом пульта",
+          "body": "Отсутствие формирования команды относится к ER-DIAG-124; несоответствие лампы не является доказательством такого отказа.",
+          "sourceRefs": [
+            "donor",
+            "re1"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-123-d-3",
+          "version": "DETAILED",
+          "title": "Архивная идентификация БС-173",
+          "body": "РЭ5 §1.16 называет БС-173. Точная установленная комплектация и электрическая схема требуют сверки с документацией машины.",
+          "sourceRefs": [
+            "re5",
+            "re2"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-123-d-4",
+          "version": "DETAILED",
+          "title": "БИ и диагностическая информация",
+          "body": "РЭ1 §6.8 и §7 описывает МСУД-Н и БИ (А78); сообщение на БИ нельзя считать независимым доказательством физического положения аппарата.",
+          "sourceRefs": [
+            "re1",
+            "re5"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-123-d-5",
+          "version": "DETAILED",
+          "title": "Неустановленная причина и роль",
+          "body": "Без согласованной записи событий, профиля и действующей инструкции причина остаётся UNKNOWN, действия и допуск BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "source": "РЭ1, публичная архивная копия",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "§6.11 сигнализация; §6.8 МСУД-Н",
+          "verifiedAt": "2026-11-07",
+          "confidence": "EARLY_SCHEME_NOT_CURRENT"
+        },
+        {
+          "source": "РЭ2, публичная архивная копия",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§1.2 кабина машиниста",
+          "verifiedAt": "2026-11-07",
+          "confidence": "LAYOUT_NOT_INSTALLED_PROFILE"
+        },
+        {
+          "source": "РЭ5, публичная архивная копия",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "§1.16 блок сигнализации БС-173",
+          "verifiedAt": "2026-11-07",
+          "confidence": "ARCHIVAL_COMPONENT_ONLY"
+        },
+        {
+          "source": "РЭ 2007, индекс комплекта",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "исторический комплект; документация конкретной машины имеет приоритет",
+          "verifiedAt": "2026-11-07",
+          "confidence": "HISTORICAL_VARIANT_WARNING"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-batch41-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-124",
+      "scenarioId": "ermak.diag.ER-DIAG-124",
+      "title": "Пульт управления не принимает команды",
+      "symptom": "Органы управления рабочей кабины не формируют ожидаемые команды системам локомотива",
+      "hazardCategory": "CAB_COMMAND_PATH_UNKNOWN",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-C0",
+        "SYS-40",
+        "SYS-70",
+        "SYS-80",
+        "SYS-20",
+        "SYS-21"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CB-004",
+        "ER-EQ-CT-007",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи сигнализации A23/SF29/SA5/SA6/U77/U80/U81; МСУД-Н; КТС-УАСП; тяговые цепи и ослабление возбуждения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка оборудования. Монтаж электрический",
+          "locator": "кабина, пульт управления, пожарное оборудование, размещение аппаратуры",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_layout_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия раннего исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-FINAL",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "МСУД-Н, блок управления БУ-193, блоки индикации и сопряжения",
+          "url": "https://rcit.su/techinfoV55.html",
+          "role": "manufacturer_electronics_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия раннего МСУД-Н; поздние исполнения отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-124-research-only",
+      "earlyMsud": "EARLY_RE1_RE5_ARCHIVAL_ONLY",
+      "lateMsud": "NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-001",
+        "ER-DIAG-003",
+        "ER-DIAG-015",
+        "ER-DIAG-122",
+        "ER-DIAG-123",
+        "ER-DIAG-131"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-07.pack.json / ER-DIAG-124; eight fields compared; raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-07.pack.json",
+          "objectId": "ER-DIAG-124",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "re1": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE1",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1 §6.6 и §6.8: команды контроллера SM1 и МСУД-Н",
+          "status": "HISTORICAL_EARLY_CIRCUIT_NOT_INSTALLED_PROFILE",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "re2": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE2",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "ИДМБ.661142.009РЭ2 §1.2: компоновка кабины; не подтверждает точное исполнение",
+          "status": "ARCHIVAL_LAYOUT_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "re5": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE5",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "ИДМБ.661142.009РЭ5 §1.1: МСУД-Н, БУ-193, БИ, сопряжение",
+          "status": "ARCHIVAL_ELECTRONICS_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_POLICY",
+          "url": "",
+          "locator": "Не повторять команды, не вскрывать пульты/шкафы, не применять перемычки, не сбрасывать защиты, не проводить измерения и не выполнять движения по неподтверждённой индикации",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "COMMAND_VS_RESPONSE",
+          "detail": "Отсутствие отклика не доказывает отсутствие команды.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PANEL_VS_SIGNAL",
+          "detail": "Противоречивая индикация относится к ER-DIAG-123.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "CAB_VS_SECTION",
+          "detail": "Команды рабочей кабины и состояние другой секции нельзя отождествлять.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "EARLY_VS_LATE",
+          "detail": "Схема МСУД-Н раннего РЭ не переносится на МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "NO_CAUSE_INFERENCE",
+          "detail": "Не определять неисправный контроллер, провод или пульт без источника.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Не разрешены повторная подача команд, переключения, испытания и обход защит.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным продолжается опасный отказ управления или безопасность движения не подтверждена? Никаких новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально установлены рабочая кабина, секция, установленная версия МСУД, пульта и полномочия? Сейчас эти данные отсутствуют.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re2",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее документировано именно отсутствие ожидаемой команды от органов рабочей кабины, а не только несоответствие ламп блока сигнализации?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: опасное событие или неизвестная безопасность. Действовать только по действующему подтверждённому регламенту и полномочиям.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: недостаточно подтверждённых ранее записанных признаков; причина не установлена.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точная машина, секция, профиль, действующий источник и роль не подтверждены.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: Расхождение ламп блока сигнализации или отказ отдельного аппарата не подтверждают отсутствие команды от пульта.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: Пульт управления не принимает команды. Только классификация ранее оформленных признаков; причина UNKNOWN, эксплуатационные действия BLOCKED.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re5",
+                "safety"
+              ]
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее зафиксированным данным продолжается опасный отказ управления или безопасность движения не подтверждена? Никаких новых проверок.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально установлены рабочая кабина, секция, установленная версия МСУД, пульта и полномочия? Сейчас эти данные отсутствуют.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re2",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее документировано именно отсутствие ожидаемой команды от органов рабочей кабины, а не только несоответствие ламп блока сигнализации?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть сохранённые сведения о времени, секции, штатной индикации и наблюдаемом отклике без повторной подачи команд?",
+              "responses": {
+                "YES": "q-mode",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-mode",
+              "type": "QUESTION",
+              "text": "Отделены отсутствие регистрации команды, отсутствие отклика исполнительной цепи и ошибочное показание, без догадки о причине?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранено разделение РЭ1 §6.6/§6.8, РЭ2 §1.2 и РЭ5 §1.1 без переноса схемы ранней МСУД-Н на позднюю машину?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re2",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: опасное событие или неизвестная безопасность. Действовать только по действующему подтверждённому регламенту и полномочиям.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP: недостаточно подтверждённых ранее записанных признаков; причина не установлена.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точная машина, секция, профиль, действующий источник и роль не подтверждены.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: Расхождение ламп блока сигнализации или отказ отдельного аппарата не подтверждают отсутствие команды от пульта.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ]
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: нет достаточной исторической записи или источниковой привязки; не проводить новые испытания и не определять причину.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "re1",
+                "re5",
+                "safety"
+              ]
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: Пульт управления не принимает команды. Только классификация ранее оформленных признаков; причина UNKNOWN, эксплуатационные действия BLOCKED.",
+              "responses": {},
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "re1",
+                "re5",
+                "safety"
+              ]
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ermak-124-s-1",
+          "version": "SHORT",
+          "title": "Команда и отклик",
+          "body": "Наличие воздействия органа управления, регистрация команды МСУД и фактическое исполнение являются разными событиями; не определять виновный узел.",
+          "sourceRefs": [
+            "donor",
+            "re1"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-124-s-2",
+          "version": "SHORT",
+          "title": "Пульт и блок сигнализации",
+          "body": "ER-DIAG-123 относится к противоречивой индикации, ER-DIAG-124 к пути команды. Нельзя сливать их в одну неисправность.",
+          "sourceRefs": [
+            "donor",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-124-d-3",
+          "version": "DETAILED",
+          "title": "РЭ1: путь управления",
+          "body": "РЭ1 §6.8 описывает связь контроллера SM1 и блока сопряжения с МСУД-Н; это архивная схема, не подтверждённая для каждой машины.",
+          "sourceRefs": [
+            "re1",
+            "re5"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-124-d-4",
+          "version": "DETAILED",
+          "title": "РЭ2: кабина",
+          "body": "РЭ2 §1.2 содержит компоновку кабины; сам факт наличия пульта не подтверждает исправность органов управления или разрешённые операции.",
+          "sourceRefs": [
+            "re2",
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-124-d-5",
+          "version": "DETAILED",
+          "title": "Профиль и полномочия",
+          "body": "При неизвестном исполнении МСУД-015 или местной инструкции любые проверки команд, переключения, повторные попытки и ремонт блокируются.",
+          "sourceRefs": [
+            "re5",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "source": "РЭ1, публичная архивная копия",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "§6.6 цепи управления; §6.8 МСУД-Н",
+          "verifiedAt": "2026-11-07",
+          "confidence": "EARLY_SCHEME_NOT_CURRENT"
+        },
+        {
+          "source": "РЭ2, публичная архивная копия",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§1.2 кабина машиниста",
+          "verifiedAt": "2026-11-07",
+          "confidence": "LAYOUT_NOT_INSTALLED_PROFILE"
+        },
+        {
+          "source": "РЭ5, публичная архивная копия",
+          "url": "https://rcit.su/techinfoV55.html",
+          "locator": "§1.1 МСУД-Н, состав аппаратных средств",
+          "verifiedAt": "2026-11-07",
+          "confidence": "ARCHIVAL_COMPONENT_ONLY"
+        },
+        {
+          "source": "РЭ 2007, индекс комплекта",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "исторический комплект; документация конкретной машины имеет приоритет",
+          "verifiedAt": "2026-11-07",
+          "confidence": "HISTORICAL_VARIANT_WARNING"
+        }
+      ]
+    }
+  ]
+}
