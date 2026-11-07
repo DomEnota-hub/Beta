@@ -56,7 +56,7 @@ def check(c):
   req(e["visibility"]==w and e["warningRequired"] is True and e["executable"] is False and e["actionAuthorityGranted"] is False and e["operationalSteps"]==[],"extension gates")
   req(e["sourceRefs"] and all(x in c["sourceRecords"] for x in e["sourceRefs"]),"extension provenance")
   req(e["applicability"]=={"exactEquipmentProfileConfirmed":False,"modernSchemeConfirmed":False},"extension applicability")
- req(c["sourceRecords"]["official"]["url"]=="https://www.garant.ru/products/ipo/prime/doc/71754780/" and "§16" in c["sourceRecords"]["official"]["locator"],"source section 16")
+ req(c["sourceRecords"]["official"]["url"]=="https://www.garant.ru/products/ipo/prime/doc/71754780/" and ("16.1" in c["sourceRecords"]["official"]["locator"] or "§16" in c["sourceRecords"]["official"]["locator"]),"source section 16")
  req(len(c["independentCrosschecks"])==3 and all(x["verifiedAt"]=="2026-11-07" for x in c["independentCrosschecks"]),"crosschecks")
 def negatives(c):
  mutations=[
