@@ -60,8 +60,7 @@ def validate(index, profiles, packs, pilot):
     need([p["id"] for p in profile_docs["docs/locomotives/chme3/profiles.json"]["profiles"]] == list(BINDINGS), "profile IDs")
     inherit = profile_docs["docs/locomotives/diesel/chme3-family/chme3e/inheritance.json"]
     need(inherit["profileId"] == "chme3e-electronic", "CHME3E inheritance owner")
-    need("NO_AUTOMATIC_INHERITANCE" in json.dumps(profile_docs["docs/locomotives/chme3/profiles.json"], ensure_ascii=False) or
-         "NO_AUTOMATIC_INHERITANCE" in json.dumps(inherit, ensure_ascii=False), "no automatic CHME3T inheritance")
+    need("NO_AUTOMATIC_INHERITANCE" in json.dumps(profile_docs["docs/locomotives/diesel/chme3-family/chme3e/profile.json"], ensure_ascii=False), "no automatic CHME3T inheritance")
     need("CHME3T-EQ-BRAKE-RESISTORS" in inherit["hardExclusions"], "CHME3E rheostatic hard exclusion")
 
     need(len(index["documents"]) == len(DOC_PINS), "six documentary snapshots")
