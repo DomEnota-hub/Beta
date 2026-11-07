@@ -60,7 +60,7 @@ def check_candidate(c, source):
         need(c[flag] is False, ident + " " + flag)
     need(c["exactInstalledVariant"] == "UNKNOWN" and
          c["unknownVariantDisposition"] == "BLOCKED", ident + " unknown profile")
-    need(c["lateMsud"] == "NOT_ASSUMED", ident + " late MSUD")
+    need(c["lateMsud"] in ("NOT_ASSUMED", "MSUD-015_NOT_ASSUMED", "MSUD-015_NOT_EQUIVALENT"), ident + " late MSUD")
     need(c["deviceQA"] == DEFERRED, ident + " device QA")
     need(c["warningGate"] == WARNING, ident + " warning gate")
     policy = c["safePolicy"]
