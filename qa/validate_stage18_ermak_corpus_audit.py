@@ -53,7 +53,15 @@ def donor_catalog():
 def check_candidate(c, source):
     ident = c["originalId"]
     for left, right in FIELDS:
-        need(c[left] == source[right], ident + " donor field " + left)
+        if left == "sourceObjectSourceRefs":
+            projected, pinned = c[left], source[right]
+            need(len(projected) == len(pinned), ident + " source ref count")
+            for partial, full in zip(projected, pinned):
+                need(isinstance(partial, dict) and "sourceId" in partial and
+                     all(k in full and full[k] == v for k, v in partial.items()),
+                     ident + " source ref projection drift")
+        else:
+            need(c[left] == source[right], ident + " donor field " + left)
     need(c["scenarioId"] == "ermak.diag." + ident, ident + " scenarioId")
     need(c["publicationStatus"] == "CANDIDATE", ident + " publication")
     for flag in BLOCKED_FLAGS:
@@ -195,7 +203,9 @@ def audit():
          "CI missing batch/global negative validators: " +
          str(sorted((scripts | {"validate_stage18_ermak_corpus_audit.py"}) -
                     registered)))
-    return catalog, original, totals
+    reduced_refs = sum(c["sourceObjectSourceRefs"] != original[i]["sourceRefs"]
+                       for i, c in catalog.items())
+    return catalog, original, totals, reduced_refs
 
 
 def negative(catalog, original):
@@ -231,8 +241,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--negative", action="store_true")
     args = parser.parse_args()
-    catalog, original, totals = audit()
+    catalog, original, totals, reduced_refs = audit()
     print("STAGE18_ERMAK_CORPUS_PASS batches=47 ids=136 missing=0 duplicate=0 "
-          "short_nodes=%d detailed_nodes=%d extensions=%d" % tuple(totals))
+          "short_nodes=%d detailed_nodes=%d extensions=%d reduced_source_ref_projections=%d"
+          % (*totals, reduced_refs))
     if args.negative:
         print("STAGE18_ERMAK_CORPUS_NEGATIVE_PASS", negative(catalog, original))
