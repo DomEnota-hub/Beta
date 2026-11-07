@@ -1,0 +1,762 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-manual-brake-batch39/1",
+    "date": "2026-11-07",
+    "baseHead": "ba1b4acf8eaefd44df9a85f6f7b9683b463a07c2",
+    "previousCiRun": 42368647623,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-121"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight donor fields matched pack07; raw gzip NOT independently decoded; installed variant and current local operating rule/role UNKNOWN.",
+    "batchBoundary": "One safety-critical manual brake candidate; 122 HV interlocks separate."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-batch39-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-121",
+      "scenarioId": "ermak.diag.ER-DIAG-121",
+      "title": "Ручной тормоз не отпускает / не удерживает",
+      "symptom": "Ручной тормоз не обеспечивает ожидаемое механическое состояние после приведения/отпуска",
+      "hazardCategory": "MANUAL_PARKING_BRAKE_SAFETY_CRITICAL",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-A0",
+        "SYS-60"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-MC-012",
+        "ER-EQ-BR-006"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-007",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV56.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "ручной тормоз; система смазки гребней; У30/КН45/КН46; звуковые сигналы",
+          "url": "https://rcit.su/techinfoV56.html",
+          "role": "manufacturer_mechanical_pneumatic_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; профиль системы подтверждать",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-BRAKES-2026-CAB-B12",
+          "document": "Правила технического обслуживания тормозного оборудования и управления тормозами железнодорожного подвижного состава",
+          "locator": "Приложение №65 к Протоколу №83; действует с 01.07.2026",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "role": "current_brake_regulation",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приложение №65 к Протоколу №83",
+            "revision": "25–26.11.2025",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2026-07-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-121-research-only",
+      "earlyMsud": "EARLY_RE6_ARCHIVAL_ONLY",
+      "lateMsud": "NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-064",
+        "ER-DIAG-081",
+        "ER-DIAG-082",
+        "ER-DIAG-083",
+        "ER-DIAG-085",
+        "ER-DIAG-086",
+        "ER-DIAG-087",
+        "ER-DIAG-120"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-07.pack.json / ER-DIAG-121; eight fields compared; raw gzip NOT independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-07.pack.json",
+          "objectId": "ER-DIAG-121",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_RE6_2004_PUBLIC_COPY",
+          "url": "https://3uch.ru/textbook/yahemis/fove/ille",
+          "locator": "ИДМБ.661142.009РЭ6, §4.7: секционный ручной тормоз, колонка со штурвалом около кабины; установленное исполнение неизвестно",
+          "status": "HISTORICAL_DESIGN_ONLY_PROFILE_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "manufacturerIndex": {
+          "sourceKind": "MANUFACTURER_RE6_ARCHIVAL_INDEX",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6, оглавление §4.7 и §2.9",
+          "status": "SECTION_EXISTS_ONLY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "historical": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_2007_OVERVIEW",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "РЭ 2007 предупреждает о конструктивных отличиях от комплекта конкретной машины",
+          "status": "HISTORICAL_VARIANT_WARNING",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "brakeRules": {
+          "sourceKind": "CURRENT_2026_INTERSTATE_BRAKE_RULES_PUBLIC_COPY",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение №65 к протоколу №83 от 25–26.11.2025; действует с 01.07.2026; §3.1/3.2; точный пункт для 121 не проверен",
+          "status": "EFFECTIVE_DATE_AND_STRUCTURE_CONFIRMED_CLAUSE_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "PTE_250_PUBLIC_COPY_CURRENT_CLAUSE_UNVERIFIED",
+          "url": "https://base.garant.ru/405042985/",
+          "locator": "ПТЭ №250: действующий локальный порядок, конкретный пункт и полномочия для 121 не установлены",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Никаких проб удержания на уклоне, отпуска/затяжки штурвала, регулировки тяг, осмотра под локомотивом или испытательного движения",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "FAILURE_MODE",
+          "detail": "Не отпускает и не удерживает являются разными исходами, один не доказывает другой",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "BRAKE_BOUNDARY",
+          "detail": "Механический ручной тормоз не равен пневматическому тормозу или ТЦ",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "BASE_CONFIRMED/base_early не доказывает вариант конкретной машины; поздний профиль не подтверждён",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE",
+          "detail": "РЭ6 2004 и РЭ 2007 архивные; новые правила с 01.07.2026 не подтверждают процедуру именно этой машины",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        },
+        {
+          "topic": "ROLE",
+          "detail": "Нет действующей локальной инструкции и отдельной проверки полномочий",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается либо его безопасное завершение не подтверждено ранее оформленными данными? Новых проверок не проводить.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Имеется документальное подтверждение конкретной секции, установленной конструкции ручного тормоза, редакции РЭ и полномочий? В этом черновике они НЕ подтверждены.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "historical",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее оформленное наблюдение относится именно к механическому ручному тормозу, а не к пневматическому отпуску, ТЦ или закреплению состава?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: активный или не подтверждённо завершённый отказ. Не пробовать удержание, отпуск или затяжку; дальнейший порядок только по действующему регламенту.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Недостаточно данных для вывода о причине, исправности, закреплении или возможности движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "brakeRules"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: не подтверждены машина, секция, установленная конструкция, источник и роль. BASE_CONFIRMED не является эксплуатационным допуском.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "historical",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: не смешивать механический ручной тормоз с пневматическим тормозом, ТЦ или средствами закрепления состава.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: симптом ручного тормоза классифицирован только по старым записям. Причина UNKNOWN, профиль/роль/источник BLOCKED, действий не разрешено.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "brakeRules",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие продолжается либо его безопасное завершение не подтверждено ранее оформленными данными? Новых проверок не проводить.",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Имеется документальное подтверждение конкретной секции, установленной конструкции ручного тормоза, редакции РЭ и полномочий? В этом черновике они НЕ подтверждены.",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "historical",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Ранее оформленное наблюдение относится именно к механическому ручному тормозу, а не к пневматическому отпуску, ТЦ или закреплению состава?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть ли ранее оформленные сведения о характере симптома без новых испытаний удержания или отпуска?",
+              "responses": {
+                "YES": "q-mode",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-mode",
+              "type": "QUESTION",
+              "text": "По записям раздельно указано «не отпускает» либо «не удерживает» без автоматического вывода о механической причине?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Происхождение наблюдений и редакция архивной схемы документированы, без переноса ранней конструкции на позднее исполнение?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "historical",
+                "brakeRules",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: активный или не подтверждённо завершённый отказ. Не пробовать удержание, отпуск или затяжку; дальнейший порядок только по действующему регламенту.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Недостаточно данных для вывода о причине, исправности, закреплении или возможности движения.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "brakeRules"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: не подтверждены машина, секция, установленная конструкция, источник и роль. BASE_CONFIRMED не является эксплуатационным допуском.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "historical",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: не смешивать механический ручной тормоз с пневматическим тормозом, ТЦ или средствами закрепления состава.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: ранее оформленные данные неполны; архивная схема и неподтверждённый профиль не доказывают причину.",
+              "responses": {},
+              "sourceRefs": [
+                "manufacturer",
+                "brakeRules",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ: симптом ручного тормоза классифицирован только по старым записям. Причина UNKNOWN, профиль/роль/источник BLOCKED, действий не разрешено.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "brakeRules",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ermak-121-s-modes",
+          "version": "SHORT",
+          "title": "Два различных симптома",
+          "body": "«Не отпускает» и «не удерживает» описывают разные ранее наблюдавшиеся исходы; не устанавливают причину и не подтверждают механическое повреждение.",
+          "sourceRefs": [
+            "donor",
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-121-s-boundary",
+          "version": "SHORT",
+          "title": "Граница с пневматическим тормозом",
+          "body": "Ручной механический тормоз не отождествлять с тормозными цилиндрами, автоматическими тормозами или средствами закрепления состава.",
+          "sourceRefs": [
+            "donor",
+            "brakeRules",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-121-d-archival",
+          "version": "DETAILED",
+          "title": "Архивное устройство по РЭ6",
+          "body": "РЭ6 2004 §4.7 описывает секционный ручной тормоз и колонку со штурвалом у кабины. Это не подтверждение установленного варианта конкретной машины.",
+          "sourceRefs": [
+            "manufacturer",
+            "historical"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-121-d-rules",
+          "version": "DETAILED",
+          "title": "Нормативная граница 2026 года",
+          "body": "Приложение №65 к протоколу №83 действует с 01.07.2026; точные пункты и полномочия по этому отказу не подтверждены.",
+          "sourceRefs": [
+            "brakeRules",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ermak-121-d-unknown",
+          "version": "DETAILED",
+          "title": "Неизвестная применимость и роль",
+          "body": "Нужны РЭ конкретной машины, подтверждённое исполнение, местная инструкция и отдельные source/role/safety gates. Запрещены испытания на уклоне и самостоятельное разрешение движения.",
+          "sourceRefs": [
+            "historical",
+            "safety",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "source": "РЭ6 2004 текстовая копия",
+          "url": "https://3uch.ru/textbook/yahemis/fove/ille",
+          "locator": "§4.7 ручной тормоз каждой секции, колонка со штурвалом около кабины",
+          "verifiedAt": "2026-11-07",
+          "confidence": "ARCHIVAL_DESIGN_NOT_INSTALLED_VARIANT"
+        },
+        {
+          "source": "RCIT РЭ6",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "оглавление §4.7 и §2.9",
+          "verifiedAt": "2026-11-07",
+          "confidence": "SECTION_EXISTS_ONLY"
+        },
+        {
+          "source": "Правила тормозов 2026",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "приложение №65 протокол №83, 01.07.2026, разделы 3.1/3.2",
+          "verifiedAt": "2026-11-07",
+          "confidence": "EFFECTIVE_DATE_AND_STRUCTURE_ONLY"
+        },
+        {
+          "source": "RCIT РЭ 2007",
+          "url": "https://rcit.su/techinfoV5.html",
+          "locator": "исторические конструктивные отличия и оговорка об издании",
+          "verifiedAt": "2026-11-07",
+          "confidence": "HISTORICAL_VARIANT_WARNING"
+        }
+      ]
+    }
+  ]
+}
