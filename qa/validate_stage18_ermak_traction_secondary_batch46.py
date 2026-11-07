@@ -25,7 +25,7 @@ def check(c):
  req(d["objectId"]==i and d["rawGzipIndependentlyDecoded"] is False,"raw")
  req(all(x["currentOperatingAuthority"] is False for x in s.values()),"source authority")
  req(len(c["sourceConflicts"])==6 and all(x["resolution"] in ("NO_CAUSE_INFERENCE","PROFILE_BLOCKED","SOURCE_AUTHORITY_BLOCKED") for x in c["sourceConflicts"]),"conflicts")
- req(len(c["mustRemainDistinctFrom"])==4 and (IDS[1] if i==IDS[0] else IDS[0]) in c["mustRemainDistinctFrom"],"distinct")
+ req(len(c["mustRemainDistinctFrom"])==5 and (IDS[1] if i==IDS[0] else IDS[0]) in c["mustRemainDistinctFrom"],"distinct")
  for mode,count in (("SHORT",8),("DETAILED",12)):
   g=c["versions"][mode];n=g["nodes"];m={x["id"]:x for x in n}
   req(len(n)==count and len(m)==count and g["startNodeId"]=="q-active","count")
