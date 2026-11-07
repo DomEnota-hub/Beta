@@ -45,6 +45,10 @@ def check(c):
   req(len(visited)==count,"unreachable")
   req(mp["q-active"]["responses"]=={"YES":"stop-active","NO":"q-profile","UNKNOWN":"stop-unknown"},"active")
   req(mp["q-profile"]["responses"]["NO"]=="stop-profile","profile block")
+  req(mp["q-symptom"]["responses"]["NO"]=="stop-mismatch","symptom mismatch")
+  if mode=="DETAILED":
+   for q in ("q-evidence","q-differential","q-provenance"):
+    req(mp[q]["responses"]["NO"]=="stop-unverified","negative evidence must STOP "+q)
   req(mp["stop-unknown"]["type"]=="STOP" and mp["stop-profile"]["type"]=="STOP" and mp["stop-active"]["type"]=="STOP","stops")
   req(mp["report-match"]["type"]=="OBSERVATION_REPORT" and "НЕ ИНСТРУКЦИЯ" in mp["report-match"]["text"],"report")
  req(len(c["informationExtensions"])==5 and [e["version"] for e in c["informationExtensions"]]==["SHORT","SHORT","DETAILED","DETAILED","DETAILED"],"extensions")
