@@ -75,8 +75,13 @@ def check_candidate(c, source):
     need(donor["commit"] == PIN and donor["blobSha"] == GZIP and
          donor["objectId"] == ident, ident + " pinned provenance")
     need(donor.get("proceduresImported", False) is False, ident + " donor procedures")
-    need(donor.get("rawGzipIndependentlyDecoded", False) is False,
-         ident + " independent raw verification not recorded")
+    raw = donor.get("rawGzipIndependentlyDecoded")
+    if raw is True:
+        need(donor.get("status") == "RAW_GZIP_PARITY_VERIFIED" and
+             "RAW_GZIP_VERIFIED" in donor.get("sourceKind", ""),
+             ident + " unsupported raw parity claim")
+    else:
+        need(raw is False or raw is None, ident + " raw parity flag")
     for key, record in sources.items():
         if "currentOperatingAuthority" in record:
             need(record["currentOperatingAuthority"] is False,
