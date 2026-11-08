@@ -1,0 +1,825 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 68,
+  "originalId": "CHME3-DIAG-314",
+  "scenarioId": "chme3.diagnostics.chme3-diag-314",
+  "title": "Перегрев масла дизеля",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/13",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-314",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "FIELD_PRACTICE",
+    "evidenceRefs": [
+      "CHME3-SRC-OLTEP-DIESEL",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-OIL-WATER-HEX",
+      "CHME3-EQ-OIL-PUMP",
+      "CHME3-EQ-WATER-PUMP",
+      "CHME3-EQ-RADIATOR"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N46",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §46 Водомасляный теплообменник; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N47",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §47 Циркуляция воды; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-OLTEP-DIESEL / CHME3-SRC-SCBIST-PAM",
+      "revision": "Практические материалы не подтверждены РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть прежние одновременные записи температуры масла и воды?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В архиве перегрев масла совпал с ростом температуры воды?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет сопоставимых архивных данных.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Совместный рост температур отмечен, но общий отказ не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Совместный перегрев не подтверждён; отдельный дефект масла не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть прежние одновременные записи температуры масла и воды?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архиве перегрев масла совпал с ростом температуры воды?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В архиве вода не перегревалась при перегреве масла?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть прежние сведения о теплообменнике и циркуляции?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сопоставимых прежних данных нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Совместный рост температур отмечен; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев масла при обычной температуре воды не доказывает дефект теплообменника.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения о циркуляции есть, но текущий дефект не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нельзя разграничить теплообменник, циркуляцию и измерение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "hex",
+      "title": "Теплообменник",
+      "sourceId": "N46",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "hex-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Теплообменник?",
+          "responses": {
+            "YES": "hex-yes",
+            "NO": "hex-no",
+            "UNKNOWN": "hex-stop"
+          },
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "hex-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Масло передаёт тепло воде; вскрытие не разрешено.",
+          "responses": {},
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "hex-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "hex-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "title": "Водяные контуры",
+      "sourceId": "N47",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "water-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Водяные контуры?",
+          "responses": {
+            "YES": "water-yes",
+            "NO": "water-no",
+            "UNKNOWN": "water-stop"
+          },
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "water-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивное описание различает два контура; модернизация неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "water-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "water-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "flow",
+      "title": "Циркуляция масла",
+      "sourceId": "N46",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "flow-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Циркуляция масла?",
+          "responses": {
+            "YES": "flow-yes",
+            "NO": "flow-no",
+            "UNKNOWN": "flow-stop"
+          },
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "flow-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Теплообменник не единственная возможная причина перегрева.",
+          "responses": {},
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "flow-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "flow-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Сопоставимость показаний",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "data-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Сопоставимость показаний?",
+          "responses": {
+            "YES": "data-yes",
+            "NO": "data-no",
+            "UNKNOWN": "data-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "data-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сравниваются только уже записанные значения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "data-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "data-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "pressure",
+      "title": "Отличие от падения давления",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "pressure-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Отличие от падения давления?",
+          "responses": {
+            "YES": "pressure-yes",
+            "NO": "pressure-no",
+            "UNKNOWN": "pressure-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "pressure-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев не тождествен CHME3-DIAG-313.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pressure-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pressure-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-313",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-315",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-316",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Не компенсировать перегрев повышением нагрузки или оборотов."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Нотик 1996 не действующее РЭ и не подтверждает уставки."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не декодирован независимо, равенство графов не доказано."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Вариант и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые сведения и вторичный 996/р не разрешают действия."
+    },
+    {
+      "source": "SOURCE_CONFLICT",
+      "note": "Без действующего РЭ эксплуатационное действие запрещено."
+    }
+  ],
+  "openGaps": [
+    "Действующее РЭ по номеру машины",
+    "Точный профиль ЧМЭ3/Т/Э и модернизация",
+    "Установленная схема",
+    "Применимость архивного пособия",
+    "Действующие пределы и порядок безопасности",
+    "Сопоставимые архивные данные",
+    "Независимое сравнение gzip",
+    "Роль и полномочия",
+    "Независимый safety gate",
+    "Финальная Android device QA",
+    "Первичная верификация полевых источников",
+    "Независимая проверка: Перегрев масла дизеля"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-c",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-d",
+        "NO": "obs-e",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}
