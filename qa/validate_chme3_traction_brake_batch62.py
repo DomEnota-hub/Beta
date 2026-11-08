@@ -135,7 +135,7 @@ def negative(c,n,idx,pack):
       lambda x: x["sources"][0].update(currentVerified=True),
       lambda x: x["sources"][0].update(installedProfileVerified=True),
       lambda x: x["crossScenarioBoundaries"].pop(),
-      lambda x: x["sourceDiscrepancies"].pop(),
+      lambda x: x["sourceDiscrepancies"].clear(),
       lambda x: x["sources"][-1].update(id="DOC"),
       lambda x: x["deviceQA"].update(status="PASS"),
       lambda x: x["extensions"][3]["nodes"][0]["responses"].update(UNKNOWN=x["extensions"][3]["nodes"][1]["id"]),
