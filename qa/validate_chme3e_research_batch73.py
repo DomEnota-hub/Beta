@@ -18,7 +18,7 @@ def verify(c,entry,num):
  assert d["documentPointer"]==f"/scenarios/{num-1}" and d["documentPath"].endswith("/chme3e/diagnostics_stage3.json")
  assert d["riskClass"]==entry["sourceObject"]["object"]["severity"]
  assert d["equipmentIds"]==entry["sourceObject"]["object"]["equipmentRefs"]
- assert d["evidenceRefs"]==EXPECTED[num]["evidenceRefs"] and d["schemeRefs"]==EXPECTED[num]["schemeRefs"] and a["profileId"]==EXPECTED[num]["profileId"] and d["canonicalPack"].endswith(f"diagnostics-0{EXPECTED[num]['pack']}.pack.json")
+ assert d["evidenceRefs"]==EXPECTED[str(num)]["evidenceRefs"] and d["schemeRefs"]==EXPECTED[str(num)]["schemeRefs"] and a["profileId"]==EXPECTED[str(num)]["profileId"] and d["canonicalPack"].endswith(f"diagnostics-0{EXPECTED[str(num)]['pack']}.pack.json")
  assert d["gzipBlob"]==entry["sourceObject"]["sourceBlobSha"] and not d["gzipIndependentlyDecoded"]
  assert a["possibleVariants"]==entry["applicability"]["variantIds"]==["chme3e"]
  assert a["confirmedVariant"] is None and not a["installedSchemeVerified"] and a["unknownProfile"]=="BLOCKED"
@@ -63,7 +63,7 @@ def main():
  p=argparse.ArgumentParser();p.add_argument("--negative",action="store_true");args=p.parse_args()
  total=0
  for num,path in enumerate(FILES,3):
-  c=json.loads((R/path).read_text());entry=next(x for x in PACKS[EXPECTED[num]["pack"]]["entries"] if x["sourceObject"]["object"]["id"]==f"CHME3E-DIAG-{num:03d}")
+  c=json.loads((R/path).read_text());entry=next(x for x in PACKS[EXPECTED[str(num)]["pack"]]["entries"] if x["sourceObject"]["object"]["id"]==f"CHME3E-DIAG-{num:03d}")
   verify(c,entry,num)
   if args.negative:
    mutations=[
