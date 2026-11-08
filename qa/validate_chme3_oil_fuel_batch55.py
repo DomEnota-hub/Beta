@@ -46,7 +46,8 @@ def check(c,num,idx,pack):
  refs={x["id"] for x in c["sources"]};assert len(refs)==len(c["sources"])==7
  assert all(x["currentVerified"] is False and x["installedProfileVerified"] is False and x["authority"]!="ACTION_AUTHORIZED" for x in c["sources"])
  assert any(x["kind"]=="SECONDARY_REGULATORY_DERIVATIVE" and x["authority"]=="HYPOTHESIS_ONLY" for x in c["sources"])
- assert len(c["crossScenarioBoundaries"]) >= 5 and len(c["openGaps"])>=10
+ assert {x["originalId"] for x in c["crossScenarioBoundaries"]} == ({f"CHME3-DIAG-{v:03d}" for v in (4,6,9,10,11,12)} if num==8 else {f"CHME3-DIAG-{v:03d}" for v in (1,2,6,8,10)})
+ assert len(c["crossScenarioBoundaries"]) == (6 if num==8 else 5) and len(c["openGaps"])>=10
  for key,n in (("SHORT",8),("DETAILED",12)):
   v=c["versions"][key];assert len(v["nodes"])==n
   graph(v,refs);assert v["nodes"][0]["responses"]["NO"]==v["nodes"][0]["responses"]["UNKNOWN"]=="stop-safety"
