@@ -1,0 +1,807 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 67,
+  "originalId": "CHME3-DIAG-312",
+  "scenarioId": "chme3.diagnostics.chme3-diag-312",
+  "title": "Турбонагнетатель воет, свистит или выбрасывает масло",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/11",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-312",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_MECHANICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "FIELD_PRACTICE",
+    "evidenceRefs": [
+      "CHME3-SRC-OLTEP-DIESEL",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TURBO",
+      "CHME3-EQ-CHARGE-AIR-COOLER",
+      "CHME3-EQ-INTAKE-EXHAUST"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N49",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/085.htm",
+      "revision": "Нотик 1996 Турбонагнетатель §49",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N49B",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/086.htm",
+      "revision": "Нотик 1996 Тракт наддува §49",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N15",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/025.htm",
+      "revision": "Нотик 1996 Компоновка дизеля §15",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-OLTEP-DIESEL / CHME3-SRC-SCBIST-PAM",
+      "revision": "Практика без действующего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Донорские исторические материалы",
+      "revision": "Применимость не подтверждена",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет опасного шума, дыма, масла и новых проб?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть архивные данные о шуме или масле в наддуве?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Шум совпадал с падением наддува?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без архивных данных дефект турбины не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свист не отличает утечку воздуха от дефекта ротора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Шум не доказывает разрушение подшипника.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузки, движения, измерений, вскрытия и вмешательств; только отдельный действующий аварийный порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние наблюдения неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет опасного шума, дыма, масла и новых проб?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть архивные данные о шуме или масле в наддуве?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Шум совпадал с падением наддува?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Записан механический шум, а не только свист воздуха?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть сведения о масле в тракте без нового вскрытия?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без архивных данных дефект турбины не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свист не отличает утечку воздуха от дефекта ротора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Шум не доказывает разрушение подшипника.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Падение наддува требует разграничить фильтр, воздуховоды и турбину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Масло не доказывает дефект лабиринтных уплотнений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузки, движения, измерений, вскрытия и вмешательств; только отдельный действующий аварийный порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние наблюдения неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "turbo",
+      "title": "Конструкция PDH50V",
+      "sourceId": "N49",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "turbo-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Конструкция PDH50V?",
+          "responses": {
+            "YES": "turbo-yes",
+            "NO": "turbo-no",
+            "UNKNOWN": "turbo-stop"
+          },
+          "sourceRefs": [
+            "N49"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "turbo-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§49 описывает PDH50V, тип машины не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "N49"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "turbo-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "turbo-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестны сведения или профиль; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "air",
+      "title": "Воздушный тракт",
+      "sourceId": "N49B",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "air-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Воздушный тракт?",
+          "responses": {
+            "YES": "air-yes",
+            "NO": "air-no",
+            "UNKNOWN": "air-stop"
+          },
+          "sourceRefs": [
+            "N49B"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "air-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§49 описывает фильтры, охладитель и коллектор.",
+          "responses": {},
+          "sourceRefs": [
+            "N49B"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "air-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "air-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестны сведения или профиль; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "oil",
+      "title": "Масляные камеры",
+      "sourceId": "N49",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "oil-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Масляные камеры?",
+          "responses": {
+            "YES": "oil-yes",
+            "NO": "oil-no",
+            "UNKNOWN": "oil-stop"
+          },
+          "sourceRefs": [
+            "N49"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "oil-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§49 описывает камеры, но не разрешает вскрытие.",
+          "responses": {},
+          "sourceRefs": [
+            "N49"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестны сведения или профиль; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "smoke",
+      "title": "Дым и тяга",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "smoke-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Дым и тяга?",
+          "responses": {
+            "YES": "smoke-yes",
+            "NO": "smoke-no",
+            "UNKNOWN": "smoke-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "smoke-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом пересекается с 007 и 311, не доказывая причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "smoke-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "smoke-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестны сведения или профиль; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "danger",
+      "title": "Опасный шум",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "danger-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Опасный шум?",
+          "responses": {
+            "YES": "danger-yes",
+            "NO": "danger-no",
+            "UNKNOWN": "danger-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "danger-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасный шум или утечка → STOP без испытаний.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "danger-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "danger-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестны сведения или профиль; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-007",
+      "distinction": "Самостоятельный исходный симптом; выводы и разрешения нельзя переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-310",
+      "distinction": "Самостоятельный исходный симптом; выводы и разрешения нельзя переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-311",
+      "distinction": "Самостоятельный исходный симптом; выводы и разрешения нельзя переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Не допускаются пробы вращения ротора или осмотр работающего агрегата."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Нотик 1996 не действующее РЭ."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не декодирован независимо, равенство графов не доказано."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Тип турбонагнетателя и модернизация неизвестны."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые сведения сохранены как гипотезы, не процедуры."
+    }
+  ],
+  "openGaps": [
+    "Действующее РЭ по номеру машины",
+    "Точный профиль и модернизация",
+    "Установленная схема",
+    "Применимость архивной конструкции",
+    "Действующие нормативные пороги",
+    "Прежние штатные записи",
+    "Независимое gzip-сравнение",
+    "Роли и полномочия",
+    "Независимая safety-проверка",
+    "Финальная device QA",
+    "Верификация полевых источников"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

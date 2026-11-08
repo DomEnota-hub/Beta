@@ -1,0 +1,17 @@
+# ЧМЭ3, пакет 67: топливо, цилиндр, стук, дым и турбина (08.11.2026)
+
+Начальный HEAD `666146d1fb99fcf2f4cb8134542a353d859895a2`, предшествующий CI completed/success. Только ветка `audit/information-block-gaps-20261014`, донор `DomEnota-hub/Test-` @ `3176d6ee228f0ed4b78371f45209e10c1c724eff` читался.
+
+- `CHME3-DIAG-308` «Пониженное давление топлива под нагрузкой»: SHORT 8, DETAILED 12, пять самостоятельных расширений. Полевые проверки насоса и фильтра исключены без РЭ.
+- `CHME3-DIAG-309` «Один цилиндр не работает / дизель троит»: SHORT 8, DETAILED 12, пять самостоятельных расширений. Полевые способы отключения цилиндра не перенесены.
+- `CHME3-DIAG-310` «Ненормальный стук дизеля»: SHORT 8, DETAILED 12, пять самостоятельных расширений. Донорскую нагрузочную пробу заменили STOP без нового пуска.
+- `CHME3-DIAG-311` «Белый или сизый дым из выхлопа»: SHORT 8, DETAILED 12, пять самостоятельных расширений. Донорские объяснения цвета не превращены в диагноз.
+- `CHME3-DIAG-312` «Турбонагнетатель воет, свистит или выбрасывает масло»: SHORT 8, DETAILED 12, пять самостоятельных расширений. Не допускаются пробы вращения ротора или осмотр работающего агрегата.
+
+Исходный файл `docs/locomotives/chme3/diagnostics_extended_pass3.json`, blob `9fa23a5c9e3da49fb025fb55245227314f6020da`, pointers `/scenarios/7..11`. Канонические pack02 для 308–310 и pack03 для 311–312. Gzip blob `6a6068ad1ea54cb964b65a10ecf5c2425b2276e8` не декодирован независимо: ID/название/профиль не означают равенства графов.
+
+Независимо изучено историческое пособие Нотика З.Х. 1996: [§30 топливная система](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/045.htm), [§36 ТНВД](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/054.htm), [§37 форсунка](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/056.htm), [§15 компоновка](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/025.htm), [§25 шатунные подшипники](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/037.htm), [§49 турбина](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/085.htm) и [наддув](https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/086.htm). Статус `HISTORICAL_TRAINING`, не действующее РЭ. Практические OLTEP/SCBIST `HYPOTHESIS_ONLY`. Никакие архивные уставки, числа, пробные пуски, нагрузочные проверки или способы отключения цилиндра не перенесены в действия.
+
+Все кандидаты `CANDIDATE`, `runtimeImport=false`, `executable=false`, `unknownProfile=BLOCKED`; source/role/safety gates закрыты. Только ранее полученные данные; опасность→STOP, UNKNOWN→STOP. Расширения скрыты до полного чтения предупреждения и отдельного подтверждения, которое не даёт полномочий.
+
+Добавлен CI валидатор `python3 qa/validate_chme3_diesel_extended_batch67.py --negative` (40 мутаций на сценарий, ожидается 200), Kotlin/JVM, lint, assembleDebug и ресурсы APK. **Не считать PASS до успешного CI на итоговом HEAD.** Device QA NOT_RUN/DEFERRED. Открыты действующее РЭ, точная машина и модернизация, роли, независимый safety-gate, gzip-сравнение и физическая QA. Следующий цикл после зелёного CI: CHME3-DIAG-313 и следующие исходные ID.
