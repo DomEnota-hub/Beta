@@ -4,9 +4,10 @@ import argparse,copy,json
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 BASE="content-packs/diesel/chme3-family/diagnostics/"
-PACK=json.loads((R/(BASE+"recommended/diagnostics-03.pack.json")).read_text())
-FILES=["content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-003-dtg-dng-feedback-discrepancy.research.json"]
+PACKS={3:json.loads((R/(BASE+"recommended/diagnostics-03.pack.json")).read_text()),4:json.loads((R/(BASE+"recommended/diagnostics-04.pack.json")).read_text())}
+FILES=["content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-003-dtg-dng-feedback-discrepancy.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-004-gc40p-regulator.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-005-field-weakening-absent.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-006-field-weakening-wrong-stage.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-007-oil-priming-no-cranking.research.json"]
 PIN="e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e"
+EXPECTED={"3":{"evidenceRefs":["CHME3E-SRC-NOTIK-FIELD-WEAKENING-96","CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-TRACTION-CONTROL"],"profileId":"chme3e-electronic","pack":3},"4":{"evidenceRefs":["CHME3E-SRC-NOTIK-EQUIPMENT-67","CHME3E-SRC-NOTIK-ONE-PERSON-99"],"schemeRefs":["CHME3E-SCH-TRACTION-CONTROL","CHME3E-SCH-REMOTE-CONTROL"],"profileId":"chme3e-electronic","pack":3},"5":{"evidenceRefs":["CHME3E-SRC-NOTIK-FIELD-WEAKENING-96"],"schemeRefs":["CHME3E-SCH-FIELD-WEAKENING"],"profileId":"chme3e-electronic","pack":4},"6":{"evidenceRefs":["CHME3E-SRC-NOTIK-FIELD-WEAKENING-96"],"schemeRefs":["CHME3E-SCH-FIELD-WEAKENING"],"profileId":"chme3e-electronic","pack":4},"7":{"evidenceRefs":["CHME3E-SRC-NOTIK-EQUIPMENT-67","CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-START-ELECTRONIC"],"profileId":"chme3e-electronic","pack":4}}
 def verify(c,entry,num):
  d=c["donor"]; a=c["applicability"]
  assert c["schemaVersion"]=="diagnostic-research-candidate/1" and c["batch"]==73
@@ -17,7 +18,7 @@ def verify(c,entry,num):
  assert d["documentPointer"]==f"/scenarios/{num-1}" and d["documentPath"].endswith("/chme3e/diagnostics_stage3.json")
  assert d["riskClass"]==entry["sourceObject"]["object"]["severity"]
  assert d["equipmentIds"]==entry["sourceObject"]["object"]["equipmentRefs"]
- assert d["evidenceRefs"]==["CHME3E-SRC-NOTIK-FIELD-WEAKENING-96","CHME3E-SRC-NOTIK-CH17"] and d["schemeRefs"]==["CHME3E-SCH-TRACTION-CONTROL"]
+ assert d["evidenceRefs"]==EXPECTED[num]["evidenceRefs"] and d["schemeRefs"]==EXPECTED[num]["schemeRefs"] and a["profileId"]==EXPECTED[num]["profileId"] and d["canonicalPack"].endswith(f"diagnostics-0{EXPECTED[num]['pack']}.pack.json")
  assert d["gzipBlob"]==entry["sourceObject"]["sourceBlobSha"] and not d["gzipIndependentlyDecoded"]
  assert a["possibleVariants"]==entry["applicability"]["variantIds"]==["chme3e"]
  assert a["confirmedVariant"] is None and not a["installedSchemeVerified"] and a["unknownProfile"]=="BLOCKED"
@@ -30,7 +31,7 @@ def verify(c,entry,num):
  assert {s["id"] for s in c["sources"]}=={"DOC","PACK","HISTORICAL","FIELD","CURRENT_GAP"}
  assert all(not s["currentVerified"] and not s["installedProfileVerified"] for s in c["sources"])
  assert all(s["authority"] in ("INFORMATION_ONLY","HYPOTHESIS_ONLY") for s in c["sources"])
- assert len(c["sourceDiscrepancies"])>=6 and len(c["openGaps"])>=7
+ assert len(c["sourceDiscrepancies"])>=6 and len(c["openGaps"])>=7 and len(c["crossScenarioBoundaries"])>=2
  for mode,n in (("SHORT",8),("DETAILED",12)):
   g=c["versions"][mode];nodes=g["nodes"];ids=[x["id"] for x in nodes]
   assert len(nodes)==n and len(ids)==len(set(ids)) and g["startNodeId"] in ids
@@ -62,7 +63,7 @@ def main():
  p=argparse.ArgumentParser();p.add_argument("--negative",action="store_true");args=p.parse_args()
  total=0
  for num,path in enumerate(FILES,3):
-  c=json.loads((R/path).read_text());entry=next(x for x in PACK["entries"] if x["sourceObject"]["object"]["id"]==f"CHME3E-DIAG-{num:03d}")
+  c=json.loads((R/path).read_text());entry=next(x for x in PACKS[EXPECTED[num]["pack"]]["entries"] if x["sourceObject"]["object"]["id"]==f"CHME3E-DIAG-{num:03d}")
   verify(c,entry,num)
   if args.negative:
    mutations=[
@@ -99,5 +100,5 @@ def main():
     try:verify(copyc,entry,num)
     except (AssertionError,KeyError,TypeError,IndexError):total+=1
     else:raise AssertionError("Mutation not detected "+str(num)+" "+str(mutate))
- print("CHME3E batch73 PARTIAL PASS: 1 scenario; 8/12 graph; 5 extensions; negative checks:",total)
+ print("CHME3E batch73 PASS:",len(FILES),"scenarios; 8/12 nodes; 5 extensions each; negative checks:",total)
 if __name__=="__main__":main()
