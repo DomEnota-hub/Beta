@@ -1,0 +1,832 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 69,
+  "originalId": "CHME3-DIAG-319",
+  "scenarioId": "chme3.diagnostics.chme3-diag-319",
+  "title": "Греется буксовый узел",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/18",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-319",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "RUNNING_GEAR_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "DOCUMENT_INDEX_PENDING_EXACT_SOURCE",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-AXLEBOX",
+      "CHME3-EQ-WHEELSET"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N6",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §6; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N4",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §4; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG",
+      "revision": "Индексные/практические материалы без первичного подтверждения",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть архивные данные о нагреве, дыме, запахе или шуме буксы?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В архиве отмечены дым, запах, резкий нагрев или новый шум?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет достаточных данных о нагреве, безопасность не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки буксы описаны: STOP; никакого движения или нового осмотра.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки не описаны, но исправность не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть архивные данные о нагреве, дыме, запахе или шуме буксы?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архиве отмечены дым, запах, резкий нагрев или новый шум?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В старых сведениях есть внешний нагрев от заторможенности или колёсного трения?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Зафиксирован устойчивый локальный нагрев именно буксы без подтверждённой внешней причины?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет достаточных данных о нагреве, безопасность не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки буксы описаны: STOP; никакого движения или нового осмотра.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки не описаны, но исправность не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Внешнее трение могло нагреть узел; букса как причина не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Локальный нагрев буксы отмечен, дефект подшипника не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "bearing",
+      "title": "Подшипник буксы",
+      "sourceId": "N6",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "bearing-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Подшипник буксы?",
+          "responses": {
+            "YES": "bearing-yes",
+            "NO": "bearing-no",
+            "UNKNOWN": "bearing-stop"
+          },
+          "sourceRefs": [
+            "N6"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "bearing-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивная конструкция роликового подшипника не является диагнозом.",
+          "responses": [
+            "N6"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "bearing-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "bearing-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "wheel",
+      "title": "Колёсная пара",
+      "sourceId": "N4",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "wheel-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Колёсная пара?",
+          "responses": {
+            "YES": "wheel-yes",
+            "NO": "wheel-no",
+            "UNKNOWN": "wheel-stop"
+          },
+          "sourceRefs": [
+            "N4"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "wheel-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Дефект колеса и буксы нельзя отождествлять по нагреву.",
+          "responses": [
+            "N4"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "wheel-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "wheel-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "external",
+      "title": "Внешнее трение",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "external-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Внешнее трение?",
+          "responses": {
+            "YES": "external-yes",
+            "NO": "external-no",
+            "UNKNOWN": "external-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "external-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нагрев от заторможенности не подтверждает внутренний дефект буксы.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "external-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "external-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "smoke",
+      "title": "Дым и запах",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "smoke-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Дым и запах?",
+          "responses": {
+            "YES": "smoke-yes",
+            "NO": "smoke-no",
+            "UNKNOWN": "smoke-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "smoke-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки требуют отдельного действующего порядка, не действий по карточке.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "smoke-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "smoke-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variant",
+      "title": "Применимость исполнения",
+      "sourceId": "N6",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variant-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Применимость исполнения?",
+          "responses": {
+            "YES": "variant-yes",
+            "NO": "variant-no",
+            "UNKNOWN": "variant-stop"
+          },
+          "sourceRefs": [
+            "N6"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variant-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивная конструкция не проверена для конкретной машины.",
+          "responses": [
+            "N6"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-318",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-320",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-205",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Исходное предложение сравнить буксы при остановке не превращено в новую проверку или разрешение движения."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Книга Нотика 1996 года не действующее РЭ и не подтверждает нормы."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не распакован независимо; совпадение ID/названия не означает эквивалентности графов."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Номер, схема и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые и индексные сведения не разрешают действия."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "note": "Тормоза и ходовая часть требуют отдельного safety review и действующего порядка."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Номер и исполнение машины",
+    "Подтверждённая схема",
+    "Применимость исторической книги",
+    "Действующий порядок безопасности",
+    "Ранее записанные сопоставимые данные",
+    "Независимое сравнение gzip",
+    "Роли и полномочия",
+    "Отдельный safety gate",
+    "Финальная Android QA",
+    "Первичная проверка полевых источников",
+    "Отдельная проверка симптома CHME3-DIAG-319"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-d",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}

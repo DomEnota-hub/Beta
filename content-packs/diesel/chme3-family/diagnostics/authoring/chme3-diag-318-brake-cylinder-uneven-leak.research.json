@@ -1,0 +1,833 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 69,
+  "originalId": "CHME3-DIAG-318",
+  "scenarioId": "chme3.diagnostics.chme3-diag-318",
+  "title": "Тормозной цилиндр травит или действует неравномерно",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/17",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-318",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-BRAKE-CYLINDERS",
+      "CHME3-EQ-BRAKE-RIGGING",
+      "CHME3-EQ-AIR-DISTRIBUTOR"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N14",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §14; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N3",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §3; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Индексные/практические материалы без первичного подтверждения",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть прежние записи о работе отдельных тормозных цилиндров без новых испытаний?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В архиве отклонение относится только к одному ТЦ или группе?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных о работе ТЦ недостаточно, исправность тормозов не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отклонение одного ТЦ описано; утечка, механика и подвод воздуха не разграничены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Несколько ТЦ работают неравномерно: общая пневматика не исключена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть прежние записи о работе отдельных тормозных цилиндров без новых испытаний?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архиве отклонение относится только к одному ТЦ или группе?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "При ранее записанном нормальном давлении механическое действие отличалось?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В архиве отдельно отмечена утечка или неравный ход штока?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных о работе ТЦ недостаточно, исправность тормозов не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отклонение одного ТЦ описано; утечка, механика и подвод воздуха не разграничены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Несколько ТЦ работают неравномерно: общая пневматика не исключена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Механическое отклонение описано, но причина не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Утечка или разный ход записаны, но причина и применимость неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "cylinder",
+      "title": "Один ТЦ или группа",
+      "sourceId": "N14",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cylinder-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Один ТЦ или группа?",
+          "responses": {
+            "YES": "cylinder-yes",
+            "NO": "cylinder-no",
+            "UNKNOWN": "cylinder-stop"
+          },
+          "sourceRefs": [
+            "N14"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cylinder-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческая схема групп не подтверждает причину отказа конкретного ТЦ.",
+          "responses": [
+            "N14"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cylinder-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cylinder-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "rigging",
+      "title": "Рычажная передача",
+      "sourceId": "N14",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "rigging-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Рычажная передача?",
+          "responses": {
+            "YES": "rigging-yes",
+            "NO": "rigging-no",
+            "UNKNOWN": "rigging-stop"
+          },
+          "sourceRefs": [
+            "N14"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "rigging-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Механика передачи и утечка цилиндра требуют раздельных подтверждений.",
+          "responses": [
+            "N14"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "rigging-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "rigging-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "bogie",
+      "title": "Тележка и расположение",
+      "sourceId": "N3",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "bogie-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Тележка и расположение?",
+          "responses": {
+            "YES": "bogie-yes",
+            "NO": "bogie-no",
+            "UNKNOWN": "bogie-stop"
+          },
+          "sourceRefs": [
+            "N3"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "bogie-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Привязка к тележке не локализует неисправность без данных.",
+          "responses": [
+            "N3"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "bogie-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "bogie-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "air",
+      "title": "Подвод воздуха",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "air-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Подвод воздуха?",
+          "responses": {
+            "YES": "air-yes",
+            "NO": "air-no",
+            "UNKNOWN": "air-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "air-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие давления и неисправность механики нельзя объединять.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "air-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "air-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "brakes",
+      "title": "Тормозная безопасность",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "brakes-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Тормозная безопасность?",
+          "responses": {
+            "YES": "brakes-yes",
+            "NO": "brakes-no",
+            "UNKNOWN": "brakes-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "brakes-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исследовательская карточка не разрешает движение или проверку тормозов.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "brakes-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "brakes-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-204",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-205",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-319",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Исходные проверки наполнения и рычажной передачи не перенесены как новые действия; только архивные наблюдения."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Книга Нотика 1996 года не действующее РЭ и не подтверждает нормы."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не распакован независимо; совпадение ID/названия не означает эквивалентности графов."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Номер, схема и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые и индексные сведения не разрешают действия."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "note": "Тормоза и ходовая часть требуют отдельного safety review и действующего порядка."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Номер и исполнение машины",
+    "Подтверждённая схема",
+    "Применимость исторической книги",
+    "Действующий порядок безопасности",
+    "Ранее записанные сопоставимые данные",
+    "Независимое сравнение gzip",
+    "Роли и полномочия",
+    "Отдельный safety gate",
+    "Финальная Android QA",
+    "Первичная проверка полевых источников",
+    "Отдельная проверка симптома CHME3-DIAG-318"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-d",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}

@@ -1,0 +1,833 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 69,
+  "originalId": "CHME3-DIAG-320",
+  "scenarioId": "chme3.diagnostics.chme3-diag-320",
+  "title": "Тяговый редуктор шумит, воет или перегревается",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/19",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-320",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "RUNNING_GEAR_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "DOCUMENT_INDEX_PENDING_EXACT_SOURCE",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TRACTION-GEAR",
+      "CHME3-EQ-WHEELSET",
+      "CHME3-EQ-TM-SUSPENSION"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N5",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §5; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N8",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §8; историческая литература, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG",
+      "revision": "Индексные/практические материалы без первичного подтверждения",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть архивные сведения о характере и месте шума или нагрева?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В архиве описаны сильный новый стук, хруст или перегрев?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Недостаточно прежних данных для локализации источника шума.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук, хруст или перегрев: STOP без нагрузочного испытания.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки не описаны, но редуктор не признан исправным.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен прежними данными без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть архивные сведения о характере и месте шума или нагрева?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архиве описаны сильный новый стук, хруст или перегрев?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Ранее отмечалась связь шума со скоростью и одним тяговым редуктором?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В архиве есть признаки отличия от подвески ТЭД и колёсной пары?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Недостаточно прежних данных для локализации источника шума.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук, хруст или перегрев: STOP без нагрузочного испытания.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Опасные признаки не описаны, но редуктор не признан исправным.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Шум связан со скоростью, но зубчатая передача не подтверждена причиной.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Признаки отличия есть, но подвеска ТЭД и колёсная пара не исключены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких новых осмотров, движения, измерений, испытаний и вмешательств; только отдельный действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или архивные данные неизвестны; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "gear",
+      "title": "Зубчатая передача",
+      "sourceId": "N5",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "gear-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Зубчатая передача?",
+          "responses": {
+            "YES": "gear-yes",
+            "NO": "gear-no",
+            "UNKNOWN": "gear-stop"
+          },
+          "sourceRefs": [
+            "N5"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "gear-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Шестерни описаны исторически, но шум не подтверждает их повреждение.",
+          "responses": [
+            "N5"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "gear-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "gear-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "housing",
+      "title": "Кожух редуктора",
+      "sourceId": "N5",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "housing-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Кожух редуктора?",
+          "responses": {
+            "YES": "housing-yes",
+            "NO": "housing-no",
+            "UNKNOWN": "housing-stop"
+          },
+          "sourceRefs": [
+            "N5"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "housing-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Смазка и состояние кожуха по шуму неизвестны, действий не предписано.",
+          "responses": [
+            "N5"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "housing-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "housing-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "suspension",
+      "title": "Подвеска ТЭД",
+      "sourceId": "N8",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "suspension-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Подвеска ТЭД?",
+          "responses": {
+            "YES": "suspension-yes",
+            "NO": "suspension-no",
+            "UNKNOWN": "suspension-stop"
+          },
+          "sourceRefs": [
+            "N8"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "suspension-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Шум подвески двигателя нельзя считать шумом редуктора.",
+          "responses": [
+            "N8"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "suspension-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "suspension-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "wheel",
+      "title": "Колёсная пара",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "wheel-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Колёсная пара?",
+          "responses": {
+            "YES": "wheel-yes",
+            "NO": "wheel-no",
+            "UNKNOWN": "wheel-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "wheel-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Удар колеса и редукторный вой требуют раздельной оценки.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "wheel-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "wheel-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Безопасность движения",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "safety-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Безопасность движения?",
+          "responses": {
+            "YES": "safety-yes",
+            "NO": "safety-no",
+            "UNKNOWN": "safety-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "safety-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук и перегрев не допускают новых нагрузочных испытаний.",
+          "responses": [
+            "DOC"
+          ],
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "safety-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "safety-stop",
+          "type": "STOP",
+          "text": "STOP: сведений или подтверждённого профиля нет; действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-319",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-302",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-304",
+      "distinction": "Отдельный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Донорские проверки скорости и места шума не дают разрешения на движение для локализации."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Книга Нотика 1996 года не действующее РЭ и не подтверждает нормы."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не распакован независимо; совпадение ID/названия не означает эквивалентности графов."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Номер, схема и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые и индексные сведения не разрешают действия."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "note": "Тормоза и ходовая часть требуют отдельного safety review и действующего порядка."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Номер и исполнение машины",
+    "Подтверждённая схема",
+    "Применимость исторической книги",
+    "Действующий порядок безопасности",
+    "Ранее записанные сопоставимые данные",
+    "Независимое сравнение gzip",
+    "Роли и полномочия",
+    "Отдельный safety gate",
+    "Финальная Android QA",
+    "Первичная проверка полевых источников",
+    "Отдельная проверка симптома CHME3-DIAG-320"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-d",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}
