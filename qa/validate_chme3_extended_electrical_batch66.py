@@ -57,7 +57,7 @@ def check(c,n,idx,pack):
         assert s["currentVerified"] is False and s["installedProfileVerified"] is False
         assert s["authority"] in ("INFORMATION_ONLY","HYPOTHESIS_ONLY")
     assert len(c["crossScenarioBoundaries"])>=3 and len({x["originalId"] for x in c["crossScenarioBoundaries"]})==len(c["crossScenarioBoundaries"])
-    assert len(c["sourceDiscrepancies"])>=3 and len(c["openGaps"])>=10
+    assert len(c["sourceDiscrepancies"])>=4 and len(c["openGaps"])>=10
     assert c["deviceQA"]=={"status":"NOT_RUN_DEFERRED","registry":"docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"}
     graph(c["versions"]["SHORT"],8,refs);graph(c["versions"]["DETAILED"],12,refs)
     for mode in ("SHORT","DETAILED"):
