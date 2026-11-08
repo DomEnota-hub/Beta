@@ -8,6 +8,6 @@
 
 Каждый сценарий имеет SHORT 8 узлов, DETAILED 12 узлов и пять отдельных EXTENDED_ONLY расширений по 4 узла; всего 60 основных узлов и 15 расширений. UNKNOWN→STOP, профили UNKNOWN/BLOCKED, `CANDIDATE`, `runtimeImport=false`, `executable=false`, `actionAuthorityGranted=false`, `sourceAuthorityVerified=false`, `humanSafetyReviewPassed=false`. Предупреждение скрыто, требует полного чтения и отдельного подтверждения, не даёт полномочий. Device QA в едином реестре как NOT_RUN/DEFERRED.
 
-В CI включён `qa/validate_chme3_auxiliary_batch64.py --negative` (35 отрицательных мутаций на сценарий, всего 105). Kotlin/JVM, lint, assembleDebug и APK ресурсы должны пройти на итоговом HEAD. **До фактического зелёного CI не считать пакет технически завершённым.**
+В CI включён `qa/validate_chme3_auxiliary_batch64.py --negative` (36 отрицательных мутаций на сценарий, всего 108). Kotlin/JVM, lint, assembleDebug и APK ресурсы должны пройти на итоговом HEAD. **До фактического зелёного CI не считать пакет технически завершённым.**
 
 Открыто: актуальные заводские РЭ, первичный 996/р, точное исполнение, штатные записи, независимый gzip, роль/safety gates и физическая QA. Следующий цикл после CI: следующие непокрытые ID ЧМЭ3 по живому индексу.
