@@ -7,7 +7,7 @@
 - **CHME3-DIAG-109** «Нет тяги при работающем дизеле»: `docs/locomotives/chme3/diagnostics_electrical_control_pass3.json#/scenarios/8`; `chme3.diagnostics.chme3-diag-109`; профили ЧМЭ3/ЧМЭ3Т/ЧМЭ3Э; `ELEVATED_ELECTRICAL`, `TRIAGE_ONLY_NO_REPAIR`; исходные evidenceRefs `CHME3-SRC-SCBIST-ELECTRICAL-2018`, `CHME3-SRC-TCH11-VYBORG-2007`, `CHME3-SRC-SCBIST-PAM`.
 - **CHME3-DIAG-110** «ЧМЭ3Т — не работает реостатный тормоз»: `docs/locomotives/chme3/diagnostics_electrical_control_pass3.json#/scenarios/9`; `chme3.diagnostics.chme3-diag-110`; **только ЧМЭ3Т** и `profileGate=chme3t-rheostatic`; `PROFILE_CRITICAL`, `SOURCE_AND_PROFILE_REQUIRED`; `CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG`, `DOCUMENT_INDEX_PENDING_EXACT_SOURCE`.
 
-Документный blob `41d241cb0b58e5657ef0d6210e7b272d44df52d0` проверен по донору и индексу миграции. Канонические записи в `diagnostics-02.pack.json` сверены по ID, названию, вариантам, ссылке на gzip blob `6a6068ad1ea54cb964b65a10ecf5c2425b2276e8`. **Gzip независимо не декодирован; совпадение исходных графов не утверждается**. В отличие от 109, 110 не допускает ЧМЭ3 и ЧМЭ3Э.
+Документный blob `41d241cb0b58e5657ef0d6210e7b272d44df52d0` проверен по донору и индексу миграции. Канонические записи в `diagnostics-02.pack.json` сверены по ID, названию, вариантам, разным gzip blob: `6a6068ad1ea54cb964b65a10ecf5c2425b2276e8` (109) и `41809c6464113f48ef032ed70d2cb4483f12c28e` (110). **Gzip независимо не декодирован; совпадение исходных графов не утверждается**. В отличие от 109, 110 не допускает ЧМЭ3 и ЧМЭ3Э.
 
 ## Источники, противоречия и границы
 
