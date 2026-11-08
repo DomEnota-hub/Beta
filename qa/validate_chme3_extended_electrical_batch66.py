@@ -29,7 +29,7 @@ def graph(g,count,refs):
 def check(c,n,idx,pack):
     d=c["donor"]; a=c["applicability"]
     source=next(x for x in idx["documents"] if x["sourcePath"]==DOC)
-    o=source["sourceObject"]["scenarios"][n-304]
+    o=source["sourceObject"]["scenarios"][n-301]
     m=next(x for x in idx["matches"] if x["sourceId"]==o["id"])
     p=next(x for x in pack["entries"] if x["id"]==m["canonicalId"])
     assert c["schemaVersion"]=="diagnostic-research-candidate/1" and c["batch"]==66
@@ -37,7 +37,7 @@ def check(c,n,idx,pack):
     assert c["title"]==o["title"]==p["title"]
     assert c["scenarioId"]==d["canonicalId"]==m["canonicalId"]==p["id"]
     assert d["repository"]=="DomEnota-hub/Test-" and d["commit"]==idx["donorCommit"]=="3176d6ee228f0ed4b78371f45209e10c1c724eff"
-    assert d["documentPath"]==DOC and d["documentPointer"]==m["sourcePointer"]==f"/scenarios/{n-304}"
+    assert d["documentPath"]==DOC and d["documentPointer"]==m["sourcePointer"]==f"/scenarios/{n-301}"
     assert d["documentBlob"]==source["sourceBlobSha"]=="9fa23a5c9e3da49fb025fb55245227314f6020da"
     assert d["canonicalPack"]==m["canonicalPack"]==PACK
     assert d["gzipBlob"]==p["sourceObject"]["sourceBlobSha"]=="6a6068ad1ea54cb964b65a10ecf5c2425b2276e8"
