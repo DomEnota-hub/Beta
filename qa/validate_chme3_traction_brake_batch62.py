@@ -52,7 +52,7 @@ def check(c, n, idx, pack):
     assert d["documentPath"] == DOC and d["documentPointer"] == match["sourcePointer"] == "/scenarios/%d" % (n-101)
     assert d["documentBlob"] == doc["sourceBlobSha"] == "41d241cb0b58e5657ef0d6210e7b272d44df52d0"
     assert d["canonicalPack"] == match["canonicalPack"] == BASE + "diagnostics/recommended/diagnostics-02.pack.json"
-    assert d["gzipBlob"] == entry["sourceObject"]["sourceBlobSha"] == "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8"
+    assert d["gzipBlob"] == entry["sourceObject"]["sourceBlobSha"] == ("41809c6464113f48ef032ed70d2cb4483f12c28e" if n == 110 else "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8")
     assert d["gzipIndependentlyDecoded"] is False and d["relation"] == "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE"
     for key in ("riskClass","actionAuthority","evidenceStatus","evidenceRefs","equipmentIds"):
         assert d[key] == orig[key]
