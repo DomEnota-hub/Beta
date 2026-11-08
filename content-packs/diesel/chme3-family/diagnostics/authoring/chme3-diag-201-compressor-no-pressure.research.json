@@ -1,0 +1,775 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 63,
+  "originalId": "CHME3-DIAG-201",
+  "scenarioId": "chme3.diagnostics.chme3-diag-201",
+  "title": "Компрессор не набирает давление",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/0",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-201",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-SCBIST-TROUBLE-2020"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-COMPRESSOR",
+      "CHME3-EQ-MAIN-RESERVOIRS",
+      "CHME3-EQ-AIR-DRY-SEPARATOR",
+      "CHME3-EQ-INTERCOOLER"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Test-@3176d6ee, blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З.Х. Нотик, 1996, §§55, 58, 59; archival description, not current РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "RULE2026",
+      "kind": "CURRENT_NORMATIVE_EXISTENCE_VERIFIED_CLAUSE_PENDING",
+      "ref": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+      "revision": "Приложение 65 к протоколу 83-го заседания, ввод с 01.07.2026; конкретные пункты и применение не сверены",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM; CHME3-SRC-SCBIST-TROUBLE-2020",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Подтверждено, что по ранее сохранённым показаниям нет продолжающейся опасной потери воздуха или тормозной эффективности?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В записи действительно отражён недостаточный либо отсутствующий набор давления главных резервуаров?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "По ранее сохранённым штатным признакам известно, что компрессор вращался?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Недостаточный набор давления не подтверждён; другой симптом нельзя автоматически считать отказом компрессора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Факт вращения не доказывает производительность. Разделить утечку, нагнетательный тракт и компрессор по действующей документации.",
+          "responses": "",
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет документированной динамики давления и утечек; не проверять привод и пневматику воздействиями, эксплуатационная готовность не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключена продолжающаяся опасная потеря воздуха или тормозной эффективности?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Недостаточный набор давления ГР подтверждён, а не предполагается по одному звуку?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В журнале различены работающий и неработающий компрессор?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Зафиксированы динамика давления и возможные признаки крупной утечки без новых испытаний?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В записи присутствует достоверный признак значительной утечки воздуха?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без достоверного падения или медленного роста ГР неисправность 201 не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без сведений о вращении нельзя отличить отсутствие привода от потери производительности.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Признак крупной утечки оставляет её гипотезой, а не доказанной причиной без проверки уполномоченными специалистами.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии признака утечки нельзя объявлять исправными компрессор, холодильник и нагнетательный тракт.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет документированной динамики давления и утечек; не проверять привод и пневматику воздействиями, эксплуатационная готовность не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "drive",
+      "title": "Привод и вращение",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "drive-q",
+          "type": "QUESTION",
+          "text": "Записано ли вращение компрессора?",
+          "responses": {
+            "YES": "drive-yes",
+            "NO": "drive-no",
+            "UNKNOWN": "drive-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "drive-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вращение отделяет отсутствие привода от других ветвей, но не устанавливает причину.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи нельзя приписывать отказ приводу.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "trend",
+      "title": "Динамика главных резервуаров",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "trend-q",
+          "type": "QUESTION",
+          "text": "Есть ли последовательные штатные показания давления ГР?",
+          "responses": {
+            "YES": "trend-yes",
+            "NO": "trend-no",
+            "UNKNOWN": "trend-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "trend-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Оценивать только наблюдаемую тенденцию; числовые нормативы для исполнения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "trend-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Разовый отсчёт не позволяет определить производительность.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "trend-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "leak",
+      "title": "Крупная утечка",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "leak-q",
+          "type": "QUESTION",
+          "text": "Был ли зафиксирован сильный выход воздуха без специального поиска?",
+          "responses": {
+            "YES": "leak-yes",
+            "NO": "leak-no",
+            "UNKNOWN": "leak-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "leak-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Это признак возможной утечки, но её контур и величина не доказаны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "leak-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие слышимого шума не исключает скрытую утечку.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "leak-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cooler",
+      "title": "Нагнетательный тракт и холодильник",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cooler-q",
+          "type": "QUESTION",
+          "text": "Есть ли подтверждённые записи о состоянии нагнетательного тракта?",
+          "responses": {
+            "YES": "cooler-yes",
+            "NO": "cooler-no",
+            "UNKNOWN": "cooler-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cooler-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческая компоновка не доказывает отказ промежуточного холодильника.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooler-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи нельзя выбирать узел для ремонта.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooler-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "boundary",
+      "title": "Отличие от непрерывной работы",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "boundary-q",
+          "type": "QUESTION",
+          "text": "Подтверждён ли именно недостаточный набор давления, а не превышение при непрерывной работе?",
+          "responses": {
+            "YES": "boundary-yes",
+            "NO": "boundary-no",
+            "UNKNOWN": "boundary-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "boundary-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом 201 нельзя смешивать с 202: регулятор разгрузки рассматривается отдельно.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "boundary-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "При неизвестной динамике переход между сценариями блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "boundary-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-202",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-204",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RUNTIME",
+      "note": "Донорские check/action-пункты требуют физических проверок; исследовательская карточка использует только ранее сохранённые штатные наблюдения."
+    },
+    {
+      "source": "1996_vs_2026",
+      "note": "Учебное пособие 1996 года не является действующей нормой; с 01.07.2026 действуют новые правила тормозов, точные пункты и пороги не подтверждены."
+    },
+    {
+      "source": "GZIP_vs_DOCUMENT",
+      "note": "Миграционный индекс связывает ID и название, но gzip не декодирован независимо: равенство исходных графов не утверждается."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ по конкретному номеру машины",
+    "Точное исполнение и модернизация пневмосхемы",
+    "Схема и номера аппаратов конкретной машины",
+    "Точные пункты новых Правил тормозов 2026",
+    "Нормативные значения давления для данного исполнения",
+    "Состояние приборов и штатная хронология эпизода",
+    "Право работника на конкретные операции",
+    "Независимая проверка исходного gzip-графа",
+    "Результат отдельной safety-проверки",
+    "Ручная Android-приёмка после тестового APK"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

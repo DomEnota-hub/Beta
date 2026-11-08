@@ -1,0 +1,774 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 63,
+  "originalId": "CHME3-DIAG-205",
+  "scenarioId": "chme3.diagnostics.chme3-diag-205",
+  "title": "Самопроизвольное торможение / внезапное наполнение ТЦ",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/4",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-205",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-EPC-AUTOSTOP",
+      "CHME3-EQ-AIR-DISTRIBUTOR",
+      "CHME3-EQ-DRIVER-BRAKE-VALVE",
+      "CHME3-EQ-BRAKE-CYLINDERS"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Test-@3176d6ee, blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/4",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З.Х. Нотик, 1996, §§14, 58, 60; archival description, not current РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "RULE2026",
+      "kind": "CURRENT_NORMATIVE_EXISTENCE_VERIFIED_CLAUSE_PENDING",
+      "ref": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+      "revision": "Приложение 65 к протоколу 83-го заседания, ввод с 01.07.2026; конкретные пункты и применение не сверены",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключены продолжающееся неуправляемое торможение и другие опасные признаки?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Подтверждено некомандное наполнение ТЦ или торможение?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть уже записанные признаки ЭПК, ТМ и ТЦ в момент события?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Внезапное торможение без команды не подтверждено; не приписывать событие ЭПК.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "По одним показаниям нельзя установить причину: ЭПК, ТМ и локальное наполнение ТЦ разделяются.",
+          "responses": "",
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: причина срабатывания ЭПК неизвестна. Не сбрасывать, не отключать и не обходить защиту; дальнейшие действия только по действующим инструкциям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключены продолжающееся неуправляемое торможение и другие опасные признаки?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Внезапное торможение не совпадает с документированной штатной командой?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть штатная запись о срабатывании ЭПК или другой системы безопасности?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Причина safety-срабатывания документирована без сброса или обхода?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Одновременно с событием есть достоверная запись изменения давления ТМ?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без исключения штатной команды самопроизвольность не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если событие ЭПК не подтверждено, не делать вывод об отказе системы безопасности.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Одновременное изменение ТМ и ЭПК является наблюдением, не диагнозом конкретного аппарата.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без изменения ТМ возможны локальные ветви ТЦ, но источник не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: причина срабатывания ЭПК неизвестна. Не сбрасывать, не отключать и не обходить защиту; дальнейшие действия только по действующим инструкциям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "epk",
+      "title": "ЭПК и система безопасности",
+      "sourceId": "RULE2026",
+      "sourceStatus": "CURRENT_RULE_EXISTS_EXACT_CLAUSE_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "epk-q",
+          "type": "QUESTION",
+          "text": "Есть ли достоверная запись о срабатывании ЭПК?",
+          "responses": {
+            "YES": "epk-yes",
+            "NO": "epk-no",
+            "UNKNOWN": "epk-stop"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "epk-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Safety-срабатывание требует отдельной проверки причины; не обходить ЭПК.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "epk-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи нельзя утверждать срабатывание ЭПК.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "epk-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "pipe",
+      "title": "Изменение ТМ",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "pipe-q",
+          "type": "QUESTION",
+          "text": "Есть ли временная запись разрядки ТМ?",
+          "responses": {
+            "YES": "pipe-yes",
+            "NO": "pipe-no",
+            "UNKNOWN": "pipe-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "pipe-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Разрядка ТМ может сопровождать safety-событие; причинность не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pipe-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Стабильная ТМ требует отдельного рассмотрения локальной пневматики.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pipe-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "local",
+      "title": "Локальное или общее наполнение ТЦ",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "local-q",
+          "type": "QUESTION",
+          "text": "Есть ли раздельные показания групп ТЦ?",
+          "responses": {
+            "YES": "local-yes",
+            "NO": "local-no",
+            "UNKNOWN": "local-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "local-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Локальность не устанавливает дефект конкретного цилиндра.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "local-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без раздельных данных классификация блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "local-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "sequence",
+      "title": "Хронология событий",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "sequence-q",
+          "type": "QUESTION",
+          "text": "Есть ли последовательность ЭПК, ТМ и ТЦ с отметками времени?",
+          "responses": {
+            "YES": "sequence-yes",
+            "NO": "sequence-no",
+            "UNKNOWN": "sequence-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "sequence-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Порядок событий помогает различать ветви, но не заменяет проверку.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "sequence-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без хронологии нельзя назначать причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "sequence-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "protection",
+      "title": "Защиты и ограничения",
+      "sourceId": "RULE2026",
+      "sourceStatus": "CURRENT_RULE_EXISTS_EXACT_CLAUSE_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "protection-q",
+          "type": "QUESTION",
+          "text": "Документирован ли статус защит после события без вмешательств?",
+          "responses": {
+            "YES": "protection-yes",
+            "NO": "protection-no",
+            "UNKNOWN": "protection-stop"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "protection-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Запись может использоваться информационно; сбросы и обходы запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "protection-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестный статус защит означает STOP и UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "protection-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-204",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-202",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RUNTIME",
+      "note": "Донорские check/action-пункты требуют физических проверок; исследовательская карточка использует только ранее сохранённые штатные наблюдения."
+    },
+    {
+      "source": "1996_vs_2026",
+      "note": "Учебное пособие 1996 года не является действующей нормой; с 01.07.2026 действуют новые правила тормозов, точные пункты и пороги не подтверждены."
+    },
+    {
+      "source": "GZIP_vs_DOCUMENT",
+      "note": "Миграционный индекс связывает ID и название, но gzip не декодирован независимо: равенство исходных графов не утверждается."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ по конкретному номеру машины",
+    "Точное исполнение и модернизация пневмосхемы",
+    "Схема и номера аппаратов конкретной машины",
+    "Точные пункты новых Правил тормозов 2026",
+    "Нормативные значения давления для данного исполнения",
+    "Состояние приборов и штатная хронология эпизода",
+    "Право работника на конкретные операции",
+    "Независимая проверка исходного gzip-графа",
+    "Результат отдельной safety-проверки",
+    "Ручная Android-приёмка после тестового APK"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
