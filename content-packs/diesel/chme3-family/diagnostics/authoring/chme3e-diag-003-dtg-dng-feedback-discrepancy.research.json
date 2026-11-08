@@ -1,0 +1,848 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 73,
+  "originalId": "CHME3E-DIAG-003",
+  "scenarioId": "chme3.diagnostics.chme3e-diag-003",
+  "title": "Сигналы ДТГ/ДНГ не соответствуют фактической тяге",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+    "documentPointer": "/scenarios/2",
+    "documentBlob": "e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3e-diag-003",
+    "gzipBlob": "1ab9ae40bc90479eacb006d0eb62dd45e9f387fe",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_EQUIPMENT_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "provenanceStatus": "TRAINING_REFERENCE",
+    "evidenceRefs": [
+      "CHME3E-SRC-NOTIK-FIELD-WEAKENING-96",
+      "CHME3E-SRC-NOTIK-CH17"
+    ],
+    "equipmentIds": [
+      "CHME3E-EQ-CURRENT-SENSOR-DTG",
+      "CHME3E-EQ-VOLTAGE-SENSOR-DNG",
+      "CHME3E-EQ-ER-YZV9",
+      "CHME3E-EQ-ER-YRUI3",
+      "CHME3-EQ-TRACTION-GENERATOR"
+    ],
+    "schemeRefs": [
+      "CHME3E-SCH-TRACTION-CONTROL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3e"
+    ],
+    "profileId": "chme3e-electronic",
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+      "revision": "Pinned e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e; updatedAt 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/equipment parity; gzip graph not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З. Х. Нотик, Тепловозы ЧМЭ3/Т/Э, Транспорт, 1996, §96, ДТГ/ДНГ и обратная связь; архив, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_EXPERIENCE_UNVERIFIED",
+      "ref": "No independent practical evidence supplied; donor symptom wording retained",
+      "revision": "No practical procedure imported",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current execution-specific manufacturer RE/IDMB and approved schematic",
+      "revision": "No verified revision or applicability to installed machine",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Отсутствует непосредственная опасность, и рассматриваются только ранее сохранённые записи без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве штатных показаний есть расхождение сигналов ДТГ/ДНГ с описанием тяги?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Сохранённое расхождение относится преимущественно к токовому каналу ДТГ?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Рассогласование не подтверждено: нельзя объявлять неисправность ДТГ/ДНГ по описанию тяги.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Возможно расхождение токового канала ДТГ, но его причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "ДТГ не выделен: отдельно рассмотреть ДНГ, обработку сигнала и неполноту архива.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена; никаких новых пусков, переключений, нагрузочных проверок, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестные архивные сведения не восполнять испытанием или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Отсутствует непосредственная опасность, и рассматриваются только ранее сохранённые записи без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архиве штатных показаний есть расхождение сигналов ДТГ/ДНГ с описанием тяги?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Сохранённое расхождение относится преимущественно к токовому каналу ДТГ?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть независимая старая запись о напряжении, без новых измерений?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Сохранена прежняя реакция электронного регулятора на рассогласование?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Рассогласование не подтверждено: нельзя объявлять неисправность ДТГ/ДНГ по описанию тяги.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Возможно расхождение токового канала ДТГ, но его причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "ДТГ не выделен: отдельно рассмотреть ДНГ, обработку сигнала и неполноту архива.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет независимого подтверждения напряжения: каналы ДТГ/ДНГ остаются неразличёнными.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архив содержит реакцию регулятора, но не доказывает неисправность датчика или обработки.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена; никаких новых пусков, переключений, нагрузочных проверок, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестные архивные сведения не восполнять испытанием или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "ДТГ и шунт ШО",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «ДТГ и шунт ШО» без новых действий?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§96 описывает связь ДТГ с током нагрузки; это не доказательство отказа датчика.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «ДТГ и шунт ШО» нет достоверных архивных сведений; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять новым испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "ДНГ и напряжение",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «ДНГ и напряжение» без новых действий?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§96 описывает ДНГ как канал обратной связи напряжения, без подтверждения схемы конкретной машины.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «ДНГ и напряжение» нет достоверных архивных сведений; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять новым испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Граница с DIAG-002",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Граница с DIAG-002» без новых действий?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие роста напряжения и недостоверная обратная связь являются разными исходными симптомами.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Граница с DIAG-002» нет достоверных архивных сведений; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять новым испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Практические гипотезы",
+      "sourceId": "FIELD",
+      "sourceStatus": "FIELD_HYPOTHESIS_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Практические гипотезы» без новых действий?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Утверждение «датчик врёт» без независимых записей остаётся гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Практические гипотезы» нет достоверных архивных сведений; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять новым испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Неподтверждённый профиль",
+      "sourceId": "CURRENT_GAP",
+      "sourceStatus": "CURRENT_PRIMARY_MISSING_BLOCKED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Неподтверждённый профиль» без новых действий?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Действующее РЭ и схема конкретной ЧМЭ3Э отсутствуют; применимость BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Неподтверждённый профиль» нет достоверных архивных сведений; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять новым испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3E-DIAG-001",
+      "boundary": "Не смешивать отсутствие тяги и рассогласование датчиков."
+    },
+    {
+      "originalId": "CHME3E-DIAG-002",
+      "boundary": "Не смешивать отсутствие роста напряжения и расхождение обратной связи."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Донор содержит check/terminal с возможными действиями; исследовательский кандидат содержит только ранее записанные наблюдения."
+    },
+    {
+      "source": "ARCHIVE_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Книга 1996 года подтверждает принцип электронного управления, но не актуальную применимость схемы и процедуру."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "Граф исходного gzip не декодирован независимо; совпадение ID и названия не доказывает идентичность графов."
+    },
+    {
+      "source": "PROFILE_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "ЧМЭ3Э не отождествлять с ЧМЭ3/Т или модернизированным исполнением без схемы конкретной машины."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Полевой опыт не подтверждён и не разрешает вмешательства."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Отдельные source/role/safety gates не пройдены; предупреждение не выдаёт прав."
+    },
+    {
+      "source": "FEEDBACK_DISCREPANCY",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Отдельно ДТГ, ДНГ, обработка и фактическая тяга; архив не доказывает причину."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ с редакцией и применимостью",
+    "Схема конкретного исполнения ЧМЭ3Э и модернизаций",
+    "Независимая проверка исходного gzip-графа",
+    "Подтверждение источника и полномочий роли",
+    "Отдельная safety-экспертиза",
+    "Разграничение индикации и реального состояния без новых измерений",
+    "Финальная ручная device QA после тестового APK",
+    "Независимые архивные данные по ДТГ и ДНГ для конкретной машины"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
