@@ -1,0 +1,791 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 60,
+  "originalId": "CHME3-DIAG-105",
+  "scenarioId": "chme3.diagnostics.chme3-diag-105",
+  "title": "Не происходит ослабление возбуждения тяговых электродвигателей",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+    "documentPointer": "/scenarios/4",
+    "documentBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-105",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_SECONDARY_PLUS_LOCAL_LEGACY",
+    "evidenceRefs": [
+      "CHME3-SRC-SDO-996R-CHME3-2026",
+      "CHME3-SRC-TCH11-VYBORG-2007"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TRACTION-MOTORS",
+      "CHME3-EQ-CONTACTORS",
+      "CHME3-EQ-RELAYS",
+      "CHME3-EQ-TRACTION-GENERATOR"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SOURCE_AND_PROFILE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "revision": "Pinned donor blob 41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N61",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/109.htm",
+      "revision": "Нотик 1996 §61: две ступени ОП ЧМЭ3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N74",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/156.htm",
+      "revision": "Нотик 1996 §74: релейные переходы ЧМЭ3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N96",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/191.htm",
+      "revision": "Нотик 1996 §96: электронное управление ЧМЭ3Э",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/146.htm",
+      "revision": "Нотик 1996 §67: отличия исполнений",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "SECONDARY",
+      "kind": "SECONDARY_NORMATIVE_DERIVED",
+      "ref": "CHME3-SRC-SDO-996R-CHME3-2026",
+      "revision": "Вторичный 996/р; первичный пункт не проверен",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местные материалы 2007 года, не подтверждены",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По сохранённым сведениям исключены опасные признаки тяговой цепи и защитные события?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть подтверждённые данные, что в наблюдавшемся режиме по схеме должно происходить ослабление возбуждения?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Сохранённое наблюдение относится к отсутствию первой ступени, а не только второй?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не доказано достижение условий перехода на ОП: отсутствие перехода не подтверждает неисправность.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие первой ступени по записи не локализует реле, контактор или силовую ветвь.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие второй ступени не следует объединять с отказом первой; источниковая применимость ещё неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "N96"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких повторных включений, измерений, обходов защит или вскрытий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, схемы или профиля. Причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По исходным данным нет опасных признаков тяговой цепи, нештатной тяги и защиты?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Из документов конкретной машины следует, что переход должен был произойти в записанном режиме?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Установлена схема управления переходами конкретного исполнения?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть самостоятельная запись о состоянии аппаратов перехода, а не только субъективное изменение тяги?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Записано отсутствие первой ступени, а не только второй?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ожидаемый режим ОП не подтверждён, неисправность не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивные релейная и электронная схемы перехода различаются; неизвестный профиль BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "N96"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без отдельной записи об аппаратах нельзя отличить отсутствие перехода от иных изменений тяги.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие первой ступени не доказывает отказ реле или силовых контактов.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вторая ступень рассматривается отдельно; схему реле ЧМЭ3 нельзя переносить на электронное управление ЧМЭ3Э.",
+          "responses": {},
+          "sourceRefs": [
+            "N96"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких повторных включений, измерений, обходов защит или вскрытий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, схемы или профиля. Причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "stages",
+      "title": "Две ступени ослабления",
+      "sourceId": "N61",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "stages-q",
+          "type": "QUESTION",
+          "text": "Есть уже записанные сведения по теме «Две ступени ослабления»?",
+          "responses": {
+            "YES": "stages-yes",
+            "NO": "stages-no",
+            "UNKNOWN": "stages-stop"
+          },
+          "sourceRefs": [
+            "N61"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "stages-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§61 Нотика описывает две ступени ОП на ЧМЭ3; архивные пороги не являются действующими уставками.",
+          "responses": {},
+          "sourceRefs": [
+            "N61"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stages-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходные данные не подтверждены; неисправность и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stages-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестный источник или профиль, действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "relay",
+      "title": "Реле перехода ЧМЭ3",
+      "sourceId": "N74",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "relay-q",
+          "type": "QUESTION",
+          "text": "Есть уже записанные сведения по теме «Реле перехода ЧМЭ3»?",
+          "responses": {
+            "YES": "relay-yes",
+            "NO": "relay-no",
+            "UNKNOWN": "relay-stop"
+          },
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "relay-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§74 Нотика описывает РП1/РП2 и автоматические переходы на ЧМЭ3; это историческая информация, не руководство по настройке.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "relay-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходные данные не подтверждены; неисправность и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "relay-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестный источник или профиль, действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "electronic",
+      "title": "Электронный регулятор ЧМЭ3Э",
+      "sourceId": "N96",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "electronic-q",
+          "type": "QUESTION",
+          "text": "Есть уже записанные сведения по теме «Электронный регулятор ЧМЭ3Э»?",
+          "responses": {
+            "YES": "electronic-yes",
+            "NO": "electronic-no",
+            "UNKNOWN": "electronic-stop"
+          },
+          "sourceRefs": [
+            "N96"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "electronic-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§96 Нотика описывает автоматическое управление ОП электронным регулятором ЧМЭ3Э; его нельзя подменять схемой ЧМЭ3.",
+          "responses": {},
+          "sourceRefs": [
+            "N96"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "electronic-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходные данные не подтверждены; неисправность и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "electronic-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестный источник или профиль, действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "profiles",
+      "title": "Различия исполнений",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "profiles-q",
+          "type": "QUESTION",
+          "text": "Есть уже записанные сведения по теме «Различия исполнений»?",
+          "responses": {
+            "YES": "profiles-yes",
+            "NO": "profiles-no",
+            "UNKNOWN": "profiles-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "profiles-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "ЧМЭ3Т/ЧМЭ3Э имеют особенности электрических аппаратов; установленный профиль и модернизации неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходные данные не подтверждены; неисправность и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестный источник или профиль, действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "normative",
+      "title": "Статус вторичного 996/р",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "normative-q",
+          "type": "QUESTION",
+          "text": "Есть уже записанные сведения по теме «Статус вторичного 996/р»?",
+          "responses": {
+            "YES": "normative-yes",
+            "NO": "normative-no",
+            "UNKNOWN": "normative-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "normative-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вторичный 996/р и местные материалы 2007 года не доказывают действующие нормы и не разрешают проверку силовой ветви.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "normative-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходные данные не подтверждены; неисправность и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "normative-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестный источник или профиль, действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-104",
+      "distinction": "Отдельный исходный ID; не смешивать аппараты, схемы, источники и причины."
+    },
+    {
+      "originalId": "CHME3-DIAG-109",
+      "distinction": "Отдельный исходный ID; не смешивать аппараты, схемы, источники и причины."
+    },
+    {
+      "originalId": "CHME3-DIAG-103",
+      "distinction": "Отдельный исходный ID; не смешивать аппараты, схемы, источники и причины."
+    }
+  ],
+  "sourceDiscrepancies": [
+    "Донорский граф содержит измерения команды и силовой ветви, но без актуального РЭ, профиля, допуска и safety review это не разрешённые действия.",
+    "§74 и §96 Нотика описывают разные алгоритмы ЧМЭ3 и ЧМЭ3Э; единая донорская применимость не доказывает идентичность схем."
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Схема и профиль конкретной машины",
+    "Статус первичного источника 996/р или официального индекса",
+    "Допустимые роли и safety review",
+    "Независимая распаковка gzip",
+    "Действительность исторических источников для модификаций",
+    "Финальная device QA",
+    "Подтверждение конкретного наблюдения"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
