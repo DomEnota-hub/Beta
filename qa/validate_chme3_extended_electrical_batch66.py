@@ -86,7 +86,7 @@ def negative(c,n,idx,pack):
         lambda x:x["donor"].update(gzipIndependentlyDecoded=True),
         lambda x:x["donor"].update(equipmentIds=[]),
         lambda x:x["donor"].update(evidenceRefs=[]),
-        lambda x:x["donor"].update(riskClass="NORMAL_DIAGNOSTIC"),
+        lambda x:x["donor"].update(riskClass="INVALID_RISK"),
         lambda x:x["donor"].update(actionAuthority="ALLOW_REPAIR"),
         lambda x:x["warning"].update(extendedHiddenByDefault=False),
         lambda x:x["warning"].update(readToEndRequired=False),
