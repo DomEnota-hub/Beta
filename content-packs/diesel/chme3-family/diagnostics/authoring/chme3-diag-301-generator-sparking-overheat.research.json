@@ -1,0 +1,834 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 65,
+  "originalId": "CHME3-DIAG-301",
+  "scenarioId": "chme3.diagnostics.chme3-diag-301",
+  "title": "Тяговый генератор искрит или перегревается",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/0",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-301",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "TECHNICAL_TRAINING_PLUS_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-ELECTRICAL-2018",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TRACTION-GENERATOR",
+      "CHME3-EQ-EXCITER"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N62",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_62.html",
+      "revision": "Нотик 1996 §62: генератор TD-802, ТЭД и коллектор",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N57",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/096.htm",
+      "revision": "Нотик 1996 §57: вентиляторы ТЭД",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_67.html",
+      "revision": "Нотик 1996 §67: различия исполнений",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N75",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_75.html",
+      "revision": "Нотик 1996 §75: защиты ЧМЭ3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N87",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_87.html",
+      "revision": "Нотик 1996 §87: защиты ЧМЭ3Т",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N97",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_97.html",
+      "revision": "Нотик 1996 §97: защиты ЧМЭ3Э",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местный материал 2007 года, статус не подтверждён",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Практический материал без первичного применимого РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По сохранённым данным эпизод завершён и нет продолжающегося опасного искрения, дыма или перегрева?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "По ранее зафиксированным признакам источник симптома именно тяговый генератор, а не ТЭД?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "По штатной записи симптом связан с тяговой нагрузкой?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не доказано, что источник симптома генератор: не смешивать с ТЭД CHME3-DIAG-302.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зависимость от нагрузки допускает разные объяснения: охлаждение, возбуждение, коммутация.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наличие симптома вне тяговой нагрузки не доказывает внутренний дефект генератора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не возобновлять нагрузку, не повторять включения, не вскрывать аппараты, не обходить защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: источник, профиль или прежние наблюдения неизвестны; причина не установлена, никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Состояние безопасно: эпизод завершён, нет продолжающегося искрения, дыма и признаков пожара?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "По архивным записям локализация относится к тяговому генератору, не к ТЭД или контакторам?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В журнале подтверждена зависимость симптома от тяговой нагрузки?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В штатной истории зафиксирован самостоятельный признак нарушения охлаждения генератора?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть сохранённые показания о ненормальном возбуждении или нагрузке генератора?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нельзя переносить признаки ТЭД или контактора на генератор: локализация не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Связь с нагрузкой не доказывает дефект коллектора; возможны возбуждение, коммутация и охлаждение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нарушение охлаждения остаётся отдельной объясняющей ветвью; генератор не признан повреждённым без иных данных.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ненормальная нагрузка/возбуждение не равны доказанному дефекту генератора; требуются штатные документы исполнения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии подтверждения охлаждения и возбуждения внутренний дефект щёток/коллектора лишь гипотеза.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не возобновлять нагрузку, не повторять включения, не вскрывать аппараты, не обходить защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: источник, профиль или прежние наблюдения неизвестны; причина не установлена, никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "construction",
+      "title": "Коллектор и возбуждение",
+      "sourceId": "N62",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "construction-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Коллектор и возбуждение»?",
+          "responses": {
+            "YES": "construction-yes",
+            "NO": "construction-no",
+            "UNKNOWN": "construction-stop"
+          },
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "construction-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик, §62: тяговый генератор TD-802, щёточно-коллекторный узел и независимое возбуждение описаны как конструкция 1996 года, не как разрешение осмотра.",
+          "responses": {},
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "construction-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "construction-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "load",
+      "title": "Нагрузка и возбуждение",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "load-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Нагрузка и возбуждение»?",
+          "responses": {
+            "YES": "load-yes",
+            "NO": "load-no",
+            "UNKNOWN": "load-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "load-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зависимость искрения от нагрузки не устанавливает автоматически дефект щёток; архивная ветвь возбуждения отделена от ветви самой машины.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "load-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "load-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "title": "Самовентиляция генератора",
+      "sourceId": "N62",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cooling-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Самовентиляция генератора»?",
+          "responses": {
+            "YES": "cooling-yes",
+            "NO": "cooling-no",
+            "UNKNOWN": "cooling-stop"
+          },
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cooling-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §62 описывает самовентиляцию генератора; признаки перегрева нельзя автоматически приравнивать к отказу вентилятора ТЭД.",
+          "responses": {},
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variants",
+      "title": "Исполнения ЧМЭ3/Т/Э",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variants-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Исполнения ЧМЭ3/Т/Э»?",
+          "responses": {
+            "YES": "variants-yes",
+            "NO": "variants-no",
+            "UNKNOWN": "variants-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variants-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Варианты и модернизации требуют отдельной схемы и номера машины; подтверждение конструкции 1996 года не подтверждает применимость сегодня.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Опасные признаки и предел исследования",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "limits-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Опасные признаки и предел исследования»?",
+          "responses": {
+            "YES": "limits-yes",
+            "NO": "limits-no",
+            "UNKNOWN": "limits-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "limits-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "При продолжающемся искрении, дыме, запахе гари или неизвестной безопасности только STOP; никаких повторных нагрузок, вскрытий и измерений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-302",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    },
+    {
+      "originalId": "CHME3-DIAG-303",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    },
+    {
+      "originalId": "CHME3-DIAG-109",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Донорские пункты могут включать проверки/вмешательства; исследовательский граф использует только ранее сохранённые наблюдения."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Пособие Нотика 1996 года подтверждает историческую конструкцию, не является действующим РЭ и не подтверждает конкретную модернизацию."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Сопоставлены ID, название и профиль, но gzip-граф не декодирован независимо, равенство графов не доказано."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ с привязкой к номеру машины",
+    "Конкретный вариант, модернизация и установленная схема",
+    "Применимые пункты действующих инструкций и нормы",
+    "Независимое декодирование исходного gzip-графа",
+    "Подтверждение роли и допуска персонала",
+    "Отдельная независимая safety-проверка",
+    "Полный физический Android device QA после тестового APK",
+    "Штатная хронология событий без воспроизведения отказа",
+    "Схема установленного TD-802 и модернизаций",
+    "Подтверждённые данные о щёточно-коллекторном узле",
+    "Хронология симптома без новых нагрузочных испытаний"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

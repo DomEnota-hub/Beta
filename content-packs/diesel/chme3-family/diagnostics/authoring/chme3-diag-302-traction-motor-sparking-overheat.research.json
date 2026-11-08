@@ -1,0 +1,835 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 65,
+  "originalId": "CHME3-DIAG-302",
+  "scenarioId": "chme3.diagnostics.chme3-diag-302",
+  "title": "Тяговый электродвигатель искрит или перегревается",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/1",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-302",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "TECHNICAL_TRAINING_PLUS_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-ELECTRICAL-2018",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TRACTION-MOTORS",
+      "CHME3-EQ-TM-FANS",
+      "CHME3-EQ-TRAIN-CONTACTORS"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N62",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_62.html",
+      "revision": "Нотик 1996 §62: генератор TD-802, ТЭД и коллектор",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N57",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/096.htm",
+      "revision": "Нотик 1996 §57: вентиляторы ТЭД",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_67.html",
+      "revision": "Нотик 1996 §67: различия исполнений",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N75",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_75.html",
+      "revision": "Нотик 1996 §75: защиты ЧМЭ3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N87",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_87.html",
+      "revision": "Нотик 1996 §87: защиты ЧМЭ3Т",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N97",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://myswitcher.ru/4me3/4me3_97.html",
+      "revision": "Нотик 1996 §97: защиты ЧМЭ3Э",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местный материал 2007 года, статус не подтверждён",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Практический материал без первичного применимого РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По сохранённым данным опасный перегрев/искрение прекратились, эпизод завершён?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "По записям затронут один определённый ТЭД, а не несколько двигателей?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В ранее составленном акте отмечено отклонение охлаждения соответствующей тележки?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "При нескольких ТЭД возможна общая причина охлаждения/нагрузки, а не несколько независимых отказов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вентилятор тележки по архивной схеме является отдельной гипотезой; ремонт и переключения запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "При сохранном по записям охлаждении причина не локализована; щётки и коллектор не признаны дефектными.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не возобновлять нагрузку, не повторять включения, не вскрывать аппараты, не обходить защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: источник, профиль или прежние наблюдения неизвестны; причина не установлена, никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет продолжающегося опасного нагрева, дыма, искрения или движения для проверки?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Из штатных записей ясно, какой именно ТЭД и какая тележка затронуты?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Отклонение касается одного ТЭД, а не нескольких на одной тележке?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "По ранее составленной записи обнаружено нарушение вентиляции соответствующей тележки?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Имеются отдельные документы о локальном дефекте конкретного ТЭД, не только о нагреве?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестный номер ТЭД или тележка не позволяют связывать симптом с конкретным двигателем.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Несколько ТЭД одной тележки требуют отдельного рассмотрения общего воздушного тракта; независимые моторные дефекты не доказаны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "По Нотику, §57 вентиляторы распределены по тележкам; это архивная конструкция, не подтверждение причины перегрева.",
+          "responses": {},
+          "sourceRefs": [
+            "N57"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Локальные документы о дефекте требуют проверки их источника, роли и конкретного исполнения; никаких отключений ТЭД из карточки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии подтверждённого локального дефекта остаются гипотезы нагрузки, коммутации и охлаждения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не возобновлять нагрузку, не повторять включения, не вскрывать аппараты, не обходить защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: источник, профиль или прежние наблюдения неизвестны; причина не установлена, никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "fans",
+      "title": "Два вентилятора ТЭД",
+      "sourceId": "N57",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "fans-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Два вентилятора ТЭД»?",
+          "responses": {
+            "YES": "fans-yes",
+            "NO": "fans-no",
+            "UNKNOWN": "fans-stop"
+          },
+          "sourceRefs": [
+            "N57"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "fans-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик, §57 описывает два вентилятора, каждый для одной тележки. Это помогает разделять общий и локальный симптом, не разрешая доступ к вращающимся частям.",
+          "responses": {},
+          "sourceRefs": [
+            "N57"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fans-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fans-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "one-many",
+      "title": "Один ТЭД или несколько",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "one-many-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Один ТЭД или несколько»?",
+          "responses": {
+            "YES": "one-many-yes",
+            "NO": "one-many-no",
+            "UNKNOWN": "one-many-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "one-many-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нагрев одного двигателя и нескольких двигателей требуют разных исходных гипотез; один горячий двигатель не доказывает неисправность обмотки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "one-many-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "one-many-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "commutation",
+      "title": "Коммутация и щётки",
+      "sourceId": "N62",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "commutation-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Коммутация и щётки»?",
+          "responses": {
+            "YES": "commutation-yes",
+            "NO": "commutation-no",
+            "UNKNOWN": "commutation-stop"
+          },
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "commutation-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик, §62 описывает электрические машины и их коллекторные узлы; визуальные или измерительные проверки под напряжением запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N62"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "commutation-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "commutation-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "traction",
+      "title": "Контакторы и распределение тяги",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "traction-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Контакторы и распределение тяги»?",
+          "responses": {
+            "YES": "traction-yes",
+            "NO": "traction-no",
+            "UNKNOWN": "traction-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "traction-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ветвь поездных контакторов CHME3-DIAG-104 и распределение тока не смешиваются с внутренней неисправностью ТЭД.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "traction-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "traction-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "title": "Исполнение и отключение двигателя",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "profile-q",
+          "type": "QUESTION",
+          "text": "Есть уже документированные сведения по теме «Исполнение и отключение двигателя»?",
+          "responses": {
+            "YES": "profile-yes",
+            "NO": "profile-no",
+            "UNKNOWN": "profile-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "profile-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Решение об отключении ТЭД нельзя выводить из исторической книги; требуется действующее РЭ, точная схема, роль и safety gate.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profile-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения не подтверждены. Вывод и применимость для конкретной машины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profile-stop",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или данные неизвестны; никаких эксплуатационных действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-301",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    },
+    {
+      "originalId": "CHME3-DIAG-104",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    },
+    {
+      "originalId": "CHME3-DIAG-303",
+      "distinction": "Самостоятельный исходный симптом; нельзя переносить выводы, схему или разрешения между сценариями."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Донорские пункты могут включать проверки/вмешательства; исследовательский граф использует только ранее сохранённые наблюдения."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Пособие Нотика 1996 года подтверждает историческую конструкцию, не является действующим РЭ и не подтверждает конкретную модернизацию."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Сопоставлены ID, название и профиль, но gzip-граф не декодирован независимо, равенство графов не доказано."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ с привязкой к номеру машины",
+    "Конкретный вариант, модернизация и установленная схема",
+    "Применимые пункты действующих инструкций и нормы",
+    "Независимое декодирование исходного gzip-графа",
+    "Подтверждение роли и допуска персонала",
+    "Отдельная независимая safety-проверка",
+    "Полный физический Android device QA после тестового APK",
+    "Штатная хронология событий без воспроизведения отказа",
+    "Номер ТЭД и тележка в штатной записи",
+    "Схема вентиляции конкретного исполнения",
+    "Применимый порядок отключения ТЭД не подтверждён"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
