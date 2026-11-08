@@ -1,0 +1,770 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 64,
+  "originalId": "CHME3-DIAG-207",
+  "scenarioId": "chme3.diagnostics.chme3-diag-207",
+  "title": "Не работают пневматические аппараты управления",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/6",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-207",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-PNEUMATIC-CONTROL-RESERVOIR",
+      "CHME3-EQ-MAIN-RESERVOIRS",
+      "CHME3-EQ-TRAIN-CONTACTORS",
+      "CHME3-EQ-REVERSER"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "valveMechanicalFixation": false,
+    "forcedFanOperation": false,
+    "forcedReverserOperation": false,
+    "sandingTest": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Pinned Test- blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/6",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/098.htm",
+      "revision": "З.Х. Нотик, 1996, §58; историческое пособие, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Исключено ли по записям опасное состояние пневматики и аппаратов?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Зафиксирован ли групповой отказ пневматических аппаратов?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть ли отдельная запись давления резервуара управления, а не только ГР?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Одиночный отказ не доказывает потерю воздуха управления.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "ГР и резервуар управления являются разными контурами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Исключено ли по записям опасное состояние пневматики и аппаратов?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Зафиксирован ли групповой отказ пневматических аппаратов?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть ли отдельная запись давления резервуара управления, а не только ГР?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть ли хронология команды и реакции аппаратов?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Подтверждена ли установленная пневмосхема?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Одиночный отказ не доказывает потерю воздуха управления.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "ГР и резервуар управления являются разными контурами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ электрической цепи не следует из отсутствия реакции.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческая схема не подтверждает дефект конкретного вентиля.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "scope",
+      "title": "Резервуар управления",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "scope-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее сохранённые сведения по теме «Резервуар управления» для конкретной машины?",
+          "responses": {
+            "YES": "scope-yes",
+            "NO": "scope-no",
+            "UNKNOWN": "scope-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "scope-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения по теме «Резервуар управления» только информационные: архив и источник не подтверждают применимость и не разрешают действий.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "scope-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения по теме «Резервуар управления» вывод блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "scope-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "technical",
+      "title": "Групповой или одиночный отказ",
+      "sourceId": "DOC",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "technical-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее сохранённые сведения по теме «Групповой или одиночный отказ» для конкретной машины?",
+          "responses": {
+            "YES": "technical-yes",
+            "NO": "technical-no",
+            "UNKNOWN": "technical-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "technical-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения по теме «Групповой или одиночный отказ» только информационные: архив и источник не подтверждают применимость и не разрешают действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "technical-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения по теме «Групповой или одиночный отказ» вывод блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "technical-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "source",
+      "title": "Реверсор и контакторы",
+      "sourceId": "PACK",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "source-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее сохранённые сведения по теме «Реверсор и контакторы» для конкретной машины?",
+          "responses": {
+            "YES": "source-yes",
+            "NO": "source-no",
+            "UNKNOWN": "source-stop"
+          },
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "source-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения по теме «Реверсор и контакторы» только информационные: архив и источник не подтверждают применимость и не разрешают действий.",
+          "responses": {},
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "source-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения по теме «Реверсор и контакторы» вывод блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "source-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variant",
+      "title": "Команда и отклик",
+      "sourceId": "FIELD",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variant-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее сохранённые сведения по теме «Команда и отклик» для конкретной машины?",
+          "responses": {
+            "YES": "variant-yes",
+            "NO": "variant-no",
+            "UNKNOWN": "variant-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variant-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения по теме «Команда и отклик» только информационные: архив и источник не подтверждают применимость и не разрешают действий.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения по теме «Команда и отклик» вывод блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Исполнение",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "limits-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее сохранённые сведения по теме «Исполнение» для конкретной машины?",
+          "responses": {
+            "YES": "limits-yes",
+            "NO": "limits-no",
+            "UNKNOWN": "limits-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "limits-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения по теме «Исполнение» только информационные: архив и источник не подтверждают применимость и не разрешают действий.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения по теме «Исполнение» вывод блокируется.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    },
+    {
+      "originalId": "CHME3-DIAG-206",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    },
+    {
+      "originalId": "CHME3-DIAG-208",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Физические проверки исходника не переносить: только сохранённые наблюдения."
+    },
+    {
+      "source": "HISTORICAL_vs_CURRENT",
+      "note": "Нотик 1996 не является действующим РЭ и не подтверждает установленную схему."
+    },
+    {
+      "source": "GZIP_vs_INDEX",
+      "note": "Граф gzip не декодирован независимо, равенство не утверждается."
+    },
+    {
+      "source": "FIELD_vs_AUTHORITY",
+      "note": "Практический индекс не даёт полномочий."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Заводской номер и модернизация",
+    "Схема конкретной машины",
+    "Первичный источник и дата",
+    "Записи штатных наблюдений",
+    "Проверка исходного gzip",
+    "Ролевые полномочия",
+    "Независимая safety-проверка",
+    "Проверка профиля",
+    "Действующие ограничения",
+    "Ручная Android QA",
+    "Согласование применимости"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
