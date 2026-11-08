@@ -1,0 +1,812 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 52,
+  "originalId": "CHME3-DIAG-003",
+  "scenarioId": "chme3.diagnostics.chme3-diag-003",
+  "title": "Дизель идёт в разнос / срабатывает предельный регулятор",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/2",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-003",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "EMERGENCY_STOP",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_CAUSE_MODEL_PRIMARY_ACTION_PENDING",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-996R-CURRENT-INDEX"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-DIESEL",
+      "CHME3-EQ-GOVERNOR",
+      "CHME3-EQ-OVERSPEED-GOV",
+      "CHME3-EQ-INJECTION-PUMP"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "emergencyProcedure": false,
+    "governorAdjustment": false,
+    "overspeedTest": false,
+    "repeatStart": false,
+    "manualFuelRackMovement": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json#/scenarios/2",
+      "revision": "Donor JSON updatedAt 2026-10-01; field event date not established; Test@3176d6ee2",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Pinned Test- gzip-derived projection; original gzip not independently decoded; unsafe legacy action not imported",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N39",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/068.htm",
+      "revision": "Нотик З.Х., 2-е изд., Транспорт, 1996, §39: устройство предельного регулятора; архивное значение срабатывания НЕ применять как норму",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N38",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/065.htm",
+      "revision": "Нотик, 1996, §38: объединённый регулятор и общие механизмы; исторический принцип",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N38T",
+      "kind": "HISTORICAL_TRAINING_VARIANT",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/067.htm",
+      "revision": "Нотик, 1996, §38: отличия регуляторов ЧМЭ3Т/ЧМЭ3Э; не доказывает конкретное исполнение",
+      "profiles": [
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "INDEX",
+      "kind": "CURRENT_REGULATION_INDEX_UNVERIFIED",
+      "ref": "CHME3-SRC-996R-CURRENT-INDEX",
+      "revision": "Указатель 996/р; публичная редакция 2024 упоминается, точный пункт аварийных действий и редакция 2026 не проверены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "REFERENCE_ONLY_NOT_PROCEDURE",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "PINNED_FIELD_PRACTICE_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Legacy practice; primary field report and date not independently reviewed",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Из уже имеющихся записей следует, что неконтролируемый рост оборотов происходит сейчас или не исключён?",
+          "responses": {
+            "YES": "emergency",
+            "NO": "s2",
+            "UNKNOWN": "emergency"
+          },
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть достоверная запись, что дизель уже остановлен и опасное событие завершилось?",
+          "responses": {
+            "YES": "s3",
+            "NO": "emergency",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В старой записи подтверждено срабатывание предельного регулятора, а не только рост оборотов?",
+          "responses": {
+            "YES": "s5",
+            "NO": "s4",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N39"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s4",
+          "type": "QUESTION",
+          "text": "Есть запись о расхождении команды управления и фактических оборотов до остановки?",
+          "responses": {
+            "YES": "s6",
+            "NO": "stop",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s5",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксирован признак срабатывания предельного регулятора; это не подтверждает первопричину. Не сбрасывать защиту и не запускать дизель для проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N39"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s6",
+          "type": "OBSERVATION_REPORT",
+          "text": "Возможна ветвь управления частотой вращения, но регулятор, привод подачи и внешняя команда не различены. Только архивная гипотеза.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "emergency",
+          "type": "STOP",
+          "text": "STOP: при текущем или не исключённом неконтролируемом росте оборотов исследовательская диагностика недопустима. Действовать только по действующей инструкции и полномочиям; конкретная аварийная операция здесь не публикуется.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop",
+          "type": "STOP",
+          "text": "STOP: неизвестен статус события, исполнение машины, действующая аварийная инструкция или роль. Не выполнять повторный пуск, испытания, вмешательство в регулятор и сброс защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "В существующем сообщении активный разнос дизеля продолжается либо его завершение не подтверждено?",
+          "responses": {
+            "YES": "emergency",
+            "NO": "d2",
+            "UNKNOWN": "emergency"
+          },
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Зафиксирована безопасная остановка и отсутствие продолжающегося опасного события?",
+          "responses": {
+            "YES": "d3",
+            "NO": "emergency",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архивном журнале есть явное указание на срабатывание предельного регулятора?",
+          "responses": {
+            "YES": "d4",
+            "NO": "d5",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N39"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "OBSERVATION_REPORT",
+          "text": "Срабатывание предельного регулятора не равнозначно доказанному отказу самого регулятора. Архивные пороги из §39 не применять к конкретной машине.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N39"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Зафиксировано расхождение между командой снижения оборотов и наблюдаемой частотой до остановки?",
+          "responses": {
+            "YES": "d6",
+            "NO": "d7",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d6",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ветвь несоответствия команды и оборотов требует проверки по конкретной схеме уполномоченным персоналом; никакие регулировки не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N38",
+            "N38T"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d7",
+          "type": "QUESTION",
+          "text": "Сохранились независимые записи о состоянии регулятора и механизма топливоподачи до события?",
+          "responses": {
+            "YES": "d8",
+            "NO": "d9",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d8",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивные записи позволяют сравнить конкурирующие версии, но не доказывают заедание реек, отказ регулятора или состояние привода.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "FIELD",
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d9",
+          "type": "QUESTION",
+          "text": "Документированы изменения или ремонт регулятора до события?",
+          "responses": {
+            "YES": "d10",
+            "NO": "stop",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38T"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d10",
+          "type": "OBSERVATION_REPORT",
+          "text": "История вмешательств важна для анализа специалистом, но не доказывает связь с разгоном и не разрешает повторный пуск.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N38T"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "emergency",
+          "type": "STOP",
+          "text": "STOP: при текущем или не исключённом неконтролируемом росте оборотов исследовательская диагностика недопустима. Действовать только по действующей инструкции и полномочиям; конкретная аварийная операция здесь не публикуется.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop",
+          "type": "STOP",
+          "text": "STOP: неизвестен статус события, исполнение машины, действующая аварийная инструкция или роль. Не выполнять повторный пуск, испытания, вмешательство в регулятор и сброс защиты.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "event",
+      "title": "Активное событие и граница аварийной ветви",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "event-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах есть достоверная запись по теме «Активное событие и граница аварийной ветви»?",
+          "responses": {
+            "YES": "event-yes",
+            "NO": "event-no",
+            "UNKNOWN": "event-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "event-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждение активного неконтролируемого роста требует немедленного выхода из исследовательского диалога; никакой процедуры здесь нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "event-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии подтверждённого завершения события считать безопасность не установленной.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "event-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение записи или применимость к установленному исполнению не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "limiter",
+      "title": "Предельный регулятор: архивная конструкция",
+      "sourceId": "N39",
+      "sourceStatus": "HISTORICAL_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "limiter-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах есть достоверная запись по теме «Предельный регулятор: архивная конструкция»?",
+          "responses": {
+            "YES": "limiter-yes",
+            "NO": "limiter-no",
+            "UNKNOWN": "limiter-unknown"
+          },
+          "sourceRefs": [
+            "N39"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "limiter-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§39 описывает назначение и устройство предельного регулятора; архивная уставка не переносится на конкретную машину.",
+          "responses": {},
+          "sourceRefs": [
+            "N39"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limiter-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет подтверждения срабатывания; рост оборотов сам по себе не доказывает отказ предельного регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "N39"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limiter-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение записи или применимость к установленному исполнению не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "N39"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "governor",
+      "title": "Объединённый регулятор: конкурирующие объяснения",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "governor-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах есть достоверная запись по теме «Объединённый регулятор: конкурирующие объяснения»?",
+          "responses": {
+            "YES": "governor-yes",
+            "NO": "governor-no",
+            "UNKNOWN": "governor-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "governor-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§38 описывает управление и защитные функции объединённого регулятора; неисправность механизма подачи остаётся лишь гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "governor-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет данных для разграничения команды, регулятора и привода подачи.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "governor-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение записи или применимость к установленному исполнению не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variants",
+      "title": "Различия ЧМЭ3Т и ЧМЭ3Э",
+      "sourceId": "N38T",
+      "sourceStatus": "HISTORICAL_VARIANT_NOT_VERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variants-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах есть достоверная запись по теме «Различия ЧМЭ3Т и ЧМЭ3Э»?",
+          "responses": {
+            "YES": "variants-yes",
+            "NO": "variants-no",
+            "UNKNOWN": "variants-unknown"
+          },
+          "sourceRefs": [
+            "N38T"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variants-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В историческом §38 отдельно отмечены изменения узлов регулятора ЧМЭ3Т/ЧМЭ3Э; автоматическая применимость базовой схемы запрещена.",
+          "responses": {},
+          "sourceRefs": [
+            "N38T"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без точной схемы исполнения нельзя приписывать конкретный механизм.",
+          "responses": {},
+          "sourceRefs": [
+            "N38T"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение записи или применимость к установленному исполнению не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "N38T"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "norm",
+      "title": "Действующий порядок и непроверенный индекс 996/р",
+      "sourceId": "INDEX",
+      "sourceStatus": "CURRENT_EXACT_PROCEDURE_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "norm-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах есть достоверная запись по теме «Действующий порядок и непроверенный индекс 996/р»?",
+          "responses": {
+            "YES": "norm-yes",
+            "NO": "norm-no",
+            "UNKNOWN": "norm-unknown"
+          },
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "norm-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Индекс документа не содержит подтверждённого точного аварийного пункта для установленной машины и роли; action gate закрыт.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "norm-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже наличие общей редакции документа не подтверждает локальную процедуру и полномочия.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "norm-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение записи или применимость к установленному исполнению не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Точный действующий пункт аварийного порядка №996/р и редакция на 08.11.2026 не установлены",
+    "Актуальное заводское РЭ и локальные аварийные инструкции конкретной машины отсутствуют",
+    "Роль и полномочия не подтверждены; никакая аварийная операция не разрешена",
+    "Историческая уставка предельного регулятора не является действующим порогом",
+    "ЧМЭ3, ЧМЭ3Т и ЧМЭ3Э требуют раздельной схемной верификации",
+    "Независимая распаковка закреплённого gzip не выполнена",
+    "Первичный материал полевой практики не проверен"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-002",
+      "rule": "Самопроизвольная остановка после пуска не доказывает разнос или срабатывание предельного регулятора"
+    },
+    {
+      "originalId": "CHME3-DIAG-004",
+      "rule": "Отказ набора оборотов по позициям не равен неконтролируемому росту"
+    },
+    {
+      "originalId": "CHME3-DIAG-005",
+      "rule": "Отсутствие снижения оборотов по команде анализировать отдельно; при признаках разноса аварийная ветвь STOP"
+    }
+  ],
+  "emergency": {
+    "sourceBound": true,
+    "currentEmergencyInstructionVerified": false,
+    "exactProcedureVerified": false,
+    "roleAuthorized": false,
+    "profileSafetyGatePassed": false,
+    "emergencyActionAuthorized": false,
+    "activeEventDisposition": "STOP_AND_REFER_TO_CURRENT_AUTHORIZED_EMERGENCY_PROCEDURE",
+    "historicalThresholdApplicable": false
+  }
+}
