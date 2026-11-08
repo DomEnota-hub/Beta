@@ -1,0 +1,756 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 62,
+  "originalId": "CHME3-DIAG-110",
+  "scenarioId": "chme3.diagnostics.chme3-diag-110",
+  "title": "ЧМЭ3Т — не работает реостатный тормоз",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+    "documentPointer": "/scenarios/9",
+    "documentBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-110",
+    "gzipBlob": "41809c6464113f48ef032ed70d2cb4483f12c28e",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "PROFILE_CRITICAL",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "DOCUMENT_INDEX_PENDING_EXACT_SOURCE",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG"
+    ],
+    "equipmentIds": [
+      "CHME3T-EQ-EDB-CONTROL",
+      "CHME3T-EQ-BRAKE-RESISTORS",
+      "CHME3T-EQ-BRAKE-RESISTOR-FAN",
+      "CHME3-EQ-TRACTION-MOTORS"
+    ],
+    "profileGate": "chme3t-rheostatic"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3t"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SOURCE_AND_PROFILE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "mechanicalContactSeparation": false,
+    "batteryExternalCharging": false,
+    "voltageRegulatorAdjustment": false,
+    "dynamicBrakeCommand": false,
+    "brakeResistorAccess": false,
+    "brakeFanForcedStart": false,
+    "protectionBypass": false,
+    "brakingUnderLoad": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "revision": "Donor blob 41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N87",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996, §87 и страницы 351–360: ЭДТ ЧМЭ3Т, тормозные резисторы, вентилятор, защиты",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N_LAYOUT",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996, страницы 7, 272–273: раннее и позднее расположение резисторов/вентилятора ЧМЭ3Т",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "UNVERIFIED_DOCUMENT_INDEX",
+      "ref": "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG",
+      "revision": "Донорский индекс документов; точное первичное РЭ отсутствует",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3t"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По уже имеющимся данным исключены опасные признаки ЭДТ, перегрев, запах дыма и нештатное движение?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "По документам конкретной машины подтверждён профиль ЧМЭ3Т с установленным реостатным тормозом?",
+          "responses": {
+            "YES": "s3",
+            "NO": "stop-profile",
+            "UNKNOWN": "stop-profile"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Из старой записи ясно, что ЭДТ не включился вообще, а не отключился после появления тормозного тока?",
+          "responses": {
+            "YES": "obs-a",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не включается ЭДТ: условия разрешения и управление остаются гипотезами; никаких новых включений.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отключение после появления тока или отсутствие тока при включении требуют отдельной классификации, не догадки о резисторе.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние либо его отсутствие не подтверждено. Не выполнять новых включений, движения, измерений или вмешательств; действовать по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения, точная схема или профиль неизвестны. UNKNOWN/BLOCKED, причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-profile",
+          "type": "STOP",
+          "text": "STOP: профиль ЧМЭ3Т с установленной штатной системой ЭДТ не подтверждён. Не переносить карточку на ЧМЭ3/ЧМЭ3Э или модернизированную машину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "В архивном эпизоде нет признаков перегрева, дыма, защиты или нештатного движения?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Подтверждены модель ЧМЭ3Т и штатная установленная система ЭДТ конкретного исполнения?",
+          "responses": {
+            "YES": "d3",
+            "NO": "stop-profile",
+            "UNKNOWN": "stop-profile"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Записано, что ЭДТ не включился, в отличие от отключения уже начавшегося торможения?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть прежняя запись о появлении тормозного тока по штатным показаниям?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Отдельно документированы признаки работы охлаждения и сообщения защит без новых проверок?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Событие отключения после включения требует разграничения защиты, охлаждения и режима; без записи причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи тормозного тока нельзя утверждать отказ резисторов, контакторов или управления.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записи по охлаждению и защите информационны; архивное расположение вентилятора различается по партиям.",
+          "responses": {},
+          "sourceRefs": [
+            "N_LAYOUT"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие сведений о охлаждении/защите не доказывает их неисправность и не разрешает повторять торможение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние либо его отсутствие не подтверждено. Не выполнять новых включений, движения, измерений или вмешательств; действовать по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения, точная схема или профиль неизвестны. UNKNOWN/BLOCKED, причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-profile",
+          "type": "STOP",
+          "text": "STOP: профиль ЧМЭ3Т с установленной штатной системой ЭДТ не подтверждён. Не переносить карточку на ЧМЭ3/ЧМЭ3Э или модернизированную машину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "profile",
+      "title": "Профиль ЧМЭ3Т и ЭДТ",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "profile-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Профиль ЧМЭ3Т и ЭДТ»?",
+          "responses": {
+            "YES": "profile-yes",
+            "NO": "profile-no",
+            "UNKNOWN": "profile-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "profile-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сценарий относится только к документально подтверждённому ЧМЭ3Т с ЭДТ; модернизация отдельно.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profile-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "ЧМЭ3/ЧМЭ3Э и неизвестный профиль BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profile-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "states",
+      "title": "Не включился, нет тока, отключился",
+      "sourceId": "N87",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "states-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Не включился, нет тока, отключился»?",
+          "responses": {
+            "YES": "states-yes",
+            "NO": "states-no",
+            "UNKNOWN": "states-stop"
+          },
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "states-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический источник различает стадии электрического торможения; факт не равен причине.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "states-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без хронологии симптом нельзя относить к резисторам или контакторам.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "states-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "title": "Вентилятор и охлаждение резисторов",
+      "sourceId": "N_LAYOUT",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cooling-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Вентилятор и охлаждение резисторов»?",
+          "responses": {
+            "YES": "cooling-yes",
+            "NO": "cooling-no",
+            "UNKNOWN": "cooling-stop"
+          },
+          "sourceRefs": [
+            "N_LAYOUT"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cooling-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Расположение оборудования ранних и поздних ЧМЭ3Т различается; не угадывать по фотографии.",
+          "responses": {},
+          "sourceRefs": [
+            "N_LAYOUT"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестная компоновка не подтверждает отказ вентилятора.",
+          "responses": {},
+          "sourceRefs": [
+            "N_LAYOUT"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "protection",
+      "title": "Защиты электрического торможения",
+      "sourceId": "N87",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "protection-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Защиты электрического торможения»?",
+          "responses": {
+            "YES": "protection-yes",
+            "NO": "protection-no",
+            "UNKNOWN": "protection-stop"
+          },
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "protection-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивная схема содержит защиты и переходы; события нужны как уже существующие записи.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "protection-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не отключать, не сбрасывать и не обходить защиту.",
+          "responses": {},
+          "sourceRefs": [
+            "N87"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "protection-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "index",
+      "title": "Индекс документов без точного РЭ",
+      "sourceId": "FIELD",
+      "sourceStatus": "UNVERIFIED_DOCUMENT_INDEX",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "index-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Индекс документов без точного РЭ»?",
+          "responses": {
+            "YES": "index-yes",
+            "NO": "index-no",
+            "UNKNOWN": "index-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "index-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Индекс указывает направление поиска, но не подтверждает действующую инструкцию.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "index-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "До точного заводского РЭ источник остаётся HYPOTHESIS_ONLY.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "index-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-109",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    },
+    {
+      "originalId": "CHME3-DIAG-104",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    },
+    {
+      "originalId": "CHME3-DIAG-105",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    }
+  ],
+  "sourceDiscrepancies": [
+    "Донор 110 имеет evidenceStatus=DOCUMENT_INDEX_PENDING_EXACT_SOURCE: первичный документ не привязан; исторический Нотик 1996 отдельно подтверждает устройство ЭДТ, но не актуальную инструкцию.",
+    "В архивном Нотике показано изменение расположения тормозных резисторов и вентилятора на ранних и поздних ЧМЭ3Т; конкретная компоновка UNKNOWN до проверки исполнения.",
+    "Донорские проверки разрешающих цепей и охлаждения не дают права на повторное включение ЭДТ или осмотр под нагрузкой."
+  ],
+  "openGaps": [
+    "Первичное действующее РЭ ЭДТ ЧМЭ3Т",
+    "Подтверждение штатного ЭДТ на конкретной машине",
+    "Год и модернизация",
+    "Компоновка тормозных резисторов и вентилятора",
+    "Штатная запись тока и последовательности события",
+    "Запись защит/охлаждения",
+    "Ролевой gate",
+    "Safety gate",
+    "Независимый gzip",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

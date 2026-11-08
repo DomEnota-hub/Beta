@@ -1,0 +1,794 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 62,
+  "originalId": "CHME3-DIAG-109",
+  "scenarioId": "chme3.diagnostics.chme3-diag-109",
+  "title": "Нет тяги при работающем дизеле",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+    "documentPointer": "/scenarios/8",
+    "documentBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-109",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "MIXED_TECHNICAL_TRAINING",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-ELECTRICAL-2018",
+      "CHME3-SRC-TCH11-VYBORG-2007",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-TRACTION-GENERATOR",
+      "CHME3-EQ-EXCITER",
+      "CHME3-EQ-TRAIN-CONTACTORS",
+      "CHME3-EQ-REVERSER",
+      "CHME3-EQ-TRACTION-MOTORS"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "mechanicalContactSeparation": false,
+    "batteryExternalCharging": false,
+    "voltageRegulatorAdjustment": false,
+    "tractionCommand": false,
+    "locomotiveMovement": false,
+    "forcedReverser": false,
+    "forcedTrainContactor": false,
+    "exciterAdjustment": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "revision": "Donor blob 41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N74",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996, §74: историческое управление возбуждением и тяговой передачей ЧМЭ3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996, §§67, 87, 96: различия исполнений ЧМЭ3Т/ЧМЭ3Э, перенос схем запрещён",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "UNVERIFIED_TRAINING_OR_FIELD",
+      "ref": "CHME3-SRC-SCBIST-ELECTRICAL-2018",
+      "revision": "Вторичная электротехническая подборка, не действующее РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местный материал 2007 года, актуальность не установлена",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PAM",
+      "kind": "UNVERIFIED_TRAINING_OR_FIELD",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Практические записи без первичного подтверждения",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По уже имеющимся сведениям исключены опасные признаки электрической части, движение или продолжающаяся нештатная тяга?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Подтверждено, что дизель работал, но тяга отсутствовала, а не наблюдалась другая неисправность?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В ранее сохранённых штатных показаниях отдельно указано состояние поездных контакторов и реверсора?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие работы дизеля либо иной симптом не доказывает неисправность тяговой передачи; требуется отдельная исходная карточка.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Показания помогают разделить направление/контакторы и возбуждение, но не доказывают неисправность конкретного аппарата.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждённых показаний нельзя утверждать отказ реверсора, контакторов или тягового генератора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние либо его отсутствие не подтверждено. Не выполнять новых включений, движения, измерений или вмешательств; действовать по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения, точная схема или профиль неизвестны. UNKNOWN/BLOCKED, причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключены опасные признаки и продолжающееся нештатное движение?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть запись о работающем дизеле при отсутствии тяги?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В журнале зафиксированы выбранное направление и штатный признак положения реверсора?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Состояние поездных контакторов известно по ранее сохранённой записи, без новых проверок под напряжением?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть штатная запись о нагрузке генератора, отличающая отсутствие возбуждения от отсутствия тяги при наличии нагрузки?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если дизель не работал, сценарий 109 неприменим; без независимого симптома причина UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие сведений о положении реверсора не доказывает его отказ.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без штатных записей по контакторам нельзя переходить к выводам о возбуждении или силовой цепи.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже при известных штатных показаниях различия схем ЧМЭ3, ЧМЭ3Т и ЧМЭ3Э остаются открытыми до сверки профиля.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет достоверной записи о генераторе: предположения о возбудителе и ТЭД остаются гипотезами.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние либо его отсутствие не подтверждено. Не выполнять новых включений, движения, измерений или вмешательств; действовать по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения, точная схема или профиль неизвестны. UNKNOWN/BLOCKED, причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "reverser",
+      "title": "Реверсор и направление",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "reverser-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Реверсор и направление»?",
+          "responses": {
+            "YES": "reverser-yes",
+            "NO": "reverser-no",
+            "UNKNOWN": "reverser-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "reverser-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сопоставление штатных записей возможно лишь информационно; положение не подтверждает электрическую причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "reverser-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи положения нельзя предполагать отказ реверсора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "reverser-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "contactors",
+      "title": "Поездные контакторы",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "contactors-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Поездные контакторы»?",
+          "responses": {
+            "YES": "contactors-yes",
+            "NO": "contactors-no",
+            "UNKNOWN": "contactors-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "contactors-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Разделить единичный отказ CHME3-DIAG-104 и общий симптом отсутствия тяги; не назначать ремонт.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "contactors-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестное состояние контакторов не означает дефект катушки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "contactors-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "excitation",
+      "title": "Возбуждение и генератор",
+      "sourceId": "N74",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "excitation-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Возбуждение и генератор»?",
+          "responses": {
+            "YES": "excitation-yes",
+            "NO": "excitation-no",
+            "UNKNOWN": "excitation-stop"
+          },
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "excitation-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик описывает историческую систему ЧМЭ3; показания не доказывают конкретный дефект.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "excitation-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без применимой схемы причины в возбудителе/генераторе не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "N74"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "excitation-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variants",
+      "title": "Исполнения и модернизации",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variants-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Исполнения и модернизации»?",
+          "responses": {
+            "YES": "variants-yes",
+            "NO": "variants-no",
+            "UNKNOWN": "variants-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variants-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "ЧМЭ3Т и ЧМЭ3Э могут иметь отличающиеся аппараты и управление; требуется конкретная схема.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "При неизвестном исполнении применимость BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "legacy",
+      "title": "Практические источники и архив",
+      "sourceId": "FIELD",
+      "sourceStatus": "UNVERIFIED_TRAINING",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "legacy-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые подтверждённые наблюдения по теме «Практические источники и архив»?",
+          "responses": {
+            "YES": "legacy-yes",
+            "NO": "legacy-no",
+            "UNKNOWN": "legacy-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "legacy-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вторичная подборка даёт гипотезы, не подтверждённые современной инструкцией.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Проверки под напряжением и принудительные включения не переносятся в карточку.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-stop",
+          "type": "STOP",
+          "text": "STOP: наблюдение неизвестно. Источник не подтверждает применимость и не разрешает действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-104",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    },
+    {
+      "originalId": "CHME3-DIAG-105",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    },
+    {
+      "originalId": "CHME3-DIAG-110",
+      "distinction": "Самостоятельный исходный симптом: не объединять причины, профиль, доказательства и решения."
+    }
+  ],
+  "sourceDiscrepancies": [
+    "Донорские decisionTree предлагают физически проверять реверсор, контакторы, возбуждение и силовую цепь; без действующего РЭ и полномочий это исключено из действий, заменено разбором уже имеющихся наблюдений.",
+    "Историческая схема ЧМЭ3 не подтверждает установленную конфигурацию ЧМЭ3Т/ЧМЭ3Э и модернизации; единый граф причин не обоснован."
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Исполнение и фактическая схема",
+    "Штатные записи положения реверсора",
+    "Штатные записи состояния поездных контакторов",
+    "Показания генератора без новых измерений",
+    "Профиль и ограничения ТЭД",
+    "Ролевой и safety gate",
+    "Независимое декодирование gzip",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
