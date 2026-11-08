@@ -64,6 +64,8 @@ def check(c,n,idx,pack):
         first=c["versions"][mode]["nodes"][0]
         assert first["responses"]["NO"]==first["responses"]["UNKNOWN"]=="stop-safety"
     assert len(c["extensions"])==5 and len({x["id"] for x in c["extensions"]})==5
+    assert len({e["nodes"][0]["text"] for e in c["extensions"]})==5
+    assert len({e["nodes"][1]["text"] for e in c["extensions"]})==5
     for e in c["extensions"]:
         assert e["sourceId"] in refs and e["displayMode"]=="EXTENDED_ONLY"
         assert e["visibility"]=={"hiddenByDefault":True,"warningReadToEndRequired":True,"warningAcknowledgedRequired":True}
