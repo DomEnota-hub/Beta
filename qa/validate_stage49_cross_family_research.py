@@ -206,7 +206,7 @@ def check_candidate(c, family):
              ext.get("operationalSteps", ext.get("procedureSteps", [])) == [],
              label + " unsafe extension")
         if "nodes" in ext:
-            check_graph(ext, label + "/EXT/" + ext["id"], source_ids)
+            check_graph(ext, label + "/EXT/" + ext.get("id", ext.get("approachId", "route")), source_ids)
         if "visibility" in ext:
             visibility = ext["visibility"]
             if "hiddenByDefault" in visibility:
