@@ -22,7 +22,20 @@ def scan(row: dict, raw: bytes) -> dict:
     assert blob_sha(raw) == row['gitBlobSha'], row['sourcePath']
     decoded = gzip.decompress(raw) if row['format'] == 'json.gz' else raw
     assert len(decoded) <= MAX_DECODED_BYTES, row['sourcePath']
-    data = json.loads(decoded.decode('utf-8-sig'))
+    try:
+        data = json.loads(decoded.decode('utf-8-sig'))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        # The pinned exam_questions.json is opaque/encoded despite its extension.
+        # Do not guess a decoding scheme or silently reinterpret other assets.
+        if row['sourcePath'] != 'app/src/main/assets/exam_questions.json':
+            raise
+        return {
+            'sourcePath': row['sourcePath'], 'gitBlobSha': row['gitBlobSha'],
+            'family': row['family'], 'encodedBytes': len(raw), 'decodedBytes': len(decoded),
+            'formatStatus': 'OPAQUE_UNPARSED', 'parseErrorType': type(exc).__name__,
+            'topLevelKeys': [], 'arrays': {}, 'objects': {},
+            'totalTopLevelArrayElements': 0, 'disposition': 'STRUCTURE_ONLY_NOT_PUBLISHED',
+        }
     fields = data if isinstance(data, dict) else {'$root': data}
     arrays = {}
     objects = {}
@@ -39,7 +52,7 @@ def scan(row: dict, raw: bytes) -> dict:
     return {
         'sourcePath': row['sourcePath'], 'gitBlobSha': row['gitBlobSha'],
         'family': row['family'], 'encodedBytes': len(raw), 'decodedBytes': len(decoded),
-        'topLevelKeys': list(fields), 'arrays': arrays, 'objects': objects,
+        'formatStatus': 'JSON_PARSED', 'topLevelKeys': list(fields), 'arrays': arrays, 'objects': objects,
         'totalTopLevelArrayElements': sum(x['count'] for x in arrays.values()),
         'disposition': 'STRUCTURE_ONLY_NOT_PUBLISHED',
     }
