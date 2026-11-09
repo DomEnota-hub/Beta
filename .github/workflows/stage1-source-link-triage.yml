@@ -1,0 +1,38 @@
+name: Stage 1 source-link triage ledger
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'content-packs/diesel/chme3-family/migration/source-audit.json'
+      - 'content-packs/electric/ermak/migration/source-audit.json'
+      - 'qa/validate_stage1_source_link_triage.py'
+      - 'qa/test_stage1_source_link_triage.py'
+      - '.github/workflows/stage1-source-link-triage.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'content-packs/diesel/chme3-family/migration/source-audit.json'
+      - 'content-packs/electric/ermak/migration/source-audit.json'
+      - 'qa/validate_stage1_source_link_triage.py'
+      - 'qa/test_stage1_source_link_triage.py'
+      - '.github/workflows/stage1-source-link-triage.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-link-triage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regression tests (11)
+        run: python3 -m unittest qa/test_stage1_source_link_triage.py -v
+      - name: Validate 19 CHME3 targets and 57 Ermak source IDs
+        run: python3 qa/validate_stage1_source_link_triage.py
+      - name: Preserve original quarantine boundary
+        run: python3 qa/validate_stage1_unresolved_source_quarantine.py
