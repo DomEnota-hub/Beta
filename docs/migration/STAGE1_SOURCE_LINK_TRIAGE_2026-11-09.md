@@ -33,3 +33,15 @@ No Android UI, calculator, assistant, runtime index or user-visible content was 
 - [Full Modular architecture bootstrap #42695727974](https://github.com/DomEnota-hub/Beta/actions/runs/42695727974): **SUCCESS (terminal)**; Kotlin tests, Android lint, assembleDebug and APK checks. This verifies the audit changes did not break the current slice; it does not establish Android feature parity.
 
 **Remaining blockers:** authoritative sources for CHME3/Ermak links, cross-variant EDB applicability, original history storage schema, and safe target/licensing review for the 329 exam questions. No source links have been promoted. **Next operation:** obtain source evidence for the two CHME3T EDB cross-variant IDs and separately reconcile the 55 missing Ermak source IDs. The present document is a checkpoint, not a completed Stage 1.
+
+## Дополнение 10.11.2026: первичные локаторы ЧМЭ3Т ЭДТ, без снятия карантина
+
+Для двух приоритетных целей `CHME3T-EQ-EDB-CONTROL` и `CHME3T-SCH-EDB` найдены и просмотрены **два независимых исторических источника**:
+
+1. З. Х. Нотик, «Тепловоз ЧМЭ3Т: особенности электрической схемы», журнал «Электрическая и тепловозная тяга», № 3, 1989, с. 21–24, раздел «Электрическое торможение», рис. 14 «Цепи управления тормозными контакторами»: https://www.booksite.ru/tyaga/1989/1989_3.pdf . Это техническая публикация своего времени, **не** действующее заводское РЭ.
+2. ОАО «РЖД», «Руководство по техническому обслуживанию и текущему ремонту тепловозов ЧМЭ3», ЧМЭ3 ИО, утверждено 31.12.2004: https://y-pad.tv/wp-content/uploads/2021/11/Rukovodstvo_TO_TR_CHME3.pdf . П. 3.3.4 (с. 56) отдельно выделяет оборудование реостатного тормоза **ЧМЭ3Т**, п. 3.3.5 (с. 57) рассматривает электронное оборудование **ЧМЭ3Т и ЧМЭ3Э**, п. 7.3.7 (с. 79) отдельно ссылается на работы по ЭДТ ЧМЭ3Т. Это документ по ТО/ТР, **не инструкция на ремонт для локомотивной бригады**. Наличие скана редакции 2004 года **не доказывает актуальность текста с изменениями на 2026 год**.
+
+Создан `docs/migration/chme3t-edb-historical-evidence.candidate.json`, где зафиксированы оба источника и **3 проверяемых исходных объекта** в двух сохранённых документах донора. `qa/validate_chme3t_edb_evidence.py` и `qa/test_chme3t_edb_evidence.py` сверяют идентификаторы, точные JSON pointers и SHA-256 объектов, применимость только `ЧМЭ3Т`, **8** несовместимых ссылок `ЧМЭ3/ЧМЭ3Э` и неизменность запрета публикации. Проверки включены в `.github/workflows/stage1-source-link-triage.yml`.
+
+**Результат:** историческое наличие цепей и оборудования ЭДТ на ЧМЭ3Т подтверждено на уровне источников, но `CHME3T-SCH-EDB` и `CHME3T-EQ-EDB-CONTROL` **не объявлены каноническими runtime-ссылками**. Остаток **610/610** неразрешённых source triples ЧМЭ3, включая 8 cross-variant конфликтов; 548 вхождений «Ермака» не менялись. Необходимо отдельно установить текущую редакцию технической документации, заводскую схему, исполнение конкретного тепловоза и применимость оборудования. Никаких ремонтных действий в приложение не добавлено.
+
