@@ -227,7 +227,7 @@ def main():
                 else:
                     raise AssertionError(f"Escaped mutation: {number}, index {index}")
     print(f"TEM2 batch79 PASS: 4 unique IDs, SHORT8/DETAILED12, "
-          f"25 separate extensions, negative checks {checked}")
+          f"20 separate extensions, negative checks {checked}")
 
 
 if __name__ == "__main__":
