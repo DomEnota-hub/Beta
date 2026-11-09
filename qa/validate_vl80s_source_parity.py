@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pinned VL80S donor-to-candidate parity gate, without runtime promotion.
 
-The original eight gzip catalogs are compared to preserved source objects.
+The original nine JSON/GZIP catalogs are compared to preserved source objects.
 Projected pack identity is checked separately; no safety/source approval follows.
 """
 import argparse
@@ -18,6 +18,7 @@ ASSETS = (
     "vl80s_electrical.json.gz",
     "vl80s_electrical_variants.json.gz",
     "vl80s_equipment.json.gz",
+    "vl80s_pantograph_reference_pack.json",
     "vl80s_pneumatic.json.gz",
     "vl80s_pneumatic_variants.json.gz",
     "vl80s_variants.json.gz",
@@ -48,8 +49,9 @@ def read_pinned(row, donor):
     raw = (donor / source).read_bytes()
     assert len(raw) == row["compressedBytes"], source
     assert git_blob(raw) == row["gitBlobSha"], source
-    assert row["format"] == "json.gz"
-    return json.loads(gzip.decompress(raw).decode("utf-8-sig"))
+    assert row["format"] in {"json.gz", "json"}
+    decoded = gzip.decompress(raw) if row["format"] == "json.gz" else raw
+    return json.loads(decoded.decode("utf-8-sig"))
 
 
 def pack_entries(root, relative_glob):
@@ -91,14 +93,23 @@ def validate(root, donor):
     seen = set()
     for item in scheme["sources"]:
         name = Path(item["sourcePath"]).name
-        assert name in ASSETS and name not in {"vl80s_acceptance.json.gz", "vl80s_diagnostics.json.gz", "vl80s_equipment.json.gz"}
+        assert name in ASSETS and name not in {"vl80s_acceptance.json.gz", "vl80s_diagnostics.json.gz", "vl80s_equipment.json.gz", "vl80s_pantograph_reference_pack.json"}
         assert name not in seen
         seen.add(name)
         assert item["sourcePath"] == rows[name]["sourcePath"]
         assert item["sourceBlobSha"] == rows[name]["gitBlobSha"]
         assert item["sourceObject"] == sources[name], name
         assert item["sourceObjectSha256"] == digest(item["sourceObject"]), name
-    assert seen == set(ASSETS) - {"vl80s_acceptance.json.gz", "vl80s_diagnostics.json.gz", "vl80s_equipment.json.gz"}
+    assert seen == set(ASSETS) - {"vl80s_acceptance.json.gz", "vl80s_diagnostics.json.gz", "vl80s_equipment.json.gz", "vl80s_pantograph_reference_pack.json"}
+
+    pantograph = json.loads((root / MODEL / "diagnostics/migration/pantograph-reference-source.candidate.json").read_text())
+    assert pantograph["donorCommit"] == DONOR_SHA
+    assert pantograph["publicationStatus"] == "CANDIDATE"
+    assert pantograph["runtimeImport"] is False and pantograph["actionAuthorityGranted"] is False
+    assert pantograph["sourcePath"] == rows["vl80s_pantograph_reference_pack.json"]["sourcePath"]
+    assert pantograph["sourceBlobSha"] == rows["vl80s_pantograph_reference_pack.json"]["gitBlobSha"]
+    assert pantograph["sourceObject"] == sources["vl80s_pantograph_reference_pack.json"]
+    assert pantograph["sourceObjectSha256"] == digest(pantograph["sourceObject"])
 
     equipment = json.loads((root / MODEL / "migration/equipment-context.candidate.json").read_text())
     assert_candidate(equipment)
@@ -135,7 +146,7 @@ def validate(root, donor):
     assert runtime["modelId"] == "vl80s"
     assert not any("migration/" in p or "candidate" in p or "research" in p
                    for p in runtime["packs"])
-    result = {"sourceAssets": len(sources), "fullPreservedSources": 7,
+    result = {"sourceAssets": len(sources), "fullPreservedSources": 8,
               "equipmentContextAndIds": 89, "acceptanceIds": 66,
               "diagnosticIds": 103, "variantBuckets": 9,
               "diagnosticEdges": len(sources["vl80s_diagnostics.json.gz"]["edges"])}
