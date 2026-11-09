@@ -1,0 +1,34 @@
+name: Stage 50 diagnostic runtime boundary
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/validate_stage50_runtime_boundary.py'
+      - 'qa/validate_stage49_cross_family_research.py'
+      - 'content-packs/**/diagnostics/authoring/**'
+      - 'app-shell/build.gradle.kts'
+      - '.github/workflows/diagnostic-stage50-runtime-boundary.yml'
+  pull_request:
+    paths:
+      - 'qa/validate_stage50_runtime_boundary.py'
+      - 'qa/validate_stage49_cross_family_research.py'
+      - 'content-packs/**/diagnostics/authoring/**'
+      - 'app-shell/build.gradle.kts'
+      - '.github/workflows/diagnostic-stage50-runtime-boundary.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  research-runtime-source-gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stage 49 baseline and negative source mutations
+        run: python3 qa/validate_stage49_cross_family_research.py --negative
+      - name: Stage 50 early identities, device QA and research exclusion
+        run: python3 qa/validate_stage50_runtime_boundary.py --negative
