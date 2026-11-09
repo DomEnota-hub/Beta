@@ -1,0 +1,31 @@
+name: Stage 49 cross-family diagnostic regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/validate_stage49_cross_family_research.py'
+      - '.github/workflows/diagnostic-stage49-regression.yml'
+      - 'docs/diagnostics/STAGE49_CROSS_FAMILY_AUDIT_2026-11-09.md'
+      - 'content-packs/**/diagnostics/authoring/**'
+      - 'docs/diagnostics/STAGE*.json'
+  pull_request:
+    paths:
+      - 'qa/validate_stage49_cross_family_research.py'
+      - '.github/workflows/diagnostic-stage49-regression.yml'
+      - 'content-packs/**/diagnostics/authoring/**'
+      - 'docs/diagnostics/STAGE*.json'
+
+permissions:
+  contents: read
+
+jobs:
+  cross-family-source-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate source inventory, blocked runtime and negative mutations
+        run: python3 qa/validate_stage49_cross_family_research.py --negative
