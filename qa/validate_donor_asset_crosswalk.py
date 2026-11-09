@@ -74,7 +74,12 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
         size = row["compressedBytes"]
         assert isinstance(size, int) and size > 0, path
         assert row["format"] == ("json.gz" if path.endswith(".json.gz") else "json"), path
-        assert row["recordParity"] == "UNVERIFIED", "do not claim semantic parity without record audit"
+        assert row["recordParity"] in {"UNVERIFIED", "SOURCE_ARRAY_EQUIVALENT_CANDIDATE"}, path
+        if row["recordParity"] == "SOURCE_ARRAY_EQUIVALENT_CANDIDATE":
+            assert row["family"] in {"tem2", "chme3", "ermak"}, path
+            assert row.get("evidenceWorkflow", "").startswith(
+                "https://github.com/DomEnota-hub/Beta/actions/runs/"
+            ), f"missing source-object parity CI evidence: {path}"
         assert row["runtimePublication"] == "NOT_PROVEN", "do not infer runtime publication"
         for copy in row["exactRawCopies"]:
             validate_raw_copy(root, copy, sha, size)
