@@ -1,0 +1,60 @@
+name: Pinned donor Kotlin feature/state crosswalk
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'qa/validate_donor_kotlin_crosswalk.py'
+      - 'qa/test_donor_kotlin_crosswalk.py'
+      - '**/src/main/**/*.kt'
+      - '.github/workflows/donor-kotlin-crosswalk.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'qa/validate_donor_kotlin_crosswalk.py'
+      - 'qa/test_donor_kotlin_crosswalk.py'
+      - '**/src/main/**/*.kt'
+      - '.github/workflows/donor-kotlin-crosswalk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  kotlin-source-crosswalk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail-closed unit tests
+        run: python3 -m unittest qa/test_donor_kotlin_crosswalk.py -v
+      - name: Retrieve pinned read-only donor Git tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 \
+            -H 'Accept: application/vnd.github+json' \
+            'https://api.github.com/repos/DomEnota-hub/Test-/git/trees/3176d6ee228f0ed4b78371f45209e10c1c724eff?recursive=1' \
+            --output "$RUNNER_TEMP/pinned-donor-tree.json"
+      - name: Check all 74 Kotlin sources, hashes and target touchpoints
+        run: python3 qa/validate_donor_kotlin_crosswalk.py --donor-tree "$RUNNER_TEMP/pinned-donor-tree.json"
+      - name: Ensure target does not accidentally wire unverified history or calculations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          shell = Path('app-shell/build.gradle.kts').read_text()
+          main = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/MainActivity.kt').read_text()
+          history = Path('feature-history/src/main/kotlin/ru/railbrake/calculator/history/HistoryContracts.kt').read_text()
+          # These are stage-1 observations, not permanent constraints: when stage 2/7
+          # wires the features, update this evidence check and the crosswalk together.
+          assert 'implementation(project(":feature-calculations"))' not in shell
+          assert 'implementation(project(":feature-history"))' not in shell
+          assert 'loadVl80sVerticalSlice()' in main
+          assert 'legacyFormatVerified: Boolean = false' in history
+          print('STAGE1_KOTLIN_WIRING_GAPS_CONFIRMED')
+          PY
