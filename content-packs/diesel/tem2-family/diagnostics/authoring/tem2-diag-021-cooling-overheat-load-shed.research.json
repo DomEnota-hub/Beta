@@ -1,0 +1,893 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 79,
+  "originalId": "TEM2-DIAG-021",
+  "title": "Растёт температура воды/масла и происходит сброс нагрузки либо не включается охлаждение",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/20",
+    "documentBlob": "4234e401eb9d6ec03802669d0f74962cb23ea5c4",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-021.tem2",
+      "tem2u": "tem2.diagnostics.tem2-diag-021.tem2u"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-021.tem2": "93b3e9b79ab5f3a7847a3090b316969ae0b88226",
+      "tem2.diagnostics.tem2-diag-021.tem2u": "360ced5392b4cd19b819ad8c11b148f0651959d2"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "ELEVATED_THERMAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "equipmentIds": [
+      "TEM2-EQ-DIESEL",
+      "TEM2U-EQ-DIESEL",
+      "TEM2-EQ-CONTROLLER"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-CONTROL"
+    ],
+    "lineageBlob": "24e617c3d5599cb96169f79d660200d6cd684fac"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Test- pinned 3176d6ee; Stage3 source blob 4234e401; original pointer /scenarios/20",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical entries: tem2.diagnostics.tem2-diag-021.tem2, tem2.diagnostics.tem2-diag-021.tem2u; source projection not runtime equivalence",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "Ковалёв 1980, §§5.7–5.8: историческое описание термореле, жалюзи и вентилятора; численные уставки не применяются без проверки исполнения",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "ТЭМ2У, Транспорт 1988; independently checked contents list for §2.10.3, §2.10.10, §2.11.10–11 and cooling/fuel chapters; installed variant not verified",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "No independent machine event record",
+      "revision": "Field practice is hypothesis only, no machine-specific log",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current verified factory RE/IDMB, installed equipment, authorized roles and local procedures",
+      "revision": "No current variant-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Это только ретроспективный анализ завершённого события, без текущей опасности, новых испытаний и команд?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архивной записи есть рост температуры воды или масла либо защитный сброс нагрузки?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Отдельно записано отсутствие штатного отклика вентилятора или жалюзи при росте температуры?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев или защитный сброс по архивным показаниям не подтверждён; отсутствие записи не равно исправности.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие зарегистрированного отклика автоматики является симптомом, но не доказывает неисправность датчика или привода.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если отклик охлаждения отмечен, рост температуры может иметь другие причины; циркуляция и теплоотвод не проверены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / SAFETY: при текущем событии, опасности или необходимости новой проверки опрос прекращён. Не выполнять включений, измерений, нагрузочных проб, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных сведений недостаточно. Не получать их повторным запуском, переключениями, движением, разборкой, измерениями или перемычками.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Это только ретроспективный анализ завершённого события, без текущей опасности, новых испытаний и команд?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архивной записи есть рост температуры воды или масла либо защитный сброс нагрузки?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Отдельно записано отсутствие штатного отклика вентилятора или жалюзи при росте температуры?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Сохранены последовательные показания температуры и нагрузки до защитного события?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В записи различены отсутствие команды охлаждения и недостаточный теплоотвод при работающем охлаждении?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев или защитный сброс по архивным показаниям не подтверждён; отсутствие записи не равно исправности.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие зарегистрированного отклика автоматики является симптомом, но не доказывает неисправность датчика или привода.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если отклик охлаждения отмечен, рост температуры может иметь другие причины; циркуляция и теплоотвод не проверены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без динамики температуры и нагрузки нельзя связать событие с конкретной защитой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Различие между отказом управления и недостаточным теплоотводом сохранено как гипотеза, а не диагноз.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / SAFETY: при текущем событии, опасности или необходимости новой проверки опрос прекращён. Не выполнять включений, измерений, нагрузочных проб, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных сведений недостаточно. Не получать их повторным запуском, переключениями, движением, разборкой, измерениями или перемычками.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Температура и защитный сброс",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Температура и защитный сброс» без новых действий и проверок?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивный сброс нагрузки не разрешает повторное включение и не устанавливает причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Жалюзи и вентилятор",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Жалюзи и вентилятор» без новых действий и проверок?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ковалёв 1980, §5.7–5.8, описывает историческую автоматику охлаждения; значения и операции не переносятся в действующие инструкции.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Теплоотвод и циркуляция",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Теплоотвод и циркуляция» без новых действий и проверок?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Работа вентилятора не доказывает достаточность циркуляции или чистоту теплообменника.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Отличия ТЭМ2У",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Отличия ТЭМ2У» без новых действий и проверок?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состав датчиков и привода холодильника конкретного ТЭМ2У требует проверки по установленному исполнению.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Граница тепловой безопасности",
+      "sourceId": "CURRENT_GAP",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Граница тепловой безопасности» без новых действий и проверок?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "При текущем перегреве или срабатывании защиты исследовательский опрос прекращается без новых пусков и нагрузочных проб.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "DIAG-016: рост давления ГР не равен перегреву охлаждающей среды",
+    "DIAG-014: несоответствие оборотов дизеля не доказывает отказ холодильника",
+    "Разделять отказ отклика автоматики и недостаточный теплоотвод при работающем вентиляторе"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "TEM2-DIAG-021: исходный runtimeGraph не эквивалентен новым SHORT/DETAILED; исходный граф не заменён."
+    },
+    {
+      "status": "PROFILE_BOUNDARY",
+      "detail": "Только профили tem2-base, tem2u-improved; фактическое установленное оборудование не подтверждено."
+    },
+    {
+      "status": "CANONICAL_PROJECTION",
+      "detail": "Canonical targets: tem2.diagnostics.tem2-diag-021.tem2, tem2.diagnostics.tem2-diag-021.tem2u; source blob не означает эквивалентность установленных схем."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "1980/1988 исторические издания не являются действующим разрешением на операции."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Различия вариантов, модификаций и оборудования требуют серийной/заводской проверки."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Независимое сравнение gzip/runtime-графов не выполнено."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Практический материал не подтверждает причину конкретного события."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Нет действующих РЭ/ИДМБ, полномочий и safety review."
+    },
+    {
+      "status": "SAFETY_BOUNDARY",
+      "detail": "Никаких новых испытаний, включений, перемычек, защитных обходов и вмешательств."
+    }
+  ],
+  "openGaps": [
+    "Действующее первичное заводское РЭ/ИДМБ",
+    "Документально подтверждённое установленное исполнение",
+    "Подтверждённая применимость конкретной схемы",
+    "Независимое сравнение gzip/runtime-графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Независимый журнал симптомов",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "emergencyInteractionRequired": false
+  }
+}
