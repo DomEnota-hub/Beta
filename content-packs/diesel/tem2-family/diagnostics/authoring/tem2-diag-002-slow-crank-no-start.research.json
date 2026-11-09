@@ -1,0 +1,865 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 75,
+  "originalId": "TEM2-DIAG-002",
+  "title": "Коленчатый вал проворачивается медленно, дизель не запускается",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/1",
+    "documentBlob": "24e617c3d5599cb96169f79d660200d6cd684fac",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-002.tem2",
+      "tem2u": "tem2.diagnostics.tem2-diag-002.tem2u"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-002.tem2": "93b3e9b79ab5f3a7847a3090b316969ae0b88226",
+      "tem2.diagnostics.tem2-diag-002.tem2u": "360ced5392b4cd19b819ad8c11b148f0651959d2"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "equipmentIds": [
+      "TEM2-EQ-BAT",
+      "TEM2-EQ-START-CIRCUIT",
+      "TEM2-EQ-DIESEL",
+      "TEM2U-EQ-DIESEL"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-START"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Pinned blob 4234e401eb9d6ec03802669d0f74962cb23ea5c4, 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Canonical profile projections, not runtime authority",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "Ковалёв и др., ТЭМ2, 1980, §§3.5, 9.3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "Мельников и др., ТЭМ2У, 1988, §§2.10, 2.11.3, 7.1",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "No independent case evidence",
+      "revision": "Unverified hypothesis only",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current RE/IDMB and installed machine schematic",
+      "revision": "No current execution-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Безопасен ли исключительно документальный разбор архивного эпизода без нового пуска и измерений?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть архивное подтверждение медленного вращения, а не полного отсутствия проворота?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В старых записях есть отдельная просадка питания батареи?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Медленное вращение не подтверждено; не подменять TEM2-DIAG-001.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Просадка АКБ не зафиксирована: причинная гипотеза остаётся открытой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Просадка АКБ совпала с событием, но не доказывает её первопричину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность или документальный характер анализа не подтверждены. Никаких новых пусков, измерений и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: недостаточно данных. Не восполнять неизвестность пробными действиями, перемычками или обходом защит.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Безопасен ли исключительно документальный разбор архивного эпизода без нового пуска и измерений?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть архивное подтверждение медленного вращения, а не полного отсутствия проворота?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В старых записях есть отдельная просадка питания батареи?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Известны архивные температурные условия события без новых измерений?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Сохранены независимые признаки подачи топлива или схватывания?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Медленное вращение не подтверждено; не подменять TEM2-DIAG-001.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Просадка АКБ не зафиксирована: причинная гипотеза остаётся открытой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Просадка АКБ совпала с событием, но не доказывает её первопричину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Температурные условия неизвестны; нельзя переносить архивные нормы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет независимых данных подачи топлива; причина незапуска неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность или документальный характер анализа не подтверждены. Никаких новых пусков, измерений и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: недостаточно данных. Не восполнять неизвестность пробными действиями, перемычками или обходом защит.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Скорость проворота",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения: Скорость проворота?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В архивном руководстве медленное вращение отделено от полного отсутствия вращения.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Батарея как гипотеза",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения: Батарея как гипотеза?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В исторической таблице ТЭМ2У упомянута недостаточная ёмкость АКБ, но это не диагноз.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Нормальный проворот и незапуск",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения: Нормальный проворот и незапуск?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нормальное вращение при отсутствии запуска требует другого сценария.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Различия исполнения",
+      "sourceId": "CURRENT_GAP",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения: Различия исполнения?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "ТЭМ2УМ и 1ПД-4А не допускаются по профилю ТЭМ2У.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Архивные перемычки",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения: Архивные перемычки?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторические советы отключать элементы АКБ перемычками не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-d",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "TEM2-DIAG-001: вал вообще не вращается",
+    "TEM2-DIAG-003: дизель запускается и глохнет",
+    "TEM2-DIAG-024: топливный насос не создаёт давления"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "FACTORY_1980_VS_1988",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    }
+  ],
+  "openGaps": [
+    "Текущее РЭ/ИДМБ",
+    "Схема установленного исполнения",
+    "Независимое сравнение графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Подтверждение исторических наблюдений",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
