@@ -12,7 +12,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from qa.validate_vl80s_source_parity import git_blob
+from validate_vl80s_source_parity import git_blob
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN = "3176d6ee228f0ed4b78371f45209e10c1c724eff"
