@@ -39,6 +39,12 @@ android {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
 
+    // Research-only diagnostics are retained in Git but must never ship in the APK.
+    // The legacy published runtime index and its referenced packs remain unchanged.
+    androidResources {
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:*~:authoring:migration:*.research.json:*.research.json.gz:*.candidate.json:*.candidate.json.gz"
+    }
+
     sourceSets {
         getByName("main").assets.srcDir("../content-packs")
     }
