@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Batch74 CHME3E 008-010 source, graph, safety and negative mutation QA."""
+"""Batch74 CHME3E 008-012 source, graph, safety and negative mutation QA."""
 import argparse, copy, json
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 BASE="content-packs/diesel/chme3-family/diagnostics/"
 PACK=json.loads((R/(BASE+"recommended/diagnostics-04.pack.json")).read_text())
-FILES=["content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-008-start-circuit-not-released.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-009-generator-water-heating-no-warmup.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-010-external-preheat-no-circulation.research.json"]
+FILES=["content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-008-start-circuit-not-released.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-009-generator-water-heating-no-warmup.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-010-external-preheat-no-circulation.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-011-portable-remote-command-missing.research.json","content-packs/diesel/chme3-family/diagnostics/authoring/chme3e-diag-012-electronic-speed-position-feedback-mismatch.research.json"]
 PIN="e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e"
-EXPECTED={"8":{"evidenceRefs":["CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-START-ELECTRONIC"],"riskClass":"EMERGENCY_ELECTRICAL","actionAuthority":"SAFETY_GATE_REQUIRED"},"9":{"evidenceRefs":["CHME3E-SRC-NOTIK-WATER-47","CHME3E-SRC-NOTIK-EQUIPMENT-67"],"schemeRefs":["CHME3E-SCH-PREHEAT-RUNNING"],"riskClass":"NORMAL_DIAGNOSTIC","actionAuthority":"TRIAGE_ONLY_NO_REPAIR"},"10":{"evidenceRefs":["CHME3E-SRC-NOTIK-WATER-47","CHME3E-SRC-NOTIK-EQUIPMENT-67"],"schemeRefs":["CHME3E-SCH-PREHEAT-EXTERNAL"],"riskClass":"HIGH_VOLTAGE_EXTERNAL_SUPPLY","actionAuthority":"SAFETY_GATE_REQUIRED"}}
+EXPECTED={"8":{"evidenceRefs":["CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-START-ELECTRONIC"],"riskClass":"EMERGENCY_ELECTRICAL","actionAuthority":"SAFETY_GATE_REQUIRED"},"9":{"evidenceRefs":["CHME3E-SRC-NOTIK-WATER-47","CHME3E-SRC-NOTIK-EQUIPMENT-67"],"schemeRefs":["CHME3E-SCH-PREHEAT-RUNNING"],"riskClass":"NORMAL_DIAGNOSTIC","actionAuthority":"TRIAGE_ONLY_NO_REPAIR"},"10":{"evidenceRefs":["CHME3E-SRC-NOTIK-WATER-47","CHME3E-SRC-NOTIK-EQUIPMENT-67"],"schemeRefs":["CHME3E-SCH-PREHEAT-EXTERNAL"],"riskClass":"HIGH_VOLTAGE_EXTERNAL_SUPPLY","actionAuthority":"SAFETY_GATE_REQUIRED"},"11":{"evidenceRefs":["CHME3E-SRC-NOTIK-ONE-PERSON-99","CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-REMOTE-CONTROL"],"riskClass":"CONTROL_SYSTEM","actionAuthority":"TRIAGE_ONLY_NO_REPAIR"},"12":{"evidenceRefs":["CHME3E-SRC-NOTIK-EQUIPMENT-67","CHME3E-SRC-NOTIK-CH17"],"schemeRefs":["CHME3E-SCH-TRACTION-CONTROL"],"riskClass":"CONTROL_SYSTEM","actionAuthority":"TRIAGE_ONLY_NO_REPAIR"}}
 def verify(c,e,num):
  o=e["sourceObject"]["object"];d=c["donor"];a=c["applicability"]
  assert c["schemaVersion"]=="diagnostic-research-candidate/1" and c["batch"]==74
@@ -60,7 +60,7 @@ def verify(c,e,num):
  return True
 def main():
  p=argparse.ArgumentParser();p.add_argument("--negative",action="store_true");args=p.parse_args();count=0
- for num,path in zip((8,9,10),FILES):
+ for num,path in zip((8,9,10,11,12),FILES):
   c=json.loads((R/path).read_text());e=next(x for x in PACK["entries"] if x["sourceObject"]["object"]["id"]==f"CHME3E-DIAG-{num:03d}")
   verify(c,e,num)
   if args.negative:
@@ -90,5 +90,5 @@ def main():
     try:verify(z,e,num)
     except (AssertionError,KeyError,TypeError,IndexError):count+=1
     else:raise AssertionError(f"Mutation escaped {num}: {mutation}")
- print(f"CHME3E batch74 PASS: 3 scenarios, SHORT8 DETAILED12, 5 extensions each, negative checks {count}")
+ print(f"CHME3E batch74 PASS: 5 scenarios, SHORT8 DETAILED12, 5 extensions each, negative checks {count}")
 if __name__=="__main__":main()
