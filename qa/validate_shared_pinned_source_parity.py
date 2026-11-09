@@ -3,7 +3,7 @@
 
 Checks the six known source-to-candidate projections by replaying their existing
 deterministic generators in --check mode. Two presentation contracts and the
-opaque exam payload are explicitly left unverified at the semantic level.
+opaque exam payload is explicitly left unverified at the semantic level.
 """
 import argparse
 import gzip
@@ -24,6 +24,7 @@ PROJECTED = {
     "stepwise_scheme_flows.json": "qa/migrate_shared_scheme_pairs.py",
     "source_presentations.json": "qa/migrate_source_presentations.py",
 }
+CONTRACTS = {"scheme_semantic_palette.json", "scheme_view_contract.json"}
 GENERATORS = tuple(sorted(set(PROJECTED.values())))
 
 
@@ -35,7 +36,7 @@ def validate(root, donor):
     assert len(shared) == 9 and len(ermak_exact) == 2
     names = {Path(a["sourcePath"]).name for a in shared}
     assert set(PROJECTED) <= names
-    assert names - set(PROJECTED) == {"exam_questions.json", "scheme_semantic_palette.json", "scheme_view_contract.json"}
+    assert names - set(PROJECTED) - CONTRACTS == {"exam_questions.json"}
     verified = 0
     for a in shared + ermak_exact:
         path = donor / a["sourcePath"]
@@ -49,15 +50,31 @@ def validate(root, donor):
         for copy in a["exactRawCopies"]:
             assert (root / copy).read_bytes() == raw, copy
         verified += 1
+    contracts = json.loads((root / "content-packs/locomotive-migration/interactive-scheme-ui-contracts.candidate.json").read_text())
+    assert contracts["donorCommit"] == PIN
+    assert contracts["publicationStatus"] == "CANDIDATE"
+    assert contracts["runtimeImport"] is False and contracts["actionAuthorityGranted"] is False
+    assert len(contracts["sources"]) == 2
+    seen_contracts = set()
+    for item in contracts["sources"]:
+        name = Path(item["sourcePath"]).name
+        assert name in CONTRACTS and name not in seen_contracts
+        seen_contracts.add(name)
+        original = next(a for a in shared if a["sourcePath"] == item["sourcePath"])
+        assert item["sourceBlobSha"] == original["gitBlobSha"]
+        assert item["sourceObject"] == json.loads((donor / item["sourcePath"]).read_text(encoding="utf-8-sig"))
+    assert seen_contracts == CONTRACTS
+    assert contracts["sources"][0]["sourceObject"]["policy"]["colorIsNeverOnlySignal"] is True
+    assert contracts["sources"][1]["sourceObject"]["selection"]["selectedNodeMustRemainIdentifiableWithoutColor"] is True
     for script in GENERATORS:
         subprocess.run([sys.executable, script, str(donor), "--check"],
                        cwd=root, check=True)
     # No source-derived action permissions are created or modified.
     return {"pinnedBlobs": verified, "sharedAssets": 9,
-            "sourceToCandidateProjections": len(PROJECTED),
+            "sourceToCandidateProjections": len(PROJECTED) + len(CONTRACTS),
             "generatorChecks": len(GENERATORS),
             "exactErmakRawAssets": len(ermak_exact),
-            "semanticallyUnverifiedShared": 3}
+            "semanticallyUnverifiedShared": 1}
 
 
 if __name__ == "__main__":
