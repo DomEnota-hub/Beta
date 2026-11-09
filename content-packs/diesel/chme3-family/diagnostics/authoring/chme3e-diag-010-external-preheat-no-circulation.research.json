@@ -1,0 +1,852 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 74,
+  "originalId": "CHME3E-DIAG-010",
+  "scenarioId": "chme3.diagnostics.chme3e-diag-010",
+  "title": "Внешний прогрев: нагрев есть, циркуляции воды нет или насосы не запускаются",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+    "documentPointer": "/scenarios/9",
+    "documentBlob": "e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3e-diag-010",
+    "gzipBlob": "1ab9ae40bc90479eacb006d0eb62dd45e9f387fe",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_EQUIPMENT_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "HIGH_VOLTAGE_EXTERNAL_SUPPLY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "provenanceStatus": "TRAINING_REFERENCE",
+    "evidenceRefs": [
+      "CHME3E-SRC-NOTIK-WATER-47",
+      "CHME3E-SRC-NOTIK-EQUIPMENT-67"
+    ],
+    "equipmentIds": [
+      "CHME3E-EQ-MODE-SWITCH-PO",
+      "CHME3E-EQ-CONTACTOR-KOP",
+      "CHME3E-EQ-HEATER-ELEMENTS-R85-R88",
+      "CHME3E-EQ-WATER-PUMP-MOTORS-DOV",
+      "CHME3E-EQ-ELECTRIC-WATER-PUMPS"
+    ],
+    "schemeRefs": [
+      "CHME3E-SCH-PREHEAT-EXTERNAL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3e"
+    ],
+    "profileId": "chme3e-electronic",
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+      "revision": "Pinned e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e; updatedAt 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+      "revision": "Точные ID/title/equipment/profile; gzip-граф независимо не декодирован",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996, §67: внешний прогрев, КОП, ДОВ1–ДОВ3 и R85–R88; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_EXPERIENCE_UNVERIFIED",
+      "ref": "No independent practical evidence supplied; donor symptom wording retained",
+      "revision": "No practical procedure imported",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current execution-specific manufacturer RE/IDMB and approved schematic",
+      "revision": "No verified revision or applicability to installed machine",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Внешнее питание не подвергается проверке, опасная ситуация исключена, используются только архивные записи?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве зафиксирован внешний прогрев с нагревом, но без циркуляции?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть отдельные сведения о состоянии насосов ДОВ1–ДОВ3?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом внешнего прогрева с отсутствием циркуляции не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие циркуляции не доказывает отказ насосов; данные недостаточны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состояние насосов не подтверждено; нельзя предполагать их неисправность.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: внешняя сеть или тепловая опасность. Не выполнять подключения, переключения или проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием, повторным пуском или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Внешнее питание не подвергается проверке, опасная ситуация исключена, используются только архивные записи?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архиве зафиксирован внешний прогрев с нагревом, но без циркуляции?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть отдельные сведения о состоянии насосов ДОВ1–ДОВ3?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть независимая запись о режиме внешнего питания и контакторе КОП?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть архивные данные, отличающие отсутствие вращения насосов от отсутствия потока?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом внешнего прогрева с отсутствием циркуляции не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие циркуляции не доказывает отказ насосов; данные недостаточны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состояние насосов не подтверждено; нельзя предполагать их неисправность.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наличие нагрева не подтверждает правильное состояние внешнего питания и КОП.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Признак вращения насоса не тождественен подтверждённому расходу воды.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: внешняя сеть или тепловая опасность. Не выполнять подключения, переключения или проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием, повторным пуском или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Внешняя трёхфазная сеть",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Внешняя трёхфазная сеть» без новых действий?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§67 описывает историческую возможность внешнего питания; никаких подключений или измерений.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Внешняя трёхфазная сеть» архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Контактор КОП",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Контактор КОП» без новых действий?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "КОП относится к внешнему режиму, не к КОГ1/КОГ2 генераторного обогрева.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Контактор КОП» архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Насосы ДОВ1–ДОВ3",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Насосы ДОВ1–ДОВ3» без новых действий?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический источник описывает три насоса с электроприводами; состояние не подтверждено.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Насосы ДОВ1–ДОВ3» архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Нагреватели R85–R88",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Нагреватели R85–R88» без новых действий?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нагрев элементов не доказывает циркуляцию и безопасность теплового режима.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Нагреватели R85–R88» архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Граница с CHME3E-DIAG-009",
+      "sourceId": "CURRENT_GAP",
+      "sourceStatus": "CURRENT_PRIMARY_UNAVAILABLE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Граница с CHME3E-DIAG-009» без новых действий?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Генераторный обогрев использует насосы с приводом от дизеля, это другой режим.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Граница с CHME3E-DIAG-009» архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "CHME3E-DIAG-009: обогрев от генератора, без внешнего трёхфазного питания"
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "Вращение электродвигателя ДОВ не равно фактической циркуляции"
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "Наличие тепла не подтверждает безопасность внешней сети"
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Донорские check/terminal могут предполагать действия; кандидат ограничен архивными наблюдениями."
+    },
+    {
+      "source": "ARCHIVE_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Нотик 1996, §67: внешний прогрев, КОП, ДОВ1–ДОВ3 и R85–R88; не действующее РЭ; применимость к конкретному локомотиву не подтверждена."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "Совпадение ID и названия не доказывает эквивалентность графа gzip."
+    },
+    {
+      "source": "PROFILE_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "Не переносить схему ЧМЭ3Э на ЧМЭ3/ЧМЭ3Т и модернизации без подтверждения."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Практический опыт не подтверждён, полномочий не предоставляет."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Source, role и safety gates не пройдены; предупреждение не разрешает операции."
+    },
+    {
+      "source": "SCENARIO_SPECIFIC",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Внешняя трёхфазная сеть: не давать инструкции по подключению, переключению КОП, измерениям под напряжением или работе с горячей системой."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ с датой и редакцией",
+    "Проверка схемы конкретной машины и модернизаций",
+    "Независимое декодирование и сравнение gzip-графа",
+    "Подтверждение полномочий роли и действующего источника",
+    "Отдельная safety-экспертиза",
+    "Разграничение команд, индикации и фактического состояния без новых измерений",
+    "Финальная ручная device QA после тестового APK",
+    "Независимая проверка гипотезы: Внешняя трёхфазная сеть: не давать инструкции по подключению, переключению КОП, измерениям под напряжением или работе с горячей системой."
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
