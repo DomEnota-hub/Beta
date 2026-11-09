@@ -27,7 +27,7 @@ MODEL = "content-packs/electric/vl80s/"
 
 
 def git_blob(payload):
-    return hashlib.sha1(b"blob " + str(len(payload)).encode() + b"\\0" + payload).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(payload)).encode() + bytes([0]) + payload).hexdigest()
 
 
 def digest(obj):
