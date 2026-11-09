@@ -78,7 +78,8 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
                                        "SOURCE_OBJECT_EQUIVALENT_CANDIDATE",
                                        "SOURCE_CONTEXT_AND_ID_EQUIVALENT_CANDIDATE",
                                        "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE",
-                                       "SOURCE_INDEX_RECONCILED_CANDIDATE"}, path
+                                       "SOURCE_INDEX_RECONCILED_CANDIDATE",
+                                       "SOURCE_DECODED_AUDITED_NO_TARGET"}, path
         if row["recordParity"] == "SOURCE_ARRAY_EQUIVALENT_CANDIDATE":
             assert row["family"] in {"tem2", "chme3", "ermak"}, path
             assert row.get("evidenceWorkflow", "").startswith(
@@ -101,6 +102,12 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
             assert row.get("evidenceWorkflow", "").startswith(
                 "https://github.com/DomEnota-hub/Beta/actions/runs/"
             ), f"missing Ermak source-index CI evidence: {path}"
+        if row["recordParity"] == "SOURCE_DECODED_AUDITED_NO_TARGET":
+            assert path == "app/src/main/assets/exam_questions.json", path
+            assert row["family"] == "shared" and not row["exactRawCopies"], path
+            assert row.get("evidenceWorkflow", "").startswith(
+                "https://github.com/DomEnota-hub/Beta/actions/runs/"
+            ), f"missing exam audit CI evidence: {path}"
         assert row["runtimePublication"] == "NOT_PROVEN", "do not infer runtime publication"
         for copy in row["exactRawCopies"]:
             validate_raw_copy(root, copy, sha, size)
