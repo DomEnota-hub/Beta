@@ -67,9 +67,21 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
+      # The setup-gradle distribution resolver repeatedly returned HTTP 504 on 2026-11-09.
+      # Download the exact release from the official Gradle distribution hosts and verify its published SHA-256.
+      - name: Install pinned Gradle 8.7 with verified checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/gradle-8.7-bin.zip"
+          for url in "https://downloads.gradle.org/distributions/gradle-8.7-bin.zip" "https://services.gradle.org/distributions/gradle-8.7-bin.zip"; do
+            if curl --fail --location --retry 3 --retry-delay 4 --retry-all-errors --connect-timeout 15 --max-time 240 "$url" --output "$archive"; then
+              break
+            fi
+          done
+          echo "544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
 
       - name: Validate modular content topology
         run: python3 qa/validate_content_topology.py

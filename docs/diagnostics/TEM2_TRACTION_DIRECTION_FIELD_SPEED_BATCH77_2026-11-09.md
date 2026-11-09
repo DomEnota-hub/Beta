@@ -17,3 +17,7 @@
 Негативные проверки: `qa/validate_tem2_research_batch77.py --negative` проверяет 36 мутаций на каждый из пяти кандидатов (180 всего), ID/профили, sourceBlobSha, разделение проекций, графовую достижимость, контракты ответов, safety и extensions. Включено в `.github/workflows/modular-bootstrap.yml`. Kotlin/JVM, Android lint, `assembleDebug`, APK resources и общий CI **считать пройденными только после успешного запуска на итоговом HEAD**. До него статус `PENDING_CI`, не техническое завершение. Device QA добавлена в единый реестр как `NOT_RUN_DEFERRED` до тестового APK.
 
 Открыто: актуальные РЭ/ИДМБ, конкретный профиль и схема, независимое сравнение исходных gzip/runtime-графов, source/role/safety gates, device QA. После зелёного CI следующий пакет №78 с `TEM2-DIAG-016` и следующими неохваченными точными ID; 011–015 не повторять.
+
+## CI-инфраструктура: внешняя ошибка Gradle (09.11.2026)
+
+Первый CI №42568495307, попытки 1–3: `failure` ещё до запуска проверок проекта. Шаг `gradle/actions/setup-gradle@v4` не смог получить Gradle 8.7: `Unexpected HTTP response: 504` при загрузке дистрибутива. Это **не** ошибка тестов сценариев; ни Kotlin/JVM, ни Android lint/build в этих попытках не запускались. В отдельном коммите для CI заменено автоматическое получение Gradle на скачивание с официальных `downloads.gradle.org` / `services.gradle.org` с проверкой **SHA-256 544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d** по опубликованному Gradle checksum reference. Если новая попытка не зелёная, пакет остаётся PENDING_CI.
