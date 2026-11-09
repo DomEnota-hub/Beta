@@ -6,7 +6,7 @@ R=Path(__file__).resolve().parents[1]
 B="content-packs/diesel/tem2-family/diagnostics/"
 L=json.loads((R/(B+"stage3-source-lineage.json")).read_text())
 P=json.loads((R/(B+"recommended/diagnostics-01.pack.json")).read_text())
-FILES=["content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-001-no-crank.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-002-slow-crank-no-start.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-003-starts-then-stalls.research.json"]
+FILES=["content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-001-no-crank.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-002-slow-crank-no-start.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-003-starts-then-stalls.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-004-start-release-not-disengaged.research.json","content-packs/diesel/tem2-family/diagnostics/authoring/tem2-diag-005-stop-command-failure-or-overspeed.research.json"]
 def check(c,n):
  s=L["scenarios"][n-1]["sourceObject"];d=c["donor"];a=c["applicability"]
  assert c["batch"]==75 and c["schemaVersion"]=="diagnostic-research-candidate/1"
@@ -29,7 +29,12 @@ def check(c,n):
  assert len(c["safety"])>=16 and all(v is False for v in c["safety"].values())
  assert c["warning"]==dict(extendedHiddenByDefault=True,readToEndRequired=True,separateAcknowledgmentRequired=True,grantsActionAuthority=False)
  assert c["deviceQA"]["status"]=="NOT_RUN_DEFERRED"
- assert {x["id"] for x in c["sources"]}=={"DOC","PACK","ARCHIVE","FACTORY_U","FIELD","CURRENT_GAP"}
+ assert {x["id"] for x in c["sources"]}==({"DOC","PACK","ARCHIVE","FACTORY_U","FIELD","CURRENT_GAP","SAFETY_2025"} if n>=4 else {"DOC","PACK","ARCHIVE","FACTORY_U","FIELD","CURRENT_GAP"})
+ if n>=4:
+  assert d["actionAuthority"]=="SAFETY_GATE_REQUIRED" and d["riskClass"].startswith("EMERGENCY_")
+  assert c["deviceQA"]["emergencyInteractionRequired"] is True
+  assert all("STOP" in c["versions"][mode]["nodes"][-2]["text"] for mode in ("SHORT","DETAILED"))
+  assert all("SAFETY_2025" in c["versions"][mode]["nodes"][-2]["sourceRefs"] for mode in ("SHORT","DETAILED"))
  assert all(not x["currentVerified"] and not x["installedProfileVerified"] and x["authority"] in ("INFORMATION_ONLY","HYPOTHESIS_ONLY") for x in c["sources"])
  assert len(c["crossScenarioBoundaries"])>=3 and len(c["sourceDiscrepancies"])>=7 and len(c["openGaps"])>=8
  for mode,count in (("SHORT",8),("DETAILED",12)):
@@ -82,10 +87,12 @@ def main():
     lambda x:x["versions"]["SHORT"]["nodes"][3].update(causeConfirmed=True),
     lambda x:x["extensions"][0].update(procedureSteps=["unsafe"])
    ]
+   if n>=4:
+    mutations.extend([lambda x:x["donor"].update(actionAuthority="TRIAGE_ONLY_NO_REPAIR"),lambda x:x["donor"].update(riskClass="ELEVATED_ELECTRICAL"),lambda x:x["deviceQA"].update(emergencyInteractionRequired=False),lambda x:x["sources"].pop(),lambda x:x["versions"]["SHORT"]["nodes"][-2].update(text="Продолжать движение")])
    for mut in mutations:
     z=copy.deepcopy(c);mut(z)
     try:check(z,n)
     except (AssertionError,KeyError,TypeError,IndexError):checks+=1
     else:raise AssertionError(f"Escaped mutation {n}")
- print(f"TEM2 batch75 PASS: 3 original scenarios, SHORT8 DETAILED12, 5 extensions each, negative checks {checks}")
+ print(f"TEM2 batch75 PASS: {len(FILES)} original scenarios, SHORT8 DETAILED12, 5 extensions each, negative checks {checks}")
 if __name__=="__main__":main()
