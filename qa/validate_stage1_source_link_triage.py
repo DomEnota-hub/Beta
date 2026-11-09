@@ -46,10 +46,15 @@ def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
         assert group["mappedSourceVariants"] == sorted(mapped[key]), key
         mismatch = bool(mapped[key]) and not expected[key]["variants"].issubset(mapped[key])
         assert group["variantMismatch"] is mismatch, key
+        intended = ("chme3t" if key.startswith("CHME3T-") else
+                    "chme3e" if key.startswith("CHME3E-") else None)
+        applicability_gap = bool(intended) and any(v != intended for v in expected[key]["variants"])
+        assert group["variantApplicabilityUnverified"] is applicability_gap, key
         assert group["reviewStatus"] == "UNRESOLVED_QUARANTINED", key
         assert group["runtimeImport"] is False, key
-        requirement = ("EXPLICIT_VARIANT_APPLICABILITY_AND_ORIGINAL_SOURCE" if mismatch
-                       else "PINNED_VARIANT_SPECIFIC_SCHEME_OR_EQUIPMENT_SOURCE")
+        requirement = ("EXPLICIT_VARIANT_APPLICABILITY_AND_ORIGINAL_SOURCE"
+                       if mismatch or applicability_gap else
+                       "PINNED_VARIANT_SPECIFIC_SCHEME_OR_EQUIPMENT_SOURCE")
         assert group["requiredEvidence"] == requirement, key
 
     unresolved = {x["sourceId"]: x for x in ermak["sourceReferences"]
@@ -76,7 +81,7 @@ def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
         statuses[source["disposition"]] += source["occurrences"]
     assert statuses == {"SOURCE_GAP": 542, "AMBIGUOUS_SOURCE_ID": 6}
     return {"chme3UnresolvedReferences": len(refs), "chme3DistinctTargets": len(groups),
-            "chme3CrossVariantTargets": [x["sourceTargetId"] for x in groups if x["variantMismatch"]],
+            "chme3CrossVariantTargets": [x["sourceTargetId"] for x in groups if x["variantApplicabilityUnverified"]],
             "ermakUnresolvedIds": len(entries), "ermakSourceGapOccurrences": statuses["SOURCE_GAP"],
             "ermakAmbiguousOccurrences": statuses["AMBIGUOUS_SOURCE_ID"],
             "runtimeImport": False}
