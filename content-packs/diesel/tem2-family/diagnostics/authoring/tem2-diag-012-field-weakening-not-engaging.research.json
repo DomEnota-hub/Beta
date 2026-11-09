@@ -1,0 +1,904 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 77,
+  "originalId": "TEM2-DIAG-012",
+  "title": "Не включается ослабление возбуждения тяговых электродвигателей",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/11",
+    "documentBlob": "4234e401eb9d6ec03802669d0f74962cb23ea5c4",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-012",
+      "tem2u": "tem2.diagnostics.tem2-diag-012"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-012": "93b3e9b79ab5f3a7847a3090b316969ae0b88226"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "ELEVATED_TRACTION",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "equipmentIds": [
+      "TEM2-EQ-FIELD-SHUNT",
+      "TEM2-EQ-CURRENT-LIMIT",
+      "TEM2-EQ-TG",
+      "TEM2-EQ-TM1-3",
+      "TEM2-EQ-TM4-6"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-NOTIK-ELECTRICAL-1980",
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-TRACTION",
+      "TEM2-SCH-EXCITATION"
+    ],
+    "lineageBlob": "24e617c3d5599cb96169f79d660200d6cd684fac"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Test- pinned 3176d6ee, blob 4234e401; Stage3 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Canonical profile projection, not runtime authority",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "Ковалёв 1980, две ступени ослабления поля; Нотик 1980, раздел «Регулирование скорости движения». Пороговые значения не переносятся.",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "Мельников и др., ТЭМ2У, 1988; конкретное исполнение неизвестно",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "NOTIK",
+      "kind": "HISTORICAL_TRAINING_REFERENCE",
+      "ref": "https://djvu.online/file/tYg51BErtgtWQ",
+      "revision": "З. Х. Нотик, «Электрические схемы тепловозов ТЭМ2 и ТЭМ1», 1980; историческая учебная книга.",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "Independent field evidence unavailable",
+      "revision": "Unverified hypothesis only",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current RE/IDMB and installed schematics",
+      "revision": "No current variant-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого события без текущей опасности и без новых испытаний?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве подтверждены условия перехода на ослабление поля?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Отсутствие именно команды ступени ОП документировано?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Условия перехода не доказаны; отсутствие ОП может быть нормальным.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие команды не подтверждено.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Реле и контактор не разделены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: текущая опасность, неизвестное безопасное состояние или необходимость новой проверки прекращают опрос. Никаких нагрузочных испытаний, перемычек, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных данных недостаточно. Не восполнять их новым пуском, измерением, переключением или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого события без текущей опасности и без новых испытаний?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архиве подтверждены условия перехода на ослабление поля?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Отсутствие именно команды ступени ОП документировано?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Разделены реле перехода и контакторы шунтировки?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Сохранены ранее зарегистрированные параметры тягового режима?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Условия перехода не доказаны; отсутствие ОП может быть нормальным.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие команды не подтверждено.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Реле и контактор не разделены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Параметры тягового режима неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неисправный аппарат не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: текущая опасность, неизвестное безопасное состояние или необходимость новой проверки прекращают опрос. Никаких нагрузочных испытаний, перемычек, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных данных недостаточно. Не восполнять их новым пуском, измерением, переключением или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Условия перехода",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Сохранены исторические сведения по теме «Условия перехода»?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие ОП вне условий перехода не доказывает отказ.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений недостаточно; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: нельзя получать новые сведения опасными действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Реле перехода",
+      "sourceId": "NOTIK",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Сохранены исторические сведения по теме «Реле перехода»?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "NOTIK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторические реле перехода требуют проверки схемы.",
+          "responses": {},
+          "sourceRefs": [
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений недостаточно; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: нельзя получать новые сведения опасными действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "NOTIK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Шунтирующие контакторы",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Сохранены исторические сведения по теме «Шунтирующие контакторы»?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Контакторы ОП нельзя включать принудительно.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений недостаточно; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: нельзя получать новые сведения опасными действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Группы тяговых двигателей",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Сохранены исторические сведения по теме «Группы тяговых двигателей»?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Контакторы разных групп двигателей не равны одному отказу.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений недостаточно; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: нельзя получать новые сведения опасными действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Исполнение ТЭМ2У",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Сохранены исторические сведения по теме «Исполнение ТЭМ2У»?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Применимость ступеней к установленному ТЭМ2У не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведений недостаточно; причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: нельзя получать новые сведения опасными действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "DIAG-013: ступень включается и отпадает",
+    "DIAG-015: нет прироста мощности по позициям",
+    "DIAG-009/010: срабатывают защиты"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "TEM2-DIAG-012: донорский runtimeGraph и исследовательские графы не признаны эквивалентными."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Общие профили не доказывают совпадение установленной схемы ТЭМ2 и ТЭМ2У."
+    },
+    {
+      "status": "FACTORY_1980_VS_1988",
+      "detail": "Ковалёв/Нотик 1980 и Мельников 1988 относятся к разным историческим изданиям."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "Ковалёв 1980, две ступени ослабления поля; Нотик 1980, раздел «Регулирование скорости движения». Пороговые значения не переносятся."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Независимое сравнение исходных gzip/runtime-графов не выполнено."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Нет независимого журнала конкретной неисправности."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Текущие РЭ/ИДМБ, полномочия и safety review не подтверждены."
+    },
+    {
+      "status": "SAFETY_BOUNDARY",
+      "detail": "Новые проверки, принудительные операции и обходы защит запрещены."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ",
+    "Серийный номер и схема установленного исполнения",
+    "Независимое сравнение gzip-графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Независимые журналы симптомов",
+    "Историческая применимость схем",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "emergencyInteractionRequired": false
+  }
+}
