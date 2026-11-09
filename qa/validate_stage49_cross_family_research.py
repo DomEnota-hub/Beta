@@ -92,9 +92,10 @@ def inventory():
 def check_graph(graph, label, sources):
     nodes = graph["nodes"]
     by_id = {n["id"]: n for n in nodes}
-    need(len(nodes) == len(by_id) and graph["startNodeId"] in by_id,
+    start = graph.get("startNodeId", nodes[0]["id"] if nodes else None)
+    need(len(nodes) == len(by_id) and start in by_id,
          label + " duplicate/dangling start")
-    visited, pending = set(), [graph["startNodeId"]]
+    visited, pending = set(), [start]
     while pending:
         ident = pending.pop()
         need(ident in by_id, label + " dangling " + ident)
