@@ -1,0 +1,52 @@
+name: Pinned encrypted exam source audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/audit_exam_source.py'
+      - 'qa/test_exam_source.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - '.github/workflows/exam-source-audit.yml'
+  pull_request:
+    paths:
+      - 'qa/audit_exam_source.py'
+      - 'qa/test_exam_source.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - '.github/workflows/exam-source-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exam-source-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test decoder source invariants
+        run: python3 -m unittest qa/test_exam_source.py -v
+      - name: Fetch pinned encrypted exam payload and original Kotlin decoder
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff"
+          dest="$RUNNER_TEMP/exam-donor/app/src/main"
+          mkdir -p "$dest/assets" "$dest/java/ru/railbrake/calculator/core"
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 "$base/app/src/main/assets/exam_questions.json" \
+            --output "$dest/assets/exam_questions.json"
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 "$base/app/src/main/java/ru/railbrake/calculator/core/ExamQuestionRepository.kt" \
+            --output "$dest/java/ru/railbrake/calculator/core/ExamQuestionRepository.kt"
+      - name: Decode only in memory and audit 329 question IDs and links
+        run: python3 qa/audit_exam_source.py --donor-dir "$RUNNER_TEMP/exam-donor" --output "$RUNNER_TEMP/exam-audit.json"
+      - name: Upload metadata only (never decrypted questions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: exam-source-audit-metadata
+          path: ${{ runner.temp }}/exam-audit.json
+          if-no-files-found: error
+          retention-days: 14
