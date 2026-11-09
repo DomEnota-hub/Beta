@@ -20,6 +20,9 @@ on:
       - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
       - 'qa/validate_ermak_996r_edition.py'
       - 'qa/test_ermak_996r_edition.py'
+      - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
+      - 'qa/validate_ermak_re1_public_mirror.py'
+      - 'qa/test_ermak_re1_public_mirror.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -37,6 +40,9 @@ on:
       - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
       - 'qa/validate_ermak_996r_edition.py'
       - 'qa/test_ermak_996r_edition.py'
+      - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
+      - 'qa/validate_ermak_re1_public_mirror.py'
+      - 'qa/test_ermak_re1_public_mirror.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -62,3 +68,7 @@ jobs:
         run: python3 qa/validate_ermak_996r_edition.py
       - name: Preserve original quarantine boundary
         run: python3 qa/validate_stage1_unresolved_source_quarantine.py
+      - name: Verify historical RE1 public mirror and MSUD-N/015 boundary (12 tests)
+        run: python3 -m unittest qa/test_ermak_re1_public_mirror.py -v
+      - name: Keep 56 RE1 public source occurrences quarantined
+        run: python3 qa/validate_ermak_re1_public_mirror.py
