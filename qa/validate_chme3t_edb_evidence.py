@@ -64,6 +64,21 @@ def validate(evidence, triage, raw, documents):
     assert sorted(source["notAutomaticallyApplicableTo"]) == ["chme3", "chme3e"]
     assert 21 in source["printedPages"] and "рис. 14" in source["verifiedLocator"]
     assert len(source["limitations"]) >= 4
+    manual = evidence["supplementalTechnicalManual"]
+    assert manual["id"] == "CHME3-IO-2004-EDB-SECTION"
+    assert manual["editionDate"] == "2004-12-31"
+    assert manual["url"] == "https://y-pad.tv/wp-content/uploads/2021/11/Rukovodstvo_TO_TR_CHME3.pdf"
+    assert manual["editionStatus"] == "ORIGINAL_2004_EDITION_LOCATED_CURRENTNESS_NOT_VERIFIED"
+    assert manual["officialMaintenanceDocument"] is True
+    assert manual["manufacturerManual"] is False
+    assert manual["currentEditionVerified"] is False
+    assert manual["installedEquipmentVerified"] is False
+    assert manual["crewActionAuthority"] is False
+    assert manual["repairOperationsNotForCrew"] is True
+    assert manual["verifiedFor"] == ["chme3t"]
+    assert sorted(manual["notAutomaticallyApplicableTo"]) == ["chme3", "chme3e"]
+    assert {(item["section"], item["printedPage"]) for item in manual["locators"]} == {
+        ("3.3.4", 56), ("3.3.5", 57), ("7.3.7", 79)}
     assert set(source["claimsSupported"]) == {
         "CHME3T_RHEOSTATIC_BRAKING_HISTORICAL_CIRCUIT_EXISTS",
         "CHME3T_BRAKING_CONTROL_CONTACTORS_DESCRIBED",
