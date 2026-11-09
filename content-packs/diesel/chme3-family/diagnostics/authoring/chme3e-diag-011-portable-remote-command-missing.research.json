@@ -1,0 +1,860 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 74,
+  "originalId": "CHME3E-DIAG-011",
+  "scenarioId": "chme3.diagnostics.chme3e-diag-011",
+  "title": "Переносной пульт управления не передаёт команду",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+    "documentPointer": "/scenarios/10",
+    "documentBlob": "e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3e-diag-011",
+    "gzipBlob": "1ab9ae40bc90479eacb006d0eb62dd45e9f387fe",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_EQUIPMENT_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "CONTROL_SYSTEM",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "provenanceStatus": "TRAINING_REFERENCE",
+    "evidenceRefs": [
+      "CHME3E-SRC-NOTIK-ONE-PERSON-99",
+      "CHME3E-SRC-NOTIK-CH17"
+    ],
+    "equipmentIds": [
+      "CHME3E-EQ-PORTABLE-CONTROL-PANELS",
+      "CHME3E-EQ-CONTROLLER-HH106",
+      "CHME3E-EQ-ELECTRONIC-REGULATOR-GC40P",
+      "CHME3-EQ-PNEUMATIC-CONTROL-RESERVOIR",
+      "CHME3E-EQ-ROOF-SIGNAL-LAMPS"
+    ],
+    "schemeRefs": [
+      "CHME3E-SCH-REMOTE-CONTROL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3e"
+    ],
+    "profileId": "chme3e-electronic",
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+      "revision": "Pinned e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e; updatedAt 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+      "revision": "Точные ID/title/equipment/profile; gzip-граф независимо не декодирован",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/146.htm",
+      "revision": "Нотик 1996, §67: элементы управления и электронного оборудования ЧМЭ3Э; ссылка до §99 не верифицирована как действующее РЭ.",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_EXPERIENCE_UNVERIFIED",
+      "ref": "No independent practical evidence supplied; donor symptom wording retained",
+      "revision": "No practical procedure imported",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current execution-specific manufacturer RE/IDMB and approved schematic",
+      "revision": "No verified revision or applicability to installed machine",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Подтверждено отсутствие непосредственной опасности и использование только ранее записанных данных, без пробных команд?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "По журналу отказ относится только к переносному пульту, а не ко всем органам управления?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Сохранены раздельные сведения о выбранном режиме дистанционного управления и его штатных разрешениях?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ не доказан как специфичный для переносного пульта; не подменять общую диагностику GC40P/контроллера.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже при наличии разрешения и пневмопитания причина отказа дистанционной команды не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет подтверждения режима или разрешений; неисправность самого пульта не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность или допустимость анализа не подтверждены; никаких новых команд, переключений, измерений или маневров.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестность нельзя устранять пробным управлением, имитацией сигналов, обходом блокировок или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Подтверждено отсутствие непосредственной опасности и использование только ранее записанных данных, без пробных команд?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "По журналу отказ относится только к переносному пульту, а не ко всем органам управления?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Сохранены раздельные сведения о выбранном режиме дистанционного управления и его штатных разрешениях?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть отдельная запись о наличии пневматического питания управления без новых измерений?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Сохранено независимое наблюдение о приёме команды с пульта и реакции исполнительной системы?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ не доказан как специфичный для переносного пульта; не подменять общую диагностику GC40P/контроллера.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже при наличии разрешения и пневмопитания причина отказа дистанционной команды не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет подтверждения режима или разрешений; неисправность самого пульта не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без архивных данных о пневмопитании нельзя локализовать пульт или исполнительный контур.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Команда, её приём и реакция исполнительных аппаратов являются разными наблюдениями; неисправный блок не определён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность или допустимость анализа не подтверждены; никаких новых команд, переключений, измерений или маневров.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестность нельзя устранять пробным управлением, имитацией сигналов, обходом блокировок или вмешательством.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Переносной пульт и режим управления",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Переносной пульт и режим управления» без новых действий?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое описание управления в одно лицо не подтверждает выбранный режим на конкретной машине.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Переносной пульт и режим управления» независимых архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестность не даёт права на испытания или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Разрешения и взаимные блокировки",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Разрешения и взаимные блокировки» без новых действий?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неисправность разрешения нельзя восполнять обходом блокировок или пробной командой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Разрешения и взаимные блокировки» независимых архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестность не даёт права на испытания или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Пневматическое питание управления",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Пневматическое питание управления» без новых действий?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Давление воздуха управления из архивной записи не доказывает прохождение электрической команды.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Пневматическое питание управления» независимых архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестность не даёт права на испытания или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Основной контроллер и GC40P",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Основной контроллер и GC40P» без новых действий?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ основного управления относится к другим сценариям; наличие GC40P не доказывает его неисправность.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Основной контроллер и GC40P» независимых архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестность не даёт права на испытания или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Сигнальные лампы и фактическое движение",
+      "sourceId": "DOC",
+      "sourceStatus": "CURRENT_PRIMARY_UNAVAILABLE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Сигнальные лампы и фактическое движение» без новых действий?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сигнальные лампы, команда и физическое движение не тождественны; новых маневров не выполнять.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Сигнальные лампы и фактическое движение» независимых архивных данных нет; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестность не даёт права на испытания или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "CHME3E-DIAG-004: общий отказ электронного регулятора GC40P не является отказом только переносного пульта."
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "CHME3E-DIAG-001: отсутствие тяги при команде основного контроллера является отдельным симптомом."
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "Потеря пневматического разрешения не доказывает неисправность переносного пульта."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Исходный граф содержит диагностические check/terminal; авторинг ограничен ранее записанными наблюдениями и не копирует действия."
+    },
+    {
+      "source": "ARCHIVE_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Нотик 1996, §67: элементы управления и электронного оборудования ЧМЭ3Э; ссылка до §99 не верифицирована как действующее РЭ."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "ID/title/equipment/profile совпадают, но независимое декодирование и сравнение gzip-графа не выполнено."
+    },
+    {
+      "source": "PROFILE_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "ЧМЭ3Э не переносится на ЧМЭ3/ЧМЭ3Т и модернизированные исполнения без проверки."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Практические данные не представлены; нет подтверждённых процедур."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Source/role/safety gates не пройдены, предупреждение не даёт полномочий."
+    },
+    {
+      "source": "SCENARIO_SPECIFIC",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Не инициировать движение, пробную команду, обход блокировки или проверку под нагрузкой; нет доказательства режима, разрешений и фактической реакции."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ с датой и редакцией",
+    "Проверка схемы конкретной машины и модернизаций",
+    "Независимое декодирование и сравнение gzip-графа",
+    "Подтверждение полномочий роли и действующего источника",
+    "Отдельная safety-экспертиза",
+    "Независимое разграничение команды, индикации и фактического состояния без новых измерений",
+    "Финальная ручная device QA после тестового APK",
+    "Независимая проверка гипотезы: Не инициировать движение, пробную команду, обход блокировки или проверку под нагрузкой; нет доказательства режима, разрешений и фактической реакции."
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}
