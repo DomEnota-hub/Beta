@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Negative regression tests for historical CHME3T EDB source boundaries."""
-import copy
 import unittest
 
 from qa.validate_chme3t_edb_evidence import (
@@ -23,6 +22,26 @@ class Chme3tEdbEvidenceTests(unittest.TestCase):
         self.assertEqual(result["sourceObjectPointersVerified"], 3)
         self.assertEqual(result["crossVariantConflictsStillBlocked"], 8)
         self.assertFalse(result["runtimeImport"])
+
+    def test_old_edition_must_not_be_marked_current(self):
+        self.evidence["supplementalTechnicalManual"]["currentEditionVerified"] = True
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_repair_text_must_not_authorize_crew(self):
+        self.evidence["supplementalTechnicalManual"]["crewActionAuthority"] = True
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_official_manual_must_not_expand_variant_scope(self):
+        self.evidence["supplementalTechnicalManual"]["verifiedFor"].append("chme3e")
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_official_manual_locator_must_not_change_silently(self):
+        self.evidence["supplementalTechnicalManual"]["locators"][0]["section"] = "3.3.6"
+        with self.assertRaises(AssertionError):
+            self.check()
 
     def test_must_not_authorize_runtime(self):
         self.evidence["runtimeImport"] = True
