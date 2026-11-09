@@ -1,0 +1,46 @@
+name: Ermak pinned source object parity
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/migrate_ermak.py'
+      - 'qa/validate_ermak.py'
+      - 'content-packs/electric/ermak/**'
+      - '.github/workflows/ermak-source-parity.yml'
+  pull_request:
+    paths:
+      - 'qa/migrate_ermak.py'
+      - 'qa/validate_ermak.py'
+      - 'content-packs/electric/ermak/**'
+      - '.github/workflows/ermak-source-parity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch four pinned Ermak GZIP source arrays
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="$RUNNER_TEMP/ermak-donor"
+          mkdir -p "$dir"
+          for kind in equipment knowledge diagnostics schemes; do
+            name="ermak_${kind}.json.gz"
+            curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+              --connect-timeout 20 --max-time 180 \
+              "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/$name" \
+              --output "$dir/$name"
+            base64 -w0 "$dir/$name" > "$dir/$name.b64"
+          done
+          echo "ERMAK_DONOR_FETCHED four pinned GZIP arrays"
+      - name: Verify 506 canonical candidate objects, source IDs and negative gates
+        shell: bash
+        run: python3 qa/validate_ermak.py --donor-dir "$RUNNER_TEMP/ermak-donor"
