@@ -20,6 +20,8 @@ class Stage1SourceLinkTriageTests(unittest.TestCase):
         self.assertEqual(result["chme3DistinctTargets"], 19)
         self.assertEqual(result["ermakUnresolvedIds"], 57)
         self.assertEqual(result["ermakSourceGapOccurrences"], 542)
+        self.assertEqual(set(result["chme3CrossVariantTargets"]),
+                         {"CHME3T-SCH-EDB", "CHME3T-EQ-EDB-CONTROL"})
 
     def test_chme_missing_target_fails(self):
         self.ledger["chme3"]["targetGroups"].pop()
@@ -33,6 +35,13 @@ class Stage1SourceLinkTriageTests(unittest.TestCase):
 
     def test_chme_wrong_variant_fails(self):
         self.ledger["chme3"]["targetGroups"][0]["variants"] = ["chme3"]
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_chme_unmapped_scheme_cross_variant_cannot_be_silenced(self):
+        scheme = next(x for x in self.ledger["chme3"]["targetGroups"]
+                      if x["sourceTargetId"] == "CHME3T-SCH-EDB")
+        scheme["variantApplicabilityUnverified"] = False
         with self.assertRaises(AssertionError):
             self.check()
 
