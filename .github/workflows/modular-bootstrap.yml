@@ -67,9 +67,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
+      # External Gradle distribution endpoints returned 504 on 2026-11-09.
+      # Official GitHub release asset is checked against Gradle's published SHA-256.
+      - name: Install Gradle 8.7 from pinned official GitHub release
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/gradle-8.7-bin.zip"
+          curl --fail --location --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 20 --max-time 300 \
+            "https://github.com/gradle/gradle-distributions/releases/download/v8.7.0/gradle-8.7-bin.zip" \
+            --output "$archive"
+          echo "544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
 
       - name: Validate modular content topology
         run: python3 qa/validate_content_topology.py
