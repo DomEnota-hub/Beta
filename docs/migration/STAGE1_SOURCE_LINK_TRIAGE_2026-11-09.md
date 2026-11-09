@@ -22,6 +22,14 @@
 2. Recover the original numbered Ermak source registry or verified publications for the 55 missing IDs; for `ER-SRC-039` and `ER-SRC-041`, preserve distinct publication identities until disambiguated with primary evidence. Verify `ER-DIAG-136` separately.
 3. Obtain authoritative history storage implementation/schema before changing `HistoryStorageMigrationGate.legacyFormatVerified`; do not borrow the unrelated MediaLoader history schema.
 4. Keep 329 exam questions as a verified, **not published** source corpus until a safe candidate target and licensing/source authority are established. Preserve encrypted plaintext boundaries.
-5. Run and confirm terminal CI on the current HEAD before reporting this checkpoint as verified. Stage 2 begins only after Stage 1's evidence gates are satisfied.
+5. Continue source-authority verification and the remaining stage-1 gaps. Stage 2 begins only after Stage 1's evidence gates are satisfied.
 
 No Android UI, calculator, assistant, runtime index or user-visible content was modified in this work.
+
+## CI checkpoint (HEAD `54bec6e7d53aa312e8dd9e63600845f4274b9193`)
+
+- [Source-link triage #42695727411](https://github.com/DomEnota-hub/Beta/actions/runs/42695727411): **SUCCESS (terminal)**; 12 regression tests, all 19 CHME3 target groups, 57 Ermak IDs, original quarantine validator.
+- [Original source quarantine #42695727268](https://github.com/DomEnota-hub/Beta/actions/runs/42695727268): **SUCCESS (terminal)**.
+- [Full Modular architecture bootstrap #42695727974](https://github.com/DomEnota-hub/Beta/actions/runs/42695727974): **SUCCESS (terminal)**; Kotlin tests, Android lint, assembleDebug and APK checks. This verifies the audit changes did not break the current slice; it does not establish Android feature parity.
+
+**Remaining blockers:** authoritative sources for CHME3/Ermak links, cross-variant EDB applicability, original history storage schema, and safe target/licensing review for the 329 exam questions. No source links have been promoted. **Next operation:** obtain source evidence for the two CHME3T EDB cross-variant IDs and separately reconcile the 55 missing Ermak source IDs. The present document is a checkpoint, not a completed Stage 1.
