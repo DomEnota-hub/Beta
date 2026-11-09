@@ -18,4 +18,8 @@ QA: `qa/validate_tem2_research_batch78.py --negative` проверяет точ�
 
 Открыто: действующее первичное РЭ/ИДМБ, заверенные Правила 2026 и конкретные пункты, установленный вариант, независимое сравнение gzip/runtime-графов, source/role/safety gates, device QA. **Следующий пакет №79** после полного успешного CI: `TEM2-DIAG-021` и остальные ещё не обработанные исходные ID (всего 24 исходных Stage3 сценария). Не повторять 016–020.
 
-**Текущий статус до CI: PENDING_FULL_CI, не технически завершён.**
+## Закрытие пакета №78 после CI (09.11.2026)
+
+На исследовательском HEAD `c792cc404a18560c37ff8677c8ae7c134f766ad7` CI [№42574253797](https://github.com/DomEnota-hub/Beta/actions/runs/42574253797) **completed/success**: оба job `validate` и независимый от Gradle source QA успешны. Зафиксированы 5 разных исходных ID 016–020, 100 основных узлов, 25 расширений, **200 обнаруженных отрицательных мутаций** batch78; также повторно пройдены source lineage, batch75–77. Kotlin/JVM и contract/policy tests, Android lint, `assembleDebug`, APK resources пройдены в общем job `validate`. Device QA **NOT_RUN / DEFERRED**; никакой runtime-активации или эксплуатационного допуска. Текущие заводские РЭ/ИДМБ, первичная нормативная редакция, профили конкретных машин и source/role/safety gates остаются открыты.
+
+**Статус: технически завершён; device QA отложено.**
