@@ -17,6 +17,9 @@ on:
       - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
       - 'qa/validate_chme3t_edb_evidence.py'
       - 'qa/test_chme3t_edb_evidence.py'
+      - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
+      - 'qa/validate_ermak_996r_edition.py'
+      - 'qa/test_ermak_996r_edition.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -31,6 +34,9 @@ on:
       - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
       - 'qa/validate_chme3t_edb_evidence.py'
       - 'qa/test_chme3t_edb_evidence.py'
+      - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
+      - 'qa/validate_ermak_996r_edition.py'
+      - 'qa/test_ermak_996r_edition.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -50,5 +56,9 @@ jobs:
         run: python3 -m unittest qa/test_chme3t_edb_evidence.py -v
       - name: Validate 3 original CHME3T object pointers and 8 blocked cross-variant links
         run: python3 qa/validate_chme3t_edb_evidence.py
+      - name: Verify 996r original order and 2024 amendment identity (10 tests)
+        run: python3 -m unittest qa/test_ermak_996r_edition.py -v
+      - name: Keep 57 Ermak 996r source occurrences quarantined
+        run: python3 qa/validate_ermak_996r_edition.py
       - name: Preserve original quarantine boundary
         run: python3 qa/validate_stage1_unresolved_source_quarantine.py
