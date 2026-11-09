@@ -11,6 +11,12 @@ on:
       - 'content-packs/electric/ermak/migration/source-audit.json'
       - 'qa/validate_stage1_source_link_triage.py'
       - 'qa/test_stage1_source_link_triage.py'
+      - 'docs/migration/chme3t-edb-historical-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/atlas-source-index.json'
+      - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
+      - 'qa/validate_chme3t_edb_evidence.py'
+      - 'qa/test_chme3t_edb_evidence.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -19,6 +25,12 @@ on:
       - 'content-packs/electric/ermak/migration/source-audit.json'
       - 'qa/validate_stage1_source_link_triage.py'
       - 'qa/test_stage1_source_link_triage.py'
+      - 'docs/migration/chme3t-edb-historical-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/atlas-source-index.json'
+      - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
+      - 'qa/validate_chme3t_edb_evidence.py'
+      - 'qa/test_chme3t_edb_evidence.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -34,5 +46,9 @@ jobs:
         run: python3 -m unittest qa/test_stage1_source_link_triage.py -v
       - name: Validate 19 CHME3 targets and 57 Ermak source IDs
         run: python3 qa/validate_stage1_source_link_triage.py
+      - name: Verify CHME3T EDB original-source historical evidence (13 tests)
+        run: python3 -m unittest qa/test_chme3t_edb_evidence.py -v
+      - name: Validate 3 original CHME3T object pointers and 8 blocked cross-variant links
+        run: python3 qa/validate_chme3t_edb_evidence.py
       - name: Preserve original quarantine boundary
         run: python3 qa/validate_stage1_unresolved_source_quarantine.py
