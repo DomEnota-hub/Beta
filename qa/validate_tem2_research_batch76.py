@@ -88,11 +88,11 @@ def main():
     lambda x:x["extensions"][0].update(procedureSteps=["unsafe"])
    ]
    if n==9:
-    mutations.extend([lambda x:x["donor"].update(actionAuthority="TRIAGE_ONLY_NO_REPAIR"),lambda x:x["donor"].update(riskClass="ELEVATED_ELECTRICAL"),lambda x:x["deviceQA"].update(emergencyInteractionRequired=False),lambda x:x["sources"].pop(),lambda x:x["versions"]["SHORT"]["nodes"][-2].update(text="Продолжать движение")])
-   for mut in mutations:
+    mutations.extend([lambda x:x["donor"].update(actionAuthority="TRIAGE_ONLY_NO_REPAIR"),lambda x:x["donor"].update(riskClass="EMERGENCY_ELECTRICAL"),lambda x:x["deviceQA"].update(emergencyInteractionRequired=False),lambda x:x["sources"].pop(),lambda x:x["versions"]["SHORT"]["nodes"][-2].update(text="Продолжать движение")])
+   for mutation_index,mut in enumerate(mutations,1):
     z=copy.deepcopy(c);mut(z)
     try:check(z,n)
     except (AssertionError,KeyError,TypeError,IndexError):checks+=1
-    else:raise AssertionError(f"Escaped mutation {n}")
+    else:raise AssertionError(f"Escaped mutation {n} #{mutation_index}")
  print(f"TEM2 batch76 PASS: {len(FILES)} original scenarios, SHORT8 DETAILED12, 5 extensions each, negative checks {checks}")
 if __name__=="__main__":main()
