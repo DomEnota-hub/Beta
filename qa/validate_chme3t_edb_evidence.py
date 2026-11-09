@@ -62,7 +62,8 @@ def validate(evidence, triage, raw, documents):
     assert source["evidenceType"] == "HISTORICAL_TECHNICAL_PERIODICAL_NOT_FACTORY_MANUAL"
     assert source["sourceScope"] == ["chme3t"]
     assert sorted(source["notAutomaticallyApplicableTo"]) == ["chme3", "chme3e"]
-    assert 21 in source["printedPages"] and "рис. 14" in source["verifiedLocator"]
+    assert source["printedPages"] == [21, 22, 23, 24, 25]
+    assert "рис. 14" in source["verifiedLocator"]
     assert len(source["limitations"]) >= 4
     manual = evidence["supplementalTechnicalManual"]
     assert manual["id"] == "CHME3-IO-2004-EDB-SECTION"
