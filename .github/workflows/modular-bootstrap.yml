@@ -1016,6 +1016,28 @@ jobs:
       - name: Stage 50 research boundary and APK asset leak negative QA
         run: python3 qa/validate_stage50_runtime_boundary.py --negative --apk app-shell/build/outputs/apk/debug/app-shell-debug.apk
 
+      - name: Stage 51 final research corpus and authorization negative QA
+        run: python3 qa/validate_stage51_final_readiness.py --negative
+
+      - name: Stage 51 debug APK evidence and integrity verification
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'audit/information-block-gaps-20261014' }}
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 qa/validate_stage51_final_readiness.py --apk app-shell/build/outputs/apk/debug/app-shell-debug.apk --evidence app-shell/build/outputs/apk/debug/stage51-build-evidence.json
+          python3 qa/validate_stage51_final_readiness.py --apk app-shell/build/outputs/apk/debug/app-shell-debug.apk --verify-evidence app-shell/build/outputs/apk/debug/stage51-build-evidence.json
+
+      - name: Upload Stage 51 internal debug APK and SHA-256 evidence (not production)
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'audit/information-block-gaps-20261014' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: railbrake-stage51-debug-${{ github.event.pull_request.head.sha }}
+          path: |
+            app-shell/build/outputs/apk/debug/app-shell-debug.apk
+            app-shell/build/outputs/apk/debug/stage51-build-evidence.json
+          if-no-files-found: error
+          retention-days: 14
+
   tem2-batch77-source-qa:
     name: TEM2 batch77 source and negative QA (independent of Gradle)
     runs-on: ubuntu-24.04
