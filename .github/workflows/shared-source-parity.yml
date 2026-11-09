@@ -1,0 +1,65 @@
+name: Shared pinned donor source parity
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/validate_shared_pinned_source_parity.py'
+      - 'qa/migrate_diagnostic_reference_sources.py'
+      - 'qa/migrate_extended_emergency_source.py'
+      - 'qa/migrate_shared_scheme_pairs.py'
+      - 'qa/migrate_source_presentations.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'content-packs/locomotive-migration/**'
+      - 'content-packs/electric/ermak/migration/**'
+      - 'content-packs/diesel/chme3-family/diagnostics/extended/**'
+      - 'content-packs/diesel/tem2-family/diagnostics/extended/**'
+      - '.github/workflows/shared-source-parity.yml'
+  pull_request:
+    paths:
+      - 'qa/validate_shared_pinned_source_parity.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - '.github/workflows/shared-source-parity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch pinned shared JSON, Ermak raw indexes and VL80S reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets"
+          dest="$RUNNER_TEMP/shared-donor/app/src/main/assets"
+          mkdir -p "$dest/technical"
+          for name in diagnostic_framework_v2 extended_emergency_policy extended_emergency_runtime scheme_layout_metadata scheme_semantic_palette scheme_view_contract source_presentations stepwise_scheme_flows vl80s_pantograph_reference_pack; do
+            curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+              --connect-timeout 20 --max-time 180 "$base/technical/$name.json" \
+              --output "$dest/technical/$name.json"
+          done
+          for name in ermak_links ermak_system_map; do
+            curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+              --connect-timeout 20 --max-time 180 "$base/technical/$name.json.gz" \
+              --output "$dest/technical/$name.json.gz"
+          done
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 "$base/exam_questions.json" \
+            --output "$dest/exam_questions.json"
+          echo "SHARED_DONOR_FETCHED 12"
+      - name: Check pinned blobs, complete candidate projections and fail-closed dispositions
+        run: python3 qa/validate_shared_pinned_source_parity.py --donor-dir "$RUNNER_TEMP/shared-donor"
+      - name: Check model-owned source and safety boundaries
+        run: |
+          python3 qa/validate_diagnostic_reference_sources.py
+          python3 qa/validate_extended_emergency_source.py
+          python3 qa/validate_shared_scheme_pairs.py
+          python3 qa/validate_source_presentations.py
+          python3 qa/validate_ermak_system_link_reconciliation.py
+          python3 qa/validate_donor_asset_crosswalk.py
