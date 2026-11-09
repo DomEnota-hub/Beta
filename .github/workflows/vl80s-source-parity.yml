@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unit tests (including fail-closed negative cases)
         run: python3 -m unittest qa/test_vl80s_source_parity.py -v
-      - name: Fetch eight pinned VL80S GZIP catalogs
+      - name: Fetch nine pinned VL80S JSON/GZIP catalogs
         shell: bash
         run: |
           set -euo pipefail
@@ -42,7 +42,11 @@ jobs:
               "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/$name.json.gz" \
               --output "$dest/$name.json.gz"
           done
-          echo "VL80S_PINNED_ASSETS_FETCHED 8"
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 \
+            "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/vl80s_pantograph_reference_pack.json" \
+            --output "$dest/vl80s_pantograph_reference_pack.json"
+          echo "VL80S_PINNED_ASSETS_FETCHED 9"
       - name: Compare source objects, IDs, variants and candidate publication boundary
         run: python3 qa/validate_vl80s_source_parity.py --donor-dir "$RUNNER_TEMP/vl80s-donor"
       - name: Existing VL80S model consistency checks
