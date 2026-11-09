@@ -93,8 +93,11 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
             ), f"missing pinned VL80S parity CI evidence: {path}"
             if row["recordParity"] == "SOURCE_CONTEXT_AND_ID_EQUIVALENT_CANDIDATE":
                 assert path.endswith("/vl80s_equipment.json.gz"), path
-            if row["recordParity"] == "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE":
-                assert row["family"] == "shared", path
+        if row["recordParity"] == "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE":
+            assert row["family"] == "shared", path
+            assert row.get("evidenceWorkflow", "").startswith(
+                "https://github.com/DomEnota-hub/Beta/actions/runs/"
+            ), f"missing shared split-object parity CI evidence: {path}"
         if row["recordParity"] == "SOURCE_INDEX_RECONCILED_CANDIDATE":
             assert row["family"] == "ermak" and path.endswith(
                 ("/ermak_links.json.gz", "/ermak_system_map.json.gz")
