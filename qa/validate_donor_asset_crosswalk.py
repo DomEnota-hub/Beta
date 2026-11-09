@@ -77,7 +77,8 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
         assert row["recordParity"] in {"UNVERIFIED", "SOURCE_ARRAY_EQUIVALENT_CANDIDATE",
                                        "SOURCE_OBJECT_EQUIVALENT_CANDIDATE",
                                        "SOURCE_CONTEXT_AND_ID_EQUIVALENT_CANDIDATE",
-                                       "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE"}, path
+                                       "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE",
+                                       "SOURCE_INDEX_RECONCILED_CANDIDATE"}, path
         if row["recordParity"] == "SOURCE_ARRAY_EQUIVALENT_CANDIDATE":
             assert row["family"] in {"tem2", "chme3", "ermak"}, path
             assert row.get("evidenceWorkflow", "").startswith(
@@ -93,6 +94,13 @@ def validate(root: Path, manifest: dict) -> tuple[int, int, int]:
                 assert path.endswith("/vl80s_equipment.json.gz"), path
             if row["recordParity"] == "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE":
                 assert row["family"] == "shared", path
+        if row["recordParity"] == "SOURCE_INDEX_RECONCILED_CANDIDATE":
+            assert row["family"] == "ermak" and path.endswith(
+                ("/ermak_links.json.gz", "/ermak_system_map.json.gz")
+            ), path
+            assert row.get("evidenceWorkflow", "").startswith(
+                "https://github.com/DomEnota-hub/Beta/actions/runs/"
+            ), f"missing Ermak source-index CI evidence: {path}"
         assert row["runtimePublication"] == "NOT_PROVEN", "do not infer runtime publication"
         for copy in row["exactRawCopies"]:
             validate_raw_copy(root, copy, sha, size)
