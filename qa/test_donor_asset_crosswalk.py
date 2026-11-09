@@ -48,5 +48,28 @@ class CrosswalkTests(unittest.TestCase):
                 module.safe_relative(path)
 
 
+    def test_shared_split_object_family_cannot_be_forged(self):
+        import copy
+        import json
+        baseline = json.loads(module.CROSSWALK.read_text(encoding="utf-8"))
+        self.assertEqual(module.validate(module.ROOT, baseline)[0], 36)
+        forged = copy.deepcopy(baseline)
+        split = next(row for row in forged["assets"]
+                     if row["recordParity"] == "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE")
+        split["family"] = "ermak"
+        with self.assertRaises(AssertionError):
+            module.validate(module.ROOT, forged)
+
+    def test_shared_split_object_requires_ci_evidence(self):
+        import copy
+        import json
+        baseline = json.loads(module.CROSSWALK.read_text(encoding="utf-8"))
+        forged = copy.deepcopy(baseline)
+        split = next(row for row in forged["assets"]
+                     if row["recordParity"] == "SOURCE_SPLIT_OBJECT_EQUIVALENT_CANDIDATE")
+        split.pop("evidenceWorkflow", None)
+        with self.assertRaises(AssertionError):
+            module.validate(module.ROOT, forged)
+
 if __name__ == "__main__":
     unittest.main()
