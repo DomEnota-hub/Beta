@@ -26,9 +26,9 @@ ASSET_PATH = "app/src/main/assets/exam_questions.json"
 def derive_embedded_key(kotlin):
     parts = []
     for label in ("keyPartA", "keyPartB"):
-        match = re.search(r"private val " + label + r"\\s*=\\s*byteArrayOf\\((.*?)\\)", kotlin, re.S)
+        match = re.search(r"private val " + label + r"\s*=\s*byteArrayOf\((.*?)\)", kotlin, re.S)
         assert match, label
-        values = [int(n) for n in re.findall(r"-?\\d+", match.group(1))]
+        values = [int(n) for n in re.findall(r"-?\d+", match.group(1))]
         assert len(values) == 32, (label, len(values))
         assert all(-128 <= n <= 127 for n in values)
         parts.append(values)
