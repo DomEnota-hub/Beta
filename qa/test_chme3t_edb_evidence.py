@@ -63,6 +63,11 @@ class Chme3tEdbEvidenceTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             self.check()
 
+    def test_historical_source_page_range_cannot_drift(self):
+        self.evidence["source"]["printedPages"] = [21, 22, 23, 24]
+        with self.assertRaises(AssertionError):
+            self.check()
+
     def test_historical_source_identity_cannot_be_replaced_silently(self):
         self.evidence["source"]["url"] = "https://example.org/unverified.pdf"
         with self.assertRaises(AssertionError):
