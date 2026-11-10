@@ -83,7 +83,7 @@ fun AssistantSearchScreen(
             label = { Text("Что нужно найти?") },
             modifier = Modifier.fillMaxWidth(), singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = onSubmit),
+            keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
         )
         Button(onClick = onSubmit, enabled = draft.isNotBlank(),
             modifier = Modifier.fillMaxWidth()) { Text("Найти") }
