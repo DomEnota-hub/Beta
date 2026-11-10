@@ -79,14 +79,18 @@ object AssistantLexicon {
         "залипает" to "заклинивает"
     )
 
-    private fun replacePhrases(input: String, substitutions: List<Pair<String, String>>): String {
-        var text = input
-        for ((from, to) in substitutions.sortedByDescending { it.first.length }) {
-            text = text.replace(
-                Regex("(?<![\\p{L}\\p{N}])" + Regex.escape(from) + "(?![\\p{L}\\p{N}])"),
-                to
-            )
+    // Precompile once: every indexed title/term is normalized during search.
+    private fun compile(substitutions: List<Pair<String, String>>): List<Pair<Regex, String>> =
+        substitutions.sortedByDescending { it.first.length }.map { (from, to) ->
+            Regex("(?<![\\p{L}\\p{N}])" + Regex.escape(from) + "(?![\\p{L}\\p{N}])") to to
         }
+
+    private val modelPatterns by lazy { compile(spokenAndModel) }
+    private val componentPatterns by lazy { compile(componentAndSpeech) }
+
+    private fun replacePhrases(input: String, substitutions: List<Pair<Regex, String>>): String {
+        var text = input
+        for ((pattern, to) in substitutions) text = text.replace(pattern, to)
         return text
     }
 
@@ -94,7 +98,7 @@ object AssistantLexicon {
         val cleaned = input.lowercase().replace('ё', 'е')
             .replace(Regex("[^\\p{L}\\p{N}\\s]"), " ")
             .replace(Regex("\\s+"), " ").trim()
-        return replacePhrases(replacePhrases(cleaned, spokenAndModel), componentAndSpeech)
+        return replacePhrases(replacePhrases(cleaned, modelPatterns), componentPatterns)
             .replace(Regex("\\s+"), " ").trim()
     }
 
