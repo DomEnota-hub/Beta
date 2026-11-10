@@ -93,6 +93,18 @@ class Vu45VerifierTest {
         assertTrue(Vu45Finding.FORCE_TOTAL_MISMATCH in result.findings)
     }
 
+    @Test fun forceBeyondDoubleRangeIsRejected() {
+        val result = Vu45Verifier.check(
+            valid().copy(
+                declaredAxles = 2,
+                axleRows = listOf(Vu45AxleRow(Double.MAX_VALUE, 2)),
+            )
+        )
+        assertEquals(Vu45Status.INVALID_INPUT, result.status)
+        assertTrue(Vu45Finding.ARITHMETIC_OVERFLOW in result.findings)
+        assertNull(result.calculatedForceTons)
+    }
+
     @Test fun decimalArithmeticAvoidsFloatingPointMismatch() {
         val result = Vu45Verifier.check(
             valid().copy(
