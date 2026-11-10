@@ -103,6 +103,15 @@ class MainActivity : ComponentActivity() {
                     )
                     return@MaterialTheme
                 }
+                // Stage 5: common VU-45 certificate arithmetic verifier.
+                // This is not a locomotive-specific diagnostic or operational approval.
+                if (shellDestination == ShellHomeDestination.CALCULATIONS) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    Vu45VerificationScreen(
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
                 val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
                 if (shellRoute !is ShellHomeRoute.PublishedModelFeature) {
                     BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
