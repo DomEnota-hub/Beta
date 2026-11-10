@@ -279,6 +279,24 @@ class MainActivity : ComponentActivity() {
                     )
                     return@MaterialTheme
                 }
+                // Stage 13: family-specific execution is selected inside the section.
+                // Unverified family candidates are never routed through VL80S runtime.
+                if (workingModel.id != ModelId("vl80s") &&
+                    shellDestination in setOf(
+                        ShellHomeDestination.ATLAS,
+                        ShellHomeDestination.ACCEPTANCE,
+                        ShellHomeDestination.DIAGNOSTICS,
+                    )
+                ) {
+                    FamilyContentScreen(
+                        modelId = workingModel.id,
+                        modelTitle = workingModel.title,
+                        destination = shellDestination,
+                        assets = assets,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
                 val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
                 if (shellRoute !is ShellHomeRoute.PublishedModelFeature) {
                     BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
