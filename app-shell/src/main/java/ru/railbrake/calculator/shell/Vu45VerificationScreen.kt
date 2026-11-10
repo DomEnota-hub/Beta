@@ -34,6 +34,10 @@ private data class Vu45RowInput(
 private data class Vu45FormInput(
     val mass: String = "", val axles: String = "", val required: String = "",
     val actual: String = "", val manual: String = "",
+    val station: String = "", val issuedAt: String = "",
+    val locomotive: String = "", val tailWagon: String = "",
+    val density: String = "", val tailPressure: String = "",
+    val issuer: String = "",
     val rows: List<Vu45RowInput> = listOf(Vu45RowInput()),
 )
 private fun String.toVu45Number(): Double? = trim().replace(',', '.').toDoubleOrNull()
@@ -136,6 +140,24 @@ fun Vu45VerificationScreen(onBack: () -> Unit) {
         Vu45NumberField("Ручные тормозные оси (если указаны)", form.manual) {
             updateForm(form.copy(manual = it))
         }
+        Text("Реквизиты и дополнительные данные", style = MaterialTheme.typography.titleMedium)
+        Vu45NumberField("Станция выдачи", form.station) { updateForm(form.copy(station = it)) }
+        Vu45NumberField("Дата и время выдачи", form.issuedAt) { updateForm(form.copy(issuedAt = it)) }
+        Vu45NumberField("Серия и номер локомотива", form.locomotive) {
+            updateForm(form.copy(locomotive = it))
+        }
+        Vu45NumberField("Номер хвостового вагона", form.tailWagon) {
+            updateForm(form.copy(tailWagon = it))
+        }
+        Vu45NumberField("Плотность тормозной сети (как в справке)", form.density) {
+            updateForm(form.copy(density = it))
+        }
+        Vu45NumberField("Давление в хвосте (если указано)", form.tailPressure) {
+            updateForm(form.copy(tailPressure = it))
+        }
+        Vu45NumberField("Фамилия/подпись выдавшего (как в справке)", form.issuer) {
+            updateForm(form.copy(issuer = it))
+        }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Распределение", style = MaterialTheme.typography.titleMedium)
             TextButton(onClick = { showRowSettings = true }) { Text("Настройки строк") }
@@ -182,6 +204,18 @@ fun Vu45VerificationScreen(onBack: () -> Unit) {
             Text("Расхождение с итогом: " + (checked.forceDifferenceTons?.asVu45Text() ?: "нет") + " тс")
             Text("Запас к требуемому: " + (checked.forceReserveTons?.asVu45Text() ?: "нет") + " тс")
             Text("Ручные тормозные оси: " + (checked.manualBrakeAxles?.toString() ?: "не указаны"))
+            Text("Реквизиты: станция " + (form.station.ifBlank { "не указана" }) +
+                "; дата/время " + (form.issuedAt.ifBlank { "не указаны" }) +
+                "; локомотив " + (form.locomotive.ifBlank { "не указан" }))
+            Text("Хвостовой вагон: " + form.tailWagon.ifBlank { "не указан" })
+            Text("Плотность тормозной сети: " + form.density.ifBlank { "не указана" })
+            Text("Давление в хвосте: " + form.tailPressure.ifBlank { "не указано" })
+            Text("Подпись/выдавший: " + form.issuer.ifBlank { "не указаны" })
+            if (listOf(form.station, form.issuedAt, form.locomotive, form.tailWagon, form.density, form.issuer)
+                .any { it.isBlank() }
+            ) {
+                Text("Не все реквизиты переписаны. Их полнота и нормативная применимость не проверены.")
+            }
             checked.findings.forEach { finding ->
                 Text("• " + when (finding) {
                     Vu45Finding.MISSING_REQUIRED_FIELD -> "Не все обязательные поля заполнены."
