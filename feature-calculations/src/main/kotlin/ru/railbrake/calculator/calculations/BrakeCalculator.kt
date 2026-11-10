@@ -198,7 +198,7 @@ object BrakeCalculator {
         val units =
             if (additional == 0) 0
             else ceilToInt(additional.toDouble() / axlesPerHandBrakeUnit)
-        val actually = units * axlesPerHandBrakeUnit
+        val actually = checkedMultiply(units, axlesPerHandBrakeUnit)
 
         return MassSupplementResult(
             requiredShoes = massResult.requiredShoes,
@@ -275,10 +275,10 @@ object BrakeCalculator {
         val windShoes =
             if (windCoefficient == 0) 0
             else ceilToInt(input.axleCount * windCoefficient / 200.0)
-        val total = baseShoes + oppositeShoes + windShoes
+        val total = checkedAdd(checkedAdd(baseShoes, oppositeShoes), windShoes)
         val shortage = max(0, total - input.availableShoes)
 
-        val standardSubstituteAxles = shortage * 5
+        val standardSubstituteAxles = checkedMultiply(shortage, 5)
         val standardUnits =
             if (standardSubstituteAxles == 0) 0
             else ceilToInt(
@@ -295,13 +295,13 @@ object BrakeCalculator {
             val extraRequiredBeyondBasePair = max(0, total - 2)
             val extraShortage =
                 max(0, extraRequiredBeyondBasePair - input.availableShoes)
-            val extraSubstituteAxles = extraShortage * 5
+            val extraSubstituteAxles = checkedMultiply(extraShortage, 5)
             val extraUnits =
                 if (extraSubstituteAxles == 0) 0
                 else ceilToInt(
                     extraSubstituteAxles.toDouble() / input.axlesPerHandBrakeUnit
                 )
-            val specialUnits = 1 + extraUnits
+            val specialUnits = checkedAdd(1, extraUnits)
 
             if (specialUnits <= standardUnits || standardUnits == 0) {
                 specialUsed = true
@@ -312,12 +312,12 @@ object BrakeCalculator {
         }
 
         val actually =
-            if (units == 0) 0 else units * input.axlesPerHandBrakeUnit
+            if (units == 0) 0 else checkedMultiply(units, input.axlesPerHandBrakeUnit)
         val reserve =
             if (specialUsed) {
                 max(
                     0,
-                    (units - 1) * input.axlesPerHandBrakeUnit - substituteAxles,
+                    checkedMultiply(units - 1, input.axlesPerHandBrakeUnit) - substituteAxles,
                 )
             } else {
                 max(0, actually - substituteAxles)
@@ -345,10 +345,23 @@ object BrakeCalculator {
         )
     }
 
+    // Never silently wrap a safety-relevant shoe or brake-axle count.
+    private fun checkedAdd(a: Int, b: Int): Int = try {
+        Math.addExact(a, b)
+    } catch (_: ArithmeticException) {
+        throw IllegalArgumentException("Расчётное значение выходит за допустимый диапазон")
+    }
+
+    private fun checkedMultiply(a: Int, b: Int): Int = try {
+        Math.multiplyExact(a, b)
+    } catch (_: ArithmeticException) {
+        throw IllegalArgumentException("Расчётное значение выходит за допустимый диапазон")
+    }
+
     private fun ceilToInt(value: Double): Int {
         require(value.isFinite() && value >= 0.0 && value <= Int.MAX_VALUE) {
             "Расчётное значение выходит за допустимый диапазон"
         }
-        return ceil(value - 1e-12).toInt()
+        return ceil(value).toInt()
     }
 }
