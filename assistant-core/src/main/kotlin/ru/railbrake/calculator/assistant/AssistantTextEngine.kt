@@ -157,8 +157,7 @@ class AssistantTextEngine(
                             source.sourceStatus == SourceStatus.CURRENT &&
                             source.provenance in setOf(
                                 ProvenanceClass.CURRENT_OFFICIAL, ProvenanceClass.MANUFACTURER) &&
-                            registry.resolve(ContentTarget(source.id, source.type), context)
-                                is ResolveResult.Found
+                            (registry.resolve(ContentTarget(source.id, source.type), context) is ResolveResult.Found)
                     }
                     // Safety and diagnostics require verified source provenance.
                     if (entry.type in setOf(ContentType.DIAGNOSTIC_SCENARIO,
