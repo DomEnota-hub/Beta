@@ -41,6 +41,14 @@ private sealed interface FamilyCatalogLoadState {
     data object Failed : FamilyCatalogLoadState
 }
 
+/** Separate summary-only donor evidence; never an action or a published diagnostic. */
+private sealed interface ReferencePreviewLoadState {
+    data object Idle : ReferencePreviewLoadState
+    data object Loading : ReferencePreviewLoadState
+    data class Ready(val entries: List<FamilyReferencePreview>) : ReferencePreviewLoadState
+    data object Failed : ReferencePreviewLoadState
+}
+
 /** Safe family-specific entry point; does not execute diagnostic candidates. */
 @Composable
 fun FamilyContentScreen(
@@ -84,6 +92,31 @@ fun FamilyContentScreen(
             throw cancelled // A superseded model/execution must never publish stale results.
         } catch (_: Exception) {
             loadState = FamilyCatalogLoadState.Failed
+        }
+    }
+    // Load a tiny allowlisted, non-actionable summary set independently of the
+    // unpublished family packs. Unknown execution or diagnostics never read it.
+    var referenceState by remember(profile, execution, destination, assets) {
+        mutableStateOf<ReferencePreviewLoadState>(ReferencePreviewLoadState.Idle)
+    }
+    LaunchedEffect(profile, execution, destination, assets) {
+        if (!FamilyCatalogLoadPolicy.shouldLoad(profile, execution, destination) ||
+            destination != ShellHomeDestination.ATLAS) return@LaunchedEffect
+        referenceState = ReferencePreviewLoadState.Loading
+        try {
+            val summaries = withContext(Dispatchers.IO) {
+                FamilyReferencePreviewCatalog(assets).load()
+            }
+            referenceState = ReferencePreviewLoadState.Ready(summaries)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            referenceState = ReferencePreviewLoadState.Failed
+        }
+    }
+    val referencePreviews = remember(referenceState, profile, execution, destination) {
+        (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty().filter {
+            FamilyReferencePreviewPolicy.canShow(it, profile, execution, destination)
         }
     }
     val snapshot = (loadState as? FamilyCatalogLoadState.Ready)?.snapshot
@@ -131,7 +164,7 @@ fun FamilyContentScreen(
             snapshot == null ->
                 Text("Каталог выбранного исполнения недоступен.")
             visible.isEmpty() ->
-                Text("Подтверждённых опубликованных карточек для выбранного исполнения пока нет. Исследовательские материалы не показываются.")
+                Text("Подтверждённых опубликованных карточек для выбранного исполнения пока нет. Ниже могут быть отдельные справочные описания из Test-; они не являются порядком действий.")
             else -> {
                 Text("Подтверждённые информационные материалы", style = MaterialTheme.typography.titleMedium)
                 visible.forEach { entry ->
@@ -139,6 +172,24 @@ fun FamilyContentScreen(
                         modifier = Modifier.fillMaxWidth()) { Text(entry.title) }
                     entry.summary?.let { Text(it) }
                 }
+            }
+        }
+        if (destination == ShellHomeDestination.ATLAS &&
+            execution != null && profile.executions.any { it.id == execution }) {
+            if (referencePreviews.isNotEmpty()) {
+                Text("Справочные описания из Test- · НЕ инструкция к действию",
+                    style = MaterialTheme.typography.titleMedium)
+                Text("Сохранены только названия и описания из проверенных донорских объектов. " +
+                    "Актуальность нормативов и разрешение на выполнение действий не подтверждены.")
+                referencePreviews.forEach { preview ->
+                    Text(preview.title, style = MaterialTheme.typography.titleSmall)
+                    Text(preview.summary)
+                    Text(if (preview.scope == ReferenceScope.EXECUTION_UNVERIFIED)
+                        "Применимость к выбранному исполнению НЕ подтверждена."
+                    else "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён.")
+                }
+            } else if (referenceState is ReferencePreviewLoadState.Failed) {
+                Text("Не удалось открыть отдельные справочные описания из Test-.")
             }
         }
         if (snapshot != null && snapshot.unreadablePacks > 0) {

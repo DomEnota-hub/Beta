@@ -11,6 +11,9 @@ on:
       - 'content-packs/electric/ermak/**'
       - 'content-packs/diesel/chme3-family/**'
       - 'content-packs/diesel/tem2-family/**'
+      - 'content-packs/crew-reference/**'
+      - 'qa/validate_family_reference_preview.py'
+      - 'qa/check_stage13_apk_quarantine.py'
       - '.github/workflows/stage13-family-gates.yml'
   workflow_dispatch:
 
@@ -49,6 +52,8 @@ jobs:
         run: gradle :app-shell:testDebugUnitTest :app-shell:lintDebug :app-shell:assembleDebug --stacktrace --console=plain
       - name: Verify APK excludes unreviewed family and research assets
         run: python3 qa/check_stage13_apk_quarantine.py
+      - name: Verify donor-summary allowlist and source object parity
+        run: python3 qa/validate_family_reference_preview.py
       - name: Validate pinned family packs without publishing candidates
         run: |
           python3 qa/validate_ermak.py

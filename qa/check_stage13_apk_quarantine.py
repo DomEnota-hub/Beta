@@ -36,6 +36,16 @@ with ZipFile(apks[0]) as apk:
         ):
             leaks.append(name)
 
+    # Small reviewed donor-summary allowlist is intentionally shipped. The family
+    # directories above are still quarantined; this is not executable content.
+    preview = "assets/crew-reference/summaries.json"
+    if preview not in paths:
+        raise SystemExit(f"Curated donor reference missing from APK: {preview}")
+    from json import loads
+    data = loads(apk.read(preview).decode("utf-8"))
+    if data.get("schemaVersion") != 1 or len(data.get("entries", [])) != 7:
+        raise SystemExit("Curated donor reference has unexpected schema/count")
+
     # Regression guard: this must not accidentally strip the VL80S published runtime.
     required = "assets/electric/vl80s/runtime-index.json"
     if required not in paths:
