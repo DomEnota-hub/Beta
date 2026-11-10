@@ -41,8 +41,12 @@ android {
 
     // Research-only diagnostics are retained in Git but must never ship in the APK.
     // The legacy published runtime index and its referenced packs remain unchanged.
+    // Stage 13: family packs are entirely quarantined until source/profile verification;
+    // their candidate .pack.json filenames do not themselves contain "candidate".
+    // Remove these directory exclusions only together with reviewed published packs
+    // and an updated APK-content regression check.
     androidResources {
-        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:*~:authoring:migration:*.research.json:*.research.json.gz:*.candidate.json:*.candidate.json.gz:*.research.*:*.candidate.*"
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:*~:authoring:migration:*.research.json:*.research.json.gz:*.candidate.json:*.candidate.json.gz:*.research.*:*.candidate.*:ermak:chme3-family:tem2-family:locomotive-migration"
     }
 
     sourceSets {
