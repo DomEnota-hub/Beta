@@ -1,0 +1,26 @@
+name: Stage 2 shell navigation
+
+on:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'app-shell/**'
+      - 'navigation-contracts/**'
+      - '.github/workflows/stage2-shell-navigation.yml'
+  workflow_dispatch:
+
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Unit tests, Android test APK compile, lint and debug APK
+        run: ./gradlew :navigation-contracts:test :app-shell:assembleDebugAndroidTest :app-shell:lintDebug :app-shell:assembleDebug --stacktrace --no-daemon

@@ -2,16 +2,21 @@ package ru.railbrake.calculator.shell
 
 import android.os.Bundle
 import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import ru.railbrake.calculator.acceptance.AcceptanceFeatureIndexJsonLoader
 import ru.railbrake.calculator.acceptance.AcceptanceItemScreen
 import ru.railbrake.calculator.acceptance.AcceptanceRouteResolution
@@ -44,6 +49,8 @@ import ru.railbrake.calculator.link.LinkNavigationResult
 import ru.railbrake.calculator.link.LinkResolver
 import ru.railbrake.calculator.navigation.FeatureDestination
 import ru.railbrake.calculator.navigation.featureDestination
+import ru.railbrake.calculator.navigation.ShellNavigationPolicy
+import ru.railbrake.calculator.navigation.WorkingModelResolution
 import ru.railbrake.calculator.runtime.ContentPackIndexJsonLoader
 import ru.railbrake.calculator.runtime.ContentPackJsonLoader
 import ru.railbrake.calculator.runtime.ContentRegistry
@@ -59,9 +66,42 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
+                // A fresh launch never assumes VL80S (or any other working model).
+                // Saved instance state preserves an explicit selection on recreation only.
+                var selectedModelId by rememberSaveable { mutableStateOf<String?>(null) }
+                when (val selection = ShellNavigationPolicy.resolve(selectedModelId)) {
+                    WorkingModelResolution.NotSelected -> {
+                        WorkingModelSelectionScreen { selectedModelId = it.id.value }
+                        return@MaterialTheme
+                    }
+                    is WorkingModelResolution.Unknown -> {
+                        BackHandler { selectedModelId = null }
+                        Column {
+                            Text("Неизвестная модель: доступ к материалам закрыт.")
+                            TextButton(onClick = { selectedModelId = null }) {
+                                Text("← Сменить локомотив")
+                            }
+                        }
+                        return@MaterialTheme
+                    }
+                    is WorkingModelResolution.Selected -> {
+                        if (!selection.model.runtimePublished) {
+                            BackHandler { selectedModelId = null }
+                            UnpublishedWorkingModelScreen(selection.model) {
+                                selectedModelId = null
+                            }
+                            return@MaterialTheme
+                        }
+                    }
+                }
                 val loaded = bootstrap.getOrNull()
                 if (loaded == null) {
-                    Text("Не удалось загрузить модуль ВЛ80С.")
+                    Column {
+                        Text("Не удалось загрузить модуль ВЛ80С.")
+                        TextButton(onClick = { selectedModelId = null }) {
+                            Text("← Сменить локомотив")
+                        }
+                    }
                     return@MaterialTheme
                 }
 
@@ -73,14 +113,23 @@ class MainActivity : ComponentActivity() {
                 val entryHistory = remember { mutableStateListOf<CanonicalId>() }
 
                 if (currentScreen != Vl80sScreen.ENTRY) {
-                    BackHandler(enabled = currentScreen != Vl80sScreen.LAYOUT) {
+                    BackHandler {
                         currentScreen = when (currentScreen) {
+                            Vl80sScreen.LAYOUT -> {
+                                selectedModelId = null
+                                Vl80sScreen.LAYOUT
+                            }
                             Vl80sScreen.ACCEPTANCE_ROUTE -> Vl80sScreen.ACCEPTANCE_ROUTES
                             else -> Vl80sScreen.LAYOUT
                         }
                     }
                     when (currentScreen) {
-                        Vl80sScreen.LAYOUT -> AtlasLayoutScreen(
+                        Vl80sScreen.LAYOUT -> Column {
+                            TextButton(onClick = { selectedModelId = null }) {
+                                Text("← Сменить локомотив")
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                AtlasLayoutScreen(
                             layout = loaded.atlasLayout,
                             modelTitle = "ВЛ80С",
                             onEquipmentTarget = { target ->
@@ -102,7 +151,9 @@ class MainActivity : ComponentActivity() {
                             onAcceptanceRoutes = {
                                 currentScreen = Vl80sScreen.ACCEPTANCE_ROUTES
                             },
-                        )
+                                )
+                            }
+                        }
 
                         Vl80sScreen.PNEUMATIC -> AtlasPneumaticFlowScreen(
                             document = loaded.pneumaticFlow,

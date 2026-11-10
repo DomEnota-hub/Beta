@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +20,11 @@ import org.junit.runner.RunWith
 class Vl80sNavigationSmokeTest {
     @get:Rule
     val compose = createAndroidComposeRule<MainActivity>()
+
+    @Before
+    fun selectWorkingVl80s() {
+        compose.onNodeWithText("ВЛ80С").performClick()
+    }
 
     @Test
     fun atlasTrainingRoutesNavigateAndReturnWithoutPublishingCandidates() {
