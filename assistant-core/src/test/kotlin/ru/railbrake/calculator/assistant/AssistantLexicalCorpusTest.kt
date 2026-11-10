@@ -23,7 +23,7 @@ class AssistantLexicalCorpusTest {
             Probe("ВЛ80С токоприемнек не поднимается", TextIntent.DIAGNOSTICS, "vl80s"),
             Probe("ВЛ80С пантограф не опускается", TextIntent.DIAGNOSTICS, "vl80s"),
             Probe("ВЛ80С групповик залип", TextIntent.DIAGNOSTICS, "vl80s"),
-            Probe("ВЛ80С мотор компрессор молчит", TextIntent.REFERENCE, "vl80s"),
+            Probe("ВЛ80С мотор компрессор молчит", TextIntent.DIAGNOSTICS, "vl80s"),
             Probe("ВЛ80С кран 395 травит", TextIntent.DIAGNOSTICS, "vl80s"),
             Probe("ВЛ80С ТМ давление падает", TextIntent.DIAGNOSTICS, "vl80s"),
             Probe("ВЛ80С сифонит компрессор", TextIntent.DIAGNOSTICS, "vl80s"),
