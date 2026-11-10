@@ -43,6 +43,26 @@ jobs:
             --output "$dest/java/ru/railbrake/calculator/core/ExamQuestionRepository.kt"
       - name: Decode only in memory and audit 329 question IDs and links
         run: python3 qa/audit_exam_source.py --donor-dir "$RUNNER_TEMP/exam-donor" --output "$RUNNER_TEMP/exam-audit.json" --candidate-output "$RUNNER_TEMP/exam-candidate-index.json"
+      - name: Parse generated index and enforce metadata-only schema
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "exam-candidate-index.json"
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data["questionCount"] == len(data["records"]) == 329
+          assert data["status"] == "METADATA_ONLY_CANDIDATE_NOT_QUESTION_PACK"
+          assert data["runtimeImport"] is False
+          assert data["sourceRightsVerified"] is False
+          assert data["crewActionAuthorized"] is False
+          assert data["containsQuestionOrAnswerText"] is False
+          allowed = {"id", "diagnosticScenarioIds", "equipmentIds", "requiresImage"}
+          assert set(data["recordFields"]) == allowed
+          assert all(set(row) == allowed for row in data["records"])
+          print("EXAM_METADATA_ONLY_INDEX_PASS", len(data["records"]))
+          PY
       - name: Upload metadata only (never decrypted questions)
         uses: actions/upload-artifact@v4
         with:
