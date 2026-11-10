@@ -6,7 +6,7 @@
 
 - CHME3/CHME3T/CHME3E: **610 unresolved source/variant/target triples** are concentrated in **19 distinct target IDs**. Of these, **18 IDs have no source-object mapping in the pinned catalog/diagnostic mapping**. The 19th, `CHME3T-EQ-EDB-CONTROL`, has a catalog mapping for **CHME3T only**, but unresolved references also occur under **CHME3** and **CHME3E**. This is an **unverified cross-variant applicability** case, not evidence that the other variants are compatible. A separate scheme ID `CHME3T-SCH-EDB` also appears across all three variants without a pinned source mapping; it remains blocked. **Both** CHME3T-prefixed IDs are explicitly flagged for unverified cross-variant applicability, including when the target has no mapping at all.
 - Ermak: **57 distinct unresolved source IDs**, of which **55 SOURCE_GAP IDs account for 542 occurrences**, and **2 AMBIGUOUS_SOURCE_ID values account for 6 occurrences**. `ER-SRC-039` and `ER-SRC-041` are known collisions. Reused raw numbers are not sufficient evidence to choose one publication. The separate `ER-DIAG-136` index gap is still blocked by the original quarantine validator.
-- Legacy history: repository code search in `DomEnota-hub/Test-` and `DomEnota-hub/Beta` finds **references** to `HistoryRepository` in `BrakeCalculatorApp.kt` but **no implementation** of that class. A commit-history query for the expected donor path returned no commits. The exact storage format remains unverified; do not infer it from similarly named classes in unrelated projects.
+- Legacy history: the pinned donor Git **tree** lacks `HistoryRepository.kt`, but the pinned donor **`RailBrakeCalculator.zip` contains the original implementation**. Verified member Git blob `d95a2ce465e2f09bb96d74b8318f36b16d21afd0` and archive SHA-256 `1b713a42e88e242653f1e44e3b0406ca7c45ee2cbaa458bf272fc648307b9fa6` are recorded in `docs/data-migration/legacy-zip-member-manifest.json` and checked by `qa/validate_legacy_zip_member_manifest.py`. Format observed: SharedPreferences `calculation_history` / StringSet `records`; five `|`-separated fields (timestamp plus four URL-safe Base64 fields), max 30, deduplication by timestamp. **This resolves the source-format discovery gap, NOT the migration implementation or its safety gate.** Draft PR #2 contains only a read-only codec.
 
 ## New machine-checkable disposition
 
@@ -20,7 +20,7 @@
 
 1. Locate original manufacturer scheme/equipment documents for the 19 CHME3 targets, verify series and modification applicability, then resolve *individual* triples only with document locator and test evidence. Prioritize `CHME3T-EQ-EDB-CONTROL` and `CHME3T-SCH-EDB` cross-variant risks.
 2. Recover the original numbered Ermak source registry or verified publications for the 55 missing IDs; for `ER-SRC-039` and `ER-SRC-041`, preserve distinct publication identities until disambiguated with primary evidence. Verify `ER-DIAG-136` separately.
-3. Obtain authoritative history storage implementation/schema before changing `HistoryStorageMigrationGate.legacyFormatVerified`; do not borrow the unrelated MediaLoader history schema.
+3. Use the already verified ZIP-backed `HistoryRepository.kt` schema and draft PR #2 as the source for stage-7 migration; keep `HistoryStorageMigrationGate.legacyFormatVerified=false` until Android storage, backup/recovery, collision/malformed handling and signed upgrade tests are implemented.
 4. Keep 329 exam questions as a verified, **not published** source corpus until a safe candidate target and licensing/source authority are established. Preserve encrypted plaintext boundaries.
 5. Continue source-authority verification and the remaining stage-1 gaps. Stage 2 begins only after Stage 1's evidence gates are satisfied.
 
@@ -32,7 +32,7 @@ No Android UI, calculator, assistant, runtime index or user-visible content was 
 - [Original source quarantine #42695727268](https://github.com/DomEnota-hub/Beta/actions/runs/42695727268): **SUCCESS (terminal)**.
 - [Full Modular architecture bootstrap #42695727974](https://github.com/DomEnota-hub/Beta/actions/runs/42695727974): **SUCCESS (terminal)**; Kotlin tests, Android lint, assembleDebug and APK checks. This verifies the audit changes did not break the current slice; it does not establish Android feature parity.
 
-**Remaining blockers:** authoritative sources for CHME3/Ermak links, cross-variant EDB applicability, original history storage schema, and safe target/licensing review for the 329 exam questions. No source links have been promoted. **Next operation:** obtain source evidence for the two CHME3T EDB cross-variant IDs and separately reconcile the 55 missing Ermak source IDs. The present document is a checkpoint, not a completed Stage 1.
+**Remaining blockers:** authoritative sources for CHME3/Ermak links, cross-variant EDB applicability, **implementation and upgrade verification** of the now-known history schema, and safe target/licensing review for the 329 exam questions. No source links have been promoted. **Next operation:** obtain source evidence for the two CHME3T EDB cross-variant IDs and separately reconcile the 55 missing Ermak source IDs. The present document is a checkpoint, not a completed Stage 1.
 
 ## Дополнение 10.11.2026: первичные локаторы ЧМЭ3Т ЭДТ, без снятия карантина
 
@@ -45,3 +45,9 @@ No Android UI, calculator, assistant, runtime index or user-visible content was 
 
 **Результат:** историческое наличие цепей и оборудования ЭДТ на ЧМЭ3Т подтверждено на уровне источников, но `CHME3T-SCH-EDB` и `CHME3T-EQ-EDB-CONTROL` **не объявлены каноническими runtime-ссылками**. Остаток **610/610** неразрешённых source triples ЧМЭ3, включая 8 cross-variant конфликтов; 548 вхождений «Ермака» не менялись. Необходимо отдельно установить текущую редакцию технической документации, заводскую схему, исполнение конкретного тепловоза и применимость оборудования. Никаких ремонтных действий в приложение не добавлено.
 
+
+## Дополнение 10.11.2026: исправление реального риска упаковки кандидатных схем
+
+При проверке `app-shell/build.gradle.kts` выявлен неполный фильтр `ignoreAssetsPattern`: он исключал `*.candidate.json`, но **не гарантировал исключение** файлов вида `shared-scheme-pairs.candidate.pack.json`, которые лежат в `content-packs/diesel/chme3-family/atlas/` и `content-packs/electric/ermak/atlas/` вне каталогов `migration`/`authoring`. Оба содержат записи `publicationStatus=CANDIDATE`, в том числе схемы, которые не должны автоматически попадать в APK.
+
+Фильтр дополнен универсальными масками `*.candidate.*` и `*.research.*`; `qa/validate_stage50_runtime_boundary.py` теперь проверяет оба исходных кандидатных пакета, запрещает такие имена в **фактическом APK** и содержит отрицательные ZIP-фикстуры для CHME3/Ermak и сжатых research-пакетов. Этот пункт считается проверенным **только после терминального SUCCESS** полного Android workflow на финальном HEAD. Содержимое не переводилось в runtime и не утверждалось как руководство для локомотивной бригады.
