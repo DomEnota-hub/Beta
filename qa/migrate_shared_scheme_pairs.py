@@ -92,7 +92,7 @@ def main():
     for model, entries in out.items():
         family = "ELECTRIC" if model == "ermak" else "DIESEL"
         folder = "electric/ermak" if model == "ermak" else "diesel/chme3-family"
-        path = root / "content-packs" / folder / "atlas/shared-scheme-pairs.candidate.pack.json"
+        path = root / "content-packs" / folder / "atlas/migration/shared-scheme-pairs.candidate.pack.json"
         pack = {
             "manifest": {"schemaVersion": 1, "packId": f"{model}.shared-scheme-pairs.candidate",
                          "packVersion": "0.1.0", "family": family, "modelIds": [model],

@@ -9,8 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "content-packs/locomotive-migration/atlas-pair-bindings.candidate.json"
 PACKS = {
-    "ermak": ("content-packs/electric/ermak/atlas/shared-scheme-pairs.candidate.pack.json",),
-    "chme3-family": ("content-packs/diesel/chme3-family/atlas/shared-scheme-pairs.candidate.pack.json",),
+    "ermak": ("content-packs/electric/ermak/atlas/migration/shared-scheme-pairs.candidate.pack.json",),
+    "chme3-family": ("content-packs/diesel/chme3-family/atlas/migration/shared-scheme-pairs.candidate.pack.json",),
     "tem2-family": ("content-packs/diesel/tem2-family/atlas/sequences/sequences-01.pack.json",
                     "content-packs/diesel/tem2-family/atlas/layouts/layouts-01.pack.json"),
 }

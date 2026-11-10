@@ -8,8 +8,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OVERLAY = ROOT / "docs/data-migration/shared-scheme-flow-layout-dispositions.json"
 PACKS = {
-    "ermak": ROOT / "content-packs/electric/ermak/atlas/shared-scheme-pairs.candidate.pack.json",
-    "chme3-family": ROOT / "content-packs/diesel/chme3-family/atlas/shared-scheme-pairs.candidate.pack.json",
+    "ermak": ROOT / "content-packs/electric/ermak/atlas/migration/shared-scheme-pairs.candidate.pack.json",
+    "chme3-family": ROOT / "content-packs/diesel/chme3-family/atlas/migration/shared-scheme-pairs.candidate.pack.json",
 }
 
 

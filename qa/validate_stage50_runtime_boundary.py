@@ -155,7 +155,9 @@ def audit():
     # These two authoring packs sit outside the excluded migration/authoring
     # directories. Their CANDIDATE status must never be confused with runtime.
     for family in ("diesel/chme3-family", "electric/ermak"):
-        candidate_path = ROOT / "content-packs" / family / "atlas/shared-scheme-pairs.candidate.pack.json"
+        candidate_path = ROOT / "content-packs" / family / "atlas/migration/shared-scheme-pairs.candidate.pack.json"
+        need(not (ROOT / "content-packs" / family / "atlas/shared-scheme-pairs.candidate.pack.json").exists(),
+             "candidate scheme pack exposed in Android asset root: " + family)
         need(candidate_path.is_file(), "candidate scheme pack missing: " + family)
         candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
         need(candidate["manifest"]["packId"].endswith(".candidate"),
