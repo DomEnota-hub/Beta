@@ -97,4 +97,20 @@ class AssistantTextEngineTest {
         assertEquals(TextAssistantResult.UnpublishedModel(ModelId("2es5k")),
             conversation.clarify(ModelId("2es5k"), vl))
     }
+
+    @Test fun categoryFilterDoesNotLeakOtherContentTypes() {
+        val result = engine(entry("equipment"), entry("knowledge", type = ContentType.KNOWLEDGE))
+            .query("главный выключатель", vl, limit = 50,
+                intentOverride = TextIntent.REFERENCE,
+                allowedTypes = setOf(ContentType.KNOWLEDGE))
+        assertEquals(listOf("knowledge"),
+            (result as TextAssistantResult.Matches).hits.map { it.entry.id.value })
+    }
+
+    @Test fun resultLimitSupportsPaginationWithoutUnboundedQueries() {
+        val entries = (1..55).map { entry("equipment" + it) }
+        val result = engine(*entries.toTypedArray())
+            .query("главный выключатель", vl, limit = 100)
+        assertEquals(50, (result as TextAssistantResult.Matches).hits.size)
+    }
 }

@@ -109,6 +109,7 @@ fun AssistantSearchScreen(
             category == AssistantSearchCategory.KNOWLEDGE) {
             onCategoryChange(AssistantSearchCategory.KNOWLEDGE)
         }
+        Text("Список материалов", style = MaterialTheme.typography.titleMedium)
         if (notice != null) Text(notice, color = MaterialTheme.colorScheme.error)
         if (engine == null) {
             Text("Каталог материалов недоступен. Поиск закрыт до восстановления данных.")
