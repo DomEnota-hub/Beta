@@ -103,13 +103,26 @@ class MainActivity : ComponentActivity() {
                     )
                     return@MaterialTheme
                 }
-                // Stage 5: common VU-45 certificate arithmetic verifier.
-                // This is not a locomotive-specific diagnostic or operational approval.
+                // Stage 6: two independent calculation tools behind one common hub.
+                // Both are arithmetic previews, never operational approval.
                 if (shellDestination == ShellHomeDestination.CALCULATIONS) {
-                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
-                    Vu45VerificationScreen(
-                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
-                    )
+                    var calculationsPage by rememberSaveable(selectedModelId) { mutableStateOf("HUB") }
+                    BackHandler {
+                        if (calculationsPage == "HUB") {
+                            shellDestinationName = ShellHomeDestination.HOME.name
+                        } else {
+                            calculationsPage = "HUB"
+                        }
+                    }
+                    when (calculationsPage) {
+                        "VU45" -> Vu45VerificationScreen(onBack = { calculationsPage = "HUB" })
+                        "SECURING" -> SecuringScreen(onBack = { calculationsPage = "HUB" })
+                        else -> CalculationsHomeScreen(
+                            onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                            onOpenVu45 = { calculationsPage = "VU45" },
+                            onOpenSecuring = { calculationsPage = "SECURING" },
+                        )
+                    }
                     return@MaterialTheme
                 }
                 val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
