@@ -11,7 +11,13 @@
       "disposition": "DEFERRED_SCOPE",
       "codeRole": "ACCEPTANCE_LOCAL_STATE_AND_REPORT_FORMAT",
       "preferencesFile": "technical_acceptance_states",
-      "storedFields": ["itemId -> enum NOT_CHECKED/OK/NOTE/NOT_APPLICABLE", "note:itemId -> trimmed text", "session:familyKey:route_id/route_title/started_at/updated_at/completed_at", "disabled:familyKey -> string set", "save_parameters:familyKey -> boolean"],
+      "storedFields": [
+        "itemId -> enum NOT_CHECKED/OK/NOTE/NOT_APPLICABLE",
+        "note:itemId -> trimmed text",
+        "session:familyKey:route_id/route_title/started_at/updated_at/completed_at",
+        "disabled:familyKey -> string set",
+        "save_parameters:familyKey -> boolean"
+      ],
       "observedLegacyBehavior": "BLOCKING decodes as NOTE; one session per family may span routes; disabled IDs can be session-memory-only when save_parameters is false; report text is generated from current states.",
       "migrationBoundary": "Preserve item and family identity before any state transfer; an enum or saved flag is not evidence that a check is mandatory or technically approved.",
       "storageMigrationImplemented": false
@@ -22,7 +28,16 @@
       "disposition": "DEFERRED_SCOPE",
       "codeRole": "DIAGNOSTIC_SESSION_LOCAL_JOURNAL",
       "preferencesFile": "diagnostic_sessions",
-      "storedFields": ["records -> string set of seven URL-safe Base64 UTF-8 fields separated by |", "timestampMillis", "profileId", "variantId", "scenarioId", "scenarioTitle", "severity", "report"],
+      "storedFields": [
+        "records -> string set of seven URL-safe Base64 UTF-8 fields separated by |",
+        "timestampMillis",
+        "profileId",
+        "variantId",
+        "scenarioId",
+        "scenarioTitle",
+        "severity",
+        "report"
+      ],
       "observedLegacyBehavior": "Loads by descending timestamp; add deduplicates by timestamp and retains at most 100; clearProfile removes one profile's records. Comments describe local storage and do not grant data-transfer authority.",
       "migrationBoundary": "This is diagnostic-session history, separate from calculation HistoryRecord; timestamp collisions and malformed records require explicit migration policy.",
       "storageMigrationImplemented": false
@@ -33,7 +48,10 @@
       "disposition": "DEFERRED_SCOPE",
       "codeRole": "KNOWLEDGE_PRESENTATION_PREFERENCES",
       "preferencesFile": "knowledge_display_v2",
-      "storedFields": ["mode -> BASIC/ADVANCED, default BASIC", "depth -> MINIMAL/STANDARD/DETAILED, default STANDARD"],
+      "storedFields": [
+        "mode -> BASIC/ADVANCED, default BASIC",
+        "depth -> MINIMAL/STANDARD/DETAILED, default STANDARD"
+      ],
       "migrationBoundary": "Display choices do not authorize advanced emergency actions or alter publication status.",
       "storageMigrationImplemented": false
     },
@@ -43,7 +61,9 @@
       "disposition": "DEFERRED_SCOPE",
       "codeRole": "RECENT_TECHNICAL_ENTRY_IDS",
       "preferencesFile": "technical_recent_materials",
-      "storedFields": ["recent_${familyKey.lowercase()} -> newline-separated entry IDs"],
+      "storedFields": [
+        "recent_${familyKey.lowercase()} -> newline-separated entry IDs"
+      ],
       "observedLegacyBehavior": "Recording an entry moves its ID to the front, removes duplicate IDs and keeps at most six; this is a recent-items list, not a calculation record.",
       "migrationBoundary": "Map entry IDs and family keys explicitly before transfer; never assume a recent ID resolves to a published runtime object.",
       "storageMigrationImplemented": false
@@ -51,12 +71,15 @@
   ],
   "calculationHistoryStorage": {
     "destinationContract": "feature-history/src/main/kotlin/ru/railbrake/calculator/history/HistoryContracts.kt",
-    "migrationGate": "legacyFormatVerified=false",
+    "migrationGate": "legacyFormatVerified=true",
     "zipOnlySourcePath": "RailBrakeCalculator.zip!RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/data/HistoryRepository.kt",
-    "status": "FORMAT_OBSERVED_MIGRATION_PENDING",
+    "status": "FORMAT_VERIFIED_VERSIONED_MIGRATION_IMPLEMENTED",
     "memberBlobSha": "d95a2ce465e2f09bb96d74b8318f36b16d21afd0",
     "memberManifest": "docs/data-migration/legacy-zip-member-manifest.json",
-    "storageMigrationImplemented": false
+    "storageMigrationImplemented": true,
+    "signedInPlaceUpgradeVerified": false,
+    "versionedStore": "railbrake_history_v2/records_v2",
+    "migrationPolicy": "Read legacy calculation_history/records StringSet, write separate versioned copy, retain legacy untouched, refuse to overwrite corrupt v2, defer signed upgrade/device acceptance"
   },
   "remainingScope": "OTHER_KOTLIN_AND_ZIP_OBJECTS_PENDING_REVIEW"
 }

@@ -21,4 +21,5 @@ interface HistoryStore {
  */
 object HistoryStorageMigrationGate {
     const val legacyFormatVerified: Boolean = true
+    const val signedUpgradeVerified: Boolean = false
 }
