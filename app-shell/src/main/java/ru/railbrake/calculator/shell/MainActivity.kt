@@ -2,6 +2,7 @@ package ru.railbrake.calculator.shell
 
 import android.os.Bundle
 import ru.railbrake.calculator.history.HistoryRecord
+import ru.railbrake.calculator.assistant.AssistantTextEngine
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -554,6 +555,7 @@ class MainActivity : ComponentActivity() {
             diagnosticCatalog = diagnosticCatalog,
             acceptanceRoutes = acceptanceRoutes,
             context = context,
+            assistantEngine = AssistantTextEngine(registry, setOf(ModelId("vl80s"))),
         )
     }
 }
@@ -567,6 +569,8 @@ private data class Vl80sVerticalSlice(
     val diagnosticCatalog: PublishedDiagnosticCatalog,
     val acceptanceRoutes: List<ResolvedAcceptanceRoute>,
     val context: RuntimeContext,
+    /** Stage 8 text backend, wired to the validated published runtime; UI is stage 9. */
+    val assistantEngine: AssistantTextEngine,
 )
 
 private enum class Vl80sScreen {
