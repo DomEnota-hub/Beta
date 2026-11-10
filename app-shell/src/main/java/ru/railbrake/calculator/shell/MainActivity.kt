@@ -3,6 +3,10 @@ package ru.railbrake.calculator.shell
 import android.os.Bundle
 import ru.railbrake.calculator.history.HistoryRecord
 import ru.railbrake.calculator.assistant.AssistantTextEngine
+import ru.railbrake.calculator.assistant.AssistantUiNavigationGate
+import ru.railbrake.calculator.assistant.TextQueryParser
+import ru.railbrake.calculator.domain.ContentTarget
+import ru.railbrake.calculator.domain.ContentLayer
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -105,6 +109,137 @@ class MainActivity : ComponentActivity() {
                         onChangeModel = { selectedModelId = null },
                         onOpen = { shellDestinationName = it.name },
                     )
+                    return@MaterialTheme
+                }
+                // Stage 9: keep query while opening a result card and returning.
+                var assistantDraft by rememberSaveable(selectedModelId) { mutableStateOf("") }
+                var assistantSubmitted by rememberSaveable(selectedModelId) { mutableStateOf("") }
+                var assistantCategory by rememberSaveable(selectedModelId) {
+                    mutableStateOf<AssistantSearchCategory?>(null)
+                }
+                var assistantVisibleCount by rememberSaveable(selectedModelId) { mutableStateOf(5) }
+                var assistantOpenedTarget by remember(selectedModelId) {
+                    mutableStateOf<ContentTarget?>(null)
+                }
+                var assistantViewedModel by remember(selectedModelId) {
+                    mutableStateOf<ModelId?>(null)
+                }
+                var assistantNotice by remember(selectedModelId) { mutableStateOf<String?>(null) }
+                val assistantHistory = remember(selectedModelId) {
+                    mutableStateListOf<ContentTarget>()
+                }
+                if (shellDestination == ShellHomeDestination.ASSISTANT) {
+                    val loaded = bootstrap.getOrNull()
+                    val opened = assistantOpenedTarget
+                    if (opened == null) {
+                        BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                        AssistantSearchScreen(
+                            engine = loaded?.assistantEngine,
+                            workingModelId = workingModel.id,
+                            workingModelTitle = workingModel.title,
+                            draft = assistantDraft,
+                            submitted = assistantSubmitted,
+                            category = assistantCategory,
+                            visibleCount = assistantVisibleCount,
+                            notice = assistantNotice,
+                            onDraftChange = { assistantDraft = it },
+                            onSubmit = {
+                                assistantSubmitted = assistantDraft.trim()
+                                assistantVisibleCount = 5
+                                assistantNotice = null
+                            },
+                            onCategoryChange = {
+                                assistantCategory = it
+                                assistantVisibleCount = 5
+                                assistantNotice = null
+                            },
+                            onShowMore = {
+                                assistantVisibleCount = (assistantVisibleCount + 5).coerceAtMost(50)
+                            },
+                            onClarify = { model ->
+                                assistantSubmitted =
+                                    TextQueryParser.parse(assistantSubmitted).searchText +
+                                        " " + model.value
+                                assistantDraft = assistantSubmitted
+                                assistantVisibleCount = 5
+                            },
+                            onOpen = { result, target ->
+                                val allowed = loaded?.let {
+                                    AssistantUiNavigationGate.openHit(
+                                        result, target, it.registry, setOf(ModelId("vl80s")))
+                                }
+                                if (allowed == null) {
+                                    assistantNotice = "Материал недоступен: проверка применимости не пройдена."
+                                } else {
+                                    assistantOpenedTarget = target
+                                    assistantViewedModel = result.scope.modelId
+                                    assistantHistory.clear()
+                                    assistantNotice = null
+                                }
+                            },
+                            onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                        )
+                    } else {
+                        val context = RuntimeContext(
+                            workingModelId = workingModel.id,
+                            viewedModelId = assistantViewedModel,
+                            activeVariantId = null,
+                            allowedLayers = setOf(ContentLayer.STANDARD),
+                        )
+                        val entry = loaded?.let {
+                            AssistantUiNavigationGate.resolveSafeTarget(
+                                opened, it.registry, context, setOf(ModelId("vl80s")))
+                        }
+                        val goBack: () -> Unit = {
+                            assistantNotice = null
+                            assistantOpenedTarget = if (assistantHistory.isNotEmpty()) {
+                                assistantHistory.removeAt(assistantHistory.lastIndex)
+                            } else null
+                        }
+                        BackHandler(onBack = goBack)
+                        if (entry == null || loaded == null) {
+                            ShellUnavailableScreen(
+                                title = "Материал недоступен",
+                                explanation = "Проверка публикации или исполнения не пройдена.",
+                                onBack = goBack,
+                            )
+                        } else {
+                            val handleLink: (ContentLink) -> Unit = { link ->
+                                when (val resolved = loaded.linkResolver.resolve(
+                                    sourceId = entry.id, link = link, context = context)) {
+                                    is LinkNavigationResult.Found -> {
+                                        val next = ContentTarget(
+                                            resolved.target.id, resolved.target.contentType)
+                                        if (AssistantUiNavigationGate.resolveSafeTarget(
+                                                next, loaded.registry, resolved.targetContext,
+                                                setOf(ModelId("vl80s"))) != null) {
+                                            assistantHistory.add(opened)
+                                            assistantOpenedTarget = next
+                                            assistantNotice = null
+                                        } else {
+                                            assistantNotice = "Переход закрыт: источник или профиль не подтверждён."
+                                        }
+                                    }
+                                    else -> {
+                                        assistantNotice = "Связанный материал не опубликован или неприменим."
+                                    }
+                                }
+                            }
+                            when (entry.type.featureDestination()) {
+                                FeatureDestination.ACCEPTANCE -> AcceptanceItemScreen(
+                                    entry = entry, modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                                FeatureDestination.SAFETY -> SafetyContentScreen(
+                                    entry = entry, modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                                else -> RailContentEntryScreen(
+                                    entry = entry,
+                                    destination = entry.type.featureDestination(),
+                                    modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                            }
+                        }
+                    }
                     return@MaterialTheme
                 }
                 // Stage 6: two independent calculation tools behind one common hub.

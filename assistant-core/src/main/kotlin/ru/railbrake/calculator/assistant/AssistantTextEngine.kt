@@ -100,7 +100,10 @@ class AssistantTextEngine(
         workingModelId: ModelId?,
         variantId: VariantId? = null,
         limit: Int = 5,
+        intentOverride: TextIntent? = null,
+        allowedTypes: Set<ContentType>? = null,
     ): TextAssistantResult {
+        val intent = intentOverride ?: TextQueryParser.parse(text).intent
         val parsed = TextQueryParser.parse(text)
         if (parsed.normalized.isBlank() || parsed.searchText.isBlank()) {
             return TextAssistantResult.NoMatches("Уточните название узла или тему.")
@@ -138,7 +141,7 @@ class AssistantTextEngine(
                     registry.resolve(ContentTarget(entry.id, entry.type), context) is ResolveResult.Found
             }
             .filter { entry ->
-                when (parsed.intent) {
+                when (intent) {
                     TextIntent.DIAGNOSTICS -> entry.type == ContentType.DIAGNOSTIC_SCENARIO
                     TextIntent.SCHEME -> entry.type == ContentType.ATLAS_SCHEME
                     TextIntent.ACCEPTANCE -> entry.type == ContentType.ACCEPTANCE_ITEM
@@ -147,6 +150,7 @@ class AssistantTextEngine(
                         ContentType.EQUIPMENT, ContentType.TECHNICAL_DATA, ContentType.KNOWLEDGE)
                 }
             }
+            .filter { entry -> allowedTypes == null || entry.type in allowedTypes }
             .mapNotNull { entry ->
                 val score = score(entry, parsed.searchText, tokens)
                 if (score < 12) null else {
@@ -166,15 +170,15 @@ class AssistantTextEngine(
                 }
             }
             .sortedWith(compareByDescending<TextAssistantHit> { it.score }.thenBy { it.entry.id.value })
-            .take(limit.coerceIn(1, 5)).toList()
+            .take(limit.coerceIn(1, 50)).toList()
         if (hits.isEmpty()) return TextAssistantResult.NoMatches(
             "Применимый опубликованный материал не найден; кандидаты скрыты.")
         val first = hits.first()
         val margin = first.score - (hits.getOrNull(1)?.score ?: 0)
         val recommended = if (first.sourceVerified && first.score >= 90 && margin >= 25 &&
-            parsed.intent == TextIntent.REFERENCE) ContentTarget(first.entry.id, first.entry.type)
+            intent == TextIntent.REFERENCE) ContentTarget(first.entry.id, first.entry.type)
         else null
-        return TextAssistantResult.Matches(scope, parsed.intent, hits, recommended)
+        return TextAssistantResult.Matches(scope, intent, hits, recommended)
     }
 
     private fun score(entry: ContentEntry, query: String, tokens: List<String>): Int {
