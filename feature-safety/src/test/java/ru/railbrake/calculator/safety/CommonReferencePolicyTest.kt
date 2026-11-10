@@ -21,7 +21,7 @@ class CommonReferencePolicyTest {
         "knowledge/articles.pack.json",
         "safety/articles.pack.json",
     ).flatMap { path ->
-        val json = Files.readString(Path.of("..", "content-packs", "common", path))
+        val json = Files.readAllBytes(Path.of("..", "content-packs", "common", path)).toString(Charsets.UTF_8)
         ContentPackJsonLoader().parse(json).entries
     }
 
