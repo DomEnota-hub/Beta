@@ -119,6 +119,8 @@ fun FamilyContentScreen(
         when {
             selectedExecution == null ->
                 Text("Исполнение не указано. Доступ к материалам закрыт.")
+            profile.executions.none { it.id.value == selectedExecution } ->
+                Text("Неизвестное исполнение. Доступ к материалам закрыт.")
             destination == ShellHomeDestination.DIAGNOSTICS ->
                 Text("Диагностические сценарии этого семейства пока не опубликованы: требуется отдельная проверка источников, графа и безопасности.")
             loadState is FamilyCatalogLoadState.Idle ||
