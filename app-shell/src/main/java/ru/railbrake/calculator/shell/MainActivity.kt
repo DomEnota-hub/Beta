@@ -92,7 +92,8 @@ class MainActivity : ComponentActivity() {
                     }
                     is WorkingModelResolution.Selected -> selection.model
                 }
-                val shellDestination = ShellHomeDestination.valueOf(shellDestinationName)
+                val shellDestination = ShellHomeDestination.entries.firstOrNull { it.name == shellDestinationName }
+                    ?: ShellHomeDestination.HOME
                 if (shellDestination == ShellHomeDestination.HOME) {
                     BackHandler { selectedModelId = null }
                     ShellHomeScreen(
@@ -107,7 +108,7 @@ class MainActivity : ComponentActivity() {
                     BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
                     val explanation = when (shellRoute) {
                         is ShellHomeRoute.Unavailable -> {
-                            if (shellRoute.modelId != null) {
+                            if (shellRoute.modelId != null && !workingModel.runtimePublished) {
                                 "Материалы этой модели пока не опубликованы. " +
                                     "Непроверенные источники и исполнения не открываются."
                             } else {
