@@ -141,6 +141,10 @@ class AssistantTextEngine(
             }
             .filter { entry -> allowedTypes == null || entry.type in allowedTypes }
             .mapNotNull { entry ->
+                val candidateText = TextQueryParser.normalize(entry.title + " " +
+                    entry.searchTerms.joinToString(" "))
+                if (intent == TextIntent.DIAGNOSTICS &&
+                    AssistantLexicon.contradictsFault(parsed.searchText, candidateText)) return@mapNotNull null
                 val score = score(entry, parsed.searchText, tokens, intent)
                 if (score < 12) null else {
                     val verified = entry.sourceRefs.isNotEmpty() && entry.sourceRefs.all { ref ->
