@@ -28,7 +28,7 @@ jobs:
           echo "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6  silero_vad.onnx" | sha256sum -c -
           echo "d6a651569aacc9a177259fa54705dd76acae23f6a4d62ea6797bd220d4b57163  model.tar.bz2" | sha256sum -c -
           python3 - <<'PY'
-          import hashlib, pathlib, tarfile, zipfile
+          import hashlib, io, pathlib, tarfile, zipfile
           root=pathlib.Path('.')
           expected={'encoder.int8.onnx':'eb6c12fbad810d5bc3e427802e604604c69b5943a91feebc43424dd09d9ec407',
                     'decoder.onnx':'dcbe1ffa0211e77ca6d3a80164df13fbda3ec00e47d12b9f449f89572df12136',
@@ -57,6 +57,12 @@ jobs:
               if 'classes.jar' not in contents: raise RuntimeError('No classes.jar in AAR')
               abis={part.split('/')[1] for part in contents if part.startswith('jni/') and part.endswith('.so')}
               if 'arm64-v8a' not in abis: raise RuntimeError('Missing arm64-v8a native library')
+              with zipfile.ZipFile(io.BytesIO(z.read('classes.jar'))) as jar:
+                  classes=set(jar.namelist())
+              required={'OfflineRecognizer','OfflineModelConfig','OfflineRecognizerConfig','OfflineTransducerModelConfig','Vad','VadModelConfig','SileroVadModelConfig'}
+              missing={name for name in required if 'com/k2fsa/sherpa/onnx/'+name+'.class' not in classes}
+              if missing: raise RuntimeError('Missing donor API classes in AAR: '+repr(missing))
+              print('AAR donor API classes verified',sorted(required))
               print('AAR ABIs',sorted(abis))
           PY
           echo "Verified pinned upstream SHA256 for AAR, Silero, model archive and each required model file (cross-checked with Hugging Face publisher)." >> "$GITHUB_STEP_SUMMARY"
