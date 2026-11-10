@@ -51,8 +51,7 @@ object AssistantUiNavigationGate {
                         source.sourceStatus == SourceStatus.CURRENT &&
                         source.provenance in setOf(
                             ProvenanceClass.CURRENT_OFFICIAL, ProvenanceClass.MANUFACTURER) &&
-                        registry.resolve(ContentTarget(source.id, source.type), context)
-                            is ResolveResult.Found
+                        registry.resolve(ContentTarget(source.id, source.type), context) is ResolveResult.Found
                 }) return null
         }
         return entry
