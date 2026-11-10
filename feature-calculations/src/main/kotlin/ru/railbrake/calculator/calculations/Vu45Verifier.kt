@@ -132,6 +132,9 @@ object Vu45Verifier {
             findings += Vu45Finding.ARITHMETIC_OVERFLOW
         }
 
+        if (forceTotal > BigDecimal.valueOf(Double.MAX_VALUE)) {
+            findings += Vu45Finding.ARITHMETIC_OVERFLOW
+        }
         val inputInvalid = findings.any {
             it in setOf(
                 Vu45Finding.MISSING_REQUIRED_FIELD, Vu45Finding.INVALID_NUMBER,
