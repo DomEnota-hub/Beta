@@ -32,6 +32,9 @@ on:
       - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
       - 'qa/validate_chme3t_serial_revision.py'
       - 'qa/test_chme3t_serial_revision.py'
+      - 'docs/migration/chme3-public-drawing-leads.candidate.json'
+      - 'qa/validate_chme3_public_drawing_leads.py'
+      - 'qa/test_chme3_public_drawing_leads.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -61,6 +64,9 @@ on:
       - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
       - 'qa/validate_chme3t_serial_revision.py'
       - 'qa/test_chme3t_serial_revision.py'
+      - 'docs/migration/chme3-public-drawing-leads.candidate.json'
+      - 'qa/validate_chme3_public_drawing_leads.py'
+      - 'qa/test_chme3_public_drawing_leads.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -104,3 +110,8 @@ jobs:
         run: python3 -m unittest qa/test_chme3t_serial_revision.py -v
       - name: Validate historical serial gate remains quarantined
         run: python3 -m qa.validate_chme3t_serial_revision
+
+      - name: Check CHME3T/CHME3E public archive leads (12 tests)
+        run: python3 -m unittest qa/test_chme3_public_drawing_leads.py -v
+      - name: Reject unverified factory claims and cross-variant candidate promotion
+        run: python3 -m qa.validate_chme3_public_drawing_leads
