@@ -41,7 +41,7 @@ jobs:
             --output "$RUNNER_TEMP/pinned-donor-tree.json"
       - name: Check all 74 Kotlin sources, hashes and target touchpoints
         run: python3 qa/validate_donor_kotlin_crosswalk.py --donor-tree "$RUNNER_TEMP/pinned-donor-tree.json"
-      - name: Ensure target does not accidentally wire unverified history or calculations
+      - name: Gate stage 5 VU-45 arithmetic wiring and unverified history
         shell: bash
         run: |
           set -euo pipefail
@@ -50,11 +50,19 @@ jobs:
           shell = Path('app-shell/build.gradle.kts').read_text()
           main = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/MainActivity.kt').read_text()
           history = Path('feature-history/src/main/kotlin/ru/railbrake/calculator/history/HistoryContracts.kt').read_text()
-          # These are stage-1 observations, not permanent constraints: when stage 2/7
-          # wires the features, update this evidence check and the crosswalk together.
-          assert 'implementation(project(":feature-calculations"))' not in shell
+          # Stage 5 deliberately wires only a non-operational VU-45 checker.
+          # Preserve the independent stage-7 history migration gate.
+          verifier = Path('feature-calculations/src/main/kotlin/ru/railbrake/calculator/calculations/Vu45Verifier.kt').read_text()
+          policy = Path('feature-calculations/src/main/kotlin/ru/railbrake/calculator/calculations/CalculationPublicationPolicy.kt').read_text()
+          screen = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/Vu45VerificationScreen.kt').read_text()
+          assert 'implementation(project(":feature-calculations"))' in shell
           assert 'implementation(project(":feature-history"))' not in shell
+          assert 'Vu45VerificationScreen(' in main
           assert 'loadVl80sVerticalSlice()' in main
+          assert 'ARITHMETICALLY_CONSISTENT_NOT_APPROVED' in verifier
+          assert 'requireOperationalApproval' in policy
+          assert 'Vu45Verifier.check(' in screen
+          assert Path('feature-calculations/src/test/kotlin/ru/railbrake/calculator/calculations/Vu45VerifierTest.kt').is_file()
           assert 'legacyFormatVerified: Boolean = false' in history
-          print('STAGE1_KOTLIN_WIRING_GAPS_CONFIRMED')
+          print('STAGE5_VU45_ARITHMETIC_ONLY_WIRING_GATED_HISTORY_UNVERIFIED')
           PY
