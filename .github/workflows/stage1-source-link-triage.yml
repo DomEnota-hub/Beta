@@ -24,8 +24,11 @@ on:
       - 'qa/validate_ermak_re1_public_mirror.py'
       - 'qa/test_ermak_re1_public_mirror.py'
       - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'docs/migration/chme3-remaining-scheme-evidence.candidate.json'
       - 'qa/validate_chme3_priority_schemes.py'
       - 'qa/test_chme3_priority_schemes.py'
+      - 'qa/validate_chme3_remaining_schemes.py'
+      - 'qa/test_chme3_remaining_schemes.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -47,8 +50,11 @@ on:
       - 'qa/validate_ermak_re1_public_mirror.py'
       - 'qa/test_ermak_re1_public_mirror.py'
       - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'docs/migration/chme3-remaining-scheme-evidence.candidate.json'
       - 'qa/validate_chme3_priority_schemes.py'
       - 'qa/test_chme3_priority_schemes.py'
+      - 'qa/validate_chme3_remaining_schemes.py'
+      - 'qa/test_chme3_remaining_schemes.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -82,3 +88,8 @@ jobs:
         run: python3 -m unittest qa/test_chme3_priority_schemes.py -v
       - name: Verify three priority schemes remain non-runtime training references
         run: python3 -m qa.validate_chme3_priority_schemes
+
+      - name: Cross-check remaining 388 CHME3 source edges (21 tests)
+        run: python3 -m unittest qa/test_chme3_remaining_schemes.py -v
+      - name: Verify 16 remaining targets and 8 quarantined cross-variant conflicts
+        run: python3 -m qa.validate_chme3_remaining_schemes
