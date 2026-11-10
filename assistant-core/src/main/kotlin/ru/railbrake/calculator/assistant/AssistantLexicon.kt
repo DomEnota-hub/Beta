@@ -105,6 +105,22 @@ object AssistantLexicon {
             "(?: +\\p{L}+){0,3} +(ток\\p{L}*|электричеств\\p{L}*)"
     )
 
+    /**
+     * Distinguish opposite failure directions even if the equipment name is
+     * identical. Only explicit contradictory fault phrases are excluded.
+     */
+    fun contradictsFault(query: String, candidate: String): Boolean {
+        val opposites = listOf(
+            "не включ" to "не выключ",
+            "не поднима" to "не опуска",
+            "не заряжа" to "не разряжа",
+            "не тормоз" to "не отпуска"
+        )
+        return opposites.any { (left, right) ->
+            (left in query && right in candidate) || (right in query && left in candidate)
+        }
+    }
+
     fun intent(normalized: String): TextIntent {
         val safetyEmergency = listOf("первая помощь", "охрана труда", "электротравм",
             "поражение током", "поражение электрическим", "кровотеч",
