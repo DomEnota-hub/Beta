@@ -206,6 +206,9 @@ fun Vu45VerificationScreen(onBack: () -> Unit) {
             Text("Масса: " + (checked.massTons?.asVu45Text() ?: "нет") + " т")
             Text("Оси по справке: " + (checked.declaredAxles?.toString() ?: "нет"))
             Text("Оси по строкам: " + (checked.calculatedAxles?.toString() ?: "не рассчитаны"))
+            if (mode == Vu45EntryMode.WAGONS) {
+                Text("Вагонов по строкам: " + (checked.calculatedWagons?.toString() ?: "не рассчитаны"))
+            }
             Text("Требуемое нажатие: " + (checked.requiredForceTons?.asVu45Text() ?: "нет") + " тс")
             Text("Нажатие по справке: " + (checked.declaredForceTons?.asVu45Text() ?: "нет") + " тс")
             Text("Нажатие по строкам: " + (checked.calculatedForceTons?.asVu45Text() ?: "не рассчитано") + " тс")
