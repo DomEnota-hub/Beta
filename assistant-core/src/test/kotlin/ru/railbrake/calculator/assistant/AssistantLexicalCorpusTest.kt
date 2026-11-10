@@ -46,7 +46,7 @@ class AssistantLexicalCorpusTest {
         cases.forEach { case ->
             val parsed = TextQueryParser.parse(case.phrase)
             assertEquals(case.phrase, case.intent, parsed.intent)
-            assertEquals(case.phrase, case.model?.let(::ModelId)?.let(::setOf) ?: emptySet<ModelId>(),
+            assertEquals(case.phrase, case.model?.let { setOf(ModelId(it)) } ?: emptySet<ModelId>(),
                 parsed.explicitModels)
         }
     }
