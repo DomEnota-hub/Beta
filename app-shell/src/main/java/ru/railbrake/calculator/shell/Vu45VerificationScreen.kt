@@ -71,6 +71,14 @@ private fun Vu45NumberField(label: String, value: String, change: (String) -> Un
 }
 
 @Composable
+private fun Vu45TextField(label: String, value: String, change: (String) -> Unit) {
+    OutlinedTextField(
+        value = value, onValueChange = change, label = { Text(label) },
+        singleLine = true, modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+@Composable
 fun Vu45VerificationScreen(onBack: () -> Unit) {
     var mode by remember { mutableStateOf(Vu45EntryMode.AXLES) }
     var axleForm by remember { mutableStateOf(Vu45FormInput()) }
@@ -141,21 +149,21 @@ fun Vu45VerificationScreen(onBack: () -> Unit) {
             updateForm(form.copy(manual = it))
         }
         Text("Реквизиты и дополнительные данные", style = MaterialTheme.typography.titleMedium)
-        Vu45NumberField("Станция выдачи", form.station) { updateForm(form.copy(station = it)) }
-        Vu45NumberField("Дата и время выдачи", form.issuedAt) { updateForm(form.copy(issuedAt = it)) }
-        Vu45NumberField("Серия и номер локомотива", form.locomotive) {
+        Vu45TextField("Станция выдачи", form.station) { updateForm(form.copy(station = it)) }
+        Vu45TextField("Дата и время выдачи", form.issuedAt) { updateForm(form.copy(issuedAt = it)) }
+        Vu45TextField("Серия и номер локомотива", form.locomotive) {
             updateForm(form.copy(locomotive = it))
         }
-        Vu45NumberField("Номер хвостового вагона", form.tailWagon) {
+        Vu45TextField("Номер хвостового вагона", form.tailWagon) {
             updateForm(form.copy(tailWagon = it))
         }
-        Vu45NumberField("Плотность тормозной сети (как в справке)", form.density) {
+        Vu45TextField("Плотность тормозной сети (как в справке)", form.density) {
             updateForm(form.copy(density = it))
         }
-        Vu45NumberField("Давление в хвосте (если указано)", form.tailPressure) {
+        Vu45TextField("Давление в хвосте (если указано)", form.tailPressure) {
             updateForm(form.copy(tailPressure = it))
         }
-        Vu45NumberField("Фамилия/подпись выдавшего (как в справке)", form.issuer) {
+        Vu45TextField("Фамилия/подпись выдавшего (как в справке)", form.issuer) {
             updateForm(form.copy(issuer = it))
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
