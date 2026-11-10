@@ -97,8 +97,8 @@ def check_gradle(text):
     parts = set(match.group(1).split(":"))
     need({"authoring", "migration", "*.research.json",
           "*.research.json.gz", "*.candidate.json",
-          "*.candidate.json.gz"} <= parts,
-         "research/migration asset exclusions incomplete")
+          "*.candidate.json.gz", "*.research.*", "*.candidate.*"} <= parts,
+         "research/migration asset exclusions incomplete (candidate.pack.json leak)")
 
 
 def check_apk(archive):
@@ -110,9 +110,10 @@ def check_apk(archive):
         segments = name.split("/")
         need(not ({"authoring", "migration"} & set(segments)),
              "research directory packaged: " + name)
-        need(not name.endswith((".research.json", ".research.json.gz",
-                                    ".candidate.json", ".candidate.json.gz")),
-             "research file packaged: " + name)
+        filename = segments[-1].lower()
+        need(not (".research." in filename or ".candidate." in filename or
+                  filename.endswith((".research", ".candidate"))),
+             "research/candidate file packaged: " + name)
     prefix = "assets/electric/vl80s/"
     need(names.count(prefix + "runtime-index.json") == 1,
          "published legacy runtime index missing")
@@ -151,8 +152,20 @@ def audit():
          "8 early IDs do not reconcile to 95 batch IDs")
     for ident, filename in EARLY.items():
         check_early(load_candidate(ROOT / BASE / filename), ident)
+    # These two authoring packs sit outside the excluded migration/authoring
+    # directories. Their CANDIDATE status must never be confused with runtime.
+    for family in ("diesel/chme3-family", "electric/ermak"):
+        candidate_path = ROOT / "content-packs" / family / "atlas/shared-scheme-pairs.candidate.pack.json"
+        need(candidate_path.is_file(), "candidate scheme pack missing: " + family)
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+        need(candidate["manifest"]["packId"].endswith(".candidate"),
+             "candidate manifest status drift: " + family)
+        need(candidate["entries"] and all(
+            entry.get("publicationStatus") == "CANDIDATE"
+            for entry in candidate["entries"]),
+            "unreviewed scheme candidate promotion: " + family)
     check_gradle((ROOT / "app-shell/build.gradle.kts").read_text(encoding="utf-8"))
-    return {"batchCandidates": sum(map(len, groups.values())),
+    return {"candidateSchemePacksExcluded": 2, "batchCandidates": sum(map(len, groups.values())),
             "earlySourceIdentities": len(EARLY),
             "chme3DeviceQAMarkersRepaired": 12,
             "runtimeApproval": False,
@@ -188,21 +201,35 @@ def negative():
         rejected += 1
     else:
         raise AssertionError("missing authoring exclusion escaped")
-    # Independent APK leak fixture: research assets must fail even if the
-    # published index itself is otherwise incomplete.
-    with io.BytesIO() as data:
-        with zipfile.ZipFile(data, "w") as archive:
-            archive.writestr("assets/electric/vl80s/diagnostics/authoring/"
-                             "stage4-pantograph.research.json", "{}")
-        data.seek(0)
-        with zipfile.ZipFile(data) as archive:
-            try:
-                check_apk(archive)
-            except AssertionError as e:
-                need("research" in str(e), "wrong APK rejection reason")
-                rejected += 1
-            else:
-                raise AssertionError("APK authoring leak escaped")
+    # Independent APK leak fixtures must fail before the VL80S runtime index
+    # check, including candidates stored outside authoring/migration dirs.
+    fixtures = (
+        ("assets/electric/vl80s/diagnostics/authoring/stage4-pantograph.research.json", "research"),
+        ("assets/diesel/chme3-family/atlas/shared-scheme-pairs.candidate.pack.json", "candidate"),
+        ("assets/electric/ermak/atlas/shared-scheme-pairs.candidate.pack.json", "candidate"),
+        ("assets/electric/ermak/atlas/future.research.pack.json.gz", "research"),
+    )
+    for filename, marker in fixtures:
+        with io.BytesIO() as data:
+            with zipfile.ZipFile(data, "w") as archive:
+                archive.writestr(filename, "{}")
+            data.seek(0)
+            with zipfile.ZipFile(data) as archive:
+                try:
+                    check_apk(archive)
+                except AssertionError as e:
+                    need(marker in str(e), "wrong APK rejection reason: " + filename)
+                    rejected += 1
+                else:
+                    raise AssertionError("APK candidate/research leak escaped: " + filename)
+    for missing in ("*.candidate.*", "*.research.*"):
+        build = (ROOT / "app-shell/build.gradle.kts").read_text(encoding="utf-8")
+        try:
+            check_gradle(build.replace(":" + missing, ""))
+        except AssertionError:
+            rejected += 1
+        else:
+            raise AssertionError("missing broad asset exclusion escaped: " + missing)
     return rejected
 
 
