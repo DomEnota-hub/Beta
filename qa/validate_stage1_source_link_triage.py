@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Evidence-gated source-link triage. Never promotes candidate data to runtime."""
+import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -17,7 +18,7 @@ def read(root: Path, path: str) -> dict:
 
 def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
     assert all(x["donorCommit"] == DONOR_SHA for x in (ledger, chme, ermak))
-    assert ledger["schemaVersion"] == 1
+    assert ledger["schemaVersion"] == 2
     assert ledger["scope"] == "SOURCE_IDENTITY_TRIAGE_ONLY"
     assert ledger["runtimeImport"] is False
     assert ledger["actionDisposition"] == "INFORMATION_ONLY"
@@ -27,11 +28,12 @@ def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
     refs = chme["unresolvedReferences"]
     assert len(refs) == ledger["chme3"]["unresolvedReferenceCount"] == 610
     assert len({(x["source"], x["variant"], x["sourceTargetId"]) for x in refs}) == len(refs)
-    expected = defaultdict(lambda: {"referenceCount": 0, "variants": set()})
+    expected = defaultdict(lambda: {"referenceCount": 0, "variants": set(), "variantCounts": Counter()})
     for ref in refs:
         group = expected[ref["sourceTargetId"]]
         group["referenceCount"] += 1
         group["variants"].add(ref["variant"])
+        group["variantCounts"][ref["variant"]] += 1
     mapped = defaultdict(set)
     for mapping in chme["mappings"]:
         mapped[mapping["sourceId"]].add(mapping["variant"])
@@ -43,6 +45,8 @@ def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
         assert key in expected, f"unrecognized CHME target {key}"
         assert group["referenceCount"] == expected[key]["referenceCount"], key
         assert group["variants"] == sorted(expected[key]["variants"]), key
+        assert group["referenceCountsByVariant"] == dict(sorted(expected[key]["variantCounts"].items())), key
+        assert sum(group["referenceCountsByVariant"].values()) == group["referenceCount"], key
         assert group["mappedSourceVariants"] == sorted(mapped[key]), key
         mismatch = bool(mapped[key]) and not expected[key]["variants"].issubset(mapped[key])
         assert group["variantMismatch"] is mismatch, key
@@ -87,8 +91,23 @@ def validate(ledger: dict, chme: dict, ermak: dict) -> dict:
             "runtimeImport": False}
 
 
+def verify_audit_blobs(root: Path, ledger: dict) -> dict:
+    """Pin the exact two audit files, not only their aggregated unresolved counts."""
+    verified = {}
+    for family, relative in (("chme3", CHME), ("ermak", ERMAK)):
+        assert ledger[family]["sourceAudit"] == relative, family
+        data = (root / relative).read_bytes()
+        blob = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
+        assert ledger[family]["sourceAuditGitBlob"] == blob, f"{family} source audit blob drift: {blob}"
+        verified[family] = blob
+    return verified
+
+
 def main() -> None:
-    result = validate(read(ROOT, LEDGER), read(ROOT, CHME), read(ROOT, ERMAK))
+    ledger = read(ROOT, LEDGER)
+    verified = verify_audit_blobs(ROOT, ledger)
+    result = validate(ledger, read(ROOT, CHME), read(ROOT, ERMAK))
+    result["sourceAuditGitBlobsVerified"] = verified
     # Also check that neither family has an unsafe runtime index.
     for base in ("content-packs/diesel/chme3-family", "content-packs/electric/ermak"):
         assert not (ROOT / base / "runtime-index.json").exists(), base
