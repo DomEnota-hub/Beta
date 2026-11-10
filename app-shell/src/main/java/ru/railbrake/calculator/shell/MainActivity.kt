@@ -50,6 +50,9 @@ import ru.railbrake.calculator.link.LinkResolver
 import ru.railbrake.calculator.navigation.FeatureDestination
 import ru.railbrake.calculator.navigation.featureDestination
 import ru.railbrake.calculator.navigation.ShellNavigationPolicy
+import ru.railbrake.calculator.navigation.ShellHomeDestination
+import ru.railbrake.calculator.navigation.ShellHomeNavigationPolicy
+import ru.railbrake.calculator.navigation.ShellHomeRoute
 import ru.railbrake.calculator.navigation.WorkingModelResolution
 import ru.railbrake.calculator.runtime.ContentPackIndexJsonLoader
 import ru.railbrake.calculator.runtime.ContentPackJsonLoader
@@ -69,7 +72,10 @@ class MainActivity : ComponentActivity() {
                 // A fresh launch never assumes VL80S (or any other working model).
                 // Saved instance state preserves an explicit selection on recreation only.
                 var selectedModelId by rememberSaveable { mutableStateOf<String?>(null) }
-                when (val selection = ShellNavigationPolicy.resolve(selectedModelId)) {
+                var shellDestinationName by rememberSaveable(selectedModelId) {
+                    mutableStateOf(ShellHomeDestination.HOME.name)
+                }
+                val workingModel = when (val selection = ShellNavigationPolicy.resolve(selectedModelId)) {
                     WorkingModelResolution.NotSelected -> {
                         WorkingModelSelectionScreen { selectedModelId = it.id.value }
                         return@MaterialTheme
@@ -84,15 +90,41 @@ class MainActivity : ComponentActivity() {
                         }
                         return@MaterialTheme
                     }
-                    is WorkingModelResolution.Selected -> {
-                        if (!selection.model.runtimePublished) {
-                            BackHandler { selectedModelId = null }
-                            UnpublishedWorkingModelScreen(selection.model) {
-                                selectedModelId = null
+                    is WorkingModelResolution.Selected -> selection.model
+                }
+                val shellDestination = ShellHomeDestination.valueOf(shellDestinationName)
+                if (shellDestination == ShellHomeDestination.HOME) {
+                    BackHandler { selectedModelId = null }
+                    ShellHomeScreen(
+                        model = workingModel,
+                        onChangeModel = { selectedModelId = null },
+                        onOpen = { shellDestinationName = it.name },
+                    )
+                    return@MaterialTheme
+                }
+                val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
+                if (shellRoute !is ShellHomeRoute.PublishedModelFeature) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    val explanation = when (shellRoute) {
+                        is ShellHomeRoute.Unavailable -> {
+                            if (shellRoute.modelId != null) {
+                                "Материалы этой модели пока не опубликованы. " +
+                                    "Непроверенные источники и исполнения не открываются."
+                            } else {
+                                "Раздел ещё не подключён к рабочему приложению. " +
+                                    "Его материалы будут доступны после отдельной проверки."
                             }
-                            return@MaterialTheme
                         }
+                        ShellHomeRoute.ModelSelectionRequired ->
+                            "Сначала выберите рабочий локомотив."
+                        is ShellHomeRoute.PublishedModelFeature -> error("Unreachable")
                     }
+                    ShellUnavailableScreen(
+                        title = shellDestination.title,
+                        explanation = explanation,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
                 }
                 val loaded = bootstrap.getOrNull()
                 if (loaded == null) {
@@ -105,7 +137,12 @@ class MainActivity : ComponentActivity() {
                     return@MaterialTheme
                 }
 
-                var currentScreen by remember { mutableStateOf(Vl80sScreen.LAYOUT) }
+                val initialScreen = when (shellDestination) {
+                    ShellHomeDestination.DIAGNOSTICS -> Vl80sScreen.DIAGNOSTICS
+                    ShellHomeDestination.ACCEPTANCE -> Vl80sScreen.ACCEPTANCE_ROUTES
+                    else -> Vl80sScreen.LAYOUT
+                }
+                var currentScreen by remember(shellDestination) { mutableStateOf(initialScreen) }
                 var returnFromEntry by remember { mutableStateOf(Vl80sScreen.LAYOUT) }
                 var currentId by remember { mutableStateOf(CanonicalId("VL-EQ-HV-002")) }
                 var notice by remember { mutableStateOf<String?>(null) }
@@ -116,7 +153,19 @@ class MainActivity : ComponentActivity() {
                     BackHandler {
                         currentScreen = when (currentScreen) {
                             Vl80sScreen.LAYOUT -> {
-                                selectedModelId = null
+                                shellDestinationName = ShellHomeDestination.HOME.name
+                                Vl80sScreen.LAYOUT
+                            }
+                            Vl80sScreen.DIAGNOSTICS -> {
+                                if (shellDestination == ShellHomeDestination.DIAGNOSTICS) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                }
+                                Vl80sScreen.LAYOUT
+                            }
+                            Vl80sScreen.ACCEPTANCE_ROUTES -> {
+                                if (shellDestination == ShellHomeDestination.ACCEPTANCE) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                }
                                 Vl80sScreen.LAYOUT
                             }
                             Vl80sScreen.ACCEPTANCE_ROUTE -> Vl80sScreen.ACCEPTANCE_ROUTES
@@ -125,8 +174,8 @@ class MainActivity : ComponentActivity() {
                     }
                     when (currentScreen) {
                         Vl80sScreen.LAYOUT -> Column {
-                            TextButton(onClick = { selectedModelId = null }) {
-                                Text("← Сменить локомотив")
+                            TextButton(onClick = { shellDestinationName = ShellHomeDestination.HOME.name }) {
+                                Text("← На главную")
                             }
                             Box(modifier = Modifier.weight(1f)) {
                                 AtlasLayoutScreen(
@@ -177,7 +226,13 @@ class MainActivity : ComponentActivity() {
                         Vl80sScreen.DIAGNOSTICS -> DiagnosticCatalogScreen(
                             catalog = loaded.diagnosticCatalog,
                             modelTitle = "ВЛ80С",
-                            onBack = { currentScreen = Vl80sScreen.LAYOUT },
+                            onBack = {
+                                if (shellDestination == ShellHomeDestination.DIAGNOSTICS) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                } else {
+                                    currentScreen = Vl80sScreen.LAYOUT
+                                }
+                            },
                         )
 
                         Vl80sScreen.ACCEPTANCE_ROUTES -> AcceptanceRoutesScreen(
