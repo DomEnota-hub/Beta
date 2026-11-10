@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.calculations.*
+import ru.railbrake.calculator.history.HistoryRecord
 
 private data class Vu45RowInput(
     val force: String = "", val axles: String = "", val wagons: String = "",
@@ -79,11 +80,12 @@ private fun Vu45TextField(label: String, value: String, change: (String) -> Unit
 }
 
 @Composable
-fun Vu45VerificationScreen(onBack: () -> Unit) {
+fun Vu45VerificationScreen(onBack: () -> Unit, onSave: (HistoryRecord) -> Boolean) {
     var mode by remember { mutableStateOf(Vu45EntryMode.AXLES) }
     var axleForm by remember { mutableStateOf(Vu45FormInput()) }
     var wagonForm by remember { mutableStateOf(Vu45FormInput()) }
     var result by remember { mutableStateOf<Vu45CheckResult?>(null) }
+    var saveStatus by remember { mutableStateOf<String?>(null) }
     var showRowSettings by remember { mutableStateOf(false) }
     val form = if (mode == Vu45EntryMode.AXLES) axleForm else wagonForm
     val updateForm: (Vu45FormInput) -> Unit = { updated ->
@@ -246,6 +248,24 @@ fun Vu45VerificationScreen(onBack: () -> Unit) {
                     "Автоматический допуск к эксплуатации закрыт.",
                 style = MaterialTheme.typography.bodySmall,
             )
+            if (checked.status != Vu45Status.INVALID_INPUT) {
+                Button(onClick = {
+                    val record = HistoryRecord(
+                        timestampMillis = System.currentTimeMillis(),
+                        mode = "ВУ-45",
+                        title = "Проверка ВУ-45 · " + form.station.ifBlank { "станция не указана" },
+                        summary = "Статус: ${checked.status.name}; осей: ${checked.declaredAxles ?: "нет"}",
+                        details = "Оси по строкам: ${checked.calculatedAxles ?: "нет"}; " +
+                            "нажатие по справке: ${checked.declaredForceTons ?: "нет"}; " +
+                            "по строкам: ${checked.calculatedForceTons ?: "нет"}; " +
+                            "замечания: ${checked.findings.joinToString()}; " +
+                            "НОРМАТИВНОЕ СООТВЕТСТВИЕ НЕ ПОДТВЕРЖДЕНО.",
+                    )
+                    saveStatus = if (onSave(record)) "Проверка сохранена в истории."
+                        else "Ошибка сохранения истории."
+                }) { Text("Сохранить проверку в историю") }
+                saveStatus?.let { Text(it) }
+            }
         }
     }
 }

@@ -25,14 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.calculations.*
+import ru.railbrake.calculator.history.HistoryRecord
 
 /** Two independent user forms; neither claims to prescribe operational securing. */
 @Composable
-fun SecuringScreen(onBack: () -> Unit) {
+fun SecuringScreen(onBack: () -> Unit, onSave: (HistoryRecord) -> Boolean) {
     var mode by remember { mutableStateOf(CalculationMode.BY_MASS) }
     var mass by remember { mutableStateOf(MassSecuringDraft()) }
     var appendix by remember { mutableStateOf(AppendixSecuringDraft()) }
     var result by remember { mutableStateOf<SecuringReview?>(null) }
+    var saveStatus by remember { mutableStateOf<String?>(null) }
     val updateMass: (MassSecuringDraft) -> Unit = { mass = it; result = null }
     val updateAppendix: (AppendixSecuringDraft) -> Unit = { appendix = it; result = null }
 
@@ -74,7 +76,20 @@ fun SecuringScreen(onBack: () -> Unit) {
             },
             modifier = Modifier.fillMaxWidth(),
         ) { Text("Рассчитать предварительно") }
-        result?.let { SecuringResult(it) }
+        result?.let { reviewed ->
+            SecuringResult(reviewed)
+            if (reviewed !is SecuringReview.Invalid) {
+                Button(
+                    onClick = {
+                        saveStatus = if (onSave(reviewed.asHistoryRecord()))
+                            "Предварительный расчёт сохранён в истории."
+                        else "Не удалось сохранить историю. Проверьте доступность хранилища."
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("Сохранить предварительный расчёт") }
+                saveStatus?.let { Text(it) }
+            }
+        }
     }
 }
 
@@ -205,5 +220,34 @@ private fun SecuringResult(result: SecuringReview) {
         "ЭКСПЛУАТАЦИОННЫЙ ДОПУСК НЕ ПОДТВЕРЖДЁН. " +
             "Результат не заменяет ТРА, действующие нормативы и проверку условий на месте.",
         color = MaterialTheme.colorScheme.error,
+    )
+}
+
+/** History is an audit trail, never a certificate of normative compliance. */
+private fun SecuringReview.asHistoryRecord(): HistoryRecord {
+    val mode = if (this is SecuringReview.Mass) "По массе" else "ИДП №12"
+    val summary = when (this) {
+        is SecuringReview.Mass ->
+            "Башмаков: ${calculation.requiredShoes}; недостаток: ${supplement.shoeShortage}"
+        is SecuringReview.Appendix ->
+            "Башмаков: ${calculation.totalRequiredShoes}; недостаток: ${calculation.shoeShortage}"
+        is SecuringReview.Invalid -> error("Invalid result cannot be saved")
+    }
+    val details = when (this) {
+        is SecuringReview.Mass ->
+            "Имеется: ${supplement.availableShoes}; ручных тормозных осей: " +
+                "${supplement.additionalManualAxles}; единиц ручного тормоза: " +
+                "${supplement.requiredHandBrakeUnits}; резерв: ${supplement.reserveManualAxles}"
+        is SecuringReview.Appendix ->
+            "База: ${calculation.baseShoes}; противоположная сторона: " +
+                "${calculation.oppositeSideShoes}; ветер: ${calculation.windShoes}; " +
+                "замещающих осей: ${calculation.substituteBrakeAxles}; " +
+                "единиц ручного тормоза: ${calculation.requiredHandBrakeUnits}"
+        is SecuringReview.Invalid -> error("Invalid result cannot be saved")
+    }
+    return HistoryRecord(
+        System.currentTimeMillis(), mode, "Закрепление состава",
+        summary + " · ПРЕДВАРИТЕЛЬНО",
+        details + ". ЭКСПЛУАТАЦИОННЫЙ ДОПУСК НЕ ПОДТВЕРЖДЁН.",
     )
 }
