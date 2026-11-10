@@ -21,3 +21,12 @@ Catalog pages:
 
 ## Verification
 This change adds a CI gate to `stage1-source-link-triage.yml`. Terminal CI results must be recorded separately in Issue #4; do not claim success before checking workflow conclusions. No Android UI or runtime content was changed.
+
+## Verified CI checkpoint for code commit `8c9da1236819c29922000920530457054f72cd9e`
+
+- **16/16 workflow runs completed with SUCCESS (terminal)** on the source-lead/code commit.
+- [Stage 1 source-link triage #42769952012](https://github.com/DomEnota-hub/Beta/actions/runs/42769952012): SUCCESS, including **12/12 new negative tests**, source lead validator and previous CHME3/Ermak quarantine checks.
+- [Modular architecture bootstrap #42769952192](https://github.com/DomEnota-hub/Beta/actions/runs/42769952192): SUCCESS, Kotlin/contract tests, Android lint, assembleDebug, Stage 50/51 APK boundary and integrity.
+- This checkpoint is a documentation-only follow-up commit; its own CI must be checked independently. No device QA was performed.
+- **Stage 1 remains IN_PROGRESS**: 610 CHME3 links and 548 Ermak occurrences quarantined, 8 EDB variant conflicts blocked; exam rights/pack and history migration still outstanding. Stage 2 not started.
+- **Next action:** legally obtain the advertised original archives, inspect hashes/title blocks/revisions/sheets, establish manufacturer origin and specific unit applicability, then reconcile exact pinned source edges. If these cannot be verified, retain quarantine and continue manufacturer source search.
