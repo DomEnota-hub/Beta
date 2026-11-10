@@ -60,6 +60,36 @@ def validate(evidence, audit, triage, priority, remaining):
     assert revision["applicability"] == "HISTORICAL_PUBLICATION_CLAIM_ONLY"
     assert revision["originalFactoryRevisionVerified"] is False
     assert revision["modernizationsExcludedFromInference"] is True
+
+    # Secondary book transcription only: these are historical distinctions, not
+    # manufacturer-approved configurations or repair/crew instructions.
+    deltas = evidence["historicalComponentDifferences"]
+    assert len(deltas) == 2
+    assert {d["componentId"] for d in deltas} == {
+        "CHME3T-BRAKE-SELECTOR", "CHME3T-ELECTRONIC-REGULATOR"}
+    assert all(d["historicalSourceUrl"] == "https://myswitcher.ru/4me3/4me3_67.html"
+               and d["evidenceKind"] ==
+               "SECONDARY_TRANSCRIPTION_OF_1996_BOOK_NOT_FACTORY_DRAWING"
+               and d["unitApplicabilityVerified"] is False
+               and d["factoryDrawingVerified"] is False
+               and d["crewActionAuthorized"] is False
+               and d["runtimeImport"] is False
+               and "§67" in d["locator"]
+               for d in deltas)
+    selector = next(d for d in deltas if d["componentId"] == "CHME3T-BRAKE-SELECTOR")
+    assert selector["before6245"] == {
+        "powerFingers": 25, "interlockPosition": "LOWER_SHAFT",
+        "relativeToReverser": "LEFT"}
+    assert selector["from6245"] == {
+        "powerFingers": 16, "interlockPosition": "UPPER_SHAFT",
+        "relativeToReverser": "RIGHT"}
+    regulator = next(d for d in deltas if d["componentId"] == "CHME3T-ELECTRONIC-REGULATOR")
+    assert regulator["earlierDocumentedBatches"] == [
+        "4385", "4596", "5070-5089", "5482-5531", "5784-5882", "6000"]
+    assert regulator["earlyBatchesOnlyNotAllPre6245"] is True
+    assert regulator["earlyBatches"] == {"electronicBoards": 49, "trays": 4}
+    assert regulator["from6245"] == {"electronicBoards": 39, "trays": 3}
+
     assert evidence["originalUnresolvedChme3References"] == 610
     assert evidence["remainingUnresolvedChme3References"] == 610
     assert evidence["crossVariantEDBConflictsStillBlocked"] == 8

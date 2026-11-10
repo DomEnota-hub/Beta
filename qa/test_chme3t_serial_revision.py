@@ -106,5 +106,45 @@ class SerialRevisionTests(unittest.TestCase):
             self.check()
 
 
+    def test_component_evidence_baseline(self):
+        self.assertEqual(len(self.e["historicalComponentDifferences"]), 2)
+        self.check()
+
+    def test_brake_selector_contact_count_tamper(self):
+        self.e["historicalComponentDifferences"][0]["from6245"]["powerFingers"] = 25
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_brake_selector_side_tamper(self):
+        self.e["historicalComponentDifferences"][0]["before6245"]["relativeToReverser"] = "RIGHT"
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_regulator_board_count_tamper(self):
+        self.e["historicalComponentDifferences"][1]["from6245"]["electronicBoards"] = 49
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_regulator_early_batch_scope_cannot_be_generalized(self):
+        self.e["historicalComponentDifferences"][1]["earlyBatchesOnlyNotAllPre6245"] = False
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_secondary_evidence_cannot_be_called_factory_verified(self):
+        self.e["historicalComponentDifferences"][0]["factoryDrawingVerified"] = True
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_component_evidence_cannot_enter_runtime(self):
+        self.e["historicalComponentDifferences"][1]["runtimeImport"] = True
+        with self.assertRaises(AssertionError):
+            self.check()
+
+    def test_component_evidence_source_cannot_be_replaced_silently(self):
+        self.e["historicalComponentDifferences"][0]["historicalSourceUrl"] = "https://example.org"
+        with self.assertRaises(AssertionError):
+            self.check()
+
+
 if __name__ == "__main__":
     unittest.main()

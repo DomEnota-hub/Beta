@@ -30,3 +30,16 @@ Obtain manufacturer-issued electrical drawings with document number, edition, sh
 - On tested commit `4bf5534b`, **16/16 workflow runs terminal SUCCESS**. This report file is documentation-only; its own final commit needs a separate terminal CI check before describing the final branch HEAD as green.
 - **Blockers unchanged:** manufacturer electrical drawings with serial/revision applicability missing; CHME3 610 and Ermak 548 source occurrences unresolved; exam-question rights and history migration implementation pending.
 - **Next:** seek factory-issued pre-/post-6245 CHME3T circuit drawings with exact sheet numbers; keep all 54 at-risk CHME3T source edges quarantined. Then proceed with independent CHME3/CHME3E and Ermak source checks. Stage 1 stays open.
+
+## Дополнение 10.11.2026: поэлементные различия ЧМЭ3Т (исторический источник)
+
+В опубликованной электронной перепечатке §67 книги Нотика (1996) обнаружены два **конкретных** различия в аппаратуре, которые нельзя смешивать при построении атласа и диагностических ссылок: [§67, схемы и иллюстрации 158, 160, 166, 169](https://myswitcher.ru/4me3/4me3_67.html).
+
+1. **Тормозной переключатель:** для ранней схемы описаны 25 силовых пальцев, нижнее размещение блокировки и положение слева от реверсора; начиная с №6245 описаны 16 силовых пальцев, верхнее размещение блокировки и положение справа от реверсора.
+2. **Электронный регулятор:** для **конкретно перечисленных ранних партий** (4385, 4596, 5070–5089, 5482–5531, 5784–5882, 6000) указаны 49 электронных блоков в четырёх ваннах; начиная с №6245 указаны 39 блоков в трёх ваннах. **Нельзя** распространять сведения о ранних партиях на все номера до 6245.
+
+Оба факта зафиксированы в `chme3t-serial-revision-evidence.candidate.json` как **исторические сведения из вторичной перепечатки**, а не проверенные заводские чертежи. Для каждого компонента сохранены `factoryDrawingVerified=false`, `unitApplicabilityVerified=false`, `crewActionAuthorized=false`, `runtimeImport=false`. Нет данных о фактическом оборудовании конкретной машины или её модернизациях. Изменения не являются рекомендациями по переключению, ремонту или обходу защит.
+
+В валидатор добавлены строгие сверки компонентных различий, в регрессионный набор **8 дополнительных тестов (итого 25)**: изменение числа контактов, перестановка расположения, изменение числа плат, обобщение ранних партий, ложная заводская авторизация, runtime-публикация и подмена ссылки. CI: `stage1-source-link-triage.yml`. **Результат CI этой правки должен быть подтверждён отдельно; данный раздел не объявляет стадию завершённой.**
+
+**Следующее:** получить заводские чертежи/РЭ с номером документа, листами, редакцией и применимостью к конкретной машине; сопоставить названные компоненты с 54 карантинными связями без автоматического разрешения. Остальные 610 ссылок ЧМЭ3 и 548 вхождений «Ермака» сохраняют карантин.
