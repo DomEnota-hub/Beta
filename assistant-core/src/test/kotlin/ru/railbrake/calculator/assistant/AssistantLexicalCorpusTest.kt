@@ -41,6 +41,21 @@ class AssistantLexicalCorpusTest {
             Probe("чмэ три э дизель заглох", TextIntent.DIAGNOSTICS, "chme3e"),
             Probe("тэм два у двигатель глохнет", TextIntent.DIAGNOSTICS, "tem2u"),
             Probe("тэм два двигатель глохнет", TextIntent.DIAGNOSTICS, "tem2"),
+            Probe("ЧМЭ3 дизель заглох", TextIntent.DIAGNOSTICS, "chme3"),
+            Probe("ВЛ80С ТЭД искрит", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С АКБ не заряжается", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С ЭПК не срабатывает", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С ВР 483 травит", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С нет индикации", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С тягу не берет", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С компрессор не останавливается", TextIntent.DIAGNOSTICS, "vl80s"),
+            Probe("ВЛ80С главный выключатель", TextIntent.REFERENCE, "vl80s"),
+            Probe("что такое компрессор", TextIntent.REFERENCE),
+            Probe("схема ТЭМ2", TextIntent.SCHEME, "tem2"),
+            Probe("осмотр локомотива ЧМЭ3", TextIntent.ACCEPTANCE, "chme3"),
+            Probe("человек без сознания", TextIntent.SAFETY),
+            Probe("человек не дышит", TextIntent.SAFETY),
+            Probe("первая помощь", TextIntent.SAFETY),
         )
         assertTrue(cases.size >= 25)
         cases.forEach { case ->
@@ -137,6 +152,23 @@ class AssistantLexicalCorpusTest {
             engine.query("2ЭС5К главник", vl))
         assertTrue(engine.query("ВЛ80С и ЧМЭ3 главный выключатель", vl)
             is TextAssistantResult.ClarifyModel)
+    }
+
+    @Test fun everyUnpublishedFamilyFailsClosedEvenWithRecognizedSynonyms() {
+        val (_, engine) = fixture(entry("breaker", "Главный выключатель", ContentType.EQUIPMENT))
+        val cases = mapOf(
+            "2ЭС5К главник" to "2es5k",
+            "3ЭС5К ГВ" to "3es5k",
+            "ЧМЭ3 компрессор" to "chme3",
+            "ЧМЭ3Т компрессор" to "chme3t",
+            "ЧМЭ3Э компрессор" to "chme3e",
+            "ТЭМ2 компрессор" to "tem2",
+            "ТЭМ2У компрессор" to "tem2u"
+        )
+        cases.forEach { (query, id) ->
+            assertEquals(query, TextAssistantResult.UnpublishedModel(ModelId(id)),
+                engine.query(query, vl))
+        }
     }
 
     @Test fun referenceSynonymsFindTheSamePublishedCard() {
