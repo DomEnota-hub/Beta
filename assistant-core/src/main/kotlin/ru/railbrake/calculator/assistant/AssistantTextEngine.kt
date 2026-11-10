@@ -28,9 +28,7 @@ object TextQueryParser {
     )
     private val stopWords = setOf("на", "у", "по", "для", "мне", "покажи", "найди",
         "что", "где", "как", "это", "есть", "про", "в", "и", "с", "об", "о", "а")
-    fun normalize(text: String): String = text.lowercase().replace('ё', 'е')
-        .replace(Regex("[^\\p{L}\\p{N}\\s-]"), " ")
-        .replace(Regex("\\s+"), " ").trim()
+    fun normalize(text: String): String = AssistantLexicon.normalize(text)
 
     private fun containsWord(text: String, word: String) =
         Regex("(?<![\\p{L}\\p{N}])" + Regex.escape(word) + "(?![\\p{L}\\p{N}])")
@@ -43,16 +41,7 @@ object TextQueryParser {
         val ermak = containsWord(normalized, "ермак") && models.none {
             it == ModelId("2es5k") || it == ModelId("3es5k")
         }
-        val intent = when {
-            listOf("не включ", "не выключ", "не поднима", "не опуска",
-                "не запуска", "не работает", "не тормоз", "не отпуска",
-                "нет тяги", "пропала тяга", "не набира", "выбивает",
-                "отключился", "глох", "неисправ").any(normalized::contains) -> TextIntent.DIAGNOSTICS
-            listOf("схем", "чертеж", "цепи управления").any(normalized::contains) -> TextIntent.SCHEME
-            listOf("приемк", "осмотр").any(normalized::contains) -> TextIntent.ACCEPTANCE
-            listOf("пожар", "охрана труда", "первая помощь").any(normalized::contains) -> TextIntent.SAFETY
-            else -> TextIntent.REFERENCE
-        }
+        val intent = AssistantLexicon.intent(normalized)
         var search = normalized
         modelAliases.keys.sortedByDescending(String::length).forEach {
             search = search.replace(Regex("(?<![\\p{L}\\p{N}])" + Regex.escape(it) +
@@ -129,7 +118,7 @@ class AssistantTextEngine(
             activeVariantId = if (scope.mode == AssistantQueryMode.WORKING_MODEL) variantId else null,
             allowedLayers = setOf(ContentLayer.STANDARD),
         )
-        val tokens = parsed.searchText.split(" ").filter { it.length >= 2 }.distinct()
+        val tokens = parsed.searchText.split(" ").filter { it.length >= 2 && it != "не" }.distinct()
         if (tokens.isEmpty()) return TextAssistantResult.NoMatches("Уточните запрос.")
         val hits = registry.allEntries().asSequence()
             .filter { entry ->
@@ -152,7 +141,7 @@ class AssistantTextEngine(
             }
             .filter { entry -> allowedTypes == null || entry.type in allowedTypes }
             .mapNotNull { entry ->
-                val score = score(entry, parsed.searchText, tokens)
+                val score = score(entry, parsed.searchText, tokens, intent)
                 if (score < 12) null else {
                     val verified = entry.sourceRefs.isNotEmpty() && entry.sourceRefs.all { ref ->
                         val source = registry.find(CanonicalId(ref))
@@ -181,7 +170,7 @@ class AssistantTextEngine(
         return TextAssistantResult.Matches(scope, intent, hits, recommended)
     }
 
-    private fun score(entry: ContentEntry, query: String, tokens: List<String>): Int {
+    private fun score(entry: ContentEntry, query: String, tokens: List<String>, intent: TextIntent): Int {
         val title = TextQueryParser.normalize(entry.title)
         val terms = (entry.searchTerms + entry.aliases.map { it.value } +
             listOfNotNull(entry.summary)).map(TextQueryParser::normalize)
@@ -190,6 +179,8 @@ class AssistantTextEngine(
         val matched = tokens.count { token -> token in allTokens ||
             (token.length >= 5 && allTokens.any { it.length >= 5 &&
                 (it.startsWith(token) || token.startsWith(it)) }) }
+        // A component-only match must never select an arbitrary fault scenario.
+        if (intent == TextIntent.DIAGNOSTICS && (tokens.size < 2 || matched < 2)) return 0
         var score = matched * 12
         if (title == query) score += 120
         if (terms.any { it == query }) score += 105
