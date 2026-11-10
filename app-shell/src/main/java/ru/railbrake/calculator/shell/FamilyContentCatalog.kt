@@ -38,7 +38,7 @@ class FamilyContentCatalog(private val assets: AssetManager) {
         allowedTypes: Set<ContentType>,
     ): List<ContentEntry> {
         val sources = snapshot.entries.filter {
-            FamilyPublicationGate.trustedSource(it, profile)
+            FamilyPublicationGate.trustedSource(it, profile, execution)
         }.map { it.id.value }.toSet()
         return snapshot.entries.filter {
             FamilyPublicationGate.canDisplay(it, profile, execution, sources, allowedTypes)

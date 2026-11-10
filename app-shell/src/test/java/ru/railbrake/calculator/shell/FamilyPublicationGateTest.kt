@@ -68,9 +68,16 @@ class FamilyPublicationGateTest {
         assertFalse(permitted(entry(layer = ContentLayer.RESTRICTED)))
     }
     @Test fun sourceNeedsIndependentPublicationAndProvenance() {
-        assertTrue(FamilyPublicationGate.trustedSource(entry(type = ContentType.SOURCE), profile))
+        assertTrue(FamilyPublicationGate.trustedSource(entry(type = ContentType.SOURCE), profile, variant))
         assertFalse(FamilyPublicationGate.trustedSource(
-            entry(type = ContentType.SOURCE, status = PublicationStatus.CANDIDATE), profile))
+            entry(type = ContentType.SOURCE, status = PublicationStatus.CANDIDATE), profile, variant))
+    }
+    @Test fun sourceForAnotherExecutionCannotAuthorizeCard() {
+        assertFalse(FamilyPublicationGate.trustedSource(
+            entry(type = ContentType.SOURCE, variantIds = setOf(VariantId("tem2u"))),
+            profile, variant))
+        assertFalse(FamilyPublicationGate.trustedSource(
+            entry(type = ContentType.SOURCE, variantIds = emptySet()), profile, variant))
     }
     @Test fun distinctSeriesAndExecutionsNeverMerge() {
         val a = FamilyProfiles.forModel(ModelId("2es5k"))!!

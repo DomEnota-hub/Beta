@@ -83,9 +83,12 @@ object FamilyPublicationGate {
         ContentType.KNOWLEDGE,
     )
 
-    fun trustedSource(entry: ContentEntry, profile: FamilyModelProfile): Boolean =
+    fun trustedSource(entry: ContentEntry, profile: FamilyModelProfile, execution: VariantId?): Boolean =
+        execution != null && profile.executions.any { it.id == execution } &&
         entry.type == ContentType.SOURCE &&
             entry.owner == ContentOwner.Model(profile.packOwnerId) &&
+            entry.applicability.modelIds == setOf(profile.packOwnerId) &&
+            execution in entry.applicability.variantIds &&
             entry.publicationStatus == PublicationStatus.ACTIVE &&
             entry.sourceStatus == SourceStatus.CURRENT &&
             entry.provenance in trustedProvenance &&
