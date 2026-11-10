@@ -2,6 +2,7 @@ package ru.railbrake.calculator.assistant
 
 import org.junit.Assert.*
 import org.junit.Test
+import java.io.File
 import ru.railbrake.calculator.domain.*
 import ru.railbrake.calculator.runtime.*
 
@@ -169,6 +170,36 @@ class AssistantLexicalCorpusTest {
             assertEquals(query, TextAssistantResult.UnpublishedModel(ModelId(id)),
                 engine.query(query, vl))
         }
+    }
+
+    @Test fun realPinnedVl80sPackResolvesEquipmentButKeepsDiagnosticCandidateHidden() {
+        fun realPack(relative: String): ContentPack {
+            val file = listOf(File("../content-packs/$relative"),
+                File("content-packs/$relative")).firstOrNull(File::isFile)
+                ?: error("Missing checked-in real content pack: $relative")
+            return ContentPackJsonLoader().parse(file.readText(Charsets.UTF_8))
+        }
+        val registry = ContentRegistry()
+        val hv = realPack("electric/vl80s/atlas/equipment/hv.pack.json")
+        val candidate = realPack("electric/vl80s/diagnostics/recommended/high-voltage.pack.json")
+        assertTrue(registry.install(hv).isEmpty())
+        assertTrue(registry.install(candidate).isEmpty())
+        val engine = AssistantTextEngine(registry, setOf(vl))
+        listOf("ВЛ80С главник", "ВЛ80С ГВ", "вээл восемьдесят эс гэ вэ").forEach {
+            val result = engine.query(it, vl)
+            assertTrue("$it -> $result", result is TextAssistantResult.Matches)
+            val first = (result as TextAssistantResult.Matches).hits.first()
+            assertEquals("VL-EQ-HV-001", first.entry.id.value)
+            assertEquals(setOf("VL-SRC-001", "VL-SRC-006", "VL-SRC-008"), first.sourceIds)
+            assertFalse("Unloaded source catalog cannot be verified", first.sourceVerified)
+            assertNull("Unknown source must not auto-open", result.recommended)
+        }
+        val pantograph = engine.query("ВЛ80С пантограф", vl) as TextAssistantResult.Matches
+        assertEquals("VL-EQ-HV-002", pantograph.hits.first().entry.id.value)
+        assertTrue(engine.query("ВЛ80С пантограф не поднимается", vl)
+            is TextAssistantResult.NoMatches)
+        assertTrue(engine.query("ВЛ80С главник не включается", vl)
+            is TextAssistantResult.NoMatches)
     }
 
     @Test fun referenceSynonymsFindTheSamePublishedCard() {
