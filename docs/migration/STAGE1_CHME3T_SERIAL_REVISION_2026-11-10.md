@@ -21,3 +21,12 @@ New non-runtime evidence: `chme3t-serial-revision-evidence.candidate.json`. Vali
 ## Next concrete action
 
 Obtain manufacturer-issued electrical drawings with document number, edition, sheet and explicit CHME3T applicability before/after 6245; verify actual unit number and modernization, and compare individual edges. Independently acquire corresponding CHME3 and CHME3E factory drawings and pneumatic documentation. Keep the stage open until original source authority and all other parity gates are demonstrably met.
+
+## Verified implementation checkpoint
+
+- Audit/code/workflow commit: `4bf5534b9b0a5137d7aaba9a49e375435daa59ac`; preceding commits `86015c75`, `d530abe9`, `82f06f4a`, `a7f2709e`.
+- [Stage 1 source-link triage #42757319289](https://github.com/DomEnota-hub/Beta/actions/runs/42757319289): **terminal SUCCESS**; the new 17/17 negative tests and historical serial gate validator both passed.
+- [Modular architecture bootstrap #42757318899](https://github.com/DomEnota-hub/Beta/actions/runs/42757318899): **terminal SUCCESS**, including Kotlin/contract tests, Android lint, assembleDebug, APK candidate exclusion and integrity checks.
+- On tested commit `4bf5534b`, **16/16 workflow runs terminal SUCCESS**. This report file is documentation-only; its own final commit needs a separate terminal CI check before describing the final branch HEAD as green.
+- **Blockers unchanged:** manufacturer electrical drawings with serial/revision applicability missing; CHME3 610 and Ermak 548 source occurrences unresolved; exam-question rights and history migration implementation pending.
+- **Next:** seek factory-issued pre-/post-6245 CHME3T circuit drawings with exact sheet numbers; keep all 54 at-risk CHME3T source edges quarantined. Then proceed with independent CHME3/CHME3E and Ermak source checks. Stage 1 stays open.
