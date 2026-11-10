@@ -20,7 +20,7 @@
 4. Donor `AcceptanceStateRepository` stores `technical_acceptance_states`, including item state, `note:<id>`, `disabled:<family>`, `save_parameters:<family>`, and `session:<family>:<field>`. Beta has acceptance state types but no verified on-device migration.
 5. Donor `DiagnosticSessionRepository` stores `diagnostic_sessions/records` as URL-safe Base64 fields joined by `|`, up to 100 records. Beta has no proven compatible store.
 6. Donor `LocomotiveProfileRepository` stores `locomotive_profile` and a separate `diagnostic_profile_confirmed` flag. The donor UI default to VL80S must **never** be interpreted as confirmation.
-7. `BrakeCalculatorApp.kt` imports `ru.railbrake.calculator.data.HistoryRepository`, but **no `HistoryRepository.kt` exists anywhere in the pinned donor Git tree**. Its exact legacy storage format is therefore **not established**. Keep `HistoryStorageMigrationGate.legacyFormatVerified=false` until the original implementation or compatible evidence is recovered.
+7. `BrakeCalculatorApp.kt` imports `ru.railbrake.calculator.data.HistoryRepository`. **It is absent from the pinned donor Git tree but PRESENT inside `RailBrakeCalculator.zip` at the same pinned commit.** The ZIP member `RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/data/HistoryRepository.kt` has Git blob `d95a2ce465e2f09bb96d74b8318f36b16d21afd0`. `docs/data-migration/legacy-zip-member-manifest.json` and `qa/validate_legacy_zip_member_manifest.py` verify the archive and source. Observed legacy format: SharedPreferences `calculation_history`, StringSet key `records`, `timestampMillis|base64url(mode)|base64url(title)|base64url(summary)|base64url(details)`, max 30, deduplicated by timestamp. **Format observed does not mean migration implemented**: keep `HistoryStorageMigrationGate.legacyFormatVerified=false` until storage reader/writer, backup/recovery, malformed/collision policy and signed upgrade QA pass. See draft PR #2 for a read-only codec and tests.
 8. Encrypted exam questions have been source-audited, but `ExamQuestionRepository` / `ExamQuestionScreen` are not migrated to runtime.
 
 The source Kotlin manifest maps architectural touchpoints, **not** line-by-line source equivalence. Actual behavior and storage migration remain future implementation tasks.
@@ -40,10 +40,10 @@ CI [Stage 1 unresolved source quarantine](https://github.com/DomEnota-hub/Beta/a
 
 ## Remaining work before stage 1 closes
 
-- Investigate whether the donor history implementation can be recovered from authoritative source history, not inferred from UI imports.
+- Implement and verify the already recovered ZIP-backed history format end-to-end; the read-only codec in draft PR #2 is not a storage migration.
 - Continue source link resolution with primary evidence and explicit variant applicability; retain unresolved references as non-executable candidates.
 - Recover 329 exam question entries into a non-runtime candidate format only when authorization and provenance are established.
 - Extend source-level mapping beyond Kotlin main and donor assets where required (tests, Gradle wiring, assets outside `app/src/main/assets`).
 - Run full CI on final HEAD; only then decide whether stage 1 acceptance gates are met.
 
-**Next concrete action:** inspect donor history source provenance, then resolve or explicitly quarantine individual CHME3/Ermak references in evidence-backed batches; do not begin stage 2 until all stage 1 gates have documented disposition.
+**Next concrete action:** reconcile the verified ZIP history source and draft PR #2 against the stage-7 implementation plan; separately resolve or explicitly quarantine individual CHME3/Ermak references in evidence-backed batches. Do not begin stage 2 until stage-1 inventory/disposition gates are documented.
