@@ -29,13 +29,14 @@ class ShellHomeInstrumentationTest {
         compose.onNodeWithText("Атлас").assertIsDisplayed()
     }
 
-    @Test fun assistantAndCalculationsAreNotMisrepresentedAsWorking() {
+    @Test fun assistantIsUnpublishedButVu45VerifierIsAvailable() {
         compose.onNodeWithText("ВЛ80С").performClick()
         compose.onNodeWithText("Помощник").performClick()
         compose.onNodeWithText("Раздел ещё не подключён", substring = true).assertIsDisplayed()
         compose.onNodeWithText("← На главную").performClick()
         compose.onNodeWithText("Расчёты").performClick()
-        compose.onNodeWithText("Раздел ещё не подключён", substring = true).assertIsDisplayed()
+        compose.onNodeWithText("Проверка ВУ-45").assertIsDisplayed()
+        compose.onNodeWithText("Проверить").assertIsDisplayed()
     }
 
     @Test fun directDiagnosticsAndAcceptanceRoutesAreScopedToVl80s() {
