@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation(project(":assistant-core"))
     implementation(project(":feature-calculations"))
+    implementation(project(":feature-history"))
     implementation(project(":design-system"))
     implementation(project(":feature-acceptance"))
     implementation(project(":feature-atlas"))

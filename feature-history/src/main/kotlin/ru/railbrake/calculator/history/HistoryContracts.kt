@@ -22,5 +22,5 @@ interface HistoryStore {
  * modular application writes to the same user-facing history.
  */
 object HistoryStorageMigrationGate {
-    const val legacyFormatVerified: Boolean = false
+    const val legacyFormatVerified: Boolean = true
 }

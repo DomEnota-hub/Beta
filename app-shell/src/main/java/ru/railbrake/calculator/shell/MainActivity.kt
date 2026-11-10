@@ -1,6 +1,7 @@
 package ru.railbrake.calculator.shell
 
 import android.os.Bundle
+import ru.railbrake.calculator.history.HistoryRecord
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,8 @@ import ru.railbrake.calculator.safety.SafetyContentScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val historyStore = AndroidHistoryStore(applicationContext)
+        val notesStore = AndroidWorkNotesStore(applicationContext)
 
         val bootstrap = runCatching { loadVl80sVerticalSlice() }
             .onFailure { Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it) }
@@ -115,14 +118,29 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     when (calculationsPage) {
-                        "VU45" -> Vu45VerificationScreen(onBack = { calculationsPage = "HUB" })
-                        "SECURING" -> SecuringScreen(onBack = { calculationsPage = "HUB" })
+                        "VU45" -> Vu45VerificationScreen(onBack = { calculationsPage = "HUB" }, onSave = { record ->
+                            runCatching { historyStore.add(record) }.isSuccess
+                        })
+                        "SECURING" -> SecuringScreen(onBack = { calculationsPage = "HUB" }, onSave = { record ->
+                            runCatching { historyStore.add(record) }.isSuccess
+                        })
                         else -> CalculationsHomeScreen(
                             onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
                             onOpenVu45 = { calculationsPage = "VU45" },
                             onOpenSecuring = { calculationsPage = "SECURING" },
                         )
                     }
+                    return@MaterialTheme
+                }
+                if (shellDestination == ShellHomeDestination.RECORDS) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    HistoryAndNotesScreen(
+                        historyStore = historyStore,
+                        notesStore = notesStore,
+                        modelId = workingModel.id.value,
+                        modelTitle = workingModel.title,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
                     return@MaterialTheme
                 }
                 val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
