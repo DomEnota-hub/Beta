@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 HISTORY = ROOT / "content-packs/locomotive-migration/migration/historical-documents.candidate.json"
 CHECKPOINT = "docs/integration/PACKAGE_B_STEPWISE_FLOWS_CHECKPOINT.md"
 PACKS = (
-    ROOT / "content-packs/diesel/chme3-family/atlas/shared-scheme-pairs.candidate.pack.json",
-    ROOT / "content-packs/electric/ermak/atlas/shared-scheme-pairs.candidate.pack.json",
+    ROOT / "content-packs/diesel/chme3-family/atlas/migration/shared-scheme-pairs.candidate.pack.json",
+    ROOT / "content-packs/electric/ermak/atlas/migration/shared-scheme-pairs.candidate.pack.json",
 )
 OUT = ROOT / "docs/data-migration/package-b-checkpoint-relations.json"
 
