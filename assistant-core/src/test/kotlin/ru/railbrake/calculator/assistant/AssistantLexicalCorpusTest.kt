@@ -111,6 +111,8 @@ class AssistantLexicalCorpusTest {
             result as TextAssistantResult.Matches
             assertEquals(TextIntent.DIAGNOSTICS, result.intent)
             assertEquals("pantograph-no-rise", result.hits.first().entry.id.value)
+            assertTrue("$phrase: contradictory result leaked",
+                result.hits.none { it.entry.id.value == "pantograph-no-lower" })
             assertEquals(setOf("source-official"), result.hits.first().sourceIds)
             assertTrue(result.hits.first().sourceVerified)
             val opened = AssistantUiNavigationGate.openHit(result,
