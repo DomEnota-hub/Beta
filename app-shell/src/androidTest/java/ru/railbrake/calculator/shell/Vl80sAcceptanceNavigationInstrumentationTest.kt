@@ -21,6 +21,7 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
     @Before
     fun selectWorkingVl80s() {
         compose.onNodeWithText("ВЛ80С").performClick()
+        compose.onNodeWithText("Атлас").performClick()
     }
 
     @Test fun allEightRoutesOpenFromShellInSourceOrder() {
