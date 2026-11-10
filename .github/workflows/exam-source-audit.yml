@@ -42,11 +42,18 @@ jobs:
             --connect-timeout 20 --max-time 180 "$base/app/src/main/java/ru/railbrake/calculator/core/ExamQuestionRepository.kt" \
             --output "$dest/java/ru/railbrake/calculator/core/ExamQuestionRepository.kt"
       - name: Decode only in memory and audit 329 question IDs and links
-        run: python3 qa/audit_exam_source.py --donor-dir "$RUNNER_TEMP/exam-donor" --output "$RUNNER_TEMP/exam-audit.json"
+        run: python3 qa/audit_exam_source.py --donor-dir "$RUNNER_TEMP/exam-donor" --output "$RUNNER_TEMP/exam-audit.json" --candidate-output "$RUNNER_TEMP/exam-candidate-index.json"
       - name: Upload metadata only (never decrypted questions)
         uses: actions/upload-artifact@v4
         with:
           name: exam-source-audit-metadata
           path: ${{ runner.temp }}/exam-audit.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload non-runtime ID-only candidate index (no question text)
+        uses: actions/upload-artifact@v4
+        with:
+          name: exam-candidate-index-metadata-only
+          path: ${{ runner.temp }}/exam-candidate-index.json
           if-no-files-found: error
           retention-days: 14

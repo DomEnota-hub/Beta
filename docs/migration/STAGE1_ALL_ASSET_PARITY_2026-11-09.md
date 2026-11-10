@@ -41,3 +41,11 @@ The source crosswalk statuses deliberately distinguish:
 6. Complete CI on the final branch HEAD; do not mark this stage complete based on green runs from earlier commits.
 
 **Next concrete operation:** build a Kotlin feature-to-module crosswalk and identify missing runtime wiring, then address the CHME3/Ermak unresolved source-link ledgers in bounded verified batches. Only after source and Kotlin reconciliation should stage 2 start.
+
+## Дополнение 10.11.2026: metadata-only индекс экзаменационного источника
+
+`qa/audit_exam_source.py` дополнен генерацией **только идентификаторов и ссылок** 329 экзаменационных вопросов, без текста вопросов, ответов, ключа дешифрования, вариантов или подсказок. Новый CI-артефакт `exam-candidate-index-metadata-only` создаётся в `$RUNNER_TEMP`, не публикуется в Android APK и автоматически удаляется по retention (14 дней). Включены идентификаторы, ссылки на диагностические сценарии/оборудование и булево поле изображения. Содержимое проверяется по pinned donor asset SHA, исходному decoder SHA, хешу набора ID и проверке ссылок на сохранённые VL80S-кандидаты.
+
+Индекс имеет `status=METADATA_ONLY_CANDIDATE_NOT_QUESTION_PACK`, `runtimeImport=false`, `sourceRightsVerified=false`, `crewActionAuthorized=false`. Это **не перенос текста экзаменационных вопросов**, не лицензирование, не публикация и не функциональный экран. Добавлено 6 регрессионных тестов (в том числе попытки утечки текста через ID/ссылку, дубликаты, неверные типы и неизвестные связи). До подтверждения прав исходные тексты не переносить.
+
+**CI-статус нового изменения: PENDING до терминальной проверки финального HEAD.**

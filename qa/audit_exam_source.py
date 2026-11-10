@@ -49,7 +49,57 @@ def decode(raw, kotlin):
     return json.loads(result.stdout.decode("utf-8-sig"))
 
 
-def audit(root, donor):
+
+def build_candidate_metadata_index(root_data, summary):
+    """Export only opaque IDs and reference IDs; never export questions/answers."""
+    questions = root_data["questions"]
+    assert len(questions) == summary["questionCount"]
+    records = []
+    for q in questions:
+        identifier = q["id"]
+        assert isinstance(identifier, str) and re.fullmatch(
+            r"[A-Za-zА-Яа-яЁё0-9._:/-]{1,128}", identifier), "unsafe question ID"
+        row = {"id": identifier}
+        for key in ("diagnosticScenarioIds", "equipmentIds"):
+            refs = q[key]
+            assert isinstance(refs, list) and all(
+                isinstance(ref, str) and re.fullmatch(
+                    r"[A-Za-zА-Яа-яЁё0-9._:/-]{1,128}", ref)
+                for ref in refs), "unsafe reference ID"
+            row[key] = sorted(set(refs))
+        assert type(q["requiresImage"]) is bool
+        row["requiresImage"] = q["requiresImage"]
+        records.append(row)
+    records.sort(key=lambda item: item["id"])
+    assert len({row["id"] for row in records}) == len(records)
+    assert hashlib.sha256(json.dumps(
+        sorted(row["id"] for row in records), ensure_ascii=False
+    ).encode()).hexdigest() == summary["questionIdSetSha256"]
+    assert {ref for row in records for ref in row["diagnosticScenarioIds"]}.isdisjoint(
+        summary["diagnosticIdsMissingFromVl80sSource"])
+    assert {ref for row in records for ref in row["equipmentIds"]}.isdisjoint(
+        summary["equipmentIdsMissingFromVl80sCanonicalOrLegacy"])
+    result = {
+        "schemaVersion": 1,
+        "donorCommit": DONOR,
+        "sourceAssetBlobSha": summary["assetBlobSha"],
+        "sourceDecoderBlobSha": summary["decoderBlobSha"],
+        "status": "METADATA_ONLY_CANDIDATE_NOT_QUESTION_PACK",
+        "runtimeImport": False,
+        "sourceRightsVerified": False,
+        "currentNormativeAuthorityVerified": False,
+        "crewActionAuthorized": False,
+        "containsQuestionOrAnswerText": False,
+        "questionCount": len(records),
+        "questionIdSetSha256": summary["questionIdSetSha256"],
+        "recordFields": ["id", "diagnosticScenarioIds", "equipmentIds", "requiresImage"],
+        "records": records,
+    }
+    assert all(set(row) == set(result["recordFields"]) for row in records)
+    return result
+
+
+def audit(root, donor, candidate_output=None):
     manifest = json.loads((root / "docs/migration/donor-asset-crosswalk.json").read_text())
     assert manifest["donor"]["commit"] == DONOR
     row, = (a for a in manifest["assets"] if a["sourcePath"] == ASSET_PATH)
@@ -103,6 +153,11 @@ def audit(root, donor):
         "equipmentIdsMissingFromVl80sCanonicalOrLegacy": sorted(referenced_equipment - known_equipment),
         "notes": "No plaintext questions are written to disk; applicability, source authority and runtime integration remain unverified.",
     }
+    if candidate_output is not None:
+        candidate = build_candidate_metadata_index(root_data, summary)
+        candidate_output.parent.mkdir(parents=True, exist_ok=True)
+        candidate_output.write_text(json.dumps(
+            candidate, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
     return summary
 
 
@@ -111,8 +166,9 @@ if __name__ == "__main__":
     p.add_argument("--root", type=Path, default=ROOT)
     p.add_argument("--donor-dir", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--candidate-output", type=Path)
     args = p.parse_args()
-    result = audit(args.root, args.donor_dir)
+    result = audit(args.root, args.donor_dir, args.candidate_output)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print("EXAM_SOURCE_DECODED_AUDIT_PASS", result["questionCount"],
