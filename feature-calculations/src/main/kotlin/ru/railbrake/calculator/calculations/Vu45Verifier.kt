@@ -56,6 +56,7 @@ data class Vu45CheckResult(
     val status: Vu45Status,
     val findings: Set<Vu45Finding>,
     val calculatedAxles: Int?,
+    val calculatedWagons: Int?,
     val calculatedForceTons: Double?,
     val forceDifferenceTons: Double?,
     val forceReserveTons: Double?,
@@ -93,6 +94,7 @@ object Vu45Verifier {
         }
 
         var axleTotal = 0
+        var wagonTotal = 0
         var forceTotal = BigDecimal.ZERO
         val activeRows = when (draft.mode) {
             Vu45EntryMode.AXLES -> draft.axleRows.count { it.enabled }
@@ -121,6 +123,7 @@ object Vu45Verifier {
                     } else {
                         val rowAxles = Math.multiplyExact(row.wagonCount, row.axlesPerWagon)
                         axleTotal = Math.addExact(axleTotal, rowAxles)
+                        wagonTotal = Math.addExact(wagonTotal, row.wagonCount)
                         forceTotal = forceTotal.add(
                             BigDecimal.valueOf(row.forcePerAxleTons)
                                 .multiply(BigDecimal.valueOf(rowAxles.toLong()))
@@ -163,6 +166,7 @@ object Vu45Verifier {
             status = status,
             findings = findings,
             calculatedAxles = if (inputInvalid) null else axleTotal,
+            calculatedWagons = if (inputInvalid || draft.mode != Vu45EntryMode.WAGONS) null else wagonTotal,
             calculatedForceTons = if (inputInvalid) null else forceTotal.toDouble(),
             forceDifferenceTons = if (inputInvalid) null else
                 forceTotal.subtract(BigDecimal.valueOf(requireNotNull(draft.declaredForceTons))).toDouble(),
