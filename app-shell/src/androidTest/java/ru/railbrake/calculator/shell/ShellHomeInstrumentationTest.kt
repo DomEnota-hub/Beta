@@ -35,7 +35,7 @@ class ShellHomeInstrumentationTest {
         compose.onNodeWithText("Раздел ещё не подключён", substring = true).assertIsDisplayed()
         compose.onNodeWithText("← На главную").performClick()
         compose.onNodeWithText("Расчёты").performClick()
-        compose.onNodeWithText("Проверка ВУ-45").assertIsDisplayed()
+        compose.onNodeWithText("Проверка ВУ-45").performClick()
         compose.onNodeWithText("Проверить").assertIsDisplayed()
     }
 

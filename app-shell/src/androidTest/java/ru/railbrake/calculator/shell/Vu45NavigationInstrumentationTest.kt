@@ -16,6 +16,7 @@ class Vu45NavigationInstrumentationTest {
     @Test fun certificateVerificationHasBothIndependentModesAndFullResult() {
         compose.onNodeWithText("ВЛ80С").performClick()
         compose.onNodeWithText("Расчёты").performClick()
+        compose.onNodeWithText("Проверка ВУ-45").performClick()
         compose.onNodeWithText("Проверка ВУ-45").assertIsDisplayed()
         compose.onNodeWithText("В вагонах").performClick()
         compose.onNodeWithText("Количество вагонов").assertIsDisplayed()
