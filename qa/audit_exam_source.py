@@ -157,7 +157,7 @@ def audit(root, donor, candidate_output=None):
         candidate = build_candidate_metadata_index(root_data, summary)
         candidate_output.parent.mkdir(parents=True, exist_ok=True)
         candidate_output.write_text(json.dumps(
-            candidate, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+            candidate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return summary
 
 
