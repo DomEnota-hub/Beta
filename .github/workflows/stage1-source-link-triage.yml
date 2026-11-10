@@ -29,6 +29,9 @@ on:
       - 'qa/test_chme3_priority_schemes.py'
       - 'qa/validate_chme3_remaining_schemes.py'
       - 'qa/test_chme3_remaining_schemes.py'
+      - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
+      - 'qa/validate_chme3t_serial_revision.py'
+      - 'qa/test_chme3t_serial_revision.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -55,6 +58,9 @@ on:
       - 'qa/test_chme3_priority_schemes.py'
       - 'qa/validate_chme3_remaining_schemes.py'
       - 'qa/test_chme3_remaining_schemes.py'
+      - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
+      - 'qa/validate_chme3t_serial_revision.py'
+      - 'qa/test_chme3t_serial_revision.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -93,3 +99,8 @@ jobs:
         run: python3 -m unittest qa/test_chme3_remaining_schemes.py -v
       - name: Verify 16 remaining targets and 8 quarantined cross-variant conflicts
         run: python3 -m qa.validate_chme3_remaining_schemes
+
+      - name: Check CHME3T serial-6245 revision risk (17 negative tests)
+        run: python3 -m unittest qa/test_chme3t_serial_revision.py -v
+      - name: Validate historical serial gate remains quarantined
+        run: python3 -m qa.validate_chme3t_serial_revision
