@@ -64,6 +64,7 @@ import ru.railbrake.calculator.runtime.ContentPackIndexJsonLoader
 import ru.railbrake.calculator.runtime.ContentPackJsonLoader
 import ru.railbrake.calculator.runtime.ContentRegistry
 import ru.railbrake.calculator.runtime.ModelProfileCatalogJsonLoader
+import ru.railbrake.calculator.safety.CommonReferenceScreen
 import ru.railbrake.calculator.safety.SafetyContentScreen
 
 class MainActivity : ComponentActivity() {
@@ -275,6 +276,23 @@ class MainActivity : ComponentActivity() {
                         notesStore = notesStore,
                         modelId = workingModel.id.value,
                         modelTitle = workingModel.title,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
+                // Stage 14: common reference sections are independent of the
+                // working locomotive. Candidate knowledge is readable with
+                // provenance warnings, but not promoted to executable actions.
+                if (shellDestination in setOf(
+                        ShellHomeDestination.KNOWLEDGE,
+                        ShellHomeDestination.TRAFFIC_SAFETY,
+                        ShellHomeDestination.OCCUPATIONAL_SAFETY,
+                        ShellHomeDestination.FIRST_AID,
+                    )
+                ) {
+                    CommonReferenceScreen(
+                        destination = shellDestination,
+                        assets = assets,
                         onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
                     )
                     return@MaterialTheme
