@@ -85,6 +85,7 @@ fun AssistantSearchScreen(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
         )
+        AssistantVoiceButton(onTranscript = onDraftChange)
         Button(onClick = onSubmit, enabled = draft.isNotBlank(),
             modifier = Modifier.fillMaxWidth()) { Text("Найти") }
         Text("Категории", style = MaterialTheme.typography.titleMedium)
