@@ -71,7 +71,6 @@ data class Vu45CheckResult(
  * independent drafts, and only the explicitly selected one is verified.
  */
 object Vu45Verifier {
-    private val tolerance = BigDecimal("0.01")
 
     fun check(draft: Vu45Draft): Vu45CheckResult {
         val findings = linkedSetOf<Vu45Finding>()
@@ -143,7 +142,7 @@ object Vu45Verifier {
             if (axleTotal != draft.declaredAxles) findings += Vu45Finding.AXLE_COUNT_MISMATCH
             val declared = BigDecimal.valueOf(requireNotNull(draft.declaredForceTons))
             val required = BigDecimal.valueOf(requireNotNull(draft.requiredForceTons))
-            if (forceTotal.subtract(declared).abs() > tolerance) {
+            if (forceTotal.compareTo(declared) != 0) {
                 findings += Vu45Finding.FORCE_TOTAL_MISMATCH
             }
             if (declared < required) findings += Vu45Finding.INSUFFICIENT_DECLARED_FORCE
