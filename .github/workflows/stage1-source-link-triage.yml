@@ -23,6 +23,9 @@ on:
       - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
       - 'qa/validate_ermak_re1_public_mirror.py'
       - 'qa/test_ermak_re1_public_mirror.py'
+      - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'qa/validate_chme3_priority_schemes.py'
+      - 'qa/test_chme3_priority_schemes.py'
       - '.github/workflows/stage1-source-link-triage.yml'
   pull_request:
     paths:
@@ -43,6 +46,9 @@ on:
       - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
       - 'qa/validate_ermak_re1_public_mirror.py'
       - 'qa/test_ermak_re1_public_mirror.py'
+      - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'qa/validate_chme3_priority_schemes.py'
+      - 'qa/test_chme3_priority_schemes.py'
       - '.github/workflows/stage1-source-link-triage.yml'
 
 permissions:
@@ -72,3 +78,7 @@ jobs:
         run: python3 -m unittest qa/test_ermak_re1_public_mirror.py -v
       - name: Keep 56 RE1 public source occurrences quarantined
         run: python3 qa/validate_ermak_re1_public_mirror.py
+      - name: Cross-check 222 CHME3 source edges and donor scheme objects (17 tests)
+        run: python3 -m unittest qa/test_chme3_priority_schemes.py -v
+      - name: Verify three priority schemes remain non-runtime training references
+        run: python3 -m qa.validate_chme3_priority_schemes
