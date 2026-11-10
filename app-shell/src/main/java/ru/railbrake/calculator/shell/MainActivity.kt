@@ -450,9 +450,13 @@ class MainActivity : ComponentActivity() {
                 }
                 BackHandler(onBack = backFromEntry)
 
-                val entry = loaded.registry.find(currentId)
+                val entry = Vl80sEntryGate.open(loaded.registry, currentId, loaded.context)
                 if (entry == null) {
-                    Text("Связанный материал временно недоступен.")
+                    ShellUnavailableScreen(
+                        title = "Материал недоступен",
+                        explanation = "Карточка не опубликована, не соответствует исполнению или требует отдельного допуска.",
+                        onBack = backFromEntry,
+                    )
                     return@MaterialTheme
                 }
 
@@ -629,7 +633,12 @@ class MainActivity : ComponentActivity() {
         check(acceptanceIndex.itemPacks.all { it in index.packs }) {
             "Acceptance index references a pack outside the model runtime index"
         }
-        val routeResolver = AcceptanceRouteResolver(registry)
+        val routeContext = RuntimeContext(
+            workingModelId = ModelId("vl80s"),
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = profileCatalog.defaultVariantId,
+        )
+        val routeResolver = AcceptanceRouteResolver(registry, routeContext)
         val acceptanceRoutes = acceptanceIndex.routes.map { route ->
             val result = routeResolver.resolve(route)
             check(result is AcceptanceRouteResolution.Ready) {

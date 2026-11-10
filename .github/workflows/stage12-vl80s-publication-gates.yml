@@ -1,0 +1,30 @@
+name: Stage 12 VL80S publication and variant gates
+
+on:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'feature-acceptance/**'
+      - 'app-shell/**'
+      - 'content-runtime/**'
+      - 'domain-contracts/**'
+      - '.github/workflows/stage12-vl80s-publication-gates.yml'
+  workflow_dispatch:
+
+jobs:
+  vl80s-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Verify acceptance and direct entry authorization, lint, APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon :feature-acceptance:testDebugUnitTest :app-shell:testDebugUnitTest :app-shell:lintDebug :app-shell:assembleDebug
+      - name: Validate VL80S published vertical slice
+        run: python3 qa/validate_vl80s_vertical_slice.py
