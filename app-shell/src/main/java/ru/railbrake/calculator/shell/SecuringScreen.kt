@@ -35,8 +35,8 @@ fun SecuringScreen(onBack: () -> Unit, onSave: (HistoryRecord) -> Boolean) {
     var appendix by remember { mutableStateOf(AppendixSecuringDraft()) }
     var result by remember { mutableStateOf<SecuringReview?>(null) }
     var saveStatus by remember { mutableStateOf<String?>(null) }
-    val updateMass: (MassSecuringDraft) -> Unit = { mass = it; result = null }
-    val updateAppendix: (AppendixSecuringDraft) -> Unit = { appendix = it; result = null }
+    val updateMass: (MassSecuringDraft) -> Unit = { mass = it; result = null; saveStatus = null }
+    val updateAppendix: (AppendixSecuringDraft) -> Unit = { appendix = it; result = null; saveStatus = null }
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),

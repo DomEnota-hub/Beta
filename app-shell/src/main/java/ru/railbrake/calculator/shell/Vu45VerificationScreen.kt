@@ -91,6 +91,7 @@ fun Vu45VerificationScreen(onBack: () -> Unit, onSave: (HistoryRecord) -> Boolea
     val updateForm: (Vu45FormInput) -> Unit = { updated ->
         if (mode == Vu45EntryMode.AXLES) axleForm = updated else wagonForm = updated
         result = null
+        saveStatus = null
     }
     val updateRow: (Int, (Vu45RowInput) -> Vu45RowInput) -> Unit = { index, change ->
         updateForm(form.copy(rows = form.rows.mapIndexed { i, row ->

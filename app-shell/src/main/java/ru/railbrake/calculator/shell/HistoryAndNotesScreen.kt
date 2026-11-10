@@ -46,6 +46,7 @@ fun HistoryAndNotesScreen(
     var notes by remember(modelId) { mutableStateOf<List<WorkNote>>(emptyList()) }
     var error by remember { mutableStateOf<String?>(null) }
     var clearConfirm by remember { mutableStateOf(false) }
+    var pendingNoteDelete by remember { mutableStateOf<String?>(null) }
     var noteTitle by rememberSaveable(modelId) { mutableStateOf("") }
     var noteBody by rememberSaveable(modelId) { mutableStateOf("") }
 
@@ -54,6 +55,23 @@ fun HistoryAndNotesScreen(
             if (tab == "HISTORY") history = historyStore.load()
             else notes = notesStore.load(modelId)
         }.onFailure { error = "Не удалось прочитать локальные данные. Запись заблокирована до восстановления." }
+    }
+    pendingNoteDelete?.let { noteId ->
+        AlertDialog(
+            onDismissRequest = { pendingNoteDelete = null },
+            title = { Text("Удалить рабочую запись?") },
+            text = { Text("Это действие нельзя отменить.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    runCatching {
+                        notesStore.delete(modelId, noteId)
+                        notes = notesStore.load(modelId)
+                    }.onFailure { error = "Не удалось удалить запись." }
+                    pendingNoteDelete = null
+                }) { Text("Удалить") }
+            },
+            dismissButton = { TextButton(onClick = { pendingNoteDelete = null }) { Text("Отмена") } },
+        )
     }
     if (clearConfirm) {
         AlertDialog(
@@ -141,12 +159,9 @@ fun HistoryAndNotesScreen(
                         Text(dateText(note.timestampMillis), style = MaterialTheme.typography.labelSmall)
                         Text(note.title, style = MaterialTheme.typography.titleMedium)
                         Text(note.body)
-                        TextButton(onClick = {
-                            runCatching {
-                                notesStore.delete(modelId, note.id)
-                                notes = notesStore.load(modelId)
-                            }.onFailure { error = "Не удалось удалить запись." }
-                        }) { Text("Удалить запись") }
+                        TextButton(onClick = { pendingNoteDelete = note.id }) {
+                            Text("Удалить запись")
+                        }
                     }
                 }
             }

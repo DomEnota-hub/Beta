@@ -47,6 +47,16 @@ class HistoryCodecTest {
         assertEquals(11L, decoded.last().timestampMillis)
     }
 
+    @Test fun noteLimitFailsClosedWithoutSilentTruncation() {
+        val notes = (1..201).map {
+            WorkNote(it.toString(), "vl80s", it.toLong(), "Запись", "Текст")
+        }
+        try {
+            WorkNotesCodec.encodeV1(notes)
+            fail("Notes must not be silently discarded")
+        } catch (_: IllegalArgumentException) {}
+    }
+
     @Test fun notesRoundTripAndModelIsolation() {
         val notes = listOf(
             WorkNote("a", "vl80s", 2L, "Замечание | №1", "Текст\nвторая строка"),

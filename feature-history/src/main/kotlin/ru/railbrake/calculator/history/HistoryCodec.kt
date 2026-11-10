@@ -86,22 +86,26 @@ object WorkNotesCodec {
             .decode(ByteBuffer.wrap(decoder.decode(value))).toString()
     }
 
-    fun encodeV1(notes: List<WorkNote>): String = notes
-        .distinctBy { it.id }.sortedByDescending { it.timestampMillis }.take(100)
+    fun encodeV1(notes: List<WorkNote>): String {
+        require(notes.size <= 200) { "Work notes limit reached; no notes were deleted" }
+        require(notes.map { it.id }.distinct().size == notes.size) { "Duplicate note ID" }
+        return notes.sortedByDescending { it.timestampMillis }
         .joinToString("\n") {
             listOf("n1", it.timestampMillis.toString(), encode(it.id),
                 encode(it.modelId), encode(it.title), encode(it.body)).joinToString("|")
         }
+    }
 
     fun decodeV1(raw: String): List<WorkNote> {
         if (raw.isEmpty()) return emptyList()
-        require(raw.length <= 100 * 350000) { "Notes too large" }
+        require(raw.length <= 200 * 350000) { "Notes too large" }
         return raw.split('\n').map {
             val p = it.split('|')
             require(p.size == 6 && p[0] == "n1") { "Corrupt notes schema" }
             WorkNote(decode(p[2]), decode(p[3]), p[1].toLong(),
                 decode(p[4]), decode(p[5]))
         }.also { notes ->
+            require(notes.size <= 200)
             require(notes.all { it.id.isNotBlank() && it.modelId.isNotBlank() })
             require(notes.map { it.id }.distinct().size == notes.size)
         }
