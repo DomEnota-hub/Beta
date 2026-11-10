@@ -11,8 +11,9 @@
 ## Тесты и CI
 
 - На `2fe39b3a82f031b152e80ec0eb3091d2cd9ce6e1` **16/16 workflows SUCCESS (terminal)**, включая [Stage 1 source-link triage #42763417242](https://github.com/DomEnota-hub/Beta/actions/runs/42763417242) и [полный Android #42763417312](https://github.com/DomEnota-hub/Beta/actions/runs/42763417312).
-- На `516cad6ea127f41b52c8c9071b5502b3811abb69` [экзаменационный аудит #42763736139](https://github.com/DomEnota-hub/Beta/actions/runs/42763736139) **SUCCESS**; полный Android CI ещё должен достичь терминального результата.
-- **Для текущего HEAD после нового шага JSON-парсинга итог CI ещё не утверждён**. Финальный результат и SHA фиксировать в Issue #4 после проверки.
+- На `516cad6ea127f41b52c8c9071b5502b3811abb69` [экзаменационный аудит #42763736139](https://github.com/DomEnota-hub/Beta/actions/runs/42763736139) **SUCCESS**; его полный Android CI не используется как финальный gate после следующего коммита.
+- На **проверенном кодовом HEAD `87bcdb4f5b001a8f10a7530912150c5e6b158e27` все 16/16 workflows завершились SUCCESS (terminal)**, включая [экзаменационный аудит с парсингом 329 записей #42764139673](https://github.com/DomEnota-hub/Beta/actions/runs/42764139673), [source-link triage с 25 тестами #42764139636](https://github.com/DomEnota-hub/Beta/actions/runs/42764139636) и [полный Android lint/assembleDebug/APK #42764139706](https://github.com/DomEnota-hub/Beta/actions/runs/42764139706). Android-проверка включает тесты, lint, Debug APK, Stage 50/51 runtime-boundary и integrity. Устройство не тестировалось.
+- Эта документальная запись создана **после** проверенного кодового HEAD; терминальный CI для нового документационного коммита должен быть проверен отдельно. Финальный SHA и состояние будут зафиксированы в Issue #4.
 
 ## Сохраняющиеся блокеры
 
