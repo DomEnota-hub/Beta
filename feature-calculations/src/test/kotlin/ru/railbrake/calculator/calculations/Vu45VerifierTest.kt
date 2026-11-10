@@ -87,6 +87,12 @@ class Vu45VerifierTest {
         assertTrue(Vu45Finding.EMPTY_DISTRIBUTION in result.findings)
     }
 
+    @Test fun oneHundredthOfTonForceMismatchIsNotHidden() {
+        val result = Vu45Verifier.check(valid().copy(declaredForceTons = 1400.01))
+        assertEquals(Vu45Status.DISCREPANCY, result.status)
+        assertTrue(Vu45Finding.FORCE_TOTAL_MISMATCH in result.findings)
+    }
+
     @Test fun decimalArithmeticAvoidsFloatingPointMismatch() {
         val result = Vu45Verifier.check(
             valid().copy(
