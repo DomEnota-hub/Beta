@@ -25,6 +25,7 @@ class Vl80sContentNavigationInstrumentationTest {
     @Before
     fun selectWorkingVl80s() {
         compose.onNodeWithText("ВЛ80С").performClick()
+        compose.onNodeWithText("Атлас").performClick()
     }
 
     @Test
