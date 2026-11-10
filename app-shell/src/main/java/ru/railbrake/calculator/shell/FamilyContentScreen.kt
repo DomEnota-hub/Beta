@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,17 @@ import ru.railbrake.calculator.domain.ContentType
 import ru.railbrake.calculator.domain.ModelId
 import ru.railbrake.calculator.domain.VariantId
 import ru.railbrake.calculator.navigation.ShellHomeDestination
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+/** Loading is keyed by execution, so an old model's snapshot is never shown for a new selection. */
+private sealed interface FamilyCatalogLoadState {
+    data object Idle : FamilyCatalogLoadState
+    data object Loading : FamilyCatalogLoadState
+    data class Ready(val snapshot: FamilyContentCatalog.Snapshot) : FamilyCatalogLoadState
+    data object Failed : FamilyCatalogLoadState
+}
 
 /** Safe family-specific entry point; does not execute diagnostic candidates. */
 @Composable
@@ -53,10 +65,28 @@ fun FamilyContentScreen(
         mutableStateOf<String?>(null)
     }
     val repository = remember(assets) { FamilyContentCatalog(assets) }
-    val snapshot = remember(profile) {
-        runCatching { repository.load(profile) }.getOrNull()
-    }
     val execution = selectedExecution?.let(::VariantId)
+    // Do not parse potentially large family catalogs on the Compose/UI thread.
+    // Do not load anything before an explicit execution selection or for diagnostics,
+    // which still require a separately reviewed graph and safety gate.
+    var loadState by remember(profile, execution, destination, repository) {
+        mutableStateOf<FamilyCatalogLoadState>(FamilyCatalogLoadState.Idle)
+    }
+    LaunchedEffect(profile, execution, destination, repository) {
+        if (!FamilyCatalogLoadPolicy.shouldLoad(profile, execution, destination)) {
+            return@LaunchedEffect
+        }
+        loadState = FamilyCatalogLoadState.Loading
+        try {
+            val loaded = withContext(Dispatchers.IO) { repository.load(profile) }
+            loadState = FamilyCatalogLoadState.Ready(loaded)
+        } catch (cancelled: CancellationException) {
+            throw cancelled // A superseded model/execution must never publish stale results.
+        } catch (_: Exception) {
+            loadState = FamilyCatalogLoadState.Failed
+        }
+    }
+    val snapshot = (loadState as? FamilyCatalogLoadState.Ready)?.snapshot
     val visible = remember(snapshot, execution, destination) {
         if (snapshot == null) emptyList()
         else repository.visible(snapshot, profile, execution, types)
@@ -91,8 +121,13 @@ fun FamilyContentScreen(
                 Text("Исполнение не указано. Доступ к материалам закрыт.")
             destination == ShellHomeDestination.DIAGNOSTICS ->
                 Text("Диагностические сценарии этого семейства пока не опубликованы: требуется отдельная проверка источников, графа и безопасности.")
-            snapshot == null ->
+            loadState is FamilyCatalogLoadState.Idle ||
+                loadState is FamilyCatalogLoadState.Loading ->
+                Text("Загрузка каталога выбранного исполнения…")
+            loadState is FamilyCatalogLoadState.Failed ->
                 Text("Не удалось проверить каталог. Доступ закрыт.")
+            snapshot == null ->
+                Text("Каталог выбранного исполнения недоступен.")
             visible.isEmpty() ->
                 Text("Подтверждённых опубликованных карточек для выбранного исполнения пока нет. Исследовательские материалы не показываются.")
             else -> {
