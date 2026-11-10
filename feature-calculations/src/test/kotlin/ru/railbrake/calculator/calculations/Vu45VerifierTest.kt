@@ -28,6 +28,7 @@ class Vu45VerifierTest {
         val result = Vu45Verifier.check(valid(Vu45EntryMode.WAGONS))
         assertEquals(Vu45Status.ARITHMETICALLY_CONSISTENT_NOT_APPROVED, result.status)
         assertEquals(200, result.calculatedAxles)
+        assertEquals(50, result.calculatedWagons)
     }
 
     @Test fun axleMismatchAndForceMismatchAreSeparate() {
