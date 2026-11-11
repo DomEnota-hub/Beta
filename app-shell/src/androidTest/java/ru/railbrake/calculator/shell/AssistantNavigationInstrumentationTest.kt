@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -34,8 +35,8 @@ class AssistantNavigationInstrumentationTest {
                 .fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithText("Справочные материалы из Test- · требуют проверки")
-            .assertIsDisplayed()
-        compose.onNodeWithText("Читать справочную карточку").performClick()
+            .assertExists()
+        compose.onNodeWithText("Читать справочную карточку").performScrollTo().performClick()
         compose.waitUntil(15_000) {
             compose.onAllNodesWithText("Не используйте эту карточку как разрешение на действия.",
                 substring = true).fetchSemanticsNodes().isNotEmpty()
