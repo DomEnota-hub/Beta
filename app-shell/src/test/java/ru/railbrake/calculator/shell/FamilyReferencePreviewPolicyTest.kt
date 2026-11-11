@@ -58,6 +58,18 @@ class FamilyReferencePreviewPolicyTest {
             VariantId("tem2"), ShellHomeDestination.ATLAS, "").size)
     }
 
+    @Test fun normalizedMultiwordSearchUsesOnlyVisibleSummaryAndKeepsExecutionGate() {
+        val matches = FamilyReferencePreviewPolicy.search(listOf(base), tem2,
+            VariantId("tem2"), ShellHomeDestination.ATLAS, "воздуха подготовка")
+        assertEquals(listOf(base.id), matches.map { it.id })
+        assertTrue(FamilyReferencePreviewPolicy.search(listOf(base), tem2,
+            VariantId("tem2"), ShellHomeDestination.ATLAS,
+            "подготовка воздуха несуществующий").isEmpty())
+        assertTrue(FamilyReferencePreviewPolicy.search(listOf(base), tem2,
+            VariantId("tem2u"), ShellHomeDestination.ATLAS,
+            "воздуха подготовка").isEmpty())
+    }
+
     @Test fun familyGeneralReferenceIsNeverPresentedAsVerifiedExecution() {
         val ermak = FamilyProfiles.forModel(ModelId("2es5k"))!!
         val general = base.copy(
