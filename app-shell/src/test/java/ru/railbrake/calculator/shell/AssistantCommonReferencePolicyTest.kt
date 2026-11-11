@@ -21,7 +21,7 @@ class AssistantCommonReferencePolicyTest {
         "safety/articles.pack.json",
     ).flatMap { path ->
         val file = Path.of("..", "content-packs", "common", path)
-        ContentPackJsonLoader().parse(Files.readString(file)).entries
+        ContentPackJsonLoader().parse(Files.readAllBytes(file).toString(Charsets.UTF_8)).entries
     }
 
     @Test fun assistantCanFindAlreadyReadableDonorReferencesWithoutPublishingActions() {
