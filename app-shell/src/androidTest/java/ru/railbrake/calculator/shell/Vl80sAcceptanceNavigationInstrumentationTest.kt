@@ -3,6 +3,7 @@ package ru.railbrake.calculator.shell
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -22,6 +23,9 @@ class Vl80sAcceptanceNavigationInstrumentationTest {
     fun selectWorkingVl80s() {
         compose.onNodeWithText("ВЛ80С").performClick()
         compose.onNodeWithText("Атлас").performClick()
+        compose.waitUntil(20_000) {
+            compose.onAllNodesWithText("Пошаговая пневматика").fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test fun allEightRoutesOpenFromShellInSourceOrder() {

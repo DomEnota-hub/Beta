@@ -39,6 +39,9 @@ class WorkingModelSelectionInstrumentationTest {
         compose.onNodeWithText("2ЭС5К «Ермак» · Сменить").performClick()
         compose.onNodeWithText("ВЛ80С").performClick()
         compose.onNodeWithText("Атлас").performClick()
+        compose.waitUntil(20_000) {
+            compose.onAllNodesWithText("Пошаговая пневматика").fetchSemanticsNodes().isNotEmpty()
+        }
         compose.onNodeWithText("Пошаговая пневматика").assertIsDisplayed()
     }
 }

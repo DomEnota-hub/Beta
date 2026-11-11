@@ -48,6 +48,10 @@ class ShellHomeInstrumentationTest {
     @Test fun directDiagnosticsAndAcceptanceRoutesAreScopedToVl80s() {
         compose.onNodeWithText("ВЛ80С").performClick()
         compose.onNodeWithText("Диагностика").performClick()
+        compose.waitUntil(20_000) {
+            compose.onAllNodesWithText("Доступных опубликованных сценариев", substring = true)
+                .fetchSemanticsNodes().isNotEmpty()
+        }
         compose.onNodeWithText("Доступных опубликованных сценариев", substring = true)
             .assertIsDisplayed()
         compose.onNodeWithText("← Назад").performClick()
