@@ -57,6 +57,8 @@ fun FamilyContentScreen(
     modelTitle: String,
     destination: ShellHomeDestination,
     assets: AssetManager,
+    initialExecutionId: String? = null,
+    initialReferenceId: String? = null,
     onBack: () -> Unit,
 ) {
     val profile = remember(modelId) { FamilyProfiles.forModel(modelId) }
@@ -70,8 +72,8 @@ fun FamilyContentScreen(
         ShellHomeDestination.ACCEPTANCE -> setOf(ContentType.ACCEPTANCE_ITEM)
         else -> emptySet() // Diagnostic flows require a separate graph + safety gate.
     }
-    var selectedExecution by rememberSaveable(modelId.value, destination.name) {
-        mutableStateOf<String?>(null)
+    var selectedExecution by rememberSaveable(modelId.value, destination.name, initialExecutionId) {
+        mutableStateOf(initialExecutionId)
     }
     val repository = remember(assets) { FamilyContentCatalog(assets) }
     val execution = selectedExecution?.let(::VariantId)
@@ -130,15 +132,17 @@ fun FamilyContentScreen(
         else repository.visible(snapshot, profile, execution, types)
     }
     var openedId by rememberSaveable(modelId.value, destination.name) { mutableStateOf<String?>(null) }
-    var openedReferenceId by rememberSaveable(modelId.value, destination.name) {
-        mutableStateOf<String?>(null)
+    var openedReferenceId by rememberSaveable(modelId.value, destination.name, initialReferenceId) {
+        mutableStateOf(initialReferenceId)
     }
     var notice by remember { mutableStateOf<String?>(null) }
     val opened = visible.firstOrNull { it.id.value == openedId }
     val openedReference = referencePreviews.firstOrNull { it.id == openedReferenceId }
     BackHandler {
         when {
-            openedReferenceId != null -> openedReferenceId = null
+            openedReferenceId != null -> {
+                if (initialReferenceId != null) onBack() else openedReferenceId = null
+            }
             openedId != null -> openedId = null
             else -> onBack()
         }
@@ -167,7 +171,9 @@ fun FamilyContentScreen(
             Text("Происхождение: технический каталог Test-. " +
                 "Актуальность источника и право выполнять действия не подтверждены.")
             Text("Это описание оборудования, а не диагностический алгоритм или карта приёмки.")
-            TextButton(onClick = { openedReferenceId = null }) { Text("← К списку") }
+            TextButton(onClick = {
+                if (initialReferenceId != null) onBack() else openedReferenceId = null
+            }) { Text(if (initialReferenceId != null) "← К поиску" else "← К списку") }
         }
         return
     }
