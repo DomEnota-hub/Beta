@@ -3,6 +3,11 @@ package ru.railbrake.calculator.safety
 import android.content.res.AssetManager
 import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.ContentEntry
+import ru.railbrake.calculator.domain.LinkScope
+import ru.railbrake.calculator.domain.ProvenanceClass
+import ru.railbrake.calculator.domain.SourceStatus
+import ru.railbrake.calculator.domain.expectedTargetType
+import java.util.Locale
 import ru.railbrake.calculator.domain.ContentLayer
 import ru.railbrake.calculator.domain.ContentOwner
 import ru.railbrake.calculator.domain.ContentType
@@ -17,12 +22,24 @@ import ru.railbrake.calculator.runtime.ContentRegistry
  * Blocks (including donor "Действия" procedures) and links are deliberately
  * not exposed by this projection. This is NOT a new publication gate.
  */
+data class CommonReferenceSourceEvidence(
+    val id: String,
+    val title: String,
+    val sourceStatus: SourceStatus,
+    val provenance: ProvenanceClass,
+)
+
+data class CommonReferenceRelatedCard(val id: String, val title: String)
+
 data class CommonReferenceCard(
     val title: String,
     val summary: String,
     val details: List<String>,
     val sources: List<String>,
     val id: String,
+    val sourceEvidence: List<CommonReferenceSourceEvidence> = emptyList(),
+    val relatedCards: List<CommonReferenceRelatedCard> = emptyList(),
+    val searchTerms: Set<String> = emptySet(),
 )
 
 object CommonReferencePolicy {
@@ -33,36 +50,79 @@ object CommonReferencePolicy {
         ShellHomeDestination.FIRST_AID,
     )
 
+    /**
+     * Source titles and same-section references are navigable evidence, not
+     * permission to execute the original donor's procedures.
+     */
     fun cards(entries: List<ContentEntry>, destination: ShellHomeDestination): List<CommonReferenceCard> {
         if (destination !in commonDestinations) return emptyList()
-        val sources = entries.filter { it.type == ContentType.SOURCE && it.owner == ContentOwner.Common }
-            .associate { it.id.value to it.title }
-        return entries.asSequence()
-            .filter { entry ->
-                entry.owner == ContentOwner.Common &&
-                    entry.publicationStatus == PublicationStatus.CANDIDATE &&
-                    entry.layer == ContentLayer.STANDARD &&
-                    entry.actionDisposition == ActionDisposition.INFORMATION_ONLY &&
-                    entry.applicability.modelIds.isEmpty() &&
-                    entry.applicability.variantIds.isEmpty() &&
-                    entry.summary?.isNotBlank() == true &&
-                    entry.sourceRefs.isNotEmpty() &&
-                    entry.sourceRefs.all { it in sources } &&
-                    belongsToSection(entry, destination)
-            }
-            .map { entry ->
-                CommonReferenceCard(
-                    id = entry.id.value,
-                    title = entry.title,
-                    summary = requireNotNull(entry.summary),
-                    // First-aid procedures are not independently validated; keep
-                    // their title and description, but not steps from donor blocks.
-                    details = if (entry.type == ContentType.FIRST_AID) emptyList()
-                        else entry.details.filter { it.isNotBlank() },
-                    sources = entry.sourceRefs.mapNotNull(sources::get).distinct().sorted(),
-                )
-            }
-            .toList()
+        val sourceEntries = entries.filter {
+            it.type == ContentType.SOURCE && it.owner == ContentOwner.Common &&
+                it.layer == ContentLayer.STANDARD
+        }.associateBy { it.id.value }
+        val eligible = entries.filter { entry ->
+            entry.owner == ContentOwner.Common &&
+                entry.publicationStatus == PublicationStatus.CANDIDATE &&
+                entry.layer == ContentLayer.STANDARD &&
+                entry.actionDisposition == ActionDisposition.INFORMATION_ONLY &&
+                entry.applicability.modelIds.isEmpty() &&
+                entry.applicability.variantIds.isEmpty() &&
+                entry.summary?.isNotBlank() == true &&
+                entry.sourceRefs.isNotEmpty() &&
+                entry.sourceRefs.all { it in sourceEntries } &&
+                belongsToSection(entry, destination)
+        }
+        val byId = eligible.associateBy { it.id.value }
+        return eligible.map { entry ->
+            val evidence = entry.sourceRefs.mapNotNull(sourceEntries::get)
+                .distinctBy { it.id.value }.sortedBy { it.title }
+                .map { source ->
+                    CommonReferenceSourceEvidence(
+                        id = source.id.value,
+                        title = source.title,
+                        sourceStatus = source.sourceStatus,
+                        provenance = source.provenance,
+                    )
+                }
+            val related = entry.links.asSequence()
+                .filter { it.scope == LinkScope.COMMON_INTERNAL }
+                .filter {
+                    it.applicability.modelIds.isEmpty() && it.applicability.variantIds.isEmpty()
+                }
+                .mapNotNull { link ->
+                    byId[link.targetId.value]?.takeIf {
+                        it.type == link.type.expectedTargetType() && it.id != entry.id
+                    }
+                }
+                .distinctBy { it.id.value }
+                .map { CommonReferenceRelatedCard(it.id.value, it.title) }
+                .toList()
+            CommonReferenceCard(
+                id = entry.id.value,
+                title = entry.title,
+                summary = requireNotNull(entry.summary),
+                // Unverified first-aid steps stay in the donor pack for later
+                // source review; never project them into the reader.
+                details = if (entry.type == ContentType.FIRST_AID) emptyList()
+                    else entry.details.filter { it.isNotBlank() },
+                sources = evidence.map { it.title },
+                sourceEvidence = evidence,
+                relatedCards = related,
+                searchTerms = entry.searchTerms,
+            )
+        }
+    }
+
+    /** Search only visible title, summary and donor keywords; never hidden procedures. */
+    fun search(cards: List<CommonReferenceCard>, query: String): List<CommonReferenceCard> {
+        val tokens = query.trim().lowercase(Locale.ROOT).split(Regex("\\s+"))
+            .filter { it.isNotBlank() }
+        if (tokens.isEmpty()) return cards
+        return cards.filter { card ->
+            val visible = (listOf(card.title, card.summary) + card.searchTerms)
+                .joinToString(" ").lowercase(Locale.ROOT)
+            tokens.all { it in visible }
+        }
     }
 
     private fun belongsToSection(entry: ContentEntry, destination: ShellHomeDestination): Boolean {

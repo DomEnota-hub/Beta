@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,6 +27,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.railbrake.calculator.domain.ContentEntry
+import ru.railbrake.calculator.domain.ProvenanceClass
+import ru.railbrake.calculator.domain.SourceStatus
 import ru.railbrake.calculator.navigation.ShellHomeDestination
 
 private sealed interface CommonReferenceLoadState {
@@ -64,6 +67,8 @@ fun CommonReferenceScreen(
         CommonReferencePolicy.cards(entries, destination)
     }
     var openedId by rememberSaveable(destination.name) { mutableStateOf<String?>(null) }
+    var searchQuery by rememberSaveable(destination.name) { mutableStateOf("") }
+    val visibleCards = remember(cards, searchQuery) { CommonReferencePolicy.search(cards, searchQuery) }
     val opened = cards.firstOrNull { it.id == openedId }
     BackHandler { if (opened != null) openedId = null else onBack() }
 
@@ -100,9 +105,35 @@ fun CommonReferenceScreen(
                         style = MaterialTheme.typography.titleMedium)
                     opened.details.forEach { Text(it) }
                 }
-                Text("Источник: статус актуальности не подтверждён.",
-                    style = MaterialTheme.typography.bodyMedium)
-                opened.sources.forEach { source -> Text(source) }
+                Text("Источники и происхождение", style = MaterialTheme.typography.titleMedium)
+                opened.sourceEvidence.forEach { source ->
+                    Text(source.title)
+                    Text(
+                        "Статус источника: " + when (source.sourceStatus) {
+                            SourceStatus.CURRENT -> "указан как действующий в данных; перепроверить редакцию"
+                            SourceStatus.SUPERSEDED -> "заменён"
+                            SourceStatus.ARCHIVED -> "архивный"
+                            SourceStatus.UNKNOWN -> "актуальность не подтверждена"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(
+                        "Происхождение: " + when (source.provenance) {
+                            ProvenanceClass.UNKNOWN -> "не подтверждено"
+                            else -> source.provenance.name
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                if (opened.relatedCards.isNotEmpty()) {
+                    Text("Связанные справочные материалы", style = MaterialTheme.typography.titleMedium)
+                    opened.relatedCards.forEach { related ->
+                        OutlinedButton(
+                            onClick = { openedId = related.id },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text(related.title) }
+                    }
+                }
                 Text(
                     "Не используйте эту карточку как разрешение на действия. " +
                         "Порядок работы и противопоказания определяются применимыми действующими документами.",
@@ -110,7 +141,17 @@ fun CommonReferenceScreen(
             }
             else -> {
                 Text("Справочные карточки: ${cards.size}", style = MaterialTheme.typography.titleMedium)
-                cards.forEach { card ->
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    label = { Text("Поиск по справочным материалам") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                if (searchQuery.isNotBlank()) {
+                    Text("Найдено: ${visibleCards.size}")
+                }
+                visibleCards.forEach { card ->
                     OutlinedButton(
                         onClick = { openedId = card.id },
                         modifier = Modifier.fillMaxWidth(),
