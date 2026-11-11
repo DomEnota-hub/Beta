@@ -42,3 +42,16 @@ At the code SHA **20/20 workflow runs completed SUCCESS (terminal)**, with no fa
 ## Next group
 
 Group 3 remains **PARTIAL** and its unresolved items remain in the post-15 backlog. The next scheduled run should work **group 4/8: calculations, VU-45 and securing normative acceptance**, prioritizing Kotlin/Compose and tests with source-bound conditions. After the first 7+1 pass revisit all PARTIAL groups. Do not close Issue #4 or release production; do not modify Test-.
+
+
+## Second pass (11.11.2026): government source links for first-aid reference cards
+
+**Status: PARTIAL / code committed; CI and APK delivery require terminal verification.** This is group 3/8 only, not an authorization to perform donor procedures. Main stages fully completed remain 11/15. The Test- donor was not modified.
+
+- Code SHA `06baaac74fc35926f1db9bf09d805901a45cc490` (catalog, Compose screen and JUnit).
+- All **18 first-aid summaries** now expose links to separately located official government materials: **17** ordinary first-aid cards each have two resources (MChS-hosted Ministry of Health order **220н**, Ministry of Health 2024 first-aid algorithms); the **worker-kit** card has one MChS official explainer that identifies Ministry of Health order **262н**. **35 external resource links** across the 18 cards; none is sourced from untrusted donor URLs.
+- Links are shown under a separate **“official materials for independent cross-check”** section with explicit caveats. Existing donor source records remain **UNKNOWN**, and all unreviewed first-aid blocks remain hidden; no action or normative clearance is implied. Offline mode retains local summaries; official links need internet.
+- JUnit regression added for exact 17+1 mapping, approved government domains, fake donor URL injection, source requirement and preservation of unknown status. Existing 66 common reference summaries and 11 same-section internal links remain unchanged.
+- Verified government discovery pages (not an individual comparison of each donor algorithm): MChS 220н page https://55.mchs.gov.ru/deyatelnost/napravleniya-deyatelnosti/dobrovolnaya-pozharnaya-ohrana/normativnye-akty-i-inye-dokumenty-dobrovolchestva-volonterstva-v-oblasti-zashchity-ot-chrezvychaynyh-situaciy-prirodnogo-i-tehnogennogo-haraktera-grazhdanskoy-oborony-pozharnoy-bezopasnosti-i-bezopasnosti-lyudey-na-vodnyh-obektah/prikaz-ministerstva-zdravoohraneniya-rossiyskoy-federacii-ot-3-maya-2024-g-220n-ob-utverzhdenii-poryadka-okazaniya-pervoy-pomoshchi ; Ministry of Health algorithms https://minzdrav.gov.ru/special/documents/9801-algoritmy-okazaniya-pervoy-pomoschi ; MChS kit explainer https://mchs.gov.ru/deyatelnost/bezopasnost-grazhdan/aptechki-pervoy-pomoshchi .
+- **Still required:** step-by-step legal/content verification for all 18 donor first-aid blocks, edition verification of 21 source entries, 329 exam question rights, remaining cross-section links and device UX/behavior tests. Full postponed permissions audit remains parked. Do not close group 3 or Issue #4.
+- CI runs triggered on code SHA include dedicated group 3, Stage 14 and Stage 15; terminal results and the Drive Rail APK delivery must be reported separately in Issue #4 after verification. No QA delivery is claimed by this checkpoint.
