@@ -70,6 +70,70 @@ class FamilyReferencePreviewPolicyTest {
             "воздуха подготовка").isEmpty())
     }
 
+
+    @Test fun singleExecutionReferenceReadableBeforeSelectionButNotExecutable() {
+        assertTrue(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            base, tem2, ShellHomeDestination.ATLAS))
+        assertFalse(show(execution = null)) // Published/execution-scoped path stays closed.
+        assertFalse(FamilyCatalogLoadPolicy.shouldLoad(
+            tem2, null, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            base, tem2, ShellHomeDestination.ACCEPTANCE))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            base.copy(modelId = "tem2u"), tem2, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            base.copy(donorBlobSha = "unverified"), tem2, ShellHomeDestination.ATLAS))
+        assertEquals(listOf(base.id), FamilyReferencePreviewPolicy.searchBeforeExecution(
+            listOf(base), tem2, ShellHomeDestination.ATLAS, "воздуха подготовка"
+        ).map { it.id })
+    }
+
+    @Test fun multiExecutionUnknownOnlyExposesGeneralUnverifiedSummaries() {
+        val ermak = FamilyProfiles.forModel(ModelId("2es5k"))!!
+        val general = base.copy(
+            id = "ermak-general", modelId = "2es5k", executionId = null,
+            scope = ReferenceScope.EXECUTION_UNVERIFIED,
+        )
+        val msudN = general.copy(
+            id = "ermak-n", scope = ReferenceScope.DONOR_VARIANT,
+            executionId = "2es5k_msud_n",
+        )
+        assertTrue(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            general, ermak, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            msudN, ermak, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            general.copy(modelId = "3es5k"), ermak, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(
+            general.copy(executionId = "2es5k_msud_n"), ermak,
+            ShellHomeDestination.ATLAS))
+        assertEquals(listOf(general.id), FamilyReferencePreviewPolicy.searchBeforeExecution(
+            listOf(general, msudN), ermak, ShellHomeDestination.ATLAS, ""
+        ).map { it.id })
+        assertFalse(FamilyReferencePreviewPolicy.canShow(
+            general, ermak, null, ShellHomeDestination.ATLAS))
+        assertFalse(FamilyCatalogLoadPolicy.shouldLoad(
+            ermak, null, ShellHomeDestination.ATLAS))
+    }
+
+    @Test fun chme3tSerialSplitCannotLeakVariantSummaryWithoutSelection() {
+        val chme3t = FamilyProfiles.forModel(ModelId("chme3t"))!!
+        val before = base.copy(
+            id = "chme3t-before", modelId = "chme3t",
+            executionId = "chme3t_pre6245",
+        )
+        val after = before.copy(
+            id = "chme3t-after", executionId = "chme3t_from6245",
+        )
+        assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(
+            listOf(before, after), chme3t, ShellHomeDestination.ATLAS, ""
+        ).isEmpty())
+        assertEquals(listOf(before.id), FamilyReferencePreviewPolicy.search(
+            listOf(before, after), chme3t, VariantId("chme3t_pre6245"),
+            ShellHomeDestination.ATLAS, ""
+        ).map { it.id })
+    }
+
     @Test fun familyGeneralReferenceIsNeverPresentedAsVerifiedExecution() {
         val ermak = FamilyProfiles.forModel(ModelId("2es5k"))!!
         val general = base.copy(
