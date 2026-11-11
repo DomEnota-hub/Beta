@@ -192,6 +192,12 @@ private fun SecuringResult(result: SecuringReview) {
         is SecuringReview.Invalid -> Text("Расчёт невозможен: " + result.reason)
         is SecuringReview.Mass -> {
             Text("Расчётных башмаков: " + result.calculation.requiredShoes)
+            Text("До округления: " + result.calculation.shoesExact)
+            Text(
+                "Коэффициент донорской таблицы: " +
+                    result.calculation.shoeCoefficientPer100Tons +
+                    " башмака на 100 т. Действующий первоисточник не подтверждён."
+            )
             Text("Имеется башмаков: " + result.supplement.availableShoes)
             Text("Недостаток башмаков: " + result.supplement.shoeShortage)
             Text("Дополнительных ручных тормозных осей: " + result.supplement.additionalManualAxles)
@@ -203,8 +209,19 @@ private fun SecuringResult(result: SecuringReview) {
         is SecuringReview.Appendix -> {
             val r = result.calculation
             Text("Базовое количество башмаков: " + r.baseShoes)
+            Text("Расчёт до округления с учётом замасливания: " + r.baseExactAfterOil)
+            Text(
+                "Основание: приложение №12 к ИДП, приказ Минтранса №250, " +
+                    "пункты 8–20. Выбор формулы и местные нормы требуют отдельной проверки."
+            )
+            Text(
+                "Применённая формула: " +
+                    (r.formulaUsed?.let { if (it == AppendixFormula.FORMULA_1) "1" else "2" }
+                        ?: "правило до 0,5‰")
+            )
             Text("Противоположная сторона: " + r.oppositeSideShoes)
             Text("Дополнительно по ветру: " + r.windShoes)
+            Text("Ветровой коэффициент на 200 осей: " + r.windCoefficientPer200Axles)
             Text("Всего расчётных башмаков: " + r.totalRequiredShoes)
             Text("Имеется башмаков: " + r.availableShoes)
             Text("Недостаток башмаков: " + r.shoeShortage)
