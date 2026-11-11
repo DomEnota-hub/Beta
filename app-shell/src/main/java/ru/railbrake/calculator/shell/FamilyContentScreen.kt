@@ -103,8 +103,12 @@ fun FamilyContentScreen(
         mutableStateOf<ReferencePreviewLoadState>(ReferencePreviewLoadState.Idle)
     }
     LaunchedEffect(profile, execution, destination, assets) {
-        if (!FamilyCatalogLoadPolicy.shouldLoad(profile, execution, destination) ||
-            destination != ShellHomeDestination.ATLAS) return@LaunchedEffect
+        // The curated summaries are non-actionable: they can be read before
+        // selecting an execution. Full family packs still require a valid one.
+        if (destination != ShellHomeDestination.ATLAS ||
+            (execution != null && profile.executions.none { it.id == execution })) {
+            return@LaunchedEffect
+        }
         referenceState = ReferencePreviewLoadState.Loading
         try {
             val summaries = withContext(Dispatchers.IO) {
@@ -121,10 +125,16 @@ fun FamilyContentScreen(
         mutableStateOf("")
     }
     val referencePreviews = remember(referenceState, profile, execution, destination, referenceQuery) {
-        FamilyReferencePreviewPolicy.search(
-            (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty(),
-            profile, execution, destination, referenceQuery,
-        )
+        val entries = (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty()
+        if (execution == null) {
+            FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, destination, referenceQuery,
+            )
+        } else {
+            FamilyReferencePreviewPolicy.search(
+                entries, profile, execution, destination, referenceQuery,
+            )
+        }
     }
     val snapshot = (loadState as? FamilyCatalogLoadState.Ready)?.snapshot
     val visible = remember(snapshot, execution, destination) {
@@ -140,10 +150,17 @@ fun FamilyContentScreen(
     // Deep links must be checked against the full scoped catalog, not against
     // a stale user-entered list filter. Model, execution and provenance gates remain.
     val openedReference = remember(referenceState, profile, execution, destination, openedReferenceId) {
-        FamilyReferencePreviewPolicy.search(
-            (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty(),
-            profile, execution, destination, "",
-        ).firstOrNull { it.id == openedReferenceId }
+        val entries = (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty()
+        val readable = if (execution == null) {
+            FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, destination, "",
+            )
+        } else {
+            FamilyReferencePreviewPolicy.search(
+                entries, profile, execution, destination, "",
+            )
+        }
+        readable.firstOrNull { it.id == openedReferenceId }
     }
     BackHandler {
         when {
@@ -172,9 +189,12 @@ fun FamilyContentScreen(
                 style = MaterialTheme.typography.titleMedium)
             Text(openedReference.title, style = MaterialTheme.typography.headlineSmall)
             Text(openedReference.summary)
-            Text(if (openedReference.scope == ReferenceScope.EXECUTION_UNVERIFIED)
-                "Применимость к выбранному исполнению НЕ подтверждена."
-            else "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён.")
+            Text(when {
+                execution == null -> "Исполнение НЕ выбрано. Применимость справки не подтверждена; выполнять действия по ней нельзя."
+                openedReference.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
+                    "Применимость к выбранному исполнению НЕ подтверждена."
+                else -> "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён."
+            })
             Text("Происхождение: технический каталог Test-. " +
                 "Актуальность источника и право выполнять действия не подтверждены.")
             Text("Это описание оборудования, а не диагностический алгоритм или карта приёмки.")
@@ -198,7 +218,7 @@ fun FamilyContentScreen(
         }
         when {
             selectedExecution == null ->
-                Text("Исполнение не указано. Доступ к материалам закрыт.")
+                Text("Исполнение не указано. Порядок действий и материалы с допуском по исполнению закрыты; ниже доступны только справочные описания с предупреждениями.")
             profile.executions.none { it.id.value == selectedExecution } ->
                 Text("Неизвестное исполнение. Доступ к материалам закрыт.")
             destination == ShellHomeDestination.DIAGNOSTICS ->
@@ -222,7 +242,7 @@ fun FamilyContentScreen(
             }
         }
         if (destination == ShellHomeDestination.ATLAS &&
-            execution != null && profile.executions.any { it.id == execution }) {
+            (execution == null || profile.executions.any { it.id == execution })) {
             if (referenceState is ReferencePreviewLoadState.Ready) {
                 Text("Справочные описания из Test- · НЕ инструкция к действию",
                     style = MaterialTheme.typography.titleMedium)
@@ -242,9 +262,13 @@ fun FamilyContentScreen(
                         onClick = { openedReferenceId = preview.id },
                         modifier = Modifier.fillMaxWidth(),
                     ) { Text(preview.title) }
-                    Text(if (preview.scope == ReferenceScope.EXECUTION_UNVERIFIED)
-                        "Применимость к выбранному исполнению НЕ подтверждена."
-                    else "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён.")
+                    Text(when {
+                        execution == null ->
+                            "Исполнение не выбрано. Справка доступна только для чтения; применимость и действия не подтверждены."
+                        preview.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
+                            "Применимость к выбранному исполнению НЕ подтверждена."
+                        else -> "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён."
+                    })
                 }
             } else if (referenceState is ReferencePreviewLoadState.Failed) {
                 Text("Не удалось открыть отдельные справочные описания из Test-.")
