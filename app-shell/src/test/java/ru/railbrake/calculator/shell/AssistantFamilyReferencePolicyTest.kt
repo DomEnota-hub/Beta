@@ -16,11 +16,12 @@ class AssistantFamilyReferencePolicyTest {
         donorBlobSha = "c7a94c1cd2687b84de4358b80773e3156c6b93d7",
     )
 
-    @Test fun explicitOtherModelRequiresExecutionAndDoesNotChangeWorkingModel() {
+    @Test fun explicitOtherModelAllowsReadOnlyBeforeExecutionAndDoesNotChangeWorkingModel() {
         val query = AssistantFamilyReferencePolicy.resolveQuery("ТЭМ2 компрессор", vl, null)!!
         assertEquals("tem2", query.profile.workingModelId.value)
         assertEquals("компрессор", query.searchText)
-        assertTrue(AssistantFamilyReferencePolicy.search(listOf(tem), query, null).isEmpty())
+        assertEquals(listOf(tem.id), AssistantFamilyReferencePolicy.search(
+            listOf(tem), query, null).map { it.id })
         assertEquals(listOf(tem.id), AssistantFamilyReferencePolicy.search(
             listOf(tem), query, VariantId("tem2")).map { it.id })
         assertTrue(AssistantFamilyReferencePolicy.search(
@@ -55,5 +56,44 @@ class AssistantFamilyReferencePolicyTest {
                 VariantId("tem2")).map { it.id })
         assertTrue(AssistantFamilyReferencePolicy.search(variants, query,
             VariantId("unknown")).isEmpty())
+    }
+
+    @Test fun multiExecutionWithoutSelectionShowsOnlyUnverifiedKnowledge() {
+        val query = AssistantFamilyReferencePolicy.resolveQuery(
+            "2ЭС5К компрессор", vl, AssistantSearchCategory.EQUIPMENT)!!
+        val general = tem.copy(
+            id = "ermak-general", modelId = "2es5k", executionId = null,
+            scope = ReferenceScope.EXECUTION_UNVERIFIED)
+        val msudN = general.copy(
+            id = "ermak-n", scope = ReferenceScope.DONOR_VARIANT,
+            executionId = "2es5k_msud_n")
+        val foreign = general.copy(id = "other-model", modelId = "3es5k")
+        val badSource = general.copy(id = "bad-source", donorBlobSha = "unverified")
+        val hits = AssistantFamilyReferencePolicy.search(
+            listOf(general, msudN, foreign, badSource), query, null)
+        assertEquals(listOf(general.id), hits.map { it.id })
+        assertEquals(listOf(general.id, msudN.id),
+            AssistantFamilyReferencePolicy.search(
+                listOf(general, msudN), query, VariantId("2es5k_msud_n"))
+                .map { it.id }.sorted())
+        assertTrue(AssistantFamilyReferencePolicy.search(
+            listOf(msudN), query, null).isEmpty())
+        assertTrue(AssistantFamilyReferencePolicy.search(
+            listOf(general), query, VariantId("3es5k_msud_n")).isEmpty())
+    }
+
+    @Test fun chme3tSerialVariantAndFaultsCannotLeakBeforeExecution() {
+        val query = AssistantFamilyReferencePolicy.resolveQuery(
+            "ЧМЭ3Т компрессор", vl, null)!!
+        val before = tem.copy(
+            id = "pre6245", modelId = "chme3t",
+            executionId = "chme3t_pre6245")
+        val after = before.copy(id = "from6245", executionId = "chme3t_from6245")
+        assertTrue(AssistantFamilyReferencePolicy.search(
+            listOf(before, after), query, null).isEmpty())
+        assertEquals(listOf(before.id), AssistantFamilyReferencePolicy.search(
+            listOf(before, after), query, VariantId("chme3t_pre6245")).map { it.id })
+        assertNull(AssistantFamilyReferencePolicy.resolveQuery(
+            "ЧМЭ3Т компрессор неисправен", vl, null))
     }
 }
