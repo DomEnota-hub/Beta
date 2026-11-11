@@ -170,7 +170,7 @@ fun AssistantSearchScreen(
         Text("Список материалов", style = MaterialTheme.typography.titleMedium)
         if (notice != null) Text(notice, color = MaterialTheme.colorScheme.error)
         if (engine == null) {
-            Text("Каталог материалов недоступен. Поиск закрыт до восстановления данных.")
+            Text("Опубликованный каталог недоступен. Справочные материалы проверяются отдельно.")
         } else if (submitted.isBlank()) {
             Text("Введите запрос. При необходимости выберите категорию.")
         } else when (result) {
@@ -187,7 +187,11 @@ fun AssistantSearchScreen(
             is TextAssistantResult.UnpublishedModel ->
                 Text("Подтверждённые карточки " + assistantModelTitle(result.modelId) +
                     " пока не опубликованы. Отдельные справочные описания могут быть доступны ниже.")
-            is TextAssistantResult.NoMatches -> Text(result.reason)
+            is TextAssistantResult.NoMatches -> {
+                Text(if (commonHits.isNotEmpty() || familyQuery != null)
+                    "В опубликованном каталоге совпадений нет; справочные материалы показаны отдельно."
+                else result.reason)
+            }
             is TextAssistantResult.Matches -> {
                 Text("Найдено: " + result.hits.size,
                     style = MaterialTheme.typography.titleMedium)
