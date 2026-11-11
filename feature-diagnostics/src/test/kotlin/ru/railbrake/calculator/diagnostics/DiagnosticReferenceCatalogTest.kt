@@ -130,6 +130,9 @@ class DiagnosticReferenceCatalogTest {
         assertEquals(1, catalog.search("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION").size)
         assertEquals(1, catalog.search("DO_NOT_EXPOSE_AS_APPROVED_STOP_RULE").size)
         assertEquals(0, catalog.search("неизвестный запрос").size)
+        assertEquals(0, catalog.search("DO_NOT_EXPOSE_UNVERIFIED_ACTION").size)
+        assertEquals(0, catalog.search("DO_NOT_EXPOSE_UNVERIFIED_DANGER").size)
+        assertEquals(0, catalog.search("DO_NOT_EXPOSE_UNVERIFIED_SOURCE_CLAIM").size)
         // Warnings and stop signals are retained as *unverified donor evidence*,
         // not misrepresented as approved crew permissions or an executable flow.
         assertEquals(listOf("OBSERVABLE_CAB_SYMPTOM"), preview.observedSigns)
