@@ -31,6 +31,17 @@ data class CommonReferenceSourceEvidence(
 
 data class CommonReferenceRelatedCard(val id: String, val title: String)
 
+/**
+ * A link to an independently located government resource, NOT evidence that
+ * the donor summary or its hidden procedures match the current regulation.
+ * The URL is chosen by code, never taken from unreviewed donor content.
+ */
+data class CommonReferenceOfficialResource(
+    val title: String,
+    val url: String,
+    val limitation: String,
+)
+
 data class CommonReferenceCard(
     val title: String,
     val summary: String,
@@ -39,6 +50,7 @@ data class CommonReferenceCard(
     val id: String,
     val sourceEvidence: List<CommonReferenceSourceEvidence> = emptyList(),
     val relatedCards: List<CommonReferenceRelatedCard> = emptyList(),
+    val officialResources: List<CommonReferenceOfficialResource> = emptyList(),
     val searchTerms: Set<String> = emptySet(),
 )
 
@@ -108,8 +120,41 @@ object CommonReferencePolicy {
                 sources = evidence.map { it.title },
                 sourceEvidence = evidence,
                 relatedCards = related,
+                officialResources = officialFirstAidResources(entry, evidence),
                 searchTerms = entry.searchTerms,
             )
+        }
+    }
+
+    private val firstAidOrder = CommonReferenceOfficialResource(
+        title = "Приказ Минздрава России №220н от 03.05.2024 (МЧС России)",
+        url = "https://55.mchs.gov.ru/deyatelnost/napravleniya-deyatelnosti/dobrovolnaya-pozharnaya-ohrana/normativnye-akty-i-inye-dokumenty-dobrovolchestva-volonterstva-v-oblasti-zashchity-ot-chrezvychaynyh-situaciy-prirodnogo-i-tehnogennogo-haraktera-grazhdanskoy-oborony-pozharnoy-bezopasnosti-i-bezopasnosti-lyudey-na-vodnyh-obektah/prikaz-ministerstva-zdravoohraneniya-rossiyskoy-federacii-ot-3-maya-2024-g-220n-ob-utverzhdenii-poryadka-okazaniya-pervoy-pomoshchi",
+        limitation = "Официальный текст для сверки; соответствие донорских действий не установлено.",
+    )
+    private val firstAidAlgorithms = CommonReferenceOfficialResource(
+        title = "Алгоритмы первой помощи, Минздрав России (2024)",
+        url = "https://minzdrav.gov.ru/special/documents/9801-algoritmy-okazaniya-pervoy-pomoschi",
+        limitation = "Материал ведомства для сверки; не разрешает скрытые процедуры из Test-.",
+    )
+    private val workerKitSource = CommonReferenceOfficialResource(
+        title = "Аптечки первой помощи, МЧС России (ссылка на приказ №262н)",
+        url = "https://mchs.gov.ru/deyatelnost/bezopasnost-grazhdan/aptechki-pervoy-pomoshchi",
+        limitation = "Ведомственное разъяснение; состав аптечки из донора не сверен по позициям.",
+    )
+
+    private fun officialFirstAidResources(
+        entry: ContentEntry,
+        evidence: List<CommonReferenceSourceEvidence>,
+    ): List<CommonReferenceOfficialResource> {
+        if (entry.type != ContentType.FIRST_AID) return emptyList()
+        val sourceIds = evidence.map { it.id }.toSet()
+        return when {
+            entry.id.value == "common.first-aid.worker-kit" &&
+                "common.source.worker-kit-262n-donor" in sourceIds -> listOf(workerKitSource)
+            entry.id.value.startsWith("common.first-aid.") &&
+                "common.source.first-aid-donor" in sourceIds ->
+                listOf(firstAidOrder, firstAidAlgorithms)
+            else -> emptyList()
         }
     }
 
