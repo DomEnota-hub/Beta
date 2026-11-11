@@ -53,6 +53,40 @@ class BrakeCalculatorSafetyBoundaryTest {
         }
     }
 
+    @Test fun directMassEngineRejectsContradictoryOrNegativeAxleInputs() {
+        // UI validation is not enough: the engine can also be called directly.
+        rejects {
+            BrakeCalculator.calculateMass(
+                MassCalculationInput(100.0, axleCount = -1, manualAxleLoadTons = 10.0, slopePermille = 0.0)
+            )
+        }
+        rejects {
+            BrakeCalculator.calculateMass(
+                MassCalculationInput(100.0, axleCount = 10, manualAxleLoadTons = 5.0, slopePermille = 0.0)
+            )
+        }
+        val consistent = BrakeCalculator.calculateMass(
+            MassCalculationInput(100.0, axleCount = 10, manualAxleLoadTons = 10.0, slopePermille = 0.0)
+        )
+        assertEquals(10.0, consistent.axleLoadTons, 0.0)
+    }
+
+    @Test fun windForLargeAxleCountsNeverUsesOverflowingIntegerProduct() {
+        // Previously 1_500_000_000 * 3 overflowed Int before / 200.0,
+        // silently undercounting wind shoes rather than rejecting the input.
+        val base = appendix(slope = 0.0).copy(
+            axleCount = 1_500_000_000,
+            windDirectionMatchesPossibleMovement = true,
+        )
+        val strong = BrakeCalculator.calculateAppendix12(base.copy(windSpeedMs = 16.0))
+        assertEquals(22_500_000, strong.windShoes)
+        assertEquals(22_500_002, strong.totalRequiredShoes)
+        val storm = BrakeCalculator.calculateAppendix12(base.copy(windSpeedMs = 22.0))
+        assertEquals(52_500_000, storm.windShoes)
+        assertEquals(52_500_002, storm.totalRequiredShoes)
+        assertFalse(CalculationPublicationPolicy.canPublishOperationalResult(CalculationMode.APPENDIX_12))
+    }
+
     @Test fun appendixRejectsMissingFormulaBadWindAndUnsafeLeaving() {
         rejects { BrakeCalculator.calculateAppendix12(appendix(slope = 8.0).copy(formula = null)) }
         rejects { BrakeCalculator.calculateAppendix12(appendix(slope = 8.0).copy(windSpeedMs = Double.NaN)) }
