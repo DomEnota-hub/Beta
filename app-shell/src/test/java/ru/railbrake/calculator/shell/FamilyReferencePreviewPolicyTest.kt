@@ -2,6 +2,7 @@ package ru.railbrake.calculator.shell
 
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.railbrake.calculator.domain.ModelId
 import ru.railbrake.calculator.domain.VariantId
@@ -37,6 +38,24 @@ class FamilyReferencePreviewPolicyTest {
         assertFalse(show(entry = base.copy(executionId = "tem2u")))
         assertFalse(show(entry = base.copy(donorBlobSha = "unverified")))
         assertFalse(show(entry = base.copy(summary = "")))
+    }
+
+    @Test fun searchIsScopedBeforeMatchingAndDoesNotLeakOtherModels() {
+        val other = base.copy(id = "donor-summary.tem2u", modelId = "tem2u",
+            executionId = "tem2u", title = "Скрытый реверсор")
+        val candidates = listOf(base, other, base.copy(id = "donor-summary.tem2.second",
+            title = "Тормозной резервуар", summary = "Пневматическая система"))
+        val matches = FamilyReferencePreviewPolicy.search(candidates, tem2,
+            VariantId("tem2"), ShellHomeDestination.ATLAS, "масло")
+        assertEquals(listOf(base.id), matches.map { it.id })
+        assertTrue(FamilyReferencePreviewPolicy.search(candidates, tem2,
+            VariantId("tem2"), ShellHomeDestination.ATLAS, "скрытый").isEmpty())
+        assertTrue(FamilyReferencePreviewPolicy.search(candidates, tem2,
+            null, ShellHomeDestination.ATLAS, "").isEmpty())
+        assertTrue(FamilyReferencePreviewPolicy.search(candidates, tem2,
+            VariantId("tem2"), ShellHomeDestination.ACCEPTANCE, "").isEmpty())
+        assertEquals(2, FamilyReferencePreviewPolicy.search(candidates, tem2,
+            VariantId("tem2"), ShellHomeDestination.ATLAS, "").size)
     }
 
     @Test fun familyGeneralReferenceIsNeverPresentedAsVerifiedExecution() {

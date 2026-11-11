@@ -45,6 +45,26 @@ internal object FamilyReferencePreviewPolicy {
             ReferenceScope.EXECUTION_UNVERIFIED -> entry.executionId == null
         }
     }
+
+    /** Search only entries that already passed exact model/execution/destination isolation. */
+    fun search(
+        entries: List<FamilyReferencePreview>,
+        profile: FamilyModelProfile,
+        execution: VariantId?,
+        destination: ShellHomeDestination,
+        query: String,
+    ): List<FamilyReferencePreview> {
+        val term = query.trim().lowercase()
+        return entries.asSequence()
+            .filter { canShow(it, profile, execution, destination) }
+            .filter {
+                term.isEmpty() || it.title.lowercase().contains(term) ||
+                    it.summary.lowercase().contains(term)
+            }
+            .distinctBy { it.id }
+            .sortedBy { it.title }
+            .toList()
+    }
 }
 
 /** Small curated asset; deliberately separate from unpublished family packs. */
@@ -53,10 +73,18 @@ internal class FamilyReferencePreviewCatalog(private val assets: AssetManager) {
         val json = assets.open("crew-reference/summaries.json").bufferedReader().use { it.readText() }
         val root = JSONObject(json)
         require(root.getInt("schemaVersion") == 1)
+        require(root.getString("donorCommit") == "3176d6ee228f0ed4b78371f45209e10c1c724eff")
         val entries = root.getJSONArray("entries")
+        val seen = mutableSetOf<String>()
+        val allowedKeys = setOf("id", "modelId", "executionId", "scope", "title",
+            "summary", "donorPath", "donorBlobSha", "donorId", "targetPack", "targetId")
         return (0 until entries.length()).map { index ->
             val item = entries.getJSONObject(index)
-            FamilyReferencePreview(
+            val keys = mutableSetOf<String>()
+            val iterator = item.keys()
+            while (iterator.hasNext()) keys += iterator.next()
+            require(keys == allowedKeys) { "Unexpected reference fields" }
+            val preview = FamilyReferencePreview(
                 id = item.getString("id"),
                 modelId = item.getString("modelId"),
                 executionId = if (item.isNull("executionId")) null else item.getString("executionId"),
@@ -66,6 +94,9 @@ internal class FamilyReferencePreviewCatalog(private val assets: AssetManager) {
                 donorPath = item.getString("donorPath"),
                 donorBlobSha = item.getString("donorBlobSha"),
             )
+            require(seen.add(preview.id)) { "Duplicate reference identity" }
+            require(preview.title.isNotBlank() && preview.summary.isNotBlank())
+            preview
         }
     }
 }

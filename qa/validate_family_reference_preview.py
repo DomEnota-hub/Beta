@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify 7 summary-only Test- → Beta references against pinned donor blob SHAs.
+"""Verify 84 summary-only Test- → Beta references against pinned donor blob SHAs.
 
 This is a *knowledge preview*, not source/normative approval or an action gate.
 No procedures, diagnostic branches, linked actions or variant inference are allowed.
@@ -12,7 +12,7 @@ data = json.loads((root / "content-packs/crew-reference/summaries.json").read_te
 assert data["schemaVersion"] == 1
 assert data["donorCommit"] == "3176d6ee228f0ed4b78371f45209e10c1c724eff"
 items = data["entries"]
-assert len(items) == 7
+assert len(items) == 84
 assert {item["modelId"] for item in items} == {
     "2es5k", "3es5k", "chme3", "chme3t", "chme3e", "tem2", "tem2u",
 }
@@ -21,6 +21,12 @@ allowed_keys = {
     "donorPath", "donorBlobSha", "donorId", "targetPack", "targetId",
 }
 seen = set()
+seen_objects = set()
+from collections import Counter
+assert Counter(item["modelId"] for item in items) == Counter({
+    "2es5k": 12, "3es5k": 12, "chme3": 12, "chme3t": 12,
+    "chme3e": 12, "tem2": 12, "tem2u": 12,
+})
 donor_shas = {
     "app/src/main/assets/technical/ermak_knowledge.json.gz": "08d164fc11c33c241d04ad6ad60c13a3aec996c8",
     "app/src/main/assets/technical/chme3_chme3_catalog.json.gz": "fa63f0ca6bf46e91780d77e6e17131cd00a4df7e",
@@ -33,7 +39,11 @@ for item in items:
     assert set(item) == allowed_keys, item["id"]
     assert item["id"] not in seen
     seen.add(item["id"])
+    object_key = (item["modelId"], item["donorId"])
+    assert object_key not in seen_objects, object_key
+    seen_objects.add(object_key)
     assert item["title"].strip() and item["summary"].strip()
+    assert len(item["summary"]) <= 240 and "\n" not in item["summary"]
     assert item["donorBlobSha"] == donor_shas[item["donorPath"]]
     path = root / item["targetPack"]
     assert path.is_file() and path.suffix == ".json"
@@ -43,6 +53,7 @@ for item in items:
     source = candidates[0]
     assert source["title"] == item["title"] and source["summary"] == item["summary"]
     assert source["publicationStatus"] == "CANDIDATE"
+    assert source["layer"] == "STANDARD"
     assert source["actionDisposition"] == "INFORMATION_ONLY"
     assert source["type"] in {"EQUIPMENT", "KNOWLEDGE", "ACCEPTANCE_ITEM"}
     assert source["sourceObject"]["sourcePath"] == item["donorPath"]
@@ -58,4 +69,4 @@ for item in items:
         assert item["modelId"] in {"2es5k", "3es5k", "chme3t"}
         # Generic Ermak, or CHME3T without verified pre/post-6245 split.
         assert not variants or variants == ["chme3t"]
-print("STAGE13_DONOR_SUMMARY_PARITY_PASS entries=7 models=7 executable=0")
+print("STAGE13_DONOR_SUMMARY_PARITY_PASS entries=84 models=7 executable=0")

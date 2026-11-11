@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -114,10 +115,14 @@ fun FamilyContentScreen(
             referenceState = ReferencePreviewLoadState.Failed
         }
     }
-    val referencePreviews = remember(referenceState, profile, execution, destination) {
-        (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty().filter {
-            FamilyReferencePreviewPolicy.canShow(it, profile, execution, destination)
-        }
+    var referenceQuery by rememberSaveable(modelId.value, destination.name) {
+        mutableStateOf("")
+    }
+    val referencePreviews = remember(referenceState, profile, execution, destination, referenceQuery) {
+        FamilyReferencePreviewPolicy.search(
+            (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty(),
+            profile, execution, destination, referenceQuery,
+        )
     }
     val snapshot = (loadState as? FamilyCatalogLoadState.Ready)?.snapshot
     val visible = remember(snapshot, execution, destination) {
@@ -125,9 +130,19 @@ fun FamilyContentScreen(
         else repository.visible(snapshot, profile, execution, types)
     }
     var openedId by rememberSaveable(modelId.value, destination.name) { mutableStateOf<String?>(null) }
+    var openedReferenceId by rememberSaveable(modelId.value, destination.name) {
+        mutableStateOf<String?>(null)
+    }
     var notice by remember { mutableStateOf<String?>(null) }
     val opened = visible.firstOrNull { it.id.value == openedId }
-    BackHandler { if (openedId != null) openedId = null else onBack() }
+    val openedReference = referencePreviews.firstOrNull { it.id == openedReferenceId }
+    BackHandler {
+        when {
+            openedReferenceId != null -> openedReferenceId = null
+            openedId != null -> openedId = null
+            else -> onBack()
+        }
+    }
     if (opened != null) {
         RailContentEntryScreen(
             entry = opened, destination = opened.type.featureDestination(),
@@ -135,6 +150,25 @@ fun FamilyContentScreen(
             onBack = { openedId = null },
             onLink = { notice = "Связанная карточка не открыта: отдельная проверка источника и исполнения ещё не выполнена." },
         )
+        return
+    }
+    if (openedReference != null) {
+        Column(
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text("Справочный материал · не инструкция к действию",
+                style = MaterialTheme.typography.titleMedium)
+            Text(openedReference.title, style = MaterialTheme.typography.headlineSmall)
+            Text(openedReference.summary)
+            Text(if (openedReference.scope == ReferenceScope.EXECUTION_UNVERIFIED)
+                "Применимость к выбранному исполнению НЕ подтверждена."
+            else "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён.")
+            Text("Происхождение: технический каталог Test-. " +
+                "Актуальность источника и право выполнять действия не подтверждены.")
+            Text("Это описание оборудования, а не диагностический алгоритм или карта приёмки.")
+            TextButton(onClick = { openedReferenceId = null }) { Text("← К списку") }
+        }
         return
     }
     Column(
@@ -145,7 +179,7 @@ fun FamilyContentScreen(
         Text("Выберите точное исполнение для этого раздела. Выбор рабочей модели не определяет исполнение автоматически.")
         profile.executions.forEach { option ->
             OutlinedButton(
-                onClick = { selectedExecution = option.id.value; openedId = null },
+                onClick = { selectedExecution = option.id.value; openedId = null; openedReferenceId = null },
                 modifier = Modifier.fillMaxWidth(),
             ) { Text((if (selectedExecution == option.id.value) "✓ " else "") + option.title) }
         }
@@ -176,14 +210,25 @@ fun FamilyContentScreen(
         }
         if (destination == ShellHomeDestination.ATLAS &&
             execution != null && profile.executions.any { it.id == execution }) {
-            if (referencePreviews.isNotEmpty()) {
+            if (referenceState is ReferencePreviewLoadState.Ready) {
                 Text("Справочные описания из Test- · НЕ инструкция к действию",
                     style = MaterialTheme.typography.titleMedium)
-                Text("Сохранены только названия и описания из проверенных донорских объектов. " +
-                    "Актуальность нормативов и разрешение на выполнение действий не подтверждены.")
+                Text("Это сведения об устройстве, не разрешение на выполнение работ. " +
+                    "Нормативная актуальность требует отдельной сверки.")
+                OutlinedTextField(
+                    value = referenceQuery,
+                    onValueChange = { referenceQuery = it },
+                    label = { Text("Поиск по справочным описаниям") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Text("Найдено описаний: ${referencePreviews.size}")
+                if (referencePreviews.isEmpty()) Text("Нет совпадений для выбранного исполнения.")
                 referencePreviews.forEach { preview ->
-                    Text(preview.title, style = MaterialTheme.typography.titleSmall)
-                    Text(preview.summary)
+                    OutlinedButton(
+                        onClick = { openedReferenceId = preview.id },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text(preview.title) }
                     Text(if (preview.scope == ReferenceScope.EXECUTION_UNVERIFIED)
                         "Применимость к выбранному исполнению НЕ подтверждена."
                     else "Исполнение указано в донорском каталоге; нормативный допуск НЕ подтверждён.")

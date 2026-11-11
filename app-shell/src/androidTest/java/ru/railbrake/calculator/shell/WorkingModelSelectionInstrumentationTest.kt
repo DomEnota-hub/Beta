@@ -30,7 +30,10 @@ class WorkingModelSelectionInstrumentationTest {
             compose.onAllNodesWithText("Справочные описания из Test- · НЕ инструкция к действию")
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        compose.onNodeWithText("Применимость к выбранному исполнению НЕ подтверждена.").assertExists()
+        org.junit.Assert.assertTrue(
+            compose.onAllNodesWithText("Применимость к выбранному исполнению НЕ подтверждена.")
+                .fetchSemanticsNodes().isNotEmpty()
+        )
         compose.onNodeWithText("Пошаговая пневматика").assertDoesNotExist()
         compose.activity.onBackPressedDispatcher.onBackPressed()
         compose.onNodeWithText("2ЭС5К «Ермак» · Сменить").performClick()

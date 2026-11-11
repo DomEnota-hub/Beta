@@ -53,9 +53,21 @@ class Stage15ApkIntegrationTest(unittest.TestCase):
     def test_valid_pinned_reference_baseline(self):
         self.assertEqual(
             {"vl80s_core_packs": 28, "common_references": 66,
-             "family_previews": 7, "forbidden_assets": 0},
+             "family_previews": 84, "forbidden_assets": 0},
             check_apk(self.build()),
         )
+
+    def test_family_reference_duplicates_are_rejected(self):
+        def duplicate(doc):
+            doc["entries"][1]["id"] = doc["entries"][0]["id"]
+        with self.assertRaisesRegex(ApkAuditError, "Duplicate family reference"):
+            check_apk(self.build(modify={"assets/crew-reference/summaries.json": duplicate}))
+
+    def test_family_reference_wrong_model_count_is_rejected(self):
+        def wrong_count(doc):
+            doc["entries"][1]["modelId"] = "tem2"
+        with self.assertRaisesRegex(ApkAuditError, "per-model count"):
+            check_apk(self.build(modify={"assets/crew-reference/summaries.json": wrong_count}))
 
     def test_missing_published_vl80s_pack_is_rejected(self):
         missing = "assets/" + next(

@@ -43,7 +43,7 @@ with ZipFile(apks[0]) as apk:
         raise SystemExit(f"Curated donor reference missing from APK: {preview}")
     from json import loads
     data = loads(apk.read(preview).decode("utf-8"))
-    if data.get("schemaVersion") != 1 or len(data.get("entries", [])) != 7:
+    if data.get("schemaVersion") != 1 or len(data.get("entries", [])) != 84:
         raise SystemExit("Curated donor reference has unexpected schema/count")
 
     # Regression guard: this must not accidentally strip the VL80S published runtime.

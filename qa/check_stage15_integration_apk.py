@@ -112,10 +112,15 @@ def check_apk(path: Path) -> dict[str, int]:
 
         preview = read_json("assets/crew-reference/summaries.json")
         entries = preview.get("entries", [])
-        if preview.get("schemaVersion") != 1 or preview.get("donorCommit") != DONOR or len(entries) != 7:
+        if preview.get("schemaVersion") != 1 or preview.get("donorCommit") != DONOR or len(entries) != 84:
             raise ApkAuditError("Pinned donor reference identity/count mismatch")
         if {e.get("modelId") for e in entries} != EXPECTED_MODELS:
             raise ApkAuditError("Family reference coverage or model identity mismatch")
+        from collections import Counter
+        if Counter(e.get("modelId") for e in entries) != Counter({m: 12 for m in EXPECTED_MODELS}):
+            raise ApkAuditError("Family reference per-model count mismatch")
+        if len({e.get("id") for e in entries}) != len(entries):
+            raise ApkAuditError("Duplicate family reference IDs")
         for e in entries:
             if PROCEDURE_FIELDS.intersection(e) or not e.get("title") or not e.get("summary"):
                 raise ApkAuditError(f"Executable/empty family preview: {e.get('id')}")
