@@ -9,6 +9,8 @@ import android.os.Handler
 import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
+import android.speech.RecognitionSupport
+import android.speech.RecognitionSupportCallback
 import android.speech.SpeechRecognizer
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,6 +85,9 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
                                 "Речь не распознана. Повторите запрос или введите текст."
                             SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
                                 "Разрешение на микрофон отсутствует."
+                            SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE,
+                            SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED ->
+                                "Русская офлайн-модель недоступна. Используйте текст."
                             else -> "Офлайн-распознавание недоступно (код $error)."
                         }
                     )
@@ -105,14 +110,51 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
             }
             timeout = watchdog
             handler.postDelayed(watchdog, AssistantVoicePolicy.MAX_DURATION_MS)
-            current.startListening(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            val request = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale("ru", "RU").toLanguageTag())
                 putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-            })
-            status = "Подготовка микрофона..."
+            }
+            // API 33+ exposes installed language packs. Never trigger a download
+            // or silently switch to a remote recognition service.
+            if (Build.VERSION.SDK_INT >= 33) {
+                status = "Проверяю русскую офлайн-модель..."
+                current.checkRecognitionSupport(request, context.mainExecutor,
+                    object : RecognitionSupportCallback {
+                        override fun onSupportResult(support: RecognitionSupport) {
+                            if (recognizer !== current) return
+                            when (AssistantVoicePolicy.russianPack(
+                                support.installedOnDeviceLanguages,
+                                support.supportedOnDeviceLanguages,
+                                support.pendingOnDeviceLanguages
+                            )) {
+                                AssistantVoicePolicy.RussianPack.INSTALLED -> {
+                                    status = "Подготовка микрофона..."
+                                    try {
+                                        current.startListening(request)
+                                    } catch (_: Exception) {
+                                        stop("Не удалось начать локальное распознавание.")
+                                    }
+                                }
+                                AssistantVoicePolicy.RussianPack.NEEDS_DOWNLOAD ->
+                                    stop("Русская офлайн-модель не установлена. Используйте текст.")
+                                AssistantVoicePolicy.RussianPack.UNAVAILABLE ->
+                                    stop("Русское офлайн-распознавание не поддерживается.")
+                            }
+                        }
+                        override fun onError(error: Int) {
+                            if (recognizer === current)
+                                stop("Не удалось проверить офлайн-модель (код $error). Используйте текст.")
+                        }
+                    })
+            } else {
+                // API 31–32 has no support-query API. The recognizer itself is
+                // strictly on-device; errors fail closed to editable text.
+                current.startListening(request)
+                status = "Подготовка микрофона..."
+            }
         } catch (_: Exception) {
             stop("Не удалось запустить локальное распознавание. Используйте текст.")
         }

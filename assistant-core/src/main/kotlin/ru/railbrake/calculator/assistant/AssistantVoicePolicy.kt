@@ -15,6 +15,27 @@ object AssistantVoicePolicy {
             else -> Capability.AVAILABLE
         }
 
+    /** API 33+ preflight: only an already installed Russian on-device pack may record.
+     * A downloadable or pending pack is NOT silently downloaded or treated as installed.
+     */
+    enum class RussianPack { INSTALLED, NEEDS_DOWNLOAD, UNAVAILABLE }
+
+    fun russianPack(
+        installed: Collection<String>,
+        downloadable: Collection<String>,
+        pending: Collection<String>
+    ): RussianPack {
+        fun containsRussian(tags: Collection<String>): Boolean = tags.any { tag ->
+            tag.trim().replace('_', '-').lowercase(java.util.Locale.ROOT)
+                .substringBefore('-') == "ru"
+        }
+        return when {
+            containsRussian(installed) -> RussianPack.INSTALLED
+            containsRussian(downloadable) || containsRussian(pending) -> RussianPack.NEEDS_DOWNLOAD
+            else -> RussianPack.UNAVAILABLE
+        }
+    }
+
     fun transcriptOrNull(raw: String?): String? {
         val text = raw?.trim()?.replace(Regex("\\s+"), " ") ?: return null
         return text.takeIf {
