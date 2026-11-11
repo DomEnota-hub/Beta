@@ -115,6 +115,40 @@ class CommonReferencePolicyTest {
         assertTrue(cards.none { it.id == otherSection.id.value })
     }
 
+    @Test fun firstAidOfficialReferencesStaySourceBoundAndNeverAuthorizeActions() {
+        val entries = donorEntries()
+        val cards = CommonReferencePolicy.cards(entries, ShellHomeDestination.FIRST_AID)
+        assertEquals(18, cards.size)
+        val procedures = cards.filter { it.id != "common.first-aid.worker-kit" }
+        assertEquals(17, procedures.size)
+        assertTrue(procedures.all { it.officialResources.size == 2 })
+        val kit = cards.single { it.id == "common.first-aid.worker-kit" }
+        assertEquals(1, kit.officialResources.size)
+        assertTrue(kit.officialResources.single().title.contains("262н"))
+        assertTrue(procedures.all { it.officialResources.first().title.contains("220н") })
+        assertTrue(cards.all { it.details.isEmpty() && it.relatedCards.isEmpty() })
+        assertTrue(cards.flatMap { it.officialResources }.all { resource ->
+            resource.url.startsWith("https://") &&
+                (resource.url.contains(".mchs.gov.ru/") ||
+                    resource.url.contains("://mchs.gov.ru/") ||
+                    resource.url.contains("://minzdrav.gov.ru/")) &&
+                resource.limitation.isNotBlank()
+        })
+        val cpr = entries.single { it.id.value == "common.first-aid.cpr" }
+        val donorSource = entries.single { it.id.value == "common.source.first-aid-donor" }
+        val injectedSource = donorSource.copy(details = listOf("https://untrusted.example/unsafe"))
+        val card = CommonReferencePolicy.cards(
+            listOf(injectedSource, cpr), ShellHomeDestination.FIRST_AID,
+        ).single()
+        assertEquals(2, card.officialResources.size)
+        assertTrue(card.officialResources.none { "untrusted" in it.url })
+        assertEquals(SourceStatus.UNKNOWN, card.sourceEvidence.single().sourceStatus)
+        assertTrue(CommonReferencePolicy.cards(
+            listOf(donorSource, cpr.copy(sourceRefs = emptySet())),
+            ShellHomeDestination.FIRST_AID,
+        ).isEmpty())
+    }
+
     @Test fun sourcesRetainUnverifiedProvenanceWithoutImplyingApproval() {
         val entries = donorEntries()
         val cards = listOf(
