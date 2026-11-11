@@ -117,6 +117,17 @@ object BrakeCalculator {
             "Масса должна быть конечным числом больше нуля"
         }
 
+        // Both fields may be supplied by a caller other than the UI.
+        // Validate the entire input even when the manual load takes precedence.
+        input.axleCount?.let {
+            require(it > 0) { "Количество осей должно быть больше нуля" }
+        }
+        if (input.manualAxleLoadTons != null && input.axleCount != null) {
+            require(
+                abs(input.massTons / input.axleCount - input.manualAxleLoadTons) < 0.01
+            ) { "Масса, оси и нагрузка на ось противоречат друг другу" }
+        }
+
         val axleLoad = when {
             input.manualAxleLoadTons != null -> {
                 require(input.manualAxleLoadTons.isFinite() && input.manualAxleLoadTons > 0.0) {
@@ -274,7 +285,7 @@ object BrakeCalculator {
         }
         val windShoes =
             if (windCoefficient == 0) 0
-            else ceilToInt(input.axleCount * windCoefficient / 200.0)
+            else ceilToInt(input.axleCount.toDouble() * windCoefficient / 200.0)
         val total = checkedAdd(checkedAdd(baseShoes, oppositeShoes), windShoes)
         val shortage = max(0, total - input.availableShoes)
 
