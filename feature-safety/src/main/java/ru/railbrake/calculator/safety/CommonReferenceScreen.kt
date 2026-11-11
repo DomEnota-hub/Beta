@@ -46,6 +46,7 @@ private sealed interface CommonReferenceLoadState {
 fun CommonReferenceScreen(
     destination: ShellHomeDestination,
     assets: AssetManager,
+    initialCardId: String? = null,
     onBack: () -> Unit,
 ) {
     var loadState by remember(assets) {
@@ -66,11 +67,11 @@ fun CommonReferenceScreen(
         val entries = (loadState as? CommonReferenceLoadState.Ready)?.entries.orEmpty()
         CommonReferencePolicy.cards(entries, destination)
     }
-    var openedId by rememberSaveable(destination.name) { mutableStateOf<String?>(null) }
+    var openedId by rememberSaveable(destination.name, initialCardId) { mutableStateOf(initialCardId) }
     var searchQuery by rememberSaveable(destination.name) { mutableStateOf("") }
     val visibleCards = remember(cards, searchQuery) { CommonReferencePolicy.search(cards, searchQuery) }
     val opened = cards.firstOrNull { it.id == openedId }
-    BackHandler { if (opened != null) openedId = null else onBack() }
+    BackHandler { if (opened != null && initialCardId == null) openedId = null else onBack() }
 
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
@@ -97,7 +98,9 @@ fun CommonReferenceScreen(
             cards.isEmpty() ->
                 Text("В этом разделе пока нет проверенных для справочного просмотра материалов.")
             opened != null -> {
-                TextButton(onClick = { openedId = null }) { Text("← К списку") }
+                TextButton(onClick = { if (initialCardId == null) openedId = null else onBack() }) {
+                    Text(if (initialCardId == null) "← К списку" else "← К поиску")
+                }
                 Text(opened.title, style = MaterialTheme.typography.titleLarge)
                 Text(opened.summary)
                 if (opened.details.isNotEmpty()) {
