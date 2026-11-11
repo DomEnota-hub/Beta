@@ -1,6 +1,6 @@
 # RailBrake Beta — group 1/8, third pass: assistant search of family reference knowledge
 
-Date: 11.11.2026. Status: **CI_PENDING / IN_PROGRESS**. Main-stage baseline **11/15**, not reclassified. Issue #4 remains OPEN.
+Date: 11.11.2026. Status: **CODE/CI PASS; GROUP IN_PROGRESS / DEVICE_QA_PENDING**. Main-stage baseline **11/15**, not reclassified. Issue #4 remains OPEN.
 
 ## Actual code changes (Beta only)
 
@@ -41,3 +41,25 @@ At code HEAD `ffbbb0b3b23bab6d4fad09d6eff824142ac79d1a`, 29 GitHub Actions runs 
 The initial code HEAD `ffbbb0b3` produced a **real lint failure** in [Stage 7 #43059778892](https://github.com/DomEnota-hub/Beta/actions/runs/43059778892): `AssistantSearchScreen.kt:241 SuspiciousIndentation` after removing the execution-only wrapper. Fixed by dedenting the reference results block in [`f38518f401ce87a71e8f21ef30d9f0f16b098d38`](https://github.com/DomEnota-hub/Beta/commit/f38518f401ce87a71e8f21ef30d9f0f16b098d38). **The previous code HEAD is not accepted.**
 
 New final-code verification started: [Stage 13 #43060860552](https://github.com/DomEnota-hub/Beta/actions/runs/43060860552), [Stage 10 #43060860542](https://github.com/DomEnota-hub/Beta/actions/runs/43060860542), [Stage 9 #43060860468](https://github.com/DomEnota-hub/Beta/actions/runs/43060860468), [Stage 15 #43060860490](https://github.com/DomEnota-hub/Beta/actions/runs/43060860490), [modular #43060870854](https://github.com/DomEnota-hub/Beta/actions/runs/43060870854). At checkpoint, runs remain QUEUED/IN_PROGRESS. Resume on **`f38518f4`**, not `ffbbb0b3`.
+
+## Verified final result and Google Drive delivery (11.11.2026)
+
+Final implementation SHA **`f38518f401ce87a71e8f21ef30d9f0f16b098d38`**; all **29/29** GitHub Actions workflows for that exact code commit finished **terminal SUCCESS**. The earlier lint-failing SHA `ffbbb0b3` remains recorded as failed, not counted as accepted.
+
+- [Stage 13 family gates #43060860552](https://github.com/DomEnota-hub/Beta/actions/runs/43060860552) SUCCESS: family source/variant gates, JUnit, lint, Debug APK and source-parity/actual APK quarantine.
+- [Stage 10 assistant corpus #43060860542](https://github.com/DomEnota-hub/Beta/actions/runs/43060860542) SUCCESS.
+- [Stage 9 Compose UI #43060860468](https://github.com/DomEnota-hub/Beta/actions/runs/43060860468) SUCCESS.
+- [Stage 15 integration QA #43060860490](https://github.com/DomEnota-hub/Beta/actions/runs/43060860490) SUCCESS: JUnit, lint, Debug APK, AndroidTest **compilation**, actual APK integrity and source/profile gates.
+- [Modular bootstrap #43060870854](https://github.com/DomEnota-hub/Beta/actions/runs/43060870854) SUCCESS.
+
+Stage 15 artifact **`13874236302`** ZIP integrity PASS, contains exactly `app-shell-debug.apk`; extracted APK ZIP integrity PASS. Verified actual APK still contains `assets/crew-reference/summaries.json` and **0** family full-pack asset paths `electric/ermak/`, `diesel/chme3-family/`, `diesel/tem2-family/` (known incomplete migration, not celebrated as parity).
+
+**Delivered and re-downloaded** to Google Drive folder `Rail` (`1IkcRbUhf8HMU7VwtPVOpI5SBZKPJHzFd`):
+- [`RailBrake_Beta_1.2.2-modular-alpha01_group1-third-pass_stage15_f38518f4.apk`](https://drive.google.com/file/d/1QpBcCajaVnM84JmPqwGc0DLlJnV9ozWY/view)
+- Google Drive file ID: `1QpBcCajaVnM84JmPqwGc0DLlJnV9ozWY`; **9,663,001 bytes**, Debug/QA, version `1.2.2-modular-alpha01`.
+- Original APK SHA256 **`cdd641cd9a058bcec1b2e5ecff89d293adea075806a4d9dee0c94eaa422c6a1b`**. Re-downloaded from Drive, byte-for-byte identical and SHA256 matched. Drive metadata confirms exact filename, size and parent folder.
+- ZIP source SHA256 `a6d6da7bd5b307a62113c5464787e856fba9e148fa43abf416f223864005e159`, size 9,280,039 bytes.
+
+**Functional scope:** the existing 84 reference descriptions (12 each for 2ЭС5К, 3ЭС5К, ЧМЭ3/Т/Э, ТЭМ2/У) are now searchable from Assistant without execution selection, but only matching, scoped entries are displayed. No new cards created, no full family pack restored, no diagnostic graph or approved crew action. Unknown applicability is explicitly marked. Device QA remains pending; this is NOT production.
+
+**Next scheduled group:** 2/8 diagnostics; do not repeat already successful group-1 CI. Keep group 1 and stages 13/15 open until full family parity and final acceptance. No new APK is needed for the documentation-only checkpoint.
