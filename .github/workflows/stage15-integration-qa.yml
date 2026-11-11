@@ -6,6 +6,8 @@ on:
       - audit/information-block-gaps-20261014
     paths:
       - 'app-shell/**'
+      - 'feature-diagnostics/**'
+      - 'qa/check_post15_group2_reference_parity.py'
       - 'feature-safety/**'
       - 'content-packs/common/**'
       - 'content-packs/crew-reference/**'
@@ -57,6 +59,7 @@ jobs:
         run: |
           python3 qa/check_stage15_integration_apk.py
           python3 qa/check_stage13_apk_quarantine.py
+          python3 qa/check_post15_group2_reference_parity.py
           python3 qa/check_stage14_common_reference.py
           python3 qa/validate_family_reference_preview.py
       - name: Upload unapproved Debug QA APK for final device acceptance
