@@ -64,7 +64,10 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
 
     fun start() {
         val session = gate.next() ?: return
-        if (!offlineRecognizerAvailable()) {
+        // Keep an explicit SDK check in this call path so Android lint can prove
+        // createOnDeviceSpeechRecognizer (API 31+) is never reached on API 26–30.
+        if (Build.VERSION.SDK_INT < AssistantVoicePolicy.MIN_ON_DEVICE_API ||
+            !offlineRecognizerAvailable()) {
             status = "Офлайн-распознавание недоступно на этом устройстве. Используйте текст."
             return
         }
