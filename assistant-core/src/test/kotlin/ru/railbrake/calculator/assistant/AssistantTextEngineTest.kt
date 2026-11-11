@@ -31,6 +31,26 @@ class AssistantTextEngineTest {
         assertTrue(registry.install(pack).isEmpty())
         return AssistantTextEngine(registry, setOf(vl))
     }
+
+    @Test fun bareVl80NeverSilentlyResolvesToVl80s() {
+        val assistant = engine(entry("gv"))
+        listOf("ВЛ80 главный выключатель", "ВЛ 80 ГВ", "VL80 ГВ", "VL 80 главник")
+            .forEach { phrase ->
+                val parsed = TextQueryParser.parse(phrase)
+                assertTrue(phrase, parsed.vl80SeriesUnspecified)
+                assertTrue(phrase, parsed.explicitModels.isEmpty())
+                val result = assistant.query(phrase, vl)
+                assertTrue("$phrase => $result", result is TextAssistantResult.NoMatches)
+                assertTrue((result as TextAssistantResult.NoMatches).reason.contains("модификацию"))
+            }
+        listOf("ВЛ80С ГВ", "ВЛ80-С ГВ", "ВЛ-80С ГВ", "VL80S ГВ")
+            .forEach { phrase ->
+                val parsed = TextQueryParser.parse(phrase)
+                assertFalse(phrase, parsed.vl80SeriesUnspecified)
+                assertEquals(phrase, setOf(vl), parsed.explicitModels)
+                assertTrue(phrase, assistant.query(phrase, vl) is TextAssistantResult.Matches)
+            }
+    }
     @Test fun parserPreservesNegationAndSeries() {
         val parsed = TextQueryParser.parse("На ВЛ80С не включается ГВ")
         assertEquals(setOf(vl), parsed.explicitModels)

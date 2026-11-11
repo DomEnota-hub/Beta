@@ -80,6 +80,10 @@ class AssistantLexicalCorpusTest {
             TextQueryParser.normalize("ГВ не выключается"))
         assertNotEquals(TextQueryParser.normalize("ТМ"), TextQueryParser.normalize("ПМ"))
         assertFalse(TextQueryParser.parse("датчик тока").intent == TextIntent.SAFETY)
+        assertTrue(TextQueryParser.parse("ВЛ80 компрессор").vl80SeriesUnspecified)
+        assertEquals(emptySet<ModelId>(), TextQueryParser.parse("ВЛ80 компрессор").explicitModels)
+        assertFalse(TextQueryParser.parse("ВЛ80-С компрессор").vl80SeriesUnspecified)
+        assertEquals(setOf(vl), TextQueryParser.parse("ВЛ80-С компрессор").explicitModels)
     }
 
     private fun entry(

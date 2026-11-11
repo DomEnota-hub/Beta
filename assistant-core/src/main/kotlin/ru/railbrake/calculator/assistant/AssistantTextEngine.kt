@@ -12,12 +12,14 @@ data class ParsedTextQuery(
     val searchText: String,
     val explicitModels: Set<ModelId>,
     val ermakUnspecified: Boolean,
+    /** A bare VL80 family name cannot silently select the VL80S execution. */
+    val vl80SeriesUnspecified: Boolean,
     val intent: TextIntent,
 )
 
 object TextQueryParser {
     private val modelAliases = linkedMapOf(
-        "вл80с" to "vl80s", "вл80" to "vl80s", "vl80s" to "vl80s",
+        "вл80с" to "vl80s", "vl80s" to "vl80s",
         "2эс5к" to "2es5k", "2es5k" to "2es5k",
         "3эс5к" to "3es5k", "3es5k" to "3es5k",
         "чмэ3" to "chme3", "chme3" to "chme3",
@@ -38,6 +40,8 @@ object TextQueryParser {
         val normalized = normalize(text)
         val models = modelAliases.filterKeys { containsWord(normalized, it) }
             .values.map(::ModelId).toSet()
+        val vl80SeriesUnspecified = listOf("вл80", "vl80", "вл 80", "vl 80")
+            .any { containsWord(normalized, it) }
         val ermak = containsWord(normalized, "ермак") && models.none {
             it == ModelId("2es5k") || it == ModelId("3es5k")
         }
@@ -50,7 +54,7 @@ object TextQueryParser {
         search = search.replace(Regex("(?<![\\p{L}\\p{N}])ермак(?![\\p{L}\\p{N}])"), " ")
         search = search.split(Regex("\\s+"))
             .filter { it.isNotBlank() && it !in stopWords }.joinToString(" ")
-        return ParsedTextQuery(normalized, search, models, ermak, intent)
+        return ParsedTextQuery(normalized, search, models, ermak, vl80SeriesUnspecified, intent)
     }
 }
 
@@ -92,8 +96,13 @@ class AssistantTextEngine(
         intentOverride: TextIntent? = null,
         allowedTypes: Set<ContentType>? = null,
     ): TextAssistantResult {
-        val intent = intentOverride ?: TextQueryParser.parse(text).intent
         val parsed = TextQueryParser.parse(text)
+        val intent = intentOverride ?: parsed.intent
+        if (parsed.vl80SeriesUnspecified) {
+            return TextAssistantResult.NoMatches(
+                "Уточните модификацию ВЛ80. Нельзя автоматически подставлять ВЛ80С."
+            )
+        }
         if (parsed.normalized.isBlank() || parsed.searchText.isBlank()) {
             return TextAssistantResult.NoMatches("Уточните название узла или тему.")
         }
