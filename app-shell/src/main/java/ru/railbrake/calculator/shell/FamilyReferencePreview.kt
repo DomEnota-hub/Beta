@@ -3,6 +3,7 @@ package ru.railbrake.calculator.shell
 import android.content.res.AssetManager
 import org.json.JSONObject
 import ru.railbrake.calculator.domain.VariantId
+import ru.railbrake.calculator.assistant.TextQueryParser
 import ru.railbrake.calculator.navigation.ShellHomeDestination
 
 /**
@@ -54,12 +55,13 @@ internal object FamilyReferencePreviewPolicy {
         destination: ShellHomeDestination,
         query: String,
     ): List<FamilyReferencePreview> {
-        val term = query.trim().lowercase()
+        val tokens = TextQueryParser.normalize(query).split(Regex("\\s+"))
+            .filter { it.isNotBlank() }
         return entries.asSequence()
             .filter { canShow(it, profile, execution, destination) }
             .filter {
-                term.isEmpty() || it.title.lowercase().contains(term) ||
-                    it.summary.lowercase().contains(term)
+                val visible = TextQueryParser.normalize(it.title + " " + it.summary)
+                tokens.all { token -> token in visible }
             }
             .distinctBy { it.id }
             .sortedBy { it.title }
