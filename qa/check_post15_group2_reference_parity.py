@@ -34,6 +34,7 @@ def main():
             by_id[key] = entry
 
     matched = []
+    observed_cards = observed_count = caution_count = stop_count = 0
     for scenario in scenarios:
         entry = by_id.get(scenario["id"])
         if entry is None or entry["publicationStatus"] != "CANDIDATE":
@@ -45,15 +46,34 @@ def main():
         assert "vl80s" in entry["applicability"]["modelIds"]
         assert entry["title"].strip() and entry["summary"].strip()
         assert scenario["title"].strip() and scenario["summary"].strip()
+        # Candidate warnings are donor evidence, never a crew-action authorization.
+        # Keep the three lists distinct from executable checks and immediateActions.
+        for field in ("observableSigns", "prohibited", "stopConditions"):
+            assert isinstance(scenario[field], list), (scenario["id"], field)
+            assert all(isinstance(text, str) and text.strip() for text in scenario[field]), (
+                scenario["id"], field
+            )
+        observed_cards += bool(scenario["observableSigns"])
+        observed_count += len(scenario["observableSigns"])
+        caution_count += len(scenario["prohibited"])
+        stop_count += len(scenario["stopConditions"])
         matched.append(scenario["id"])
 
     assert matched, "no real donor diagnostic descriptions would be visible"
     assert len(matched) == len(set(matched)), "duplicate preview"
+    # Pinned donor-derived snapshot baseline: no silent loss of safety context.
+    assert (len(matched), observed_cards, observed_count, caution_count, stop_count) == (
+        44, 32, 81, 138, 133
+    ), "read-only donor signs/cautions/stop evidence lost or unexpectedly changed"
     print(
         "POST15_GROUP2_REFERENCE_PARITY_PASS",
         f"read_only_candidates={len(matched)}",
         f"runtime_scenarios={len(scenarios)}",
         f"registry_entries={len(by_id)}",
+        f"observed_cards={observed_cards}",
+        f"observable_signs={observed_count}",
+        f"donor_cautions={caution_count}",
+        f"donor_stop_signals={stop_count}",
         "executable_candidates=0",
     )
 
