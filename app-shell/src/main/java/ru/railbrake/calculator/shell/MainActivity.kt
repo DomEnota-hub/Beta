@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -106,10 +107,11 @@ class MainActivity : ComponentActivity() {
                     }
                     is WorkingModelResolution.Selected -> selection.model
                 }
-                val bootstrap by produceState<Result<Vl80sVerticalSlice>?>(
-                    initialValue = null,
-                    key1 = workingModel.id.value,
-                ) {
+                // Key the *state slot*, not only the coroutine: produceState's
+                // initialValue is otherwise retained across key changes, which
+                // could briefly expose a previous model's runtime on model switch.
+                val bootstrap by key(workingModel.id.value) {
+                    produceState<Result<Vl80sVerticalSlice>?>(initialValue = null) {
                     if (Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
                         val startedAt = SystemClock.elapsedRealtime()
                         val loaded = withContext(Dispatchers.IO) {
@@ -121,6 +123,7 @@ class MainActivity : ComponentActivity() {
                             Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
                         }
                         value = loaded
+                    }
                     }
                 }
                 val shellDestination = ShellHomeDestination.entries.firstOrNull { it.name == shellDestinationName }
