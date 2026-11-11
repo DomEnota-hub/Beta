@@ -94,10 +94,13 @@ object WorkNotesCodec {
     private val decoder = Base64.getUrlDecoder()
     private fun encode(value: String) = encoder.encodeToString(value.toByteArray(Charsets.UTF_8))
     private fun decode(value: String): String {
-        require(value.length <= 131072)
+        require(value.length <= 131072) { "Encoded note field too large" }
+        val bytes = decoder.decode(value)
+        require(bytes.size <= 64 * 1024) { "Decoded note field too large" }
         return Charsets.UTF_8.newDecoder()
             .onMalformedInput(CodingErrorAction.REPORT)
-            .decode(ByteBuffer.wrap(decoder.decode(value))).toString()
+            .onUnmappableCharacter(CodingErrorAction.REPORT)
+            .decode(ByteBuffer.wrap(bytes)).toString()
     }
 
     fun encodeV1(notes: List<WorkNote>): String {
@@ -117,7 +120,9 @@ object WorkNotesCodec {
     fun decodeV1(raw: String): List<WorkNote> {
         if (raw.isEmpty()) return emptyList()
         require(raw.length <= 200 * 350000) { "Notes too large" }
-        return raw.split('\n').map {
+        val lines = raw.split('\n')
+        require(lines.size <= 200) { "Notes exceed supported capacity" }
+        return lines.map {
             val p = it.split('|')
             require(p.size == 6 && p[0] == "n1") { "Corrupt notes schema" }
             WorkNote(decode(p[2]), decode(p[3]), p[1].toLong(),
