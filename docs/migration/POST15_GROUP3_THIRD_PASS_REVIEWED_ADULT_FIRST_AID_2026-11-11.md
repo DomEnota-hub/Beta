@@ -23,13 +23,14 @@ Code SHA: `cf7978e7595197f65b99d7d5de2e923286cd8bef`.
 | CPR #1: absent consciousness/normal breathing; agonal breaths | ПОДТВЕРЖДЕНО | Order 220n, annex 2, §§3–4; MChS VGSCh commander manual, §15.2 |
 | CPR #2: emergency call and AED | ПОДТВЕРЖДЕНО | Order 220n, annex 2, §4.1 |
 | CPR #3: adult chest compressions 100–120/min, 5–6 cm | ПОДТВЕРЖДЕНО | Ministry first-aid poster on cardiac arrest (adult CPR) |
-| CPR #4: trained rescue breaths 30:2 or compression-only | ПОДТВЕРЖДЕНО | Ministry adult CPR poster; professional first-aid guidance; not a pediatric protocol |
+| CPR #4: trained rescue breaths 30:2 or compression-only | ПОДТВЕРЖДЕНО | Ministry adult CPR poster (30:2); American Red Cross hands-only adult CPR guidance for untrained rescuers; not a pediatric protocol |
 | CPR #5: AED voice instructions | ПОДТВЕРЖДЕНО | Order 220n, annex 2, §4.1; Ministry CPR poster |
 | CPR #6: continue until signs of life, handover, exhaustion or danger | ПОДТВЕРЖДЕНО | Ministry CPR poster; safety condition of Order 220n, §4 |
 
 **Primary sources and edition evidence:**
 - Ministry of Health order №220н dated 03.05.2024, in force from 01.09.2024; annex 2: https://www.consultant.ru/document/cons_doc_LAW_477698/b3bff558c42175d685ba919d095586a664ff2f7d/
 - Ministry of Health official first-aid materials and posters, page **updated 05.03.2026**: https://minzdrav.gov.ru/special/pervaya-pomosch (including posters "Универсальный алгоритм" and "При отсутствии сознания, остановке дыхания и кровообращения")
+- American Red Cross, hands-only adult CPR when not trained in rescue breaths: https://www.redcross.org/take-a-class/cpr/performing-cpr/hands-only-cpr
 - MChS VGSCh §15.2 on agonal breathing: https://vgsch.organizations.mchs.gov.ru/uploads/resource/2023-01-19/spravochnik-komandira-otdeleniya-vgsch_16741234351189053200.pdf
 
 **Actively sought contradiction, still blocked:** donor `common.first-aid.poisoning` says Order 220n allows emesis "only for poisonous, not caustic substances." **ОПРОВЕРГНУТО as an attribution to the order**: annex 2 §6.2 has no such qualifier. However this is NOT a clearance to induce vomiting: NHS and Poison Control warn against unsupervised induced vomiting, and older MChS pages conflict. The entire donor poisoning procedure remains hidden and **ТРЕБУЕТ ПРОВЕРКИ** for a safely scoped replacement; do not automatically copy or publish it. Sources: https://www.nhs.uk/conditions/Poisoning/ ; https://www.poison.org/first-aid-for-poisonings ; https://mchs.gov.ru/deyatelnost/bezopasnost-grazhdan/otravleniya_0 .
