@@ -1,6 +1,8 @@
 package ru.railbrake.calculator.safety
 
+import android.content.Intent
 import android.content.res.AssetManager
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +52,7 @@ fun CommonReferenceScreen(
     initialCardId: String? = null,
     onBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     var loadState by remember(assets) {
         mutableStateOf<CommonReferenceLoadState>(CommonReferenceLoadState.Loading)
     }
@@ -127,6 +131,31 @@ fun CommonReferenceScreen(
                         },
                         style = MaterialTheme.typography.bodySmall,
                     )
+                }
+                if (opened.officialResources.isNotEmpty()) {
+                    Text(
+                        "Официальные материалы для самостоятельной сверки",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        "Наличие официальной ссылки не подтверждает текст карточки и не даёт " +
+                            "разрешения выполнять непроверенные действия. Для открытия нужен интернет.",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    opened.officialResources.forEach { resource ->
+                        OutlinedButton(
+                            onClick = {
+                                runCatching {
+                                    context.startActivity(
+                                        Intent(Intent.ACTION_VIEW, Uri.parse(resource.url))
+                                            .addCategory(Intent.CATEGORY_BROWSABLE),
+                                    )
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text(resource.title) }
+                        Text(resource.limitation, style = MaterialTheme.typography.bodySmall)
+                    }
                 }
                 if (opened.relatedCards.isNotEmpty()) {
                     Text("Связанные справочные материалы", style = MaterialTheme.typography.titleMedium)
