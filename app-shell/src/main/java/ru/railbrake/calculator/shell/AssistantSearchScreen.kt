@@ -74,7 +74,7 @@ fun AssistantSearchScreen(
     onClarify: (ModelId) -> Unit,
     onOpen: (TextAssistantResult.Matches, ContentTarget) -> Unit,
     onOpenCommon: (ShellHomeDestination, String) -> Unit,
-    onOpenFamily: (ModelId, VariantId, String) -> Unit,
+    onOpenFamily: (ModelId, VariantId?, String) -> Unit,
     onBack: () -> Unit,
 ) {
     // Donor common cards are a distinct, read-only lane. They are never installed
@@ -227,15 +227,15 @@ fun AssistantSearchScreen(
         if (familyQuery != null) {
             Text("Справочные описания оборудования из Test-",
                 style = MaterialTheme.typography.titleMedium)
-            Text("Для чтения выберите точное исполнение. Это не допуск к действиям.")
+            Text("Справочные описания можно читать без выбора исполнения. " +
+                "Точная применимость требует отдельного подтверждения; это не допуск к действиям.")
             familyQuery.profile.executions.forEach { option ->
                 OutlinedButton(onClick = { selectedFamilyExecution = option.id.value },
                     modifier = Modifier.fillMaxWidth()) {
                     Text((if (familyExecution == option.id) "✓ " else "") + option.title)
                 }
             }
-            if (familyExecution != null) {
-                if (familyEntries == null) Text("Загрузка справочного каталога…")
+            if (familyEntries == null) Text("Загрузка справочного каталога…")
                 else if (familyLoadFailed) Text("Не удалось проверить справочный каталог.")
                 else if (familyHits.isEmpty()) Text("Совпадений для выбранного исполнения нет.")
                 familyHits.take(visibleCount).forEach { hit ->
@@ -244,9 +244,13 @@ fun AssistantSearchScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(hit.title, style = MaterialTheme.typography.titleMedium)
                             Text(hit.summary)
-                            Text(if (hit.scope == ReferenceScope.EXECUTION_UNVERIFIED)
-                                "Применимость к выбранному исполнению НЕ подтверждена."
-                            else "Исполнение указано в донорском каталоге; допуск НЕ подтверждён.")
+                            Text(when {
+                                familyExecution == null ->
+                                    "Исполнение НЕ выбрано. Применимость и действия НЕ подтверждены."
+                                hit.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
+                                    "Применимость к выбранному исполнению НЕ подтверждена."
+                                else -> "Исполнение указано в донорском каталоге; допуск НЕ подтверждён."
+                            })
                             Text("Происхождение: Test-. Не инструкция к действию.")
                             OutlinedButton(onClick = {
                                 onOpenFamily(familyQuery.profile.workingModelId,
@@ -258,7 +262,6 @@ fun AssistantSearchScreen(
                 if (familyHits.size > visibleCount) {
                     TextButton(onClick = onShowMore) { Text("Показать ещё описания") }
                 }
-            }
         }
         if (submitted.isNotBlank() && commonHits.isNotEmpty()) {
             Text("Справочные материалы из Test- · требуют проверки",
