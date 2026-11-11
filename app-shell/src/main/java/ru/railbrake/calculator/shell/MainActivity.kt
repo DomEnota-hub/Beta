@@ -127,6 +127,9 @@ class MainActivity : ComponentActivity() {
                 var assistantCommonTarget by remember(selectedModelId) {
                     mutableStateOf<Pair<ShellHomeDestination, String>?>(null)
                 }
+                var assistantFamilyTarget by remember(selectedModelId) {
+                    mutableStateOf<Triple<ModelId, VariantId, String>?>(null)
+                }
                 var assistantViewedModel by remember(selectedModelId) {
                     mutableStateOf<ModelId?>(null)
                 }
@@ -137,7 +140,21 @@ class MainActivity : ComponentActivity() {
                 if (shellDestination == ShellHomeDestination.ASSISTANT) {
                     val loaded = bootstrap.getOrNull()
                     val opened = assistantOpenedTarget
-                    if (assistantCommonTarget != null) {
+                    if (assistantFamilyTarget != null) {
+                        val (model, execution, cardId) = requireNotNull(assistantFamilyTarget)
+                        FamilyContentScreen(
+                            modelId = model,
+                            modelTitle = ShellNavigationPolicy.resolve(model.value).let {
+                                if (it is WorkingModelResolution.Selected) it.model.title
+                                else "Неизвестная модель"
+                            },
+                            destination = ShellHomeDestination.ATLAS,
+                            assets = assets,
+                            initialExecutionId = execution.value,
+                            initialReferenceId = cardId,
+                            onBack = { assistantFamilyTarget = null },
+                        )
+                    } else if (assistantCommonTarget != null) {
                         val (section, cardId) = requireNotNull(assistantCommonTarget)
                         CommonReferenceScreen(
                             destination = section,
@@ -194,6 +211,10 @@ class MainActivity : ComponentActivity() {
                             },
                             onOpenCommon = { section, cardId ->
                                 assistantCommonTarget = section to cardId
+                                assistantNotice = null
+                            },
+                            onOpenFamily = { model, execution, cardId ->
+                                assistantFamilyTarget = Triple(model, execution, cardId)
                                 assistantNotice = null
                             },
                             onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
