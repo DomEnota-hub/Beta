@@ -58,6 +58,7 @@ private fun assistantModelTitle(model: ModelId): String = when (model.value) {
 @Composable
 fun AssistantSearchScreen(
     engine: AssistantTextEngine?,
+    publishedCatalogLoading: Boolean = false,
     assets: AssetManager,
     workingModelId: ModelId,
     workingModelTitle: String,
@@ -170,7 +171,9 @@ fun AssistantSearchScreen(
         Text("Список материалов", style = MaterialTheme.typography.titleMedium)
         if (notice != null) Text(notice, color = MaterialTheme.colorScheme.error)
         if (engine == null) {
-            Text("Опубликованный каталог недоступен. Справочные материалы проверяются отдельно.")
+            Text(if (publishedCatalogLoading)
+                "Загрузка опубликованных карточек ВЛ80С… Справочные материалы доступны отдельно."
+            else "Опубликованный каталог недоступен. Справочные материалы проверяются отдельно.")
         } else if (submitted.isBlank()) {
             Text("Введите запрос. При необходимости выберите категорию.")
         } else when (result) {
