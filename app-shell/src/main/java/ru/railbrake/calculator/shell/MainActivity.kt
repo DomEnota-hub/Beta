@@ -45,6 +45,7 @@ import ru.railbrake.calculator.diagnostics.DiagnosticCatalogScreen
 import ru.railbrake.calculator.diagnostics.DiagnosticFeatureIndexJsonLoader
 import ru.railbrake.calculator.diagnostics.ExecutableDiagnosticFlowJsonLoader
 import ru.railbrake.calculator.diagnostics.PublishedDiagnosticCatalog
+import ru.railbrake.calculator.diagnostics.DiagnosticReferenceCatalog
 import ru.railbrake.calculator.domain.CanonicalId
 import ru.railbrake.calculator.domain.ContentLink
 import ru.railbrake.calculator.domain.ContentOwner
@@ -438,6 +439,7 @@ class MainActivity : ComponentActivity() {
 
                         Vl80sScreen.DIAGNOSTICS -> DiagnosticCatalogScreen(
                             catalog = loaded.diagnosticCatalog,
+                            referenceCatalog = loaded.diagnosticReferenceCatalog,
                             modelTitle = "ВЛ80С",
                             onBack = {
                                 if (shellDestination == ShellHomeDestination.DIAGNOSTICS) {
@@ -725,6 +727,12 @@ class MainActivity : ComponentActivity() {
             registry = registry,
             context = context,
         )
+        // Reference-only donor candidates are not passed to the executable flow.
+        val diagnosticReferenceCatalog = DiagnosticReferenceCatalog(
+            runtime = diagnosticRuntime,
+            registry = registry,
+            context = context,
+        )
 
         return Vl80sVerticalSlice(
             registry = registry,
@@ -733,6 +741,7 @@ class MainActivity : ComponentActivity() {
             pneumaticFlow = pneumaticFlow,
             electricalFlow = electricalFlow,
             diagnosticCatalog = diagnosticCatalog,
+            diagnosticReferenceCatalog = diagnosticReferenceCatalog,
             acceptanceRoutes = acceptanceRoutes,
             context = context,
             assistantEngine = AssistantTextEngine(registry, setOf(ModelId("vl80s"))),
@@ -747,6 +756,7 @@ private data class Vl80sVerticalSlice(
     val pneumaticFlow: PneumaticFlowDocument,
     val electricalFlow: ElectricalFunctionalFlowDocument,
     val diagnosticCatalog: PublishedDiagnosticCatalog,
+    val diagnosticReferenceCatalog: DiagnosticReferenceCatalog,
     val acceptanceRoutes: List<ResolvedAcceptanceRoute>,
     val context: RuntimeContext,
     /** Stage 8 text backend, wired to the validated published runtime; UI is stage 9. */

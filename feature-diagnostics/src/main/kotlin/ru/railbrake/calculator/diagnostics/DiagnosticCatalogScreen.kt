@@ -35,11 +35,17 @@ fun DiagnosticCatalogScreen(
     catalog: PublishedDiagnosticCatalog,
     modelTitle: String,
     onBack: () -> Unit,
+    referenceCatalog: DiagnosticReferenceCatalog? = null,
 ) {
     var query by remember(catalog) { mutableStateOf("") }
     var selectedId by remember(catalog) { mutableStateOf<String?>(null) }
+    var selectedReferenceId by remember(referenceCatalog) { mutableStateOf<String?>(null) }
     val selected = selectedId?.let(catalog::open)
-    BackHandler(enabled = selectedId != null) { selectedId = null }
+    val reference = selectedReferenceId?.let { referenceCatalog?.open(it) }
+    BackHandler(enabled = selectedId != null || selectedReferenceId != null) {
+        selectedId = null
+        selectedReferenceId = null
+    }
     var state by remember(selected?.id) {
         mutableStateOf(selected?.let(ExecutableDiagnosticEngine::start))
     }
@@ -55,11 +61,20 @@ fun DiagnosticCatalogScreen(
         ) {
             TextButton(
                 onClick = {
-                    if (selectedId == null) onBack() else selectedId = null
+                    if (selectedId == null && selectedReferenceId == null) onBack()
+                    else {
+                        selectedId = null
+                        selectedReferenceId = null
+                    }
                 },
-            ) { Text(if (selectedId == null) "← Назад" else "← К списку сценариев") }
+            ) {
+                Text(
+                    if (selectedId == null && selectedReferenceId == null)
+                        "← Назад" else "← К списку сценариев"
+                )
+            }
 
-            if (selected == null) {
+            if (selected == null && reference == null) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = query,
@@ -68,11 +83,11 @@ fun DiagnosticCatalogScreen(
                     singleLine = true,
                 )
                 val results = catalog.search(query)
-                if (results.isEmpty()) {
+                val references = referenceCatalog?.search(query).orEmpty()
+                if (results.isEmpty() && references.isEmpty()) {
                     Text(
-                        "Доступных опубликованных сценариев по этому запросу нет. " +
-                            "Непроверенные кандидаты не открываются и не используются " +
-                            "для рекомендаций по действиям.",
+                        "Материалов по этому запросу нет. Неподтверждённые " +
+                            "действия и диагностические опросы не публикуются.",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -88,7 +103,51 @@ fun DiagnosticCatalogScreen(
                         }
                     }
                 }
-            } else {
+                if (references.isNotEmpty()) {
+                    Text(
+                        "Справочные описания · требуют проверки",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        "Сведения из Test- доступны для чтения. Это не разрешение " +
+                            "на действия локомотивной бригады.",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                references.forEach { item ->
+                    OutlinedButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { selectedReferenceId = item.id },
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(item.title, style = MaterialTheme.typography.titleSmall)
+                            Text(item.category, style = MaterialTheme.typography.bodySmall)
+                            Text(item.summary, style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+            } else if (reference != null) {
+                Text(reference.title, style = MaterialTheme.typography.titleMedium)
+                Text(reference.summary)
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        Text(
+                            "Справка, не инструкция к действию",
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(reference.sourceNotice)
+                        reference.variantNotice?.let { Text(it) }
+                        Text(
+                            "Порядок проверок, противопоказания и допустимость " +
+                                "действий локомотивной бригады здесь не подтверждены. " +
+                                "Пошаговый опрос и ремонтные операции недоступны.",
+                        )
+                    }
+                }
+            } else if (selected != null) {
                 Text(selected.title, style = MaterialTheme.typography.titleMedium)
                 Text(selected.summary)
                 Text(
@@ -107,6 +166,20 @@ fun DiagnosticCatalogScreen(
                         }
                     }
                 }
+                selected.prohibited.takeIf { it.isNotEmpty() }?.let { prohibitions ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            Text(
+                                "Противопоказания и недопустимые действия",
+                                style = MaterialTheme.typography.titleSmall,
+                            )
+                            prohibitions.forEach { Text("• $it") }
+                        }
+                    }
+                }
                 selected.stopConditions.takeIf { it.isNotEmpty() }?.let { stops ->
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(
@@ -118,6 +191,22 @@ fun DiagnosticCatalogScreen(
                         }
                     }
                 }
+
+                selected.reportFields.takeIf { it.isNotEmpty() }?.let { fields ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            Text("Что сообщить", style = MaterialTheme.typography.titleSmall)
+                            fields.forEach { Text("• $it") }
+                        }
+                    }
+                }
+                Text(
+                    "Источник/основание: " + selected.sourceNote,
+                    style = MaterialTheme.typography.bodySmall,
+                )
 
                 if (state != null) {
                     val result = ExecutableDiagnosticEngine.result(selected, requireNotNull(state))
