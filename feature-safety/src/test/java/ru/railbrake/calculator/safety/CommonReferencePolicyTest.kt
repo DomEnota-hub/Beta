@@ -149,6 +149,40 @@ class CommonReferencePolicyTest {
         ).isEmpty())
     }
 
+    @Test fun onlyTwoFirstAidCardsExposeIndependentlyReviewedAdultGuidance() {
+        val entries = donorEntries()
+        val cards = CommonReferencePolicy.cards(entries, ShellHomeDestination.FIRST_AID)
+        val reviewed = cards.filter { it.reviewedAid != null }
+        assertEquals(
+            setOf("common.first-aid.unconscious", "common.first-aid.cpr"),
+            reviewed.map { it.id }.toSet(),
+        )
+        assertTrue(reviewed.all { it.reviewedAid!!.steps.size == 6 })
+        assertTrue(reviewed.all {
+            it.reviewedAid!!.sourceUrl == "https://minzdrav.gov.ru/special/pervaya-pomosch" &&
+                it.reviewedAid!!.sourceTitle.contains("220н") &&
+                it.reviewedAid!!.scopeNote.contains("взрослого")
+        })
+        assertTrue(cards.all { it.details.isEmpty() })
+        assertTrue(cards.filter { it.reviewedAid == null }.size == 16)
+        assertTrue(reviewed.all { card ->
+            card.sourceEvidence.all { it.sourceStatus == SourceStatus.UNKNOWN }
+        })
+        val cpr = entries.single { it.id.value == "common.first-aid.cpr" }
+        val donorSource = entries.single { it.id.value == "common.source.first-aid-donor" }
+        assertTrue(CommonReferencePolicy.cards(
+            listOf(cpr), ShellHomeDestination.FIRST_AID,
+        ).isEmpty())
+        assertTrue(CommonReferencePolicy.cards(
+            listOf(donorSource, cpr.copy(sourceRefs = emptySet())),
+            ShellHomeDestination.FIRST_AID,
+        ).isEmpty())
+        val nonAid = entries.single { it.id.value == "common.knowledge.brakes-automatic-principle" }
+        assertTrue(CommonReferencePolicy.cards(
+            listOf(donorSource, nonAid), ShellHomeDestination.FIRST_AID,
+        ).isEmpty())
+    }
+
     @Test fun sourcesRetainUnverifiedProvenanceWithoutImplyingApproval() {
         val entries = donorEntries()
         val cards = listOf(

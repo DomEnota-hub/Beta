@@ -32,6 +32,18 @@ data class CommonReferenceSourceEvidence(
 data class CommonReferenceRelatedCard(val id: String, val title: String)
 
 /**
+ * Independently reviewed, narrowly scoped first-aid content. Never populated
+ * from the donor's unreviewed blocks. This is information for immediate aid,
+ * not a promotion of donor source status or an occupational authorization.
+ */
+data class CommonReferenceReviewedAid(
+    val steps: List<String>,
+    val sourceTitle: String,
+    val sourceUrl: String,
+    val scopeNote: String,
+)
+
+/**
  * A link to an independently located government resource, NOT evidence that
  * the donor summary or its hidden procedures match the current regulation.
  * The URL is chosen by code, never taken from unreviewed donor content.
@@ -51,6 +63,7 @@ data class CommonReferenceCard(
     val sourceEvidence: List<CommonReferenceSourceEvidence> = emptyList(),
     val relatedCards: List<CommonReferenceRelatedCard> = emptyList(),
     val officialResources: List<CommonReferenceOfficialResource> = emptyList(),
+    val reviewedAid: CommonReferenceReviewedAid? = null,
     val searchTerms: Set<String> = emptySet(),
 )
 
@@ -121,6 +134,7 @@ object CommonReferencePolicy {
                 sourceEvidence = evidence,
                 relatedCards = related,
                 officialResources = officialFirstAidResources(entry, evidence),
+                reviewedAid = reviewedFirstAid(entry, evidence),
                 searchTerms = entry.searchTerms,
             )
         }
@@ -156,6 +170,45 @@ object CommonReferencePolicy {
                 listOf(firstAidOrder, firstAidAlgorithms)
             else -> emptyList()
         }
+    }
+
+    /**
+     * Checked against Order 220n (03.05.2024), annex 2 §§1–4,9 and the
+     * Ministry of Health first-aid posters published on its page updated
+     * 05.03.2026. Only these two adult cases have a reviewed UI procedure.
+     * No donor procedural block is copied or exposed by this function.
+     */
+    private fun reviewedFirstAid(
+        entry: ContentEntry,
+        evidence: List<CommonReferenceSourceEvidence>,
+    ): CommonReferenceReviewedAid? {
+        if (entry.type != ContentType.FIRST_AID ||
+            evidence.none { it.id == "common.source.first-aid-donor" }) return null
+        val steps = when (entry.id.value) {
+            "common.first-aid.unconscious" -> listOf(
+                "Убедитесь в безопасности места. Не подвергайте себя опасности.",
+                "Проверьте, нет ли продолжающегося наружного кровотечения; при наличии остановите его.",
+                "Проверьте сознание. При отсутствии реакции откройте дыхательные пути запрокидыванием головы с подъёмом подбородка и проверьте дыхание не более 10 секунд.",
+                "Если дыхание нормальное, придайте устойчивое боковое положение. Если это невозможно из-за травмы или иных причин, удерживайте голову запрокинутой с поднятым подбородком.",
+                "Вызовите 103 или 112 и постоянно контролируйте дыхание до прибытия помощи.",
+                "Если нормального дыхания нет, немедленно переходите к сердечно-лёгочной реанимации.",
+            )
+            "common.first-aid.cpr" -> listOf(
+                "Убедитесь в безопасности. Проверьте сознание и нормальное дыхание; редкие судорожные вдохи не считайте нормальным дыханием.",
+                "Если пострадавший без сознания и не дышит нормально, вызовите 103 или 112 либо поручите вызов помощнику. Попросите принести автоматический наружный дефибриллятор (АНД).",
+                "Уложите взрослого пострадавшего на твёрдую ровную поверхность. Надавливайте на центр грудной клетки с частотой 100–120 в минуту и глубиной 5–6 см.",
+                "Если обучены и можете безопасно делать искусственное дыхание, чередуйте 30 надавливаний с 2 вдохами. Иначе выполняйте непрерывные надавливания.",
+                "При наличии АНД включите его и следуйте голосовым указаниям, сводя перерывы в надавливаниях к минимуму.",
+                "Продолжайте до появления явных признаков жизни, передачи бригаде скорой помощи, невозможности продолжать или возникновения опасности.",
+            )
+            else -> return null
+        }
+        return CommonReferenceReviewedAid(
+            steps = steps,
+            sourceTitle = "Минздрав России: приказ №220н, приложение №2, пункты 1–4, 9; материалы первой помощи (страница обновлена 05.03.2026)",
+            sourceUrl = "https://minzdrav.gov.ru/special/pervaya-pomosch",
+            scopeNote = "Сверены только указанные действия для взрослого. Донорские процедуры, особенности помощи детям и иные состояния не подтверждены этой карточкой.",
+        )
     }
 
     /** Search only visible title, summary and donor keywords; never hidden procedures. */

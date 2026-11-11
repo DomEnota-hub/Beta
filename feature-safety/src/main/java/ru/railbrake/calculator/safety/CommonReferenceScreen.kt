@@ -107,6 +107,26 @@ fun CommonReferenceScreen(
                 }
                 Text(opened.title, style = MaterialTheme.typography.titleLarge)
                 Text(opened.summary)
+                opened.reviewedAid?.let { aid ->
+                    Text("Сверенные мероприятия первой помощи",
+                        style = MaterialTheme.typography.titleMedium)
+                    aid.steps.forEachIndexed { index, step ->
+                        Text("${index + 1}. $step")
+                    }
+                    Text(aid.scopeNote, style = MaterialTheme.typography.bodySmall)
+                    OutlinedButton(
+                        onClick = {
+                            runCatching {
+                                context.startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(aid.sourceUrl))
+                                        .addCategory(Intent.CATEGORY_BROWSABLE),
+                                )
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Источник сверенных мероприятий: Минздрав России") }
+                    Text(aid.sourceTitle, style = MaterialTheme.typography.bodySmall)
+                }
                 if (opened.details.isNotEmpty()) {
                     Text("Исходный справочный текст · требует проверки",
                         style = MaterialTheme.typography.titleMedium)
