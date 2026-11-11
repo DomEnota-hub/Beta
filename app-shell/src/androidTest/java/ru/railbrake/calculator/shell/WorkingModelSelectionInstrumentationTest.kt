@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -44,4 +45,21 @@ class WorkingModelSelectionInstrumentationTest {
         }
         compose.onNodeWithText("Пошаговая пневматика").assertIsDisplayed()
     }
+    @Test fun switchingAwayFromVl80sCannotReuseItsPublishedAssistantRuntime() {
+        compose.onNodeWithText("ВЛ80С").performClick()
+        compose.onNodeWithText("Атлас").performClick()
+        compose.waitUntil(20_000) {
+            compose.onAllNodesWithText("Пошаговая пневматика").fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.activity.onBackPressedDispatcher.onBackPressed()
+        compose.onNodeWithText("ВЛ80С · Сменить").performClick()
+        compose.onNodeWithText("ЧМЭ3").performClick()
+        compose.onNodeWithText("Помощник").performClick()
+        compose.onNodeWithText("Что нужно найти?").performTextInput("главный выключатель")
+        compose.onNodeWithText("Найти").performClick()
+        compose.onNodeWithText("Опубликованный каталог недоступен.", substring = true)
+            .assertExists()
+        compose.onNodeWithText("Пошаговая пневматика").assertDoesNotExist()
+    }
+
 }
