@@ -31,6 +31,29 @@ class AssistantVoicePolicyTest {
             p.russianPack(emptyList(), emptyList(), emptyList()))
     }
 
+    @Test fun permissionGrantAfterLeavingScreenMustNotStartMicrophone() {
+        val gate = AssistantVoiceSessionGate()
+        val permissionRequest = gate.next()!!
+        assertTrue(gate.isCurrent(permissionRequest))
+        gate.dispose()
+        assertFalse(gate.isCurrent(permissionRequest))
+        assertNull(gate.next())
+    }
+
+    @Test fun cancelledAndSupersededVoiceCallbacksAreIgnored() {
+        val gate = AssistantVoiceSessionGate()
+        val first = gate.next()!!
+        val second = gate.next()!!
+        assertFalse(gate.isCurrent(first))
+        assertTrue(gate.isCurrent(second))
+        gate.invalidate()
+        assertFalse(gate.isCurrent(second))
+        val third = gate.next()!!
+        assertTrue(gate.isCurrent(third))
+        gate.dispose()
+        assertFalse(gate.isCurrent(third))
+    }
+
     @Test fun rejectEmptyControlAndOversizedSpeech() {
         assertNull(AssistantVoicePolicy.transcriptOrNull(null))
         assertNull(AssistantVoicePolicy.transcriptOrNull("   "))

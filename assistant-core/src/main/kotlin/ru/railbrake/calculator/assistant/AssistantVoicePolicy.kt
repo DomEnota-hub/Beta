@@ -44,3 +44,27 @@ object AssistantVoicePolicy {
         }
     }
 }
+
+
+/**
+ * Invalidates delayed Android permission, recognition-support and recognition callbacks.
+ * Each new request owns a generation; cancelling or leaving the screen makes old callbacks inert.
+ * Pure Kotlin so the lifecycle race can be regression-tested without a microphone or device.
+ */
+class AssistantVoiceSessionGate {
+    private var attached = true
+    private var generation = 0L
+
+    fun next(): Long? = if (attached) ++generation else null
+
+    fun isCurrent(token: Long): Boolean = attached && token == generation
+
+    fun invalidate() {
+        generation++
+    }
+
+    fun dispose() {
+        attached = false
+        invalidate()
+    }
+}

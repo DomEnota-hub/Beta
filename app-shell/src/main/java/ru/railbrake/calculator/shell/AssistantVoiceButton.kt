@@ -26,6 +26,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import ru.railbrake.calculator.assistant.AssistantVoicePolicy
+import ru.railbrake.calculator.assistant.AssistantVoiceSessionGate
 import java.util.Locale
 
 /**
@@ -38,11 +39,15 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     val context = LocalContext.current
     val latestTranscript by rememberUpdatedState(onTranscript)
     val handler = remember { Handler(Looper.getMainLooper()) }
+    val gate = remember { AssistantVoiceSessionGate() }
+    var permissionToken by remember { mutableStateOf<Long?>(null) }
     var recognizer by remember { mutableStateOf<SpeechRecognizer?>(null) }
     var timeout by remember { mutableStateOf<Runnable?>(null) }
     var status by remember { mutableStateOf("Голосовой ввод: только локальное распознавание.") }
 
     fun stop(message: String) {
+        gate.invalidate()
+        permissionToken = null
         timeout?.let { handler.removeCallbacks(it) }
         timeout = null
         val previous = recognizer
@@ -52,9 +57,14 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
         status = message
     }
 
+    fun offlineRecognizerAvailable(): Boolean =
+        Build.VERSION.SDK_INT >= AssistantVoicePolicy.MIN_ON_DEVICE_API &&
+            runCatching { SpeechRecognizer.isOnDeviceRecognitionAvailable(context) }
+                .getOrDefault(false)
+
     fun start() {
-        if (Build.VERSION.SDK_INT < AssistantVoicePolicy.MIN_ON_DEVICE_API ||
-            !SpeechRecognizer.isOnDeviceRecognitionAvailable(context)) {
+        val session = gate.next() ?: return
+        if (!offlineRecognizerAvailable()) {
             status = "Офлайн-распознавание недоступно на этом устройстве. Используйте текст."
             return
         }
@@ -68,18 +78,18 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
             recognizer = current
             current.setRecognitionListener(object : RecognitionListener {
                 override fun onReadyForSpeech(params: Bundle?) {
-                    if (recognizer === current) status = "Говорите..."
+                    if (recognizer === current && gate.isCurrent(session)) status = "Говорите..."
                 }
                 override fun onBeginningOfSpeech() {
-                    if (recognizer === current) status = "Слушаю..."
+                    if (recognizer === current && gate.isCurrent(session)) status = "Слушаю..."
                 }
                 override fun onRmsChanged(rmsdB: Float) = Unit
                 override fun onBufferReceived(buffer: ByteArray?) = Unit
                 override fun onEndOfSpeech() {
-                    if (recognizer === current) status = "Распознаю..."
+                    if (recognizer === current && gate.isCurrent(session)) status = "Распознаю..."
                 }
                 override fun onError(error: Int) {
-                    if (recognizer === current) stop(
+                    if (recognizer === current && gate.isCurrent(session)) stop(
                         when (error) {
                             SpeechRecognizer.ERROR_NO_MATCH, SpeechRecognizer.ERROR_SPEECH_TIMEOUT ->
                                 "Речь не распознана. Повторите запрос или введите текст."
@@ -93,7 +103,7 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
                     )
                 }
                 override fun onResults(results: Bundle?) {
-                    if (recognizer !== current) return
+                    if (recognizer !== current || !gate.isCurrent(session)) return
                     val transcript = AssistantVoicePolicy.transcriptOrNull(
                         results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                             ?.firstOrNull()
@@ -106,7 +116,7 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
                 override fun onEvent(eventType: Int, params: Bundle?) = Unit
             })
             val watchdog = Runnable {
-                if (recognizer === current) stop("Время записи истекло. Попробуйте снова.")
+                if (recognizer === current && gate.isCurrent(session)) stop("Время записи истекло. Попробуйте снова.")
             }
             timeout = watchdog
             handler.postDelayed(watchdog, AssistantVoicePolicy.MAX_DURATION_MS)
@@ -124,7 +134,7 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
                 current.checkRecognitionSupport(request, context.mainExecutor,
                     object : RecognitionSupportCallback {
                         override fun onSupportResult(support: RecognitionSupport) {
-                            if (recognizer !== current) return
+                            if (recognizer !== current || !gate.isCurrent(session)) return
                             when (AssistantVoicePolicy.russianPack(
                                 support.installedOnDeviceLanguages,
                                 support.supportedOnDeviceLanguages,
@@ -145,7 +155,7 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
                             }
                         }
                         override fun onError(error: Int) {
-                            if (recognizer === current)
+                            if (recognizer === current && gate.isCurrent(session))
                                 stop("Не удалось проверить офлайн-модель (код $error). Используйте текст.")
                         }
                     })
@@ -163,14 +173,24 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) start() else status = "Доступ к микрофону отклонён."
+        val token = permissionToken
+        permissionToken = null
+        // A permission result can arrive after navigation/disposal or cancellation.
+        if (token != null && gate.isCurrent(token)) {
+            if (granted) start() else status = "Доступ к микрофону отклонён."
+        }
     }
 
     DisposableEffect(Unit) {
         onDispose {
+            gate.dispose()
+            permissionToken = null
             timeout?.let { handler.removeCallbacks(it) }
-            recognizer?.cancel()
-            recognizer?.destroy()
+            timeout = null
+            val previous = recognizer
+            recognizer = null
+            previous?.cancel()
+            previous?.destroy()
         }
     }
 
@@ -178,17 +198,27 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
         OutlinedButton(onClick = {
             if (recognizer != null) {
                 stop("Запись отменена.")
-            } else if (Build.VERSION.SDK_INT < AssistantVoicePolicy.MIN_ON_DEVICE_API ||
-                !SpeechRecognizer.isOnDeviceRecognitionAvailable(context)) {
+            } else if (permissionToken != null) {
+                gate.invalidate()
+                permissionToken = null
+                status = "Запрос разрешения отменён."
+            } else if (!offlineRecognizerAvailable()) {
                 status = "На устройстве нет доступного офлайн-распознавателя."
             } else if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) ==
                 PackageManager.PERMISSION_GRANTED) {
                 start()
             } else {
-                permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                permissionToken = gate.next()
+                if (permissionToken != null) {
+                    permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                }
             }
         }) {
-            Text(if (recognizer == null) "🎙 Голосовой ввод" else "Остановить запись")
+            Text(when {
+                recognizer != null -> "Остановить запись"
+                permissionToken != null -> "Отменить запрос"
+                else -> "🎙 Голосовой ввод"
+            })
         }
         Text(status)
     }
