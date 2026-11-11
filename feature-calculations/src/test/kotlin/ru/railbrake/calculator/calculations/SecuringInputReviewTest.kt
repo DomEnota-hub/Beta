@@ -54,6 +54,22 @@ class SecuringInputReviewTest {
         assertTrue(SecuringInputReview.byMass(mass.copy(axleCount = "x")) is SecuringReview.Invalid)
     }
 
+    @Test fun largeAxleWindPreviewDoesNotSilentlyUndercount() {
+        val result = SecuringInputReview.byAppendix(
+            appendix.copy(
+                axleCount = "1500000000",
+                slopePermille = "0",
+                formula = null,
+                windSpeedMs = "16",
+                windMatchesMovement = true,
+                availableShoes = "0",
+            )
+        ) as SecuringReview.Appendix
+        assertEquals(22_500_000, result.calculation.windShoes)
+        assertEquals(22_500_002, result.calculation.totalRequiredShoes)
+        assertEquals(CalculationApproval.FORMULA_REVIEWED_LOCAL_RULES_REQUIRED, result.approval)
+    }
+
     @Test fun profileDoesNotInventFormulaSelection() {
         ProfileMode.entries.forEach { mode ->
             val result = SecuringInputReview.byAppendix(appendix.copy(profile = mode, formula = null))
