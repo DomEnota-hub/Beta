@@ -238,30 +238,30 @@ fun AssistantSearchScreen(
             if (familyEntries == null) Text("Загрузка справочного каталога…")
             else if (familyLoadFailed) Text("Не удалось проверить справочный каталог.")
             else if (familyHits.isEmpty()) Text("Совпадений для текущей модели и условий поиска нет.")
-                familyHits.take(visibleCount).forEach { hit ->
-                    Card(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.padding(14.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text(hit.title, style = MaterialTheme.typography.titleMedium)
-                            Text(hit.summary)
-                            Text(when {
-                                familyExecution == null ->
-                                    "Исполнение НЕ выбрано. Применимость и действия НЕ подтверждены."
-                                hit.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
-                                    "Применимость к выбранному исполнению НЕ подтверждена."
-                                else -> "Исполнение указано в донорском каталоге; допуск НЕ подтверждён."
-                            })
-                            Text("Происхождение: Test-. Не инструкция к действию.")
-                            OutlinedButton(onClick = {
-                                onOpenFamily(familyQuery.profile.workingModelId,
-                                    familyExecution, hit.id)
-                            }) { Text("Читать справочную карточку") }
-                        }
+            familyHits.take(visibleCount).forEach { hit ->
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(14.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(hit.title, style = MaterialTheme.typography.titleMedium)
+                        Text(hit.summary)
+                        Text(when {
+                            familyExecution == null ->
+                                "Исполнение НЕ выбрано. Применимость и действия НЕ подтверждены."
+                            hit.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
+                                "Применимость к выбранному исполнению НЕ подтверждена."
+                            else -> "Исполнение указано в донорском каталоге; допуск НЕ подтверждён."
+                        })
+                        Text("Происхождение: Test-. Не инструкция к действию.")
+                        OutlinedButton(onClick = {
+                            onOpenFamily(familyQuery.profile.workingModelId,
+                                familyExecution, hit.id)
+                        }) { Text("Читать справочную карточку") }
                     }
                 }
-                if (familyHits.size > visibleCount) {
-                    TextButton(onClick = onShowMore) { Text("Показать ещё описания") }
-                }
+            }
+            if (familyHits.size > visibleCount) {
+                TextButton(onClick = onShowMore) { Text("Показать ещё описания") }
+            }
         }
         if (submitted.isNotBlank() && commonHits.isNotEmpty()) {
             Text("Справочные материалы из Test- · требуют проверки",
