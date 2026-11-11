@@ -49,26 +49,27 @@ android {
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:*~:authoring:migration:*.research.json:*.research.json.gz:*.candidate.json:*.candidate.json.gz:*.research.*:*.candidate.*:ermak:chme3-family:tem2-family:locomotive-migration"
     }
 
-    // Sherpa binaries are not cleared for redistribution yet. Guard against
-    // accidental APK publication while the independent license TODO is open.
-    tasks.register("verifyNoUnlicensedSherpaAssets") {
-        doLast {
-            val blocked = listOf(
-                file("libs/sherpa-onnx.aar"),
-                file("src/main/assets/assistant_voice"),
-                file("../content-packs/assistant_voice")
-            ).filter { it.exists() }
-            check(blocked.isEmpty()) {
-                "Sherpa-ONNX binaries require verified model redistribution rights and a pinned asset manifest: $blocked"
-            }
-        }
-    }
-    tasks.named("preBuild") { dependsOn("verifyNoUnlicensedSherpaAssets") }
-
     sourceSets {
         getByName("main").assets.srcDir("../content-packs")
     }
 }
+
+// Sherpa binaries are not cleared for redistribution yet. Guard against
+// accidental APK publication while the independent license TODO is open.
+tasks.register("verifyNoUnlicensedSherpaAssets") {
+    doLast {
+        val blocked = listOf(
+            file("libs/sherpa-onnx.aar"),
+            file("src/main/assets/assistant_voice"),
+            file("../content-packs/assistant_voice")
+        ).filter { it.exists() }
+        check(blocked.isEmpty()) {
+            "Sherpa-ONNX binaries require verified model redistribution rights and a pinned asset manifest: $blocked"
+        }
+    }
+}
+tasks.named("preBuild") { dependsOn("verifyNoUnlicensedSherpaAssets") }
+
 
 dependencies {
     implementation(project(":assistant-core"))

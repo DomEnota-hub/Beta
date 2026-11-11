@@ -17,17 +17,17 @@ class AssistantVoicePolicyTest {
 
     @Test fun russianOfflinePackMustAlreadyBeInstalled() {
         val p = AssistantVoicePolicy
-        assertEquals(p.RussianPack.INSTALLED,
+        assertEquals(AssistantVoicePolicy.RussianPack.INSTALLED,
             p.russianPack(listOf("en-US", "ru-RU"), listOf("de-DE"), emptyList()))
-        assertEquals(p.RussianPack.INSTALLED,
+        assertEquals(AssistantVoicePolicy.RussianPack.INSTALLED,
             p.russianPack(listOf("RU_ru"), emptyList(), emptyList()))
-        assertEquals(p.RussianPack.NEEDS_DOWNLOAD,
+        assertEquals(AssistantVoicePolicy.RussianPack.NEEDS_DOWNLOAD,
             p.russianPack(emptyList(), listOf("ru"), emptyList()))
-        assertEquals(p.RussianPack.NEEDS_DOWNLOAD,
+        assertEquals(AssistantVoicePolicy.RussianPack.NEEDS_DOWNLOAD,
             p.russianPack(emptyList(), emptyList(), listOf("ru-RU")))
-        assertEquals(p.RussianPack.UNAVAILABLE,
+        assertEquals(AssistantVoicePolicy.RussianPack.UNAVAILABLE,
             p.russianPack(listOf("uk-UA", "en-RU", "russian"), emptyList(), emptyList()))
-        assertEquals(p.RussianPack.UNAVAILABLE,
+        assertEquals(AssistantVoicePolicy.RussianPack.UNAVAILABLE,
             p.russianPack(emptyList(), emptyList(), emptyList()))
     }
 
