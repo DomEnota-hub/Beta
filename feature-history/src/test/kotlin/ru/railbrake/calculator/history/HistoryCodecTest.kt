@@ -112,7 +112,7 @@ class HistoryCodecTest {
 
     @Test fun notesRejectTooManyRowsBeforeDecoding() {
         val row = "n1|1|YQ==|dmw4MHM=|VGl0bGU=|VGV4dA=="
-        try { WorkNotesCodec.decodeV1(List(201) { row }.joinToString("\\n")); fail("Oversized collection must fail") }
+        try { WorkNotesCodec.decodeV1(List(201) { row }.joinToString("\n")); fail("Oversized collection must fail") }
         catch (_: IllegalArgumentException) {}
     }
 }
