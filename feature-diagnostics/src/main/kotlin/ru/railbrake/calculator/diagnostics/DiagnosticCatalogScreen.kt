@@ -141,9 +141,71 @@ fun DiagnosticCatalogScreen(
                         Text(reference.sourceNotice)
                         reference.variantNotice?.let { Text(it) }
                         Text(
-                            "Порядок проверок, противопоказания и допустимость " +
-                                "действий локомотивной бригады здесь не подтверждены. " +
-                                "Пошаговый опрос и ремонтные операции недоступны.",
+                            "Ни один пункт этой справки не подтверждает право локомотивной " +
+                                "бригады выполнять работы. Проверки и ремонтные операции " +
+                                "из донорского сценария здесь не публикуются.",
+                        )
+                    }
+                }
+                if (reference.observedSigns.isNotEmpty()) {
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            Text(
+                                "Наблюдаемые признаки · справочно",
+                                style = MaterialTheme.typography.titleSmall,
+                            )
+                            reference.observedSigns.forEach { Text("• $it") }
+                        }
+                    }
+                }
+                if (reference.donorCautions.isNotEmpty()) {
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            Text(
+                                "Предостережения из Test- · требуют проверки",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                            Text(
+                                "В донорской карточке перечислены действия, которых следует " +
+                                    "избегать. Актуальная редакция и применимость к исполнению " +
+                                    "не подтверждены; это не самостоятельный нормативный запрет.",
+                            )
+                            reference.donorCautions.forEach { Text("• $it") }
+                        }
+                    }
+                }
+                if (reference.donorStopSignals.isNotEmpty()) {
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            Text(
+                                "Признаки прекращения проверки · донорская справка",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                            Text(
+                                "Перечень требует сверки с действующими инструкциями. " +
+                                    "При опасных признаках не продолжайте неподтверждённый опрос.",
+                            )
+                            reference.donorStopSignals.forEach { Text("• $it") }
+                        }
+                    }
+                }
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            "Порядок проверок, разрешённые действия и ограничения по роли " +
+                                "здесь не подтверждены. Пошаговый опрос недоступен. " +
+                                "Руководствуйтесь действующими инструкциями и допусками.",
                         )
                     }
                 }
