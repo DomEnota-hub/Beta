@@ -1,6 +1,6 @@
 # Post-15 remediation, second pass group 2/8 — donor cautions and stop signals remain visible as knowledge
 
-**11.11.2026. Status: PARTIAL / IMPLEMENTED; CI VERIFICATION IN PROGRESS.** This is not completion of group 2, Stage 13, Stage 15 or Issue #4. Main migration stages fully accepted remain **11/15**. Test- donor pinned at `3176d6ee228f0ed4b78371f45209e10c1c724eff` was read-only. This run works only group 2.
+**11.11.2026. Status: PARTIAL / CODE + CI VERIFIED; DEBUG/QA APK DELIVERED AND RE-DOWNLOADED.** This is not completion of group 2, Stage 13, Stage 15 or Issue #4. Main migration stages fully accepted remain **11/15**. Test- donor pinned at `3176d6ee228f0ed4b78371f45209e10c1c724eff` was read-only. This run works only group 2.
 
 ## User-visible implementation in Beta
 
@@ -18,7 +18,11 @@ The Test- `DiagnosticRepository.kt` at the pinned commit was checked for the `pr
 
 ## Verification and delivery
 
-**At creation: CI pending.** Dedicated post-15 group 2 run at `5e1bc7e2`: [#42996404937](https://github.com/DomEnota-hub/Beta/actions/runs/42996404937); Stage 15 at `2912b8dc`: [#42996643758](https://github.com/DomEnota-hub/Beta/actions/runs/42996643758). Do not claim success, a validated APK or Google Drive delivery until terminal results and verified Drive metadata. Android instrumentation compilation is required; execution on a device is reserved for final manual acceptance.
+**CI verified terminal:** at final Kotlin/Compose/test SHA `5e1bc7e2d26f69e728ce6ed0d6f2f3bb7edcf7d9`, **17/17 workflows SUCCESS**, including dedicated [group 2 #42996404937](https://github.com/DomEnota-hub/Beta/actions/runs/42996404937): `:feature-diagnostics:testDebugUnitTest`, `:app-shell:testDebugUnitTest`, lint, `:app-shell:assembleDebug`, `:app-shell:assembleDebugAndroidTest` and the pinned runtime, evidence parity and actual APK integration gates. The job log reports `BUILD SUCCESSFUL in 3m 51s`, `POST15_GROUP2_REFERENCE_PARITY_PASS read_only_candidates=44 runtime_scenarios=103 registry_entries=44 observed_cards=32 observable_signs=81 donor_cautions=138 donor_stop_signals=133 executable_candidates=0` and `STAGE15_APK_INTEGRATION_PASS vl80s_core_packs=28 common_references=66 family_previews=84 forbidden_assets=0`.
+
+At CI workflow update SHA `2912b8dcde3c98d088c27e9a86a4170558664e68`, **17/17 workflows SUCCESS terminal**, including [Stage 15 #42996643758](https://github.com/DomEnota-hub/Beta/actions/runs/42996643758) and [modular bootstrap #42996654538](https://github.com/DomEnota-hub/Beta/actions/runs/42996654538). Stage 15 ran JVM tests, lint, Debug APK, AndroidTest **compilation only**, negative integration fixtures, real APK/source/profile gates, and APK ZIP integrity. The final Stage 15 job reports `BUILD SUCCESSFUL in 3m 34s`.
+
+**Verified unapproved Debug/QA APK delivered to Google Drive Rail** (folder `1IkcRbUhf8HMU7VwtPVOpI5SBZKPJHzFd`): [`RailBrake_Beta_1.2.2-modular-alpha01_post15-group2-second-pass_debugQA_2912b8dc.apk`](https://drive.google.com/file/d/1Uk35-a5ugjvIz3aZ8hyVG1PNuoBMJ0Nv/view), **9,653,013 bytes**, SHA256 **`2da49d56453273ed697ce2601928027f081ceff8fdc33645dad3a6f2887c03cf`**. GitHub artifact ID `13844895606` ZIP size 9,270,030 bytes and SHA256 `379b7c2b23a8b9cc57611a2d4b8d866c5973084a7b8d5386b761985ca307cda8`; ZIP and APK integrity PASS. Google Drive upload was independently verified with metadata for exact name, size, and parent folder, then **re-downloaded and SHA256-matched** against the CI original. Under 100 MB, delivered as one APK. **Not production; no device execution claimed.**
 
 ## Remaining group 2 acceptance
 
@@ -28,4 +32,4 @@ The Test- `DiagnosticRepository.kt` at the pinned commit was checked for the `pr
 4. Verify UI search, card navigation, variant notices, standard/extended consent, warnings, offline, lifecycle, and negative cases on the final QA device.
 5. Do not close the overall issue or publish production. Continue the unresolved groups sequentially after this run; next scheduled position is group 3/8 second pass.
 
-**Next immediate action:** await terminal JUnit/lint/assembleDebug/AndroidTest compile and APK gate; fix failures; download and verify Stage 15 artifact; upload APK to Google Drive `Rail` (folder `1IkcRbUhf8HMU7VwtPVOpI5SBZKPJHzFd`) and verify metadata; update this checkpoint and Issue #4 with exact SHA, size, CI and delivery status.
+**Next immediate action:** on the next hourly position work group 3/8 second pass, source-backed common reference/first-aid visibility without authorizing unverified actions. Group 2 remains PARTIAL pending individual source/role/variant review and final manual device QA. Return to unresolved group 2 after this queue pass; do not start the parked full permissions audit.
