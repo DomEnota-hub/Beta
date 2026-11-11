@@ -62,6 +62,15 @@ jobs:
           python3 qa/check_post15_group2_reference_parity.py
           python3 qa/check_stage14_common_reference.py
           python3 qa/validate_family_reference_preview.py
+      - name: Verify QA APK integrity and record SHA256/size
+        shell: bash
+        run: |
+          set -euo pipefail
+          apk=app-shell/build/outputs/apk/debug/app-shell-debug.apk
+          test -s "$apk"
+          sha256sum "$apk"
+          stat -c 'QA_APK_BYTES=%s' "$apk"
+          python3 -c 'import sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; print("QA_APK_ZIP_INTEGRITY_PASS")' "$apk"
       - name: Upload unapproved Debug QA APK for final device acceptance
         if: success()
         uses: actions/upload-artifact@v4
