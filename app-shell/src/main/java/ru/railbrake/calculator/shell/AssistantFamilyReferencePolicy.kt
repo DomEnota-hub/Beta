@@ -40,10 +40,20 @@ internal object AssistantFamilyReferencePolicy {
         execution: VariantId?,
         limit: Int = 50,
     ): List<FamilyReferencePreview> {
-        if (query == null || execution == null) return emptyList()
-        return FamilyReferencePreviewPolicy.search(
-            entries, query.profile, execution, ShellHomeDestination.ATLAS,
-            query.searchText,
-        ).take(limit.coerceIn(1, 50))
+        if (query == null) return emptyList()
+        // Read-only donor knowledge does not require an execution selection.
+        // Unknown execution NEVER authorizes an execution-specific reference,
+        // a published card or an action. The Atlas deep link rechecks this gate.
+        val matches = if (execution == null) {
+            FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, query.profile, ShellHomeDestination.ATLAS, query.searchText,
+            )
+        } else {
+            FamilyReferencePreviewPolicy.search(
+                entries, query.profile, execution, ShellHomeDestination.ATLAS,
+                query.searchText,
+            )
+        }
+        return matches.take(limit.coerceIn(1, 50))
     }
 }
