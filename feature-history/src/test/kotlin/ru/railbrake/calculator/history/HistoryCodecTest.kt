@@ -101,4 +101,18 @@ class HistoryCodecTest {
         assertEquals(0, preview.malformedCount)
         assertEquals(0, preview.omittedCount)
     }
+
+    @Test fun notesRejectOversizedDecodedFieldWithoutOverwritingStore() {
+        val oversized = "x".repeat(65 * 1024)
+        val encoded = Base64.getUrlEncoder().encodeToString(oversized.toByteArray())
+        val raw = "n1|1|YQ==|dmw4MHM=|VGl0bGU=|" + encoded
+        try { WorkNotesCodec.decodeV1(raw); fail("Oversized decoded note must fail") }
+        catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesRejectTooManyRowsBeforeDecoding() {
+        val row = "n1|1|YQ==|dmw4MHM=|VGl0bGU=|VGV4dA=="
+        try { WorkNotesCodec.decodeV1(List(201) { row }.joinToString("\\n")); fail("Oversized collection must fail") }
+        catch (_: IllegalArgumentException) {}
+    }
 }
