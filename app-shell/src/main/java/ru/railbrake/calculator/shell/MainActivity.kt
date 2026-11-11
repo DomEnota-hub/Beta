@@ -107,12 +107,24 @@ class MainActivity : ComponentActivity() {
                     }
                     is WorkingModelResolution.Selected -> selection.model
                 }
+                val shellDestination = ShellHomeDestination.entries.firstOrNull {
+                    it.name == shellDestinationName
+                } ?: ShellHomeDestination.HOME
+                // Do not parse the VL80S runtime on the home screen or in independent
+                // common/calculation sections. Once requested, keep it for this model
+                // until the selection changes; returning home must not reload the packs.
+                var runtimeRequested by remember(workingModel.id.value) { mutableStateOf(false) }
+                androidx.compose.runtime.LaunchedEffect(workingModel.id.value, shellDestination) {
+                    if (Vl80sBootstrapPolicy.shouldRequest(workingModel.id.value, shellDestination)) {
+                        runtimeRequested = true
+                    }
+                }
                 // Key the *state slot*, not only the coroutine: produceState's
                 // initialValue is otherwise retained across key changes, which
                 // could briefly expose a previous model's runtime on model switch.
                 val bootstrap by key(workingModel.id.value) {
-                    produceState<Result<Vl80sVerticalSlice>?>(initialValue = null) {
-                    if (Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
+                    produceState<Result<Vl80sVerticalSlice>?>(null, runtimeRequested) {
+                    if (runtimeRequested && Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
                         val startedAt = SystemClock.elapsedRealtime()
                         val loaded = withContext(Dispatchers.IO) {
                             runCatching { loadVl80sVerticalSlice() }
@@ -126,8 +138,6 @@ class MainActivity : ComponentActivity() {
                     }
                     }
                 }
-                val shellDestination = ShellHomeDestination.entries.firstOrNull { it.name == shellDestinationName }
-                    ?: ShellHomeDestination.HOME
                 if (shellDestination == ShellHomeDestination.HOME) {
                     BackHandler { selectedModelId = null }
                     ShellHomeScreen(
