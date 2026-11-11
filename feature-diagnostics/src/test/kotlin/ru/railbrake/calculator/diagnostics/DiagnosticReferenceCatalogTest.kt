@@ -43,11 +43,11 @@ class DiagnosticReferenceCatalogTest {
         dangerSigns = listOf("DO_NOT_EXPOSE_UNVERIFIED_DANGER"),
         checks = emptyList(),
         prohibited = listOf("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION"),
-        stopConditions = emptyList(),
+        stopConditions = listOf("DO_NOT_EXPOSE_AS_APPROVED_STOP_RULE"),
         reportFields = emptyList(),
         relatedEquipment = emptyList(),
         sourceNote = "DO_NOT_EXPOSE_UNVERIFIED_SOURCE_CLAIM",
-        observableSigns = emptyList(),
+        observableSigns = listOf("OBSERVABLE_CAB_SYMPTOM"),
         systemExplanation = emptyList(),
         operationalConsequences = emptyList(),
         trainingNotes = emptyList(),
@@ -126,22 +126,33 @@ class DiagnosticReferenceCatalogTest {
         assertTrue(preview.variantNotice!!.contains("не подтверждена"))
         assertEquals(1, catalog.search("ТОКОПРИЁМНИК").size)
         assertEquals(1, catalog.search("симптом").size)
+        assertEquals(1, catalog.search("OBSERVABLE_CAB_SYMPTOM").size)
+        assertEquals(1, catalog.search("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION").size)
+        assertEquals(1, catalog.search("DO_NOT_EXPOSE_AS_APPROVED_STOP_RULE").size)
         assertEquals(0, catalog.search("неизвестный запрос").size)
+        // Warnings and stop signals are retained as *unverified donor evidence*,
+        // not misrepresented as approved crew permissions or an executable flow.
+        assertEquals(listOf("OBSERVABLE_CAB_SYMPTOM"), preview.observedSigns)
+        assertEquals(listOf("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION"), preview.donorCautions)
+        assertEquals(listOf("DO_NOT_EXPOSE_AS_APPROVED_STOP_RULE"), preview.donorStopSignals)
         val exposed = preview.toString()
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_ACTION"))
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_DANGER"))
-        assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION"))
+        assertTrue(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION"))
+        assertTrue(exposed.contains("DO_NOT_EXPOSE_AS_APPROVED_STOP_RULE"))
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_SOURCE_CLAIM"))
         // Kotlin/Compose may generate additional synthetic/static fields.
         // Assert the actual safety boundary rather than an incidental field count.
         val exposedNames = DiagnosticReferencePreview::class.java.declaredFields
             .map { it.name }.toSet()
         assertTrue(
-            setOf("id", "title", "summary", "category", "sourceNotice", "variantNotice")
+            setOf("id", "title", "summary", "category", "sourceNotice", "variantNotice",
+                "observedSigns", "donorCautions", "donorStopSignals")
                 .all { it in exposedNames }
         )
         assertTrue(
-            setOf("immediateActions", "checks", "prohibited", "questions", "stopConditions")
+            setOf("immediateActions", "checks", "prohibited", "questions", "stopConditions",
+                "sourceNote", "dangerSigns", "reportFields", "startQuestionKey")
                 .none { it in exposedNames }
         )
     }
