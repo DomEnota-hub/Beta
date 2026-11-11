@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.history.HistoryRecord
+import ru.railbrake.calculator.history.LegacyHistoryBackup
+import ru.railbrake.calculator.history.LegacyHistoryRecovery
 import ru.railbrake.calculator.history.HistoryStore
 import ru.railbrake.calculator.history.LegacyDiagnosticRead
 import ru.railbrake.calculator.history.WorkNote
@@ -45,6 +47,7 @@ fun HistoryAndNotesScreen(
     var tab by rememberSaveable { mutableStateOf("HISTORY") }
     var filter by rememberSaveable { mutableStateOf("Все") }
     var history by remember { mutableStateOf<List<HistoryRecord>>(emptyList()) }
+    var historyRecovery by remember { mutableStateOf<LegacyHistoryBackup?>(null) }
     var notes by remember(modelId) { mutableStateOf<List<WorkNote>>(emptyList()) }
     var diagnosticArchive by remember(modelId) { mutableStateOf<LegacyDiagnosticRead?>(null) }
     var error by remember(modelId) { mutableStateOf<String?>(null) }
@@ -54,13 +57,37 @@ fun HistoryAndNotesScreen(
     var noteBody by rememberSaveable(modelId) { mutableStateOf("") }
 
     LaunchedEffect(tab, modelId) {
-        runCatching {
-            when (tab) {
-                "HISTORY" -> history = historyStore.load()
-                "NOTES" -> notes = notesStore.load(modelId)
-                "DIAGNOSTICS" -> diagnosticArchive = diagnosticStore.loadForModel(modelId)
+        error = null
+        when (tab) {
+            "HISTORY" -> {
+                historyRecovery = null
+                runCatching { historyStore.load() }
+                    .onSuccess { history = it }
+                    .onFailure {
+                        history = emptyList()
+                        error = "Основная история повреждена или недоступна. Запись и очистка заблокированы."
+                        val backup = runCatching {
+                            (historyStore as? LegacyHistoryRecovery)?.readLegacyBackup()
+                        }.getOrNull()
+                        if (backup != null) {
+                            historyRecovery = backup
+                            history = backup.records
+                        }
+                    }
             }
-        }.onFailure { error = "Не удалось прочитать локальные данные. Запись заблокирована до восстановления." }
+            "NOTES" -> runCatching { notesStore.load(modelId) }
+                .onSuccess { notes = it }
+                .onFailure {
+                    notes = emptyList()
+                    error = "Не удалось прочитать рабочие записи. Запись заблокирована до восстановления."
+                }
+            "DIAGNOSTICS" -> runCatching { diagnosticStore.loadForModel(modelId) }
+                .onSuccess { diagnosticArchive = it }
+                .onFailure {
+                    diagnosticArchive = null
+                    error = "Не удалось прочитать архив диагностики."
+                }
+        }
     }
     pendingNoteDelete?.let { noteId ->
         AlertDialog(
@@ -120,6 +147,15 @@ fun HistoryAndNotesScreen(
         error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         if (tab == "HISTORY") {
             Text("История сохраняется локально. Старые записи Test- читаются без удаления исходного формата.")
+            historyRecovery?.let { backup ->
+                Text(
+                    "Аварийный просмотр исходной истории Test-: только чтение. " +
+                        "Повреждённая история новой версии НЕ перезаписана. " +
+                        "Некорректных исходных записей: ${backup.malformedCount}; " +
+                        "сверх лимита отображения: ${backup.omittedCount}.",
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("Все", "По массе", "ИДП №12", "ВУ-45").forEach { value ->
                     TextButton(onClick = { filter = value }) {
@@ -140,7 +176,8 @@ fun HistoryAndNotesScreen(
                     }
                 }
             }
-            OutlinedButton(onClick = { clearConfirm = true }, enabled = history.isNotEmpty()) {
+            OutlinedButton(onClick = { clearConfirm = true },
+                enabled = history.isNotEmpty() && historyRecovery == null && error == null) {
                 Text("Очистить историю")
             }
         } else if (tab == "DIAGNOSTICS") {

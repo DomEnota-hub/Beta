@@ -42,9 +42,19 @@ object HistoryCodec {
             decodeText(fields[3]), decodeText(fields[4]))
     }.getOrNull()
 
-    /** Match donor behavior: corrupt entries ignored, newest first, at most 30. */
+    /** Report damaged and unshown original records; never mutate the donor set. */
+    fun inspectLegacy(records: Set<String>): LegacyHistoryBackup {
+        val parsed = records.mapNotNull(::parseLegacy)
+        return LegacyHistoryBackup(
+            records = canonical(parsed),
+            malformedCount = records.size - parsed.size,
+            omittedCount = (parsed.distinct().size - MAX_RECORDS).coerceAtLeast(0),
+        )
+    }
+
+    /** Preserve the donor's normal 30-entry migration display cap. */
     fun readLegacy(records: Set<String>): List<HistoryRecord> =
-        canonical(records.mapNotNull(::parseLegacy))
+        inspectLegacy(records).records
 
     /** Unlike legacy, identical timestamps do not discard distinct calculations. */
     fun canonical(records: List<HistoryRecord>): List<HistoryRecord> =

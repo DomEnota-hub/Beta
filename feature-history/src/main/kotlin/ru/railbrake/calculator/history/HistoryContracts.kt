@@ -23,3 +23,14 @@ object HistoryStorageMigrationGate {
     const val legacyFormatVerified: Boolean = true
     const val signedUpgradeVerified: Boolean = false
 }
+
+/** Read-only original Test- backup; never a replacement for damaged v2 storage. */
+data class LegacyHistoryBackup(
+    val records: List<HistoryRecord>,
+    val malformedCount: Int,
+    val omittedCount: Int,
+)
+
+interface LegacyHistoryRecovery {
+    fun readLegacyBackup(): LegacyHistoryBackup
+}

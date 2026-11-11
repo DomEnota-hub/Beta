@@ -80,4 +80,25 @@ class HistoryCodecTest {
         try { WorkNotesCodec.encodeV1(bad); fail("Invalid note should fail") }
         catch (_: IllegalArgumentException) {}
     }
+    @Test fun recoveryPreviewCountsMalformedAndUnshownWithoutChangingSource() {
+        val source = (1L..31L).map { HistoryCodec.encodeLegacy(record(ts = it)) }.toSet() + "bad"
+        val original = source.toSet()
+        val preview = HistoryCodec.inspectLegacy(source)
+        assertEquals(30, preview.records.size)
+        assertEquals(1, preview.malformedCount)
+        assertEquals(1, preview.omittedCount)
+        assertEquals(31L, preview.records.first().timestampMillis)
+        assertEquals(original, source)
+    }
+
+    @Test fun recoveryPreviewRetainsDistinctSameTimestampRecords() {
+        val source = setOf(
+            HistoryCodec.encodeLegacy(record(title = "Первый")),
+            HistoryCodec.encodeLegacy(record(title = "Второй")),
+        )
+        val preview = HistoryCodec.inspectLegacy(source)
+        assertEquals(2, preview.records.size)
+        assertEquals(0, preview.malformedCount)
+        assertEquals(0, preview.omittedCount)
+    }
 }

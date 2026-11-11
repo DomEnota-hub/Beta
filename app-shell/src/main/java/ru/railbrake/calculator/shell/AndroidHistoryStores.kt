@@ -2,6 +2,8 @@ package ru.railbrake.calculator.shell
 
 import android.content.Context
 import ru.railbrake.calculator.history.HistoryCodec
+import ru.railbrake.calculator.history.LegacyHistoryBackup
+import ru.railbrake.calculator.history.LegacyHistoryRecovery
 import ru.railbrake.calculator.history.HistoryRecord
 import ru.railbrake.calculator.history.HistoryStore
 import ru.railbrake.calculator.history.WorkNote
@@ -13,7 +15,7 @@ import java.util.UUID
  * write only to a NEW versioned preference file. Legacy data is never deleted.
  * An empty v2 marker prevents cleared records from reappearing on next launch.
  */
-class AndroidHistoryStore(context: Context) : HistoryStore {
+class AndroidHistoryStore(context: Context) : HistoryStore, LegacyHistoryRecovery {
     private val legacy = context.getSharedPreferences("calculation_history", Context.MODE_PRIVATE)
     private val modern = context.getSharedPreferences("railbrake_history_v2", Context.MODE_PRIVATE)
     private val key = "records_v2"
@@ -34,6 +36,16 @@ class AndroidHistoryStore(context: Context) : HistoryStore {
             "History migration could not be committed"
         }
         return migrated
+    }
+
+    /** Read the original Test- backup without changing either storage file. */
+    @Synchronized
+    override fun readLegacyBackup(): LegacyHistoryBackup {
+        val source = if (legacy.contains("records")) {
+            legacy.getStringSet("records", null)?.toSet()
+                ?: throw IllegalStateException("Invalid legacy history storage type")
+        } else emptySet()
+        return HistoryCodec.inspectLegacy(source)
     }
 
     @Synchronized
