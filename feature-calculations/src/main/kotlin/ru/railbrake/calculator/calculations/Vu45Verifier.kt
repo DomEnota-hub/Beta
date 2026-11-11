@@ -138,6 +138,14 @@ object Vu45Verifier {
         if (forceTotal > BigDecimal.valueOf(Double.MAX_VALUE)) {
             findings += Vu45Finding.ARITHMETIC_OVERFLOW
         }
+        // Check the declared composition independently of distribution validity.
+        // A mismatch or malformed row must not hide an impossible manual-brake count.
+        if (draft.manualBrakeAxles != null && draft.declaredAxles != null &&
+            draft.declaredAxles > 0 && draft.manualBrakeAxles > draft.declaredAxles
+        ) {
+            findings += Vu45Finding.MANUAL_BRAKE_AXLES_EXCEED_TOTAL
+        }
+
         val inputInvalid = findings.any {
             it in setOf(
                 Vu45Finding.MISSING_REQUIRED_FIELD, Vu45Finding.INVALID_NUMBER,
