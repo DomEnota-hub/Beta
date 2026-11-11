@@ -118,4 +118,26 @@ class Vu45VerifierTest {
         )
         assertEquals(Vu45Status.ARITHMETICALLY_CONSISTENT_NOT_APPROVED, result.status)
     }
+    @Test fun manualBrakeAxlesExceedDeclaredEvenWhenDistributionDiffers() {
+        val result = Vu45Verifier.check(valid().copy(declaredAxles = 180, manualBrakeAxles = 190))
+        assertEquals(Vu45Status.DISCREPANCY, result.status)
+        assertTrue(Vu45Finding.AXLE_COUNT_MISMATCH in result.findings)
+        assertTrue(Vu45Finding.MANUAL_BRAKE_AXLES_EXCEED_TOTAL in result.findings)
+    }
+
+    @Test fun invalidDistributionCannotHideImpossibleDeclaredManualBrakes() {
+        val result = Vu45Verifier.check(
+            valid().copy(declaredAxles = 180, manualBrakeAxles = 190, axleRows = emptyList())
+        )
+        assertEquals(Vu45Status.INVALID_INPUT, result.status)
+        assertTrue(Vu45Finding.EMPTY_DISTRIBUTION in result.findings)
+        assertTrue(Vu45Finding.MANUAL_BRAKE_AXLES_EXCEED_TOTAL in result.findings)
+    }
+
+    @Test fun manualBrakeCountWithinDeclaredCompositionDoesNotTriggerFalsePositive() {
+        val result = Vu45Verifier.check(valid().copy(declaredAxles = 180, manualBrakeAxles = 175))
+        assertTrue(Vu45Finding.AXLE_COUNT_MISMATCH in result.findings)
+        assertFalse(Vu45Finding.MANUAL_BRAKE_AXLES_EXCEED_TOTAL in result.findings)
+    }
+
 }
