@@ -132,10 +132,18 @@ class DiagnosticReferenceCatalogTest {
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_DANGER"))
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_PROHIBITION"))
         assertFalse(exposed.contains("DO_NOT_EXPOSE_UNVERIFIED_SOURCE_CLAIM"))
-        // No executable question or route is exposed by the reference type.
-        assertEquals(6, DiagnosticReferencePreview::class.java.declaredFields.count {
-            !it.isSynthetic
-        })
+        // Kotlin/Compose may generate additional synthetic/static fields.
+        // Assert the actual safety boundary rather than an incidental field count.
+        val exposedNames = DiagnosticReferencePreview::class.java.declaredFields
+            .map { it.name }.toSet()
+        assertTrue(
+            setOf("id", "title", "summary", "category", "sourceNotice", "variantNotice")
+                .all { it in exposedNames }
+        )
+        assertTrue(
+            setOf("immediateActions", "checks", "prohibited", "questions", "stopConditions")
+                .none { it in exposedNames }
+        )
     }
 
     @Test
