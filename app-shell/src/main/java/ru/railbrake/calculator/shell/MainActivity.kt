@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -67,6 +68,8 @@ import ru.railbrake.calculator.runtime.ContentRegistry
 import ru.railbrake.calculator.runtime.ModelProfileCatalogJsonLoader
 import ru.railbrake.calculator.safety.CommonReferenceScreen
 import ru.railbrake.calculator.safety.SafetyContentScreen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +78,8 @@ class MainActivity : ComponentActivity() {
         val notesStore = AndroidWorkNotesStore(applicationContext)
         val legacyDiagnosticStore = AndroidLegacyDiagnosticSessionStore(applicationContext)
 
-        val bootstrap = runCatching { loadVl80sVerticalSlice() }
-            .onFailure { Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it) }
-
+        // Do not parse VL80S packs on the UI thread before model selection.
+        // The validated runtime is loaded only for the explicitly selected VL80S.
         setContent {
             MaterialTheme {
                 // A fresh launch never assumes VL80S (or any other working model).
@@ -102,6 +104,20 @@ class MainActivity : ComponentActivity() {
                         return@MaterialTheme
                     }
                     is WorkingModelResolution.Selected -> selection.model
+                }
+                val bootstrap by produceState<Result<Vl80sVerticalSlice>?>(
+                    initialValue = null,
+                    key1 = workingModel.id.value,
+                ) {
+                    if (Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
+                        val loaded = withContext(Dispatchers.IO) {
+                            runCatching { loadVl80sVerticalSlice() }
+                        }
+                        loaded.exceptionOrNull()?.let {
+                            Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
+                        }
+                        value = loaded
+                    }
                 }
                 val shellDestination = ShellHomeDestination.entries.firstOrNull { it.name == shellDestinationName }
                     ?: ShellHomeDestination.HOME
@@ -138,7 +154,7 @@ class MainActivity : ComponentActivity() {
                     mutableStateListOf<ContentTarget>()
                 }
                 if (shellDestination == ShellHomeDestination.ASSISTANT) {
-                    val loaded = bootstrap.getOrNull()
+                    val loaded = bootstrap?.getOrNull()
                     val opened = assistantOpenedTarget
                     if (assistantFamilyTarget != null) {
                         val (model, execution, cardId) = requireNotNull(assistantFamilyTarget)
@@ -379,12 +395,19 @@ class MainActivity : ComponentActivity() {
                     )
                     return@MaterialTheme
                 }
-                val loaded = bootstrap.getOrNull()
+                val loaded = bootstrap?.getOrNull()
                 if (loaded == null) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
                     Column {
-                        Text("Не удалось загрузить модуль ВЛ80С.")
+                        Text(if (bootstrap == null) "Загрузка материалов ВЛ80С…"
+                            else "Не удалось загрузить модуль ВЛ80С. Проверка данных не пройдена.")
+                        TextButton(onClick = {
+                            shellDestinationName = ShellHomeDestination.HOME.name
+                        }) {
+                            Text("← На главную")
+                        }
                         TextButton(onClick = { selectedModelId = null }) {
-                            Text("← Сменить локомотив")
+                            Text("Сменить локомотив")
                         }
                     }
                     return@MaterialTheme
