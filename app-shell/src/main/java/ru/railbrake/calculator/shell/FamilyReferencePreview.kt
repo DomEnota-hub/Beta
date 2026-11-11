@@ -47,6 +47,51 @@ internal object FamilyReferencePreviewPolicy {
         }
     }
 
+    /**
+     * Read-only knowledge can be viewed before execution selection without
+     * granting execution applicability. Multi-execution models expose only
+     * summaries explicitly marked as execution-unverified; a donor-variant
+     * summary is eligible here only when the model has exactly one execution.
+     * This path MUST NOT be reused by published cards or assistant action links.
+     */
+    fun canReadBeforeExecution(
+        entry: FamilyReferencePreview,
+        profile: FamilyModelProfile,
+        destination: ShellHomeDestination,
+    ): Boolean {
+        if (destination != ShellHomeDestination.ATLAS ||
+            entry.modelId != profile.workingModelId.value ||
+            entry.id.isBlank() || entry.title.isBlank() || entry.summary.isBlank() ||
+            entry.donorPath.isBlank() ||
+            !entry.donorBlobSha.matches(Regex("[a-f0-9]{40}"))
+        ) return false
+        return when (entry.scope) {
+            ReferenceScope.EXECUTION_UNVERIFIED -> entry.executionId == null
+            ReferenceScope.DONOR_VARIANT -> profile.executions.size == 1 &&
+                entry.executionId == profile.executions.single().id.value
+        }
+    }
+
+    /** Explicitly separate from search() and its execution-verified route. */
+    fun searchBeforeExecution(
+        entries: List<FamilyReferencePreview>,
+        profile: FamilyModelProfile,
+        destination: ShellHomeDestination,
+        query: String,
+    ): List<FamilyReferencePreview> {
+        val tokens = TextQueryParser.normalize(query).split(Regex("\\s+"))
+            .filter { it.isNotBlank() }
+        return entries.asSequence()
+            .filter { canReadBeforeExecution(it, profile, destination) }
+            .filter {
+                val visible = TextQueryParser.normalize(it.title + " " + it.summary)
+                tokens.all { token -> token in visible }
+            }
+            .distinctBy { it.id }
+            .sortedBy { it.title }
+            .toList()
+    }
+
     /** Search only entries that already passed exact model/execution/destination isolation. */
     fun search(
         entries: List<FamilyReferencePreview>,
