@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,7 @@ import ru.railbrake.calculator.assistant.TextIntent
 import ru.railbrake.calculator.domain.ContentTarget
 import ru.railbrake.calculator.domain.ContentType
 import ru.railbrake.calculator.domain.ModelId
+import ru.railbrake.calculator.domain.VariantId
 import ru.railbrake.calculator.domain.ContentEntry
 import ru.railbrake.calculator.navigation.ShellHomeDestination
 import ru.railbrake.calculator.safety.CommonReferenceCatalog
@@ -71,6 +73,7 @@ fun AssistantSearchScreen(
     onClarify: (ModelId) -> Unit,
     onOpen: (TextAssistantResult.Matches, ContentTarget) -> Unit,
     onOpenCommon: (ShellHomeDestination, String) -> Unit,
+    onOpenFamily: (ModelId, VariantId, String) -> Unit,
     onBack: () -> Unit,
 ) {
     // Donor common cards are a distinct, read-only lane. They are never installed
@@ -90,6 +93,29 @@ fun AssistantSearchScreen(
     }
     val commonHits = remember(commonEntries, submitted, category) {
         AssistantCommonReferencePolicy.search(commonEntries.orEmpty(), submitted, category)
+    }
+    var familyEntries by remember(assets) { mutableStateOf<List<FamilyReferencePreview>?>(null) }
+    var familyLoadFailed by remember(assets) { mutableStateOf(false) }
+    LaunchedEffect(assets) {
+        try {
+            familyEntries = withContext(Dispatchers.IO) { FamilyReferencePreviewCatalog(assets).load() }
+            familyLoadFailed = false
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            familyEntries = emptyList()
+            familyLoadFailed = true
+        }
+    }
+    val familyQuery = remember(submitted, workingModelId, category) {
+        AssistantFamilyReferencePolicy.resolveQuery(submitted, workingModelId, category)
+    }
+    var selectedFamilyExecution by rememberSaveable(submitted, workingModelId.value) {
+        mutableStateOf<String?>(null)
+    }
+    val familyExecution = selectedFamilyExecution?.let(::VariantId)
+    val familyHits = remember(familyEntries, familyQuery, familyExecution) {
+        AssistantFamilyReferencePolicy.search(familyEntries.orEmpty(), familyQuery, familyExecution)
     }
     val result = remember(engine, workingModelId, submitted, category) {
         if (submitted.isBlank() || engine == null) null
@@ -159,8 +185,8 @@ fun AssistantSearchScreen(
                 }
             }
             is TextAssistantResult.UnpublishedModel ->
-                Text("Материалы " + assistantModelTitle(result.modelId) +
-                    " пока не опубликованы.")
+                Text("Подтверждённые карточки " + assistantModelTitle(result.modelId) +
+                    " пока не опубликованы. Отдельные справочные описания могут быть доступны ниже.")
             is TextAssistantResult.NoMatches -> Text(result.reason)
             is TextAssistantResult.Matches -> {
                 Text("Найдено: " + result.hits.size,
@@ -190,6 +216,42 @@ fun AssistantSearchScreen(
                 }
             }
             null -> Unit
+        }
+        if (familyQuery != null) {
+            Text("Справочные описания оборудования из Test-",
+                style = MaterialTheme.typography.titleMedium)
+            Text("Для чтения выберите точное исполнение. Это не допуск к действиям.")
+            familyQuery.profile.executions.forEach { option ->
+                OutlinedButton(onClick = { selectedFamilyExecution = option.id.value },
+                    modifier = Modifier.fillMaxWidth()) {
+                    Text((if (familyExecution == option.id) "✓ " else "") + option.title)
+                }
+            }
+            if (familyExecution != null) {
+                if (familyEntries == null) Text("Загрузка справочного каталога…")
+                else if (familyLoadFailed) Text("Не удалось проверить справочный каталог.")
+                else if (familyHits.isEmpty()) Text("Совпадений для выбранного исполнения нет.")
+                familyHits.take(visibleCount).forEach { hit ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.padding(14.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(hit.title, style = MaterialTheme.typography.titleMedium)
+                            Text(hit.summary)
+                            Text(if (hit.scope == ReferenceScope.EXECUTION_UNVERIFIED)
+                                "Применимость к выбранному исполнению НЕ подтверждена."
+                            else "Исполнение указано в донорском каталоге; допуск НЕ подтверждён.")
+                            Text("Происхождение: Test-. Не инструкция к действию.")
+                            OutlinedButton(onClick = {
+                                onOpenFamily(familyQuery.profile.workingModelId,
+                                    familyExecution, hit.id)
+                            }) { Text("Читать справочную карточку") }
+                        }
+                    }
+                }
+                if (familyHits.size > visibleCount) {
+                    TextButton(onClick = onShowMore) { Text("Показать ещё описания") }
+                }
+            }
         }
         if (submitted.isNotBlank() && commonHits.isNotEmpty()) {
             Text("Справочные материалы из Test- · требуют проверки",
