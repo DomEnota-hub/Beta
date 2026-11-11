@@ -161,7 +161,7 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf<Pair<ShellHomeDestination, String>?>(null)
                 }
                 var assistantFamilyTarget by remember(selectedModelId) {
-                    mutableStateOf<Triple<ModelId, VariantId, String>?>(null)
+                    mutableStateOf<Triple<ModelId, VariantId?, String>?>(null)
                 }
                 var assistantViewedModel by remember(selectedModelId) {
                     mutableStateOf<ModelId?>(null)
@@ -183,7 +183,7 @@ class MainActivity : ComponentActivity() {
                             },
                             destination = ShellHomeDestination.ATLAS,
                             assets = assets,
-                            initialExecutionId = execution.value,
+                            initialExecutionId = execution?.value,
                             initialReferenceId = cardId,
                             onBack = { assistantFamilyTarget = null },
                         )
