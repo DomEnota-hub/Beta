@@ -32,10 +32,14 @@ jobs:
         run: python3 -m unittest qa/test_donor_kotlin_crosswalk.py -v
       - name: Retrieve pinned read-only donor Git tree
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          # Authenticated public donor read avoids anonymous GitHub API rate-limit 403.
           curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
             --connect-timeout 20 --max-time 180 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
             -H 'Accept: application/vnd.github+json' \
             'https://api.github.com/repos/DomEnota-hub/Test-/git/trees/3176d6ee228f0ed4b78371f45209e10c1c724eff?recursive=1' \
             --output "$RUNNER_TEMP/pinned-donor-tree.json"
