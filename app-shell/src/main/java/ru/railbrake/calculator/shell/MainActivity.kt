@@ -124,6 +124,9 @@ class MainActivity : ComponentActivity() {
                 var assistantOpenedTarget by remember(selectedModelId) {
                     mutableStateOf<ContentTarget?>(null)
                 }
+                var assistantCommonTarget by remember(selectedModelId) {
+                    mutableStateOf<Pair<ShellHomeDestination, String>?>(null)
+                }
                 var assistantViewedModel by remember(selectedModelId) {
                     mutableStateOf<ModelId?>(null)
                 }
@@ -134,10 +137,19 @@ class MainActivity : ComponentActivity() {
                 if (shellDestination == ShellHomeDestination.ASSISTANT) {
                     val loaded = bootstrap.getOrNull()
                     val opened = assistantOpenedTarget
-                    if (opened == null) {
+                    if (assistantCommonTarget != null) {
+                        val (section, cardId) = requireNotNull(assistantCommonTarget)
+                        CommonReferenceScreen(
+                            destination = section,
+                            assets = assets,
+                            initialCardId = cardId,
+                            onBack = { assistantCommonTarget = null },
+                        )
+                    } else if (opened == null) {
                         BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
                         AssistantSearchScreen(
                             engine = loaded?.assistantEngine,
+                            assets = assets,
                             workingModelId = workingModel.id,
                             workingModelTitle = workingModel.title,
                             draft = assistantDraft,
@@ -179,6 +191,10 @@ class MainActivity : ComponentActivity() {
                                     assistantHistory.clear()
                                     assistantNotice = null
                                 }
+                            },
+                            onOpenCommon = { section, cardId ->
+                                assistantCommonTarget = section to cardId
+                                assistantNotice = null
                             },
                             onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
                         )
