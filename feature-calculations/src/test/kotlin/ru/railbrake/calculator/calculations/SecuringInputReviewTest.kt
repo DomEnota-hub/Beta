@@ -70,6 +70,22 @@ class SecuringInputReviewTest {
         assertEquals(CalculationApproval.FORMULA_REVIEWED_LOCAL_RULES_REQUIRED, result.approval)
     }
 
+    @Test fun impossibleHandBrakeAxleCountIsAnErrorNotARecommendation() {
+        val massInvalid = SecuringInputReview.byMass(
+            mass.copy(massTons = "100", axleCount = "2", slopePermille = "12",
+                availableShoes = "0", axlesPerHandBrakeUnit = "4")
+        )
+        assertTrue(massInvalid is SecuringReview.Invalid)
+        assertTrue((massInvalid as SecuringReview.Invalid).reason.contains("больше осей"))
+
+        val appendixInvalid = SecuringInputReview.byAppendix(
+            appendix.copy(axleCount = "2", slopePermille = "0", formula = null,
+                availableShoes = "0", axlesPerHandBrakeUnit = "4")
+        )
+        assertTrue(appendixInvalid is SecuringReview.Invalid)
+        assertTrue((appendixInvalid as SecuringReview.Invalid).reason.contains("больше осей"))
+    }
+
     @Test fun profileDoesNotInventFormulaSelection() {
         ProfileMode.entries.forEach { mode ->
             val result = SecuringInputReview.byAppendix(appendix.copy(profile = mode, formula = null))

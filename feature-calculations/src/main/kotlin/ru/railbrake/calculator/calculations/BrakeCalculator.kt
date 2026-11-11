@@ -210,6 +210,13 @@ object BrakeCalculator {
             if (additional == 0) 0
             else ceilToInt(additional.toDouble() / axlesPerHandBrakeUnit)
         val actually = checkedMultiply(units, axlesPerHandBrakeUnit)
+        // A hand-brake substitute cannot claim more braked axles than exist.
+        // Keep axle-load-only previews possible, but flag their unknown axle count in the UI.
+        massResult.axleCount?.let { totalAxles ->
+            require(totalAxles > 0 && actually <= totalAxles) {
+                "Ручное торможение требует больше осей, чем есть в составе"
+            }
+        }
 
         return MassSupplementResult(
             requiredShoes = massResult.requiredShoes,
@@ -324,6 +331,9 @@ object BrakeCalculator {
 
         val actually =
             if (units == 0) 0 else checkedMultiply(units, input.axlesPerHandBrakeUnit)
+        require(actually <= input.axleCount) {
+            "Ручное торможение требует больше осей, чем есть в составе"
+        }
         val reserve =
             if (specialUsed) {
                 max(

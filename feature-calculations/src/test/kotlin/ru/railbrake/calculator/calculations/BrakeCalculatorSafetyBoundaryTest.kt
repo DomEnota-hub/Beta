@@ -87,6 +87,31 @@ class BrakeCalculatorSafetyBoundaryTest {
         assertFalse(CalculationPublicationPolicy.canPublishOperationalResult(CalculationMode.APPENDIX_12))
     }
 
+    @Test fun manualBrakeSubstitutionNeverClaimsMoreAxlesThanTheTrainHas() {
+        val mass = BrakeCalculator.calculateMass(
+            MassCalculationInput(100.0, axleCount = 2, slopePermille = 12.0)
+        )
+        rejects { BrakeCalculator.calculateMassSupplement(mass, 0, 4) }
+        val feasible = BrakeCalculator.calculateMassSupplement(mass, 0, 2)
+        assertEquals(2, feasible.actuallyBrakedAxles)
+
+        // The Appendix #12 low-slope special case still needs a real hand-brake unit.
+        rejects {
+            BrakeCalculator.calculateAppendix12(
+                appendix(slope = 0.0).copy(
+                    axleCount = 2, availableShoes = 0, axlesPerHandBrakeUnit = 4
+                )
+            )
+        }
+        val appendixFeasible = BrakeCalculator.calculateAppendix12(
+            appendix(slope = 0.0).copy(
+                axleCount = 8, availableShoes = 0, axlesPerHandBrakeUnit = 4
+            )
+        )
+        assertEquals(4, appendixFeasible.actuallyBrakedAxles)
+        assertFalse(CalculationPublicationPolicy.canPublishOperationalResult(CalculationMode.BY_MASS))
+    }
+
     @Test fun appendixRejectsMissingFormulaBadWindAndUnsafeLeaving() {
         rejects { BrakeCalculator.calculateAppendix12(appendix(slope = 8.0).copy(formula = null)) }
         rejects { BrakeCalculator.calculateAppendix12(appendix(slope = 8.0).copy(windSpeedMs = Double.NaN)) }

@@ -191,6 +191,13 @@ private fun SecuringResult(result: SecuringReview) {
     when (result) {
         is SecuringReview.Invalid -> Text("Расчёт невозможен: " + result.reason)
         is SecuringReview.Mass -> {
+            if (result.calculation.axleCount == null) {
+                Text(
+                    "Количество осей не указано. Нельзя проверить физическую " +
+                        "выполнимость замещения ручными тормозами; уточните осность.",
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
             Text("Расчётных башмаков: " + result.calculation.requiredShoes)
             Text("До округления: " + result.calculation.shoesExact)
             Text(
