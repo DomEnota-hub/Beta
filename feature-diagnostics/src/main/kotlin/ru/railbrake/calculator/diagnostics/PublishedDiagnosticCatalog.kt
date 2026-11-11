@@ -1,7 +1,11 @@
 package ru.railbrake.calculator.diagnostics
 
 import java.util.Locale
+import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.CanonicalId
+import ru.railbrake.calculator.domain.ContentLayer
+import ru.railbrake.calculator.domain.ProvenanceClass
+import ru.railbrake.calculator.domain.SourceStatus
 import ru.railbrake.calculator.domain.ContentOwner
 import ru.railbrake.calculator.domain.ContentTarget
 import ru.railbrake.calculator.domain.ContentType
@@ -20,6 +24,8 @@ class PublishedDiagnosticCatalog(
     private val runtime: ExecutableDiagnosticRuntime,
     private val registry: ContentRegistry,
     private val context: RuntimeContext,
+    // Per-scenario evidence must be independently established; never inferred from ACTIVE.
+    private val actionEvidence: Map<String, DiagnosticActionInputs> = emptyMap(),
 ) {
     private val owner = ContentOwner.Model(ModelId(runtime.modelId))
 
@@ -32,9 +38,24 @@ class PublishedDiagnosticCatalog(
                 expectedType = ContentType.DIAGNOSTIC_SCENARIO,
             )
             val resolved = registry.resolve(target, context)
-            resolved is ResolveResult.Found &&
-                resolved.entry.owner == owner &&
-                resolved.entry.id == target.id
+            if (resolved !is ResolveResult.Found) return@filter false
+            val entry = resolved.entry
+            val evidence = actionEvidence[scenario.id] ?: return@filter false
+            entry.owner == owner &&
+                entry.id == target.id &&
+                entry.layer == ContentLayer.STANDARD &&
+                entry.actionDisposition == ActionDisposition.CONDITIONAL_ACTION &&
+                entry.sourceStatus == SourceStatus.CURRENT &&
+                entry.provenance in setOf(
+                    ProvenanceClass.CURRENT_OFFICIAL,
+                    ProvenanceClass.MANUFACTURER,
+                ) &&
+                entry.sourceRefs.isNotEmpty() &&
+                scenario.profileId == runtime.modelId &&
+                context.activeVariantId?.value in scenario.applicableVariantIds &&
+                evidence.publicationStatus == entry.publicationStatus &&
+                evidence.actionDisposition == entry.actionDisposition &&
+                DiagnosticActionGate.permits(evidence)
         }
     }
 

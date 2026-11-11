@@ -1,6 +1,7 @@
 package ru.railbrake.calculator.diagnostics
 
 import java.util.Locale
+import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.CanonicalId
 import ru.railbrake.calculator.domain.ContentLayer
 import ru.railbrake.calculator.domain.ContentOwner
@@ -50,7 +51,11 @@ class DiagnosticReferenceCatalog(
                 entry.id.value != scenario.id ||
                 entry.type != ContentType.DIAGNOSTIC_SCENARIO ||
                 entry.owner != expectedOwner ||
-                entry.publicationStatus != PublicationStatus.CANDIDATE ||
+                !(
+                    entry.publicationStatus == PublicationStatus.CANDIDATE ||
+                        (entry.publicationStatus == PublicationStatus.ACTIVE &&
+                            entry.actionDisposition == ActionDisposition.INFORMATION_ONLY)
+                ) ||
                 entry.layer != ContentLayer.STANDARD ||
                 scenario.profileId != runtime.modelId ||
                 !entry.applicability.matches(context)
@@ -62,7 +67,9 @@ class DiagnosticReferenceCatalog(
                 title = entry.title,
                 summary = entry.summary.orEmpty(),
                 category = scenario.category,
-                sourceNotice = if (entry.sourceStatus == SourceStatus.CURRENT) {
+                sourceNotice = if (entry.publicationStatus == PublicationStatus.ACTIVE) {
+                    "Опубликованная справка для чтения. Допуск к действиям не предоставлен."
+                } else if (entry.sourceStatus == SourceStatus.CURRENT) {
                     "Статус записи: кандидат. Актуальность конкретного порядка действий не подтверждена."
                 } else {
                     "Источник и редакция требуют проверки; сведения из донорской базы Test-."
