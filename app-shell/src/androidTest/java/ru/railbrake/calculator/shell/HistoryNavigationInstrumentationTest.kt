@@ -21,5 +21,9 @@ class HistoryNavigationInstrumentationTest {
         compose.onNodeWithText("Заголовок").assertIsDisplayed()
         compose.onNodeWithText("Текст записи").assertIsDisplayed()
         compose.onNodeWithText("Рабочий локомотив: ВЛ80С", substring = true).assertIsDisplayed()
+        compose.onNodeWithText("Архив диагностики").performClick()
+        compose.onNodeWithText("Архив диагностических отчётов Test-", substring = true).assertIsDisplayed()
+        compose.onNodeWithText("Сохранённый отчёт не является разрешением", substring = true)
+            .assertIsDisplayed()
     }
 }
