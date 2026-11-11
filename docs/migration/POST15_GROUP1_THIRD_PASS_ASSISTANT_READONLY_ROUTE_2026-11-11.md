@@ -35,3 +35,9 @@ At code HEAD `ffbbb0b3b23bab6d4fad09d6eff824142ac79d1a`, 29 GitHub Actions runs 
 1. Re-read code HEAD and the above five workflow runs; wait until terminal. Fix any failing Kotlin/test/Android lint in Beta and rerun.
 2. On successful Stage 15/Stage 13 builds, fetch the **new unique** Debug/QA artifact, inspect APK contents and SHA256, deliver to Drive `Rail` folder ID `1IkcRbUhf8HMU7VwtPVOpI5SBZKPJHzFd` (<=100MB one file, >100MB split ZIP), verify Drive metadata and hash. Record the real URL, size and SHA; do not claim delivery without confirmation.
 3. Keep group 1 **IN_PROGRESS**: full family reference packs, Atlas and acceptance parity, execution/profile verification and lawful redistribution are still open. Next independent group is 2/8; do not start it while unresolved group-1 CI/build delivery needs completion.
+
+## CI correction after first checkpoint
+
+The initial code HEAD `ffbbb0b3` produced a **real lint failure** in [Stage 7 #43059778892](https://github.com/DomEnota-hub/Beta/actions/runs/43059778892): `AssistantSearchScreen.kt:241 SuspiciousIndentation` after removing the execution-only wrapper. Fixed by dedenting the reference results block in [`f38518f401ce87a71e8f21ef30d9f0f16b098d38`](https://github.com/DomEnota-hub/Beta/commit/f38518f401ce87a71e8f21ef30d9f0f16b098d38). **The previous code HEAD is not accepted.**
+
+New final-code verification started: [Stage 13 #43060860552](https://github.com/DomEnota-hub/Beta/actions/runs/43060860552), [Stage 10 #43060860542](https://github.com/DomEnota-hub/Beta/actions/runs/43060860542), [Stage 9 #43060860468](https://github.com/DomEnota-hub/Beta/actions/runs/43060860468), [Stage 15 #43060860490](https://github.com/DomEnota-hub/Beta/actions/runs/43060860490), [modular #43060870854](https://github.com/DomEnota-hub/Beta/actions/runs/43060870854). At checkpoint, runs remain QUEUED/IN_PROGRESS. Resume on **`f38518f4`**, not `ffbbb0b3`.
