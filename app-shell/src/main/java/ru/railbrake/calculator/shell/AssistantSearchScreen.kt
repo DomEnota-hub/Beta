@@ -1,5 +1,9 @@
 package ru.railbrake.calculator.shell
 
+import android.content.res.AssetManager
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,6 +12,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -17,6 +25,9 @@ import ru.railbrake.calculator.assistant.TextIntent
 import ru.railbrake.calculator.domain.ContentTarget
 import ru.railbrake.calculator.domain.ContentType
 import ru.railbrake.calculator.domain.ModelId
+import ru.railbrake.calculator.domain.ContentEntry
+import ru.railbrake.calculator.navigation.ShellHomeDestination
+import ru.railbrake.calculator.safety.CommonReferenceCatalog
 
 /** Category is a filter, not an authority to bypass source or profile gates. */
 enum class AssistantSearchCategory(
@@ -45,6 +56,7 @@ private fun assistantModelTitle(model: ModelId): String = when (model.value) {
 @Composable
 fun AssistantSearchScreen(
     engine: AssistantTextEngine?,
+    assets: AssetManager,
     workingModelId: ModelId,
     workingModelTitle: String,
     draft: String,
@@ -58,8 +70,27 @@ fun AssistantSearchScreen(
     onShowMore: () -> Unit,
     onClarify: (ModelId) -> Unit,
     onOpen: (TextAssistantResult.Matches, ContentTarget) -> Unit,
+    onOpenCommon: (ShellHomeDestination, String) -> Unit,
     onBack: () -> Unit,
 ) {
+    // Donor common cards are a distinct, read-only lane. They are never installed
+    // into the published assistant registry or interpreted as action permissions.
+    var commonEntries by remember(assets) { mutableStateOf<List<ContentEntry>?>(null) }
+    var commonLoadFailed by remember(assets) { mutableStateOf(false) }
+    LaunchedEffect(assets) {
+        try {
+            commonEntries = withContext(Dispatchers.IO) { CommonReferenceCatalog(assets).load() }
+            commonLoadFailed = false
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            commonEntries = emptyList()
+            commonLoadFailed = true
+        }
+    }
+    val commonHits = remember(commonEntries, submitted, category) {
+        AssistantCommonReferencePolicy.search(commonEntries.orEmpty(), submitted, category)
+    }
     val result = remember(engine, workingModelId, submitted, category) {
         if (submitted.isBlank() || engine == null) null
         else engine.query(
@@ -77,7 +108,7 @@ fun AssistantSearchScreen(
         TextButton(onClick = onBack) { Text("← На главную") }
         Text("Помощник", style = MaterialTheme.typography.headlineMedium)
         Text("Рабочий локомотив: " + workingModelTitle)
-        Text("Поиск по опубликованным материалам. Это не генеративная нейросеть.")
+        Text("Поиск по опубликованным карточкам и отдельно отмеченным справочным материалам. Это не генеративная нейросеть.")
         OutlinedTextField(
             value = draft, onValueChange = onDraftChange,
             label = { Text("Что нужно найти?") },
@@ -159,6 +190,32 @@ fun AssistantSearchScreen(
                 }
             }
             null -> Unit
+        }
+        if (submitted.isNotBlank() && commonHits.isNotEmpty()) {
+            Text("Справочные материалы из Test- · требуют проверки",
+                style = MaterialTheme.typography.titleMedium)
+            Text("Справка доступна для чтения, но не является разрешением на действия. " +
+                "Редакции и происхождение источников проверяются отдельно.")
+            commonHits.take(visibleCount).forEach { hit ->
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(14.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(hit.card.title, style = MaterialTheme.typography.titleMedium)
+                        Text(hit.card.summary)
+                        Text("Раздел: " + hit.destination.title)
+                        Text("Источник требует проверки. Неподтверждённые действия не показываются.")
+                        OutlinedButton(onClick = {
+                            onOpenCommon(hit.destination, hit.card.id)
+                        }) { Text("Читать справочную карточку") }
+                    }
+                }
+            }
+            if (commonHits.size > visibleCount) {
+                TextButton(onClick = onShowMore) { Text("Показать ещё справочные материалы") }
+            }
+        }
+        if (submitted.isNotBlank() && commonLoadFailed) {
+            Text("Справочный каталог недоступен: не удалось проверить его целостность.")
         }
     }
 }
