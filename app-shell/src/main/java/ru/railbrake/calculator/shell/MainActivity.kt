@@ -1,6 +1,7 @@
 package ru.railbrake.calculator.shell
 
 import android.os.Bundle
+import android.os.SystemClock
 import ru.railbrake.calculator.history.HistoryRecord
 import ru.railbrake.calculator.assistant.AssistantTextEngine
 import ru.railbrake.calculator.assistant.AssistantUiNavigationGate
@@ -110,9 +111,12 @@ class MainActivity : ComponentActivity() {
                     key1 = workingModel.id.value,
                 ) {
                     if (Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
+                        val startedAt = SystemClock.elapsedRealtime()
                         val loaded = withContext(Dispatchers.IO) {
                             runCatching { loadVl80sVerticalSlice() }
                         }
+                        val durationMs = SystemClock.elapsedRealtime() - startedAt
+                        Log.i("RailBrake", "VL80S runtime load ms=$durationMs success=${loaded.isSuccess}")
                         loaded.exceptionOrNull()?.let {
                             Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
                         }
