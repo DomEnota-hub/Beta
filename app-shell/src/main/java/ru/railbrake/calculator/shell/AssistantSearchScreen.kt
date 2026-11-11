@@ -236,8 +236,8 @@ fun AssistantSearchScreen(
                 }
             }
             if (familyEntries == null) Text("Загрузка справочного каталога…")
-                else if (familyLoadFailed) Text("Не удалось проверить справочный каталог.")
-                else if (familyHits.isEmpty()) Text("Совпадений для выбранного исполнения нет.")
+            else if (familyLoadFailed) Text("Не удалось проверить справочный каталог.")
+            else if (familyHits.isEmpty()) Text("Совпадений для текущей модели и условий поиска нет.")
                 familyHits.take(visibleCount).forEach { hit ->
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(14.dp),
