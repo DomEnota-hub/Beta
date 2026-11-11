@@ -27,6 +27,7 @@ internal object AssistantFamilyReferencePolicy {
         }
         val parsed = TextQueryParser.parse(text)
         if (parsed.intent != TextIntent.REFERENCE || parsed.ermakUnspecified ||
+            parsed.vl80SeriesUnspecified ||
             parsed.explicitModels.size > 1 || parsed.searchText.isBlank()) return null
         val model = parsed.explicitModels.singleOrNull() ?: workingModel
         val profile = FamilyProfiles.forModel(model) ?: return null

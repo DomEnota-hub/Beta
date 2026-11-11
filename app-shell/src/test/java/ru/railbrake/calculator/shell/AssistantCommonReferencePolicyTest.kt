@@ -42,7 +42,8 @@ class AssistantCommonReferencePolicyTest {
 
     @Test fun noCrossModelSubstitutionOrProceduralLeak() {
         val entries = realDonorEntries()
-        listOf("ВЛ80С автотормоза", "ЧМЭ3 слр", "Ермак автотормоза",
+        listOf("ВЛ80С автотормоза", "ВЛ80 автотормоза", "VL80 автотормоза",
+            "ЧМЭ3 слр", "Ермак автотормоза",
             "2ЭС5К и 3ЭС5К автотормоза", "пожарная сигнализация не работает",
             "жгут должен оставаться видимым").forEach { query ->
             assertTrue(query, AssistantCommonReferencePolicy.search(entries, query, null).isEmpty())

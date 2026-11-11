@@ -30,6 +30,8 @@ class AssistantFamilyReferencePolicyTest {
 
     @Test fun noUnspecifiedErmakOrCrossFamilyOrFaultExecution() {
         assertNull(AssistantFamilyReferencePolicy.resolveQuery("Ермак компрессор", vl, null))
+        assertNull(AssistantFamilyReferencePolicy.resolveQuery("ВЛ80 компрессор", ModelId("tem2"), null))
+        assertNull(AssistantFamilyReferencePolicy.resolveQuery("VL80 компрессор", ModelId("tem2"), null))
         assertNull(AssistantFamilyReferencePolicy.resolveQuery("2ЭС5К и 3ЭС5К компрессор", vl, null))
         assertNull(AssistantFamilyReferencePolicy.resolveQuery("ТЭМ2 компрессор не работает", vl, null))
         assertNull(AssistantFamilyReferencePolicy.resolveQuery("ТЭМ2 компрессор", vl,

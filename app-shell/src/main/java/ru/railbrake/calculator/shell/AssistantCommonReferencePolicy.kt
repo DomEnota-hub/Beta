@@ -38,6 +38,7 @@ internal object AssistantCommonReferencePolicy {
         // A named locomotive or an ambiguous Ermak is a model-specific request:
         // do not substitute general safety/knowledge for a requested model card.
         if (parsed.explicitModels.isNotEmpty() || parsed.ermakUnspecified ||
+            parsed.vl80SeriesUnspecified ||
             parsed.searchText.isBlank() ||
             parsed.intent in setOf(TextIntent.DIAGNOSTICS, TextIntent.SCHEME, TextIntent.ACCEPTANCE)
         ) return emptyList()
