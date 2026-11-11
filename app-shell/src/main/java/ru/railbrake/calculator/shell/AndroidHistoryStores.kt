@@ -25,7 +25,10 @@ class AndroidHistoryStore(context: Context) : HistoryStore {
                 ?: throw IllegalStateException("Invalid history storage type"))
         }
         // Copy the legacy StringSet before inspecting it; never mutate the returned set.
-        val source = legacy.getStringSet("records", emptySet())?.toSet() ?: emptySet()
+        val source = if (legacy.contains("records")) {
+            legacy.getStringSet("records", null)?.toSet()
+                ?: throw IllegalStateException("Invalid legacy history storage type")
+        } else emptySet()
         val migrated = HistoryCodec.readLegacy(source)
         check(modern.edit().putString(key, HistoryCodec.encodeV2(migrated)).commit()) {
             "History migration could not be committed"
@@ -55,7 +58,8 @@ class AndroidWorkNotesStore(context: Context) {
 
     @Synchronized
     private fun all(): List<WorkNote> =
-        WorkNotesCodec.decodeV1(prefs.getString(key, "") ?: "")
+        WorkNotesCodec.decodeV1(prefs.getString(key, "") 
+            ?: throw IllegalStateException("Invalid work notes storage type"))
 
     @Synchronized
     fun load(modelId: String): List<WorkNote> {

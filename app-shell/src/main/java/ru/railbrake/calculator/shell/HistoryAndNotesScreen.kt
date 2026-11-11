@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.history.HistoryRecord
 import ru.railbrake.calculator.history.HistoryStore
+import ru.railbrake.calculator.history.LegacyDiagnosticRead
 import ru.railbrake.calculator.history.WorkNote
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -36,6 +37,7 @@ import java.util.Locale
 fun HistoryAndNotesScreen(
     historyStore: HistoryStore,
     notesStore: AndroidWorkNotesStore,
+    diagnosticStore: AndroidLegacyDiagnosticSessionStore,
     modelId: String,
     modelTitle: String,
     onBack: () -> Unit,
@@ -44,7 +46,8 @@ fun HistoryAndNotesScreen(
     var filter by rememberSaveable { mutableStateOf("Все") }
     var history by remember { mutableStateOf<List<HistoryRecord>>(emptyList()) }
     var notes by remember(modelId) { mutableStateOf<List<WorkNote>>(emptyList()) }
-    var error by remember { mutableStateOf<String?>(null) }
+    var diagnosticArchive by remember(modelId) { mutableStateOf<LegacyDiagnosticRead?>(null) }
+    var error by remember(modelId) { mutableStateOf<String?>(null) }
     var clearConfirm by remember { mutableStateOf(false) }
     var pendingNoteDelete by remember { mutableStateOf<String?>(null) }
     var noteTitle by rememberSaveable(modelId) { mutableStateOf("") }
@@ -52,8 +55,11 @@ fun HistoryAndNotesScreen(
 
     LaunchedEffect(tab, modelId) {
         runCatching {
-            if (tab == "HISTORY") history = historyStore.load()
-            else notes = notesStore.load(modelId)
+            when (tab) {
+                "HISTORY" -> history = historyStore.load()
+                "NOTES" -> notes = notesStore.load(modelId)
+                "DIAGNOSTICS" -> diagnosticArchive = diagnosticStore.loadForModel(modelId)
+            }
         }.onFailure { error = "Не удалось прочитать локальные данные. Запись заблокирована до восстановления." }
     }
     pendingNoteDelete?.let { noteId ->
@@ -101,8 +107,15 @@ fun HistoryAndNotesScreen(
                 OutlinedButton(onClick = { tab = "NOTES" }) { Text("Рабочие записи") }
             } else {
                 OutlinedButton(onClick = { tab = "HISTORY" }) { Text("История расчётов") }
-                Button(onClick = {}) { Text("Рабочие записи") }
+                if (tab == "NOTES") {
+                    Button(onClick = {}) { Text("Рабочие записи") }
+                } else {
+                    OutlinedButton(onClick = { tab = "NOTES" }) { Text("Рабочие записи") }
+                }
             }
+        }
+        TextButton(onClick = { tab = "DIAGNOSTICS" }) {
+            Text(if (tab == "DIAGNOSTICS") "✓ Архив диагностики" else "Архив диагностики")
         }
         error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         if (tab == "HISTORY") {
@@ -129,6 +142,34 @@ fun HistoryAndNotesScreen(
             }
             OutlinedButton(onClick = { clearConfirm = true }, enabled = history.isNotEmpty()) {
                 Text("Очистить историю")
+            }
+        } else if (tab == "DIAGNOSTICS") {
+            Text("Архив диагностических отчётов Test-. Только чтение. " +
+                "Сохранённый отчёт не является разрешением выполнять действия.")
+            Text("Показаны только записи с точным идентификатором профиля " +
+                modelId + ". Неоднозначные семейные профили не подставляются автоматически.")
+            if ((diagnosticArchive?.malformedCount ?: 0) > 0) {
+                Text("Часть исходных записей повреждена; исходное хранилище не изменено.",
+                    color = MaterialTheme.colorScheme.error)
+            }
+            val archived = diagnosticArchive?.records.orEmpty()
+            if (archived.isEmpty()) Text("Архивных отчётов для выбранной модели нет.")
+            archived.forEach { record ->
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(dateText(record.timestampMillis),
+                            style = MaterialTheme.typography.labelSmall)
+                        Text(record.scenarioTitle.ifBlank { record.scenarioId },
+                            style = MaterialTheme.typography.titleMedium)
+                        Text("Профиль: " + record.profileId + " · Исполнение: " +
+                            record.variantId.ifBlank { "не указано" })
+                        Text("Исходный статус: " + record.severity)
+                        Text(record.report)
+                        Text("Архивная запись, применимость и актуальность не подтверждены.",
+                            color = MaterialTheme.colorScheme.error)
+                    }
+                }
             }
         } else {
             Text("Рабочий локомотив: $modelTitle. Записи привязаны к выбранной модели, " +

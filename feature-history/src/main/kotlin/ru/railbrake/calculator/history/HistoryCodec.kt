@@ -58,11 +58,15 @@ object HistoryCodec {
     fun decodeV2(raw: String): List<HistoryRecord> {
         if (raw.isEmpty()) return emptyList()
         require(raw.length <= MAX_RECORDS * MAX_FIELD_BYTES * 12) { "History too large" }
-        return canonical(raw.split('\n').map { line ->
+        val decoded = raw.split('\n').map { line ->
             require(line.startsWith("v2|")) { "Unsupported history schema" }
             parseLegacy(line.removePrefix("v2|"))
                 ?: throw IllegalArgumentException("Corrupt v2 history record")
-        })
+        }
+        // A damaged or foreign v2 file must never be silently truncated on next write.
+        require(decoded.size <= MAX_RECORDS) { "History exceeds supported capacity" }
+        require(decoded.distinct().size == decoded.size) { "Duplicate v2 history records" }
+        return decoded.sortedByDescending { it.timestampMillis }
     }
 }
 
@@ -89,6 +93,10 @@ object WorkNotesCodec {
     fun encodeV1(notes: List<WorkNote>): String {
         require(notes.size <= 200) { "Work notes limit reached; no notes were deleted" }
         require(notes.map { it.id }.distinct().size == notes.size) { "Duplicate note ID" }
+        require(notes.all { it.id.isNotBlank() && it.modelId.isNotBlank() &&
+            it.timestampMillis >= 0 && it.title.length <= 200 && it.body.length <= 10000 }) {
+            "Invalid work note; source not overwritten"
+        }
         return notes.sortedByDescending { it.timestampMillis }
         .joinToString("\n") {
             listOf("n1", it.timestampMillis.toString(), encode(it.id),
@@ -106,7 +114,8 @@ object WorkNotesCodec {
                 decode(p[4]), decode(p[5]))
         }.also { notes ->
             require(notes.size <= 200)
-            require(notes.all { it.id.isNotBlank() && it.modelId.isNotBlank() })
+            require(notes.all { it.id.isNotBlank() && it.modelId.isNotBlank() &&
+                it.timestampMillis >= 0 && it.title.length <= 200 && it.body.length <= 10000 })
             require(notes.map { it.id }.distinct().size == notes.size)
         }
     }

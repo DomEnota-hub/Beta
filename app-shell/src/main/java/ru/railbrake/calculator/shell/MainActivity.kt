@@ -73,6 +73,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val historyStore = AndroidHistoryStore(applicationContext)
         val notesStore = AndroidWorkNotesStore(applicationContext)
+        val legacyDiagnosticStore = AndroidLegacyDiagnosticSessionStore(applicationContext)
 
         val bootstrap = runCatching { loadVl80sVerticalSlice() }
             .onFailure { Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it) }
@@ -275,6 +276,7 @@ class MainActivity : ComponentActivity() {
                     HistoryAndNotesScreen(
                         historyStore = historyStore,
                         notesStore = notesStore,
+                        diagnosticStore = legacyDiagnosticStore,
                         modelId = workingModel.id.value,
                         modelTitle = workingModel.title,
                         onBack = { shellDestinationName = ShellHomeDestination.HOME.name },

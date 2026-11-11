@@ -66,4 +66,18 @@ class HistoryCodecTest {
         assertEquals(notes, restored)
         assertEquals(1, restored.count { it.modelId == "vl80s" })
     }
+    @Test fun versionedHistoryRejectsExcessOrDuplicateRecordsWithoutTruncation() {
+        val over = (1L..31L).joinToString("\n") { "v2|" + HistoryCodec.encodeLegacy(record(ts = it)) }
+        try { HistoryCodec.decodeV2(over); fail("Must not truncate corrupted v2") }
+        catch (_: IllegalArgumentException) {}
+        val line = "v2|" + HistoryCodec.encodeLegacy(record())
+        try { HistoryCodec.decodeV2(line + "\n" + line); fail("Must not erase duplicates") }
+        catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesRejectInvalidDataBeforeWrite() {
+        val bad = listOf(WorkNote("a", "vl80s", -1L, "Title", "Body"))
+        try { WorkNotesCodec.encodeV1(bad); fail("Invalid note should fail") }
+        catch (_: IllegalArgumentException) {}
+    }
 }
