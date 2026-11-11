@@ -137,7 +137,14 @@ fun FamilyContentScreen(
     }
     var notice by remember { mutableStateOf<String?>(null) }
     val opened = visible.firstOrNull { it.id.value == openedId }
-    val openedReference = referencePreviews.firstOrNull { it.id == openedReferenceId }
+    // Deep links must be checked against the full scoped catalog, not against
+    // a stale user-entered list filter. Model, execution and provenance gates remain.
+    val openedReference = remember(referenceState, profile, execution, destination, openedReferenceId) {
+        FamilyReferencePreviewPolicy.search(
+            (referenceState as? ReferencePreviewLoadState.Ready)?.entries.orEmpty(),
+            profile, execution, destination, "",
+        ).firstOrNull { it.id == openedReferenceId }
+    }
     BackHandler {
         when {
             openedReferenceId != null -> {
