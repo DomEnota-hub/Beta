@@ -182,6 +182,8 @@ class MainActivity : ComponentActivity() {
                         BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
                         AssistantSearchScreen(
                             engine = loaded?.assistantEngine,
+                            publishedCatalogLoading = workingModel.id == ModelId("vl80s") &&
+                                bootstrap == null,
                             assets = assets,
                             workingModelId = workingModel.id,
                             workingModelTitle = workingModel.title,
