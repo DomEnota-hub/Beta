@@ -20,6 +20,7 @@ data class LegacyDiagnosticSession(
 data class LegacyDiagnosticRead(
     val records: List<LegacyDiagnosticSession>,
     val malformedCount: Int,
+    val excludedProfileCount: Int = 0,
 )
 
 object LegacyDiagnosticSessionCodec {
@@ -53,7 +54,9 @@ object LegacyDiagnosticSessionCodec {
         val valid = source.mapNotNull(::parse)
         // Preserve same-timestamp distinct reports, unlike the donor's add() policy.
         return LegacyDiagnosticRead(
-            records = valid.distinct().sortedByDescending { it.timestampMillis },
+            records = valid.distinct().sortedWith(compareByDescending<LegacyDiagnosticSession> { it.timestampMillis }
+                .thenBy { it.profileId }.thenBy { it.variantId }.thenBy { it.scenarioId }
+                .thenBy { it.scenarioTitle }.thenBy { it.severity }.thenBy { it.report }),
             malformedCount = source.size - valid.size,
         )
     }
@@ -61,6 +64,8 @@ object LegacyDiagnosticSessionCodec {
     /** Never alias Ermak family "ermak" to 2es5k/3es5k or guess a variant. */
     fun forExactModel(read: LegacyDiagnosticRead, modelId: String): LegacyDiagnosticRead {
         require(modelId.isNotBlank())
-        return read.copy(records = read.records.filter { it.profileId == modelId })
+        val matching = read.records.filter { it.profileId == modelId }
+        return read.copy(records = matching,
+            excludedProfileCount = read.excludedProfileCount + read.records.size - matching.size)
     }
 }
