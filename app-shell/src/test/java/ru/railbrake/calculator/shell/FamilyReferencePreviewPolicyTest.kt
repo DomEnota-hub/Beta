@@ -148,4 +148,20 @@ class FamilyReferencePreviewPolicyTest {
         assertFalse(show(general.copy(scope = ReferenceScope.DONOR_VARIANT),
             ermak, VariantId("2es5k_msud_n")))
     }
+    @Test fun ermakSystemDetailsRemainReferenceOnlyAndSearchable() {
+        val profile = FamilyProfiles.forModel(ModelId("2es5k"))!!
+        val entry = base.copy(modelId = "2es5k", executionId = null,
+            scope = ReferenceScope.EXECUTION_UNVERIFIED,
+            donorPath = "app/src/main/assets/technical/ermak_knowledge.json.gz",
+            donorBlobSha = "08d164fc11c33c241d04ad6ad60c13a3aec996c8",
+            donorId = "ER-KB-SYS-20")
+        assertTrue(FamilyReferenceDetails.forEntry(entry)!!.sourceIds.contains("ER-SRC-001"))
+        assertEquals(null, FamilyReferenceDetails.forEntry(entry.copy(modelId = "tem2")))
+        assertEquals(null, FamilyReferenceDetails.forEntry(entry.copy(donorBlobSha = "wrong")))
+        assertEquals(null, FamilyReferenceDetails.forEntry(entry.copy(executionId = "2es5k_msud_n")))
+        assertEquals(listOf(entry.id), FamilyReferencePreviewPolicy.searchBeforeExecution(
+            listOf(entry), profile, ShellHomeDestination.ATLAS, "реакторы").map { it.id })
+        assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(
+            listOf(entry), profile, ShellHomeDestination.DIAGNOSTICS, "реакторы").isEmpty())
+    }
 }
