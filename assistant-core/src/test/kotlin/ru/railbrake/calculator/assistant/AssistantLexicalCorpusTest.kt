@@ -198,6 +198,21 @@ class AssistantLexicalCorpusTest {
             assertFalse("Unloaded source catalog cannot be verified", first.sourceVerified)
             assertNull("Unknown source must not auto-open", result.recommended)
         }
+        // Donor ASR model aliases and inflected railway slang must reach real cards.
+        listOf("в эл 80 с главника", "вэл восемьдесят эс главнику").forEach { phrase ->
+            val parsed = TextQueryParser.parse(phrase)
+            assertEquals(setOf(vl), parsed.explicitModels)
+            val result = engine.query(phrase, ModelId("tem2")) as TextAssistantResult.Matches
+            assertEquals("VL-EQ-HV-001", result.hits.first().entry.id.value)
+            assertEquals(setOf("VL-SRC-001", "VL-SRC-006", "VL-SRC-008"), result.hits.first().sourceIds)
+            assertNull(result.recommended)
+        }
+        val inflected = engine.query("ВЛ80С пантографа", vl) as TextAssistantResult.Matches
+        assertEquals("VL-EQ-HV-002", inflected.hits.first().entry.id.value)
+        assertTrue(engine.query("ВЛ80С пантографа не поднимается", vl) is TextAssistantResult.NoMatches)
+        assertEquals(emptySet<ModelId>(), TextQueryParser.parse("восемьдесят эс").explicitModels)
+        assertEquals(TextAssistantResult.UnpublishedModel(ModelId("tem2")),
+            engine.query("ТЭМ2 главника", vl))
         val pantograph = engine.query("ВЛ80С пантограф", vl) as TextAssistantResult.Matches
         assertEquals("VL-EQ-HV-002", pantograph.hits.first().entry.id.value)
         assertTrue(engine.query("ВЛ80С пантограф не поднимается", vl)
