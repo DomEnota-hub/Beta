@@ -22,6 +22,7 @@ internal data class FamilyReferencePreview(
     val summary: String,
     val donorPath: String,
     val donorBlobSha: String,
+    val donorId: String = "",
 )
 
 internal object FamilyReferencePreviewPolicy {
@@ -84,7 +85,7 @@ internal object FamilyReferencePreviewPolicy {
         return entries.asSequence()
             .filter { canReadBeforeExecution(it, profile, destination) }
             .filter {
-                val visible = TextQueryParser.normalize(it.title + " " + it.summary)
+                val visible = TextQueryParser.normalize(it.title + " " + it.summary + " " + (FamilyReferenceDetails.forEntry(it)?.description.orEmpty()))
                 tokens.all { token -> token in visible }
             }
             .distinctBy { it.id }
@@ -105,7 +106,7 @@ internal object FamilyReferencePreviewPolicy {
         return entries.asSequence()
             .filter { canShow(it, profile, execution, destination) }
             .filter {
-                val visible = TextQueryParser.normalize(it.title + " " + it.summary)
+                val visible = TextQueryParser.normalize(it.title + " " + it.summary + " " + (FamilyReferenceDetails.forEntry(it)?.description.orEmpty()))
                 tokens.all { token -> token in visible }
             }
             .distinctBy { it.id }
@@ -140,6 +141,7 @@ internal class FamilyReferencePreviewCatalog(private val assets: AssetManager) {
                 summary = item.getString("summary"),
                 donorPath = item.getString("donorPath"),
                 donorBlobSha = item.getString("donorBlobSha"),
+                donorId = item.getString("donorId"),
             )
             require(seen.add(preview.id)) { "Duplicate reference identity" }
             require(preview.title.isNotBlank() && preview.summary.isNotBlank())
