@@ -146,6 +146,17 @@ object BrakeCalculator {
             else -> error("Нужно указать количество осей или нагрузку на ось")
         }
 
+        require(axleLoad.isFinite() && axleLoad > 0.0) {
+            "Расчётная нагрузка на ось должна быть больше нуля"
+        }
+        // A rounded manual value must not silently select a different coefficient category.
+        if (input.axleCount != null && input.manualAxleLoadTons != null) {
+            val derivedLoad = input.massTons / input.axleCount
+            require((derivedLoad >= 10.0) == (axleLoad >= 10.0)) {
+                "Расчётная и указанная нагрузки находятся по разные стороны границы 10 тс"
+            }
+        }
+
         val slopeIndex = massSlopesPermille.indexOfFirst {
             abs(it - input.slopePermille) < 0.0001
         }

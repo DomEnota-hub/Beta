@@ -86,6 +86,19 @@ class SecuringInputReviewTest {
         assertTrue((appendixInvalid as SecuringReview.Invalid).reason.contains("больше осей"))
     }
 
+    @Test fun roundedLoadCannotChangeTenTonCategory() {
+        val below = mass.copy(massTons = "1999", axleCount = "200", axleLoadTons = "10")
+        val above = mass.copy(massTons = "2001", axleCount = "200", axleLoadTons = "9.999")
+        for (draft in listOf(below, above)) {
+            val result = SecuringInputReview.byMass(draft)
+            assertTrue(result is SecuringReview.Invalid)
+            assertTrue((result as SecuringReview.Invalid).reason.contains("границы 10"))
+        }
+        assertTrue(SecuringInputReview.byMass(
+            mass.copy(massTons = "2000", axleCount = "200", axleLoadTons = "10")
+        ) is SecuringReview.Mass)
+    }
+
     @Test fun profileDoesNotInventFormulaSelection() {
         ProfileMode.entries.forEach { mode ->
             val result = SecuringInputReview.byAppendix(appendix.copy(profile = mode, formula = null))
