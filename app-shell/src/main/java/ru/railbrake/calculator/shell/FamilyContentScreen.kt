@@ -189,6 +189,14 @@ fun FamilyContentScreen(
                 style = MaterialTheme.typography.titleMedium)
             Text(openedReference.title, style = MaterialTheme.typography.headlineSmall)
             Text(openedReference.summary)
+            FamilyReferenceDetails.forEntry(openedReference)?.let { detail ->
+                Text("Устройство и принцип работы", style = MaterialTheme.typography.titleMedium)
+                Text(detail.description)
+                Text("Ссылки в донорском каталоге: " + detail.sourceIds.joinToString())
+            }
+            Text("Объект Test-: " + openedReference.donorId)
+            Text("Файл: " + openedReference.donorPath)
+            Text("Git blob: " + openedReference.donorBlobSha)
             Text(when {
                 execution == null -> "Исполнение НЕ выбрано. Применимость справки не подтверждена; выполнять действия по ней нельзя."
                 openedReference.scope == ReferenceScope.EXECUTION_UNVERIFIED ->
