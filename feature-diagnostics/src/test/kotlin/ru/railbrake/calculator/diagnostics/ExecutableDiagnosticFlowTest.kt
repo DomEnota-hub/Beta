@@ -412,6 +412,46 @@ class ExecutableDiagnosticFlowTest {
     }
 
     @Test
+    fun publicationRequiresAllBranchesToTerminateAndAllQuestionsToBeReachable() {
+        val runtime = ExecutableDiagnosticFlowJsonLoader().parse(fixture)
+        val original = requireNotNull(runtime.scenario("vl80s.diag.one"))
+        val registry = registryFor(PublicationStatus.ACTIVE)
+        val context = RuntimeContext(
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = VariantId("vl80s.first"),
+        )
+        fun catalogFor(scenario: ExecutableDiagnosticScenario): PublishedDiagnosticCatalog {
+            val scenarios = listOf(scenario, runtime.scenarios.last())
+            return PublishedDiagnosticCatalog(
+                runtime.copy(
+                    scenarios = scenarios,
+                    questionCount = scenarios.sumOf { it.questions.size },
+                    responseEdgeCount = scenarios.sumOf { s -> s.questions.sumOf { it.responses.size } },
+                ),
+                registry, context, mapOf(scenario.id to verifiedEvidence()),
+            )
+        }
+        assertEquals(original, catalogFor(original).open(original.id))
+        val first = original.questions.first()
+        val second = original.questions.last()
+        val cycle = second.copy(responses = second.responses.mapValues { (response, branch) ->
+            if (response == ExecutableDiagnosticResponse.UNKNOWN) branch.copy(nextQuestionKey = first.key)
+            else branch
+        })
+        val cyclic = original.copy(questions = listOf(first, cycle))
+        assertNull(catalogFor(cyclic).open(original.id))
+        assertTrue(catalogFor(cyclic).search("").isEmpty())
+        val unreachable = original.copy(questions = original.questions + second.copy(key = "orphan"))
+        assertNull(catalogFor(unreachable).open(original.id))
+        val noQuestions = original.copy(startQuestionKey = null, questions = emptyList())
+        assertNull(catalogFor(noQuestions).open(original.id))
+        val selfLoop = first.copy(responses = first.responses.mapValues { (_, branch) ->
+            branch.copy(nextQuestionKey = first.key)
+        })
+        assertNull(catalogFor(original.copy(questions = listOf(selfLoop, second))).open(original.id))
+    }
+
+    @Test
     fun publishedRestrictedScenarioStillNeedsLayerPermission() {
         val runtime = ExecutableDiagnosticFlowJsonLoader().parse(fixture)
         val registry = registryFor(PublicationStatus.ACTIVE, ContentLayer.RESTRICTED)
