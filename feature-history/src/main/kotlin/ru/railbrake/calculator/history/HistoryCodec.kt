@@ -14,6 +14,9 @@ object HistoryCodec {
     private const val MAX_FIELD_BYTES = 64 * 1024
     private val encoder = Base64.getUrlEncoder()
     private val decoder = Base64.getUrlDecoder()
+    // StringSet iteration order is unspecified; ties must not change the retained 30 records.
+    private val recordOrder = compareByDescending<HistoryRecord> { it.timestampMillis }
+        .thenBy { it.mode }.thenBy { it.title }.thenBy { it.summary }.thenBy { it.details }
 
     private fun encodeText(value: String): String {
         val bytes = value.toByteArray(Charsets.UTF_8)
@@ -31,10 +34,12 @@ object HistoryCodec {
             .decode(ByteBuffer.wrap(bytes)).toString()
     }
 
-    fun encodeLegacy(record: HistoryRecord): String =
-        listOf(record.timestampMillis.toString(), encodeText(record.mode),
+    fun encodeLegacy(record: HistoryRecord): String {
+        require(record.timestampMillis >= 0L) { "Negative timestamp" }
+        return listOf(record.timestampMillis.toString(), encodeText(record.mode),
             encodeText(record.title), encodeText(record.summary),
             encodeText(record.details)).joinToString("|")
+    }
 
     fun parseLegacy(line: String): HistoryRecord? = runCatching {
         val fields = line.split('|')
@@ -61,7 +66,7 @@ object HistoryCodec {
 
     /** Unlike legacy, identical timestamps do not discard distinct calculations. */
     fun canonical(records: List<HistoryRecord>): List<HistoryRecord> =
-        records.distinct().sortedByDescending { it.timestampMillis }.take(MAX_RECORDS)
+        records.distinct().sortedWith(recordOrder).take(MAX_RECORDS)
 
     /** Versioned, newline-delimited encoding stored in a DIFFERENT preference file. */
     fun encodeV2(records: List<HistoryRecord>): String =
@@ -79,7 +84,7 @@ object HistoryCodec {
         // A damaged or foreign v2 file must never be silently truncated on next write.
         require(decoded.size <= MAX_RECORDS) { "History exceeds supported capacity" }
         require(decoded.distinct().size == decoded.size) { "Duplicate v2 history records" }
-        return decoded.sortedByDescending { it.timestampMillis }
+        return decoded.sortedWith(recordOrder)
     }
 }
 
