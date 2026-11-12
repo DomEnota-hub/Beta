@@ -54,6 +54,19 @@ class AssistantVoicePolicyTest {
         assertFalse(gate.isCurrent(third))
     }
 
+    @Test fun cancelledPermissionCannotBeReplacedBeforeOldCallbackArrives() {
+        val request = AssistantVoicePermissionRequest()
+        assertTrue(request.begin(1L))
+        request.cancel()
+        assertTrue(request.pending)
+        assertFalse(request.begin(2L))
+        assertNull(request.complete())
+        assertFalse(request.pending)
+        assertTrue(request.begin(3L))
+        assertEquals(3L, request.complete())
+        assertNull(request.complete())
+    }
+
     @Test fun rejectEmptyControlAndOversizedSpeech() {
         assertNull(AssistantVoicePolicy.transcriptOrNull(null))
         assertNull(AssistantVoicePolicy.transcriptOrNull("   "))

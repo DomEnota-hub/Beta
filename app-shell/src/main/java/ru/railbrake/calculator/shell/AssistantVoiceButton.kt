@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import ru.railbrake.calculator.assistant.AssistantVoicePolicy
 import ru.railbrake.calculator.assistant.AssistantVoiceSessionGate
+import ru.railbrake.calculator.assistant.AssistantVoicePermissionRequest
 import java.util.Locale
 
 /**
@@ -40,14 +41,16 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     val latestTranscript by rememberUpdatedState(onTranscript)
     val handler = remember { Handler(Looper.getMainLooper()) }
     val gate = remember { AssistantVoiceSessionGate() }
-    var permissionToken by remember { mutableStateOf<Long?>(null) }
+    val permissionRequest = remember { AssistantVoicePermissionRequest() }
+    var permissionPending by remember { mutableStateOf(false) }
+    var permissionCancelled by remember { mutableStateOf(false) }
     var recognizer by remember { mutableStateOf<SpeechRecognizer?>(null) }
     var timeout by remember { mutableStateOf<Runnable?>(null) }
     var status by remember { mutableStateOf("Голосовой ввод: только локальное распознавание.") }
 
     fun stop(message: String) {
         gate.invalidate()
-        permissionToken = null
+        permissionRequest.cancel()
         timeout?.let { handler.removeCallbacks(it) }
         timeout = null
         val previous = recognizer
@@ -176,8 +179,9 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        val token = permissionToken
-        permissionToken = null
+        val token = permissionRequest.complete()
+        permissionPending = false
+        permissionCancelled = false
         // A permission result can arrive after navigation/disposal or cancellation.
         if (token != null && gate.isCurrent(token)) {
             if (granted) start() else status = "Доступ к микрофону отклонён."
@@ -187,7 +191,7 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     DisposableEffect(Unit) {
         onDispose {
             gate.dispose()
-            permissionToken = null
+            permissionRequest.cancel()
             timeout?.let { handler.removeCallbacks(it) }
             timeout = null
             val previous = recognizer
@@ -198,28 +202,39 @@ internal fun AssistantVoiceButton(onTranscript: (String) -> Unit) {
     }
 
     Column {
-        OutlinedButton(onClick = {
+        OutlinedButton(enabled = !permissionCancelled, onClick = {
             if (recognizer != null) {
                 stop("Запись отменена.")
-            } else if (permissionToken != null) {
+            } else if (permissionPending) {
                 gate.invalidate()
-                permissionToken = null
-                status = "Запрос разрешения отменён."
+                permissionRequest.cancel()
+                permissionCancelled = true
+                status = "Запрос отменён. Дождитесь закрытия системного окна."
             } else if (!offlineRecognizerAvailable()) {
                 status = "На устройстве нет доступного офлайн-распознавателя."
             } else if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) ==
                 PackageManager.PERMISSION_GRANTED) {
                 start()
             } else {
-                permissionToken = gate.next()
-                if (permissionToken != null) {
-                    permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                val token = gate.next()
+                if (token != null && permissionRequest.begin(token)) {
+                    permissionPending = true
+                    permissionCancelled = false
+                    try {
+                        permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                    } catch (_: Exception) {
+                        permissionRequest.complete()
+                        permissionPending = false
+                        gate.invalidate()
+                        status = "Не удалось запросить доступ к микрофону."
+                    }
                 }
             }
         }) {
             Text(when {
                 recognizer != null -> "Остановить запись"
-                permissionToken != null -> "Отменить запрос"
+                permissionCancelled -> "Ожидание закрытия окна"
+                permissionPending -> "Отменить запрос"
                 else -> "🎙 Голосовой ввод"
             })
         }

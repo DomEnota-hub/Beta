@@ -68,3 +68,23 @@ class AssistantVoiceSessionGate {
         invalidate()
     }
 }
+
+/** A cancelled permission dialog owns its callback until Android returns it. */
+class AssistantVoicePermissionRequest {
+    private var token: Long? = null
+    var pending: Boolean = false
+        private set
+    fun begin(session: Long): Boolean {
+        if (pending) return false
+        pending = true
+        token = session
+        return true
+    }
+    fun cancel() { token = null }
+    fun complete(): Long? {
+        val result = token
+        token = null
+        pending = false
+        return result
+    }
+}
