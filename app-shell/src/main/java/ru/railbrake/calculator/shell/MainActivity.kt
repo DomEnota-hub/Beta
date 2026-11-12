@@ -110,43 +110,6 @@ class MainActivity : ComponentActivity() {
                 val shellDestination = ShellHomeDestination.entries.firstOrNull {
                     it.name == shellDestinationName
                 } ?: ShellHomeDestination.HOME
-                // Do not parse the VL80S runtime on the home screen or in independent
-                // common/calculation sections. Once requested, keep it for this model
-                // until the selection changes; returning home must not reload the packs.
-                var runtimeRequested by remember(workingModel.id.value) { mutableStateOf(false) }
-                androidx.compose.runtime.LaunchedEffect(workingModel.id.value, shellDestination) {
-                    if (Vl80sBootstrapPolicy.shouldRequest(workingModel.id.value, shellDestination)) {
-                        runtimeRequested = true
-                    }
-                }
-                // Key the *state slot*, not only the coroutine: produceState's
-                // initialValue is otherwise retained across key changes, which
-                // could briefly expose a previous model's runtime on model switch.
-                val bootstrap by key(workingModel.id.value) {
-                    produceState<Result<Vl80sVerticalSlice>?>(null, runtimeRequested) {
-                    if (runtimeRequested && Vl80sBootstrapPolicy.shouldLoad(workingModel.id.value)) {
-                        val startedAt = SystemClock.elapsedRealtime()
-                        val loaded = withContext(Dispatchers.IO) {
-                            runCatching { loadVl80sVerticalSlice() }
-                        }
-                        val durationMs = SystemClock.elapsedRealtime() - startedAt
-                        Log.i("RailBrake", "VL80S runtime load ms=$durationMs success=${loaded.isSuccess}")
-                        loaded.exceptionOrNull()?.let {
-                            Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
-                        }
-                        value = loaded
-                    }
-                    }
-                }
-                if (shellDestination == ShellHomeDestination.HOME) {
-                    BackHandler { selectedModelId = null }
-                    ShellHomeScreen(
-                        model = workingModel,
-                        onChangeModel = { selectedModelId = null },
-                        onOpen = { shellDestinationName = it.name },
-                    )
-                    return@MaterialTheme
-                }
                 // Stage 9: keep query while opening a result card and returning.
                 var assistantDraft by rememberSaveable(selectedModelId) { mutableStateOf("") }
                 var assistantSubmitted by rememberSaveable(selectedModelId) { mutableStateOf("") }
@@ -169,6 +132,43 @@ class MainActivity : ComponentActivity() {
                 var assistantNotice by remember(selectedModelId) { mutableStateOf<String?>(null) }
                 val assistantHistory = remember(selectedModelId) {
                     mutableStateListOf<ContentTarget>()
+                }
+                // Do not parse the VL80S runtime on the home screen or in independent
+                // common/calculation sections. Once requested, keep it for this model
+                // until the selection changes; returning home must not reload the packs.
+                var runtimeRequested by remember(workingModel.id.value) { mutableStateOf(false) }
+                androidx.compose.runtime.LaunchedEffect(workingModel.id.value, shellDestination, assistantSubmitted) {
+                    if (Vl80sBootstrapPolicy.shouldRequest(workingModel.id.value, shellDestination, assistantSubmitted)) {
+                        runtimeRequested = true
+                    }
+                }
+                // Key the *state slot*, not only the coroutine: produceState's
+                // initialValue is otherwise retained across key changes, which
+                // could briefly expose a previous model's runtime on model switch.
+                val bootstrap by key(workingModel.id.value) {
+                    produceState<Result<Vl80sVerticalSlice>?>(null, runtimeRequested) {
+                    if (runtimeRequested) {
+                        val startedAt = SystemClock.elapsedRealtime()
+                        val loaded = withContext(Dispatchers.IO) {
+                            runCatching { loadVl80sVerticalSlice() }
+                        }
+                        val durationMs = SystemClock.elapsedRealtime() - startedAt
+                        Log.i("RailBrake", "VL80S runtime load ms=$durationMs success=${loaded.isSuccess}")
+                        loaded.exceptionOrNull()?.let {
+                            Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
+                        }
+                        value = loaded
+                    }
+                    }
+                }
+                if (shellDestination == ShellHomeDestination.HOME) {
+                    BackHandler { selectedModelId = null }
+                    ShellHomeScreen(
+                        model = workingModel,
+                        onChangeModel = { selectedModelId = null },
+                        onOpen = { shellDestinationName = it.name },
+                    )
+                    return@MaterialTheme
                 }
                 if (shellDestination == ShellHomeDestination.ASSISTANT) {
                     val loaded = bootstrap?.getOrNull()
@@ -199,8 +199,8 @@ class MainActivity : ComponentActivity() {
                         BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
                         AssistantSearchScreen(
                             engine = loaded?.assistantEngine,
-                            publishedCatalogLoading = workingModel.id == ModelId("vl80s") &&
-                                bootstrap == null,
+                            publishedCatalogLoading = Vl80sBootstrapPolicy.shouldRequest(
+                                workingModel.id.value, shellDestination, assistantSubmitted) && bootstrap == null,
                             assets = assets,
                             workingModelId = workingModel.id,
                             workingModelTitle = workingModel.title,

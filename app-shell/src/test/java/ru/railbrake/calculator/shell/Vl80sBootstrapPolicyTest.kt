@@ -56,6 +56,20 @@ class Vl80sBootstrapPolicyTest {
     }
 
     @Test
+    fun explicitAssistantQueryLoadsPublishedReferenceWithoutChangingWorkingModel() {
+        val assistant = ShellHomeDestination.ASSISTANT
+        assertTrue(Vl80sBootstrapPolicy.shouldRequest("tem2", assistant, "ВЛ80С главника"))
+        assertTrue(Vl80sBootstrapPolicy.shouldRequest("chme3", assistant, "в эл 80 с главника"))
+        listOf("главника", "ВЛ80 главника", "ВЛ80С ТЭМ2 главника",
+            "ВЛ80С Ермак главника", "ВЛ80С").forEach { query ->
+            assertFalse(query, Vl80sBootstrapPolicy.shouldRequest("tem2", assistant, query))
+        }
+        assertFalse(Vl80sBootstrapPolicy.shouldRequest(null, assistant, "ВЛ80С главника"))
+        assertFalse(Vl80sBootstrapPolicy.shouldRequest("unknown", assistant, "ВЛ80С главника"))
+        assertFalse(Vl80sBootstrapPolicy.shouldRequest("tem2", ShellHomeDestination.ATLAS, "ВЛ80С главника"))
+    }
+
+    @Test
     fun onlyExplicitPublishedVl80sTriggersRuntimeLoad() {
         assertTrue(Vl80sBootstrapPolicy.shouldLoad("vl80s"))
         listOf("2es5k", "3es5k", "chme3", "chme3t", "chme3e", "tem2", "tem2u")

@@ -1,13 +1,14 @@
 package ru.railbrake.calculator.shell
 
 import ru.railbrake.calculator.domain.ModelId
+import ru.railbrake.calculator.assistant.TextQueryParser
 import ru.railbrake.calculator.navigation.ShellHomeDestination
 import ru.railbrake.calculator.navigation.ShellNavigationPolicy
 import ru.railbrake.calculator.navigation.WorkingModelResolution
 
 /**
- * Only an explicitly selected, published VL80S can trigger its expensive
- * runtime bootstrap. Reference-only family models and the model picker must
+ * A selected VL80S or an unambiguous explicit assistant query can trigger
+ * the published VL80S runtime bootstrap. Reference-only family models and the model picker must
  * remain usable even if the VL80S pack is missing or malformed.
  */
 internal object Vl80sBootstrapPolicy {
@@ -20,8 +21,21 @@ internal object Vl80sBootstrapPolicy {
         ShellHomeDestination.ACCEPTANCE,
     )
 
-    fun shouldRequest(selectedModelId: String?, destination: ShellHomeDestination): Boolean =
-        destination in runtimeDestinations && shouldLoad(selectedModelId)
+    fun shouldRequest(
+        selectedModelId: String?,
+        destination: ShellHomeDestination,
+        submittedQuery: String = "",
+    ): Boolean {
+        if (destination !in runtimeDestinations) return false
+        if (shouldLoad(selectedModelId)) return true
+        if (destination != ShellHomeDestination.ASSISTANT ||
+            ShellNavigationPolicy.resolve(selectedModelId) !is WorkingModelResolution.Selected ||
+            !shouldLoad("vl80s")) return false
+        val parsed = TextQueryParser.parse(submittedQuery)
+        return parsed.explicitModels == setOf(ModelId("vl80s")) &&
+            !parsed.vl80SeriesUnspecified && !parsed.ermakUnspecified &&
+            parsed.searchText.isNotBlank()
+    }
 
     fun shouldLoad(selectedModelId: String?): Boolean {
         val resolved = ShellNavigationPolicy.resolve(selectedModelId)

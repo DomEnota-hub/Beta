@@ -45,6 +45,23 @@ class AssistantNavigationInstrumentationTest {
             .assertDoesNotExist()
     }
 
+    @Test fun explicitVl80sSearchFromTem2KeepsWorkingModel() {
+        compose.onNodeWithText("ТЭМ2").performClick()
+        compose.onNodeWithText("Помощник").performClick()
+        compose.onNodeWithText("Что нужно найти?").performTextInput("ВЛ80С главника")
+        compose.onNodeWithText("Найти").performClick()
+        compose.waitUntil(15_000) {
+            compose.onAllNodesWithText("Поиск по ВЛ80С; рабочий локомотив не изменён.")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.onNodeWithText("Рабочий локомотив: ТЭМ2").assertExists()
+        compose.onNodeWithText("Главный выключатель").assertExists()
+        compose.onNodeWithText("← На главную").performScrollTo().performClick()
+        compose.onNodeWithText("Помощник").performClick()
+        compose.onNodeWithText("ВЛ80С главника").assertExists()
+        compose.onNodeWithText("Рабочий локомотив: ТЭМ2").assertExists()
+    }
+
     @Test fun unpublishedModelCannotBorrowVl80s() {
         compose.onNodeWithText("ЧМЭ3").performClick()
         compose.onNodeWithText("Помощник").performClick()
