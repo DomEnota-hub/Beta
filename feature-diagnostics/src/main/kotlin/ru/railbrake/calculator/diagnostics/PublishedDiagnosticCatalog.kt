@@ -55,6 +55,7 @@ class PublishedDiagnosticCatalog(
                 context.activeVariantId?.value in scenario.applicableVariantIds &&
                 evidence.publicationStatus == entry.publicationStatus &&
                 evidence.actionDisposition == entry.actionDisposition &&
+                scenario.hasCompleteTerminatingGraph() &&
                 DiagnosticActionGate.permits(evidence)
         }
     }
@@ -78,4 +79,25 @@ class PublishedDiagnosticCatalog(
     /** Never provide a candidate graph to an interactive end-user screen. */
     fun open(canonicalId: String): ExecutableDiagnosticScenario? =
         approvedScenarios().firstOrNull { it.id == canonicalId }
+}
+
+/** All response paths must terminate and all questions must be reachable.
+ * Malformed donor graphs remain available to the separate read-only pipeline.
+ */
+internal fun ExecutableDiagnosticScenario.hasCompleteTerminatingGraph(): Boolean {
+    val start = startQuestionKey ?: return false
+    val visiting = mutableSetOf<String>()
+    val finished = mutableSetOf<String>()
+    fun visit(key: String): Boolean {
+        if (key == DIAGNOSTIC_END_OF_FLOW) return true
+        if (key in finished) return true
+        if (!visiting.add(key)) return false
+        val node = question(key) ?: return false
+        if (node.responses.keys != ExecutableDiagnosticResponse.entries.toSet()) return false
+        if (!node.responses.values.all { visit(it.nextQuestionKey) }) return false
+        visiting.remove(key)
+        finished.add(key)
+        return true
+    }
+    return visit(start) && finished.size == questions.size
 }
