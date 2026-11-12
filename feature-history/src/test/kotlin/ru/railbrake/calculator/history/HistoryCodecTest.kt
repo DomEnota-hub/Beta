@@ -115,4 +115,22 @@ class HistoryCodecTest {
         try { WorkNotesCodec.decodeV1(List(201) { row }.joinToString("\n")); fail("Oversized collection must fail") }
         catch (_: IllegalArgumentException) {}
     }
+    @Test fun historyWriterRejectsOversizedUtf8BeforePersisting() {
+        try {
+            HistoryCodec.encodeV2(listOf(record(title = "я".repeat(32769))))
+            fail("Writer must reject fields that reader cannot decode")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesWriterRejectsOversizedIdentityBeforePersisting() {
+        try {
+            WorkNotesCodec.encodeV1(listOf(WorkNote("x".repeat(65537), "vl80s", 1L, "Title", "Body")))
+            fail("Writer must reject fields that reader cannot decode")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun historyWriterAcceptsExactUtf8Boundary() {
+        val value = record(title = "я".repeat(32768))
+        assertEquals(listOf(value), HistoryCodec.decodeV2(HistoryCodec.encodeV2(listOf(value))))
+    }
 }
