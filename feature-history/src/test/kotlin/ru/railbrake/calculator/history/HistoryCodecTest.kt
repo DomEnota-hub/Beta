@@ -133,4 +133,24 @@ class HistoryCodecTest {
         val value = record(title = "я".repeat(32768))
         assertEquals(listOf(value), HistoryCodec.decodeV2(HistoryCodec.encodeV2(listOf(value))))
     }
+    @Test fun legacyCapacityTieIsIndependentOfSetIterationOrder() {
+        val rows = (1..31).map { record(title = "Train %02d".format(java.util.Locale.ROOT, it)) }
+        val forward = rows.map(HistoryCodec::encodeLegacy).toSet() + "bad"
+        val backward = rows.reversed().map(HistoryCodec::encodeLegacy).toSet() + "bad"
+        val a = HistoryCodec.inspectLegacy(forward)
+        val b = HistoryCodec.inspectLegacy(backward)
+        assertEquals(a.records, b.records)
+        assertEquals(30, a.records.size)
+        assertEquals(1, a.omittedCount)
+        assertEquals(1, a.malformedCount)
+        assertEquals("Train 30", a.records.last().title)
+        assertEquals(a.records, HistoryCodec.decodeV2(HistoryCodec.encodeV2(a.records)))
+    }
+
+    @Test fun writerRejectsNegativeTimestampBeforePersisting() {
+        try {
+            HistoryCodec.encodeV2(listOf(record(ts = -1L)))
+            fail("Writer must not create unreadable history")
+        } catch (_: IllegalArgumentException) {}
+    }
 }
