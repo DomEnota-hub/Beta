@@ -15,8 +15,11 @@ object HistoryCodec {
     private val encoder = Base64.getUrlEncoder()
     private val decoder = Base64.getUrlDecoder()
 
-    private fun encodeText(value: String): String =
-        encoder.encodeToString(value.toByteArray(Charsets.UTF_8))
+    private fun encodeText(value: String): String {
+        val bytes = value.toByteArray(Charsets.UTF_8)
+        require(bytes.size <= MAX_FIELD_BYTES) { "History field too large" }
+        return encoder.encodeToString(bytes)
+    }
 
     private fun decodeText(value: String): String {
         require(value.length <= MAX_FIELD_BYTES * 2) { "History field too large" }
@@ -92,7 +95,11 @@ data class WorkNote(
 object WorkNotesCodec {
     private val encoder = Base64.getUrlEncoder()
     private val decoder = Base64.getUrlDecoder()
-    private fun encode(value: String) = encoder.encodeToString(value.toByteArray(Charsets.UTF_8))
+    private fun encode(value: String): String {
+        val bytes = value.toByteArray(Charsets.UTF_8)
+        require(bytes.size <= 64 * 1024) { "Note field too large" }
+        return encoder.encodeToString(bytes)
+    }
     private fun decode(value: String): String {
         require(value.length <= 131072) { "Encoded note field too large" }
         val bytes = decoder.decode(value)
