@@ -9,7 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.railbrake.calculator.designsystem.RailFeatureScaffold
@@ -22,6 +25,10 @@ fun AcceptanceRoutesScreen(
     modelTitle: String,
     onOpenRoute: (ResolvedAcceptanceRoute) -> Unit,
 ) {
+    val context = LocalContext.current
+    val legacy = context.getSharedPreferences("technical_acceptance_states", Context.MODE_PRIVATE)
+    val resumeId = LegacyAcceptanceSession.resumeRouteId(legacy.all, routes.map { it.route.id }.toSet())
+    val resume = routes.firstOrNull { it.route.id == resumeId }
     RailFeatureScaffold(
         template = RailFeatureTemplate.ACCEPTANCE,
         title = "Приёмка",
@@ -30,6 +37,20 @@ fun AcceptanceRoutesScreen(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            if (resume != null) {
+                item(key = "legacy-resume") {
+                    Card(
+                        onClick = { onOpenRoute(resume) },
+                        modifier = Modifier.fillMaxWidth().testTag("acceptance-legacy-resume"),
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text("Продолжить прежний маршрут", style = MaterialTheme.typography.titleMedium)
+                            Text(resume.route.title, style = MaterialTheme.typography.bodyMedium)
+                            Text("Отметки проверяются по текущему списку Beta.")
+                        }
+                    }
+                }
+            }
             items(routes, key = { it.route.id }) { resolved ->
                 Card(
                     onClick = { onOpenRoute(resolved) },
