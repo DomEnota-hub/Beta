@@ -10,6 +10,22 @@ internal object LegacyAcceptanceSession {
         "VL80-ROUTE-route_functional",
     )
 
+    const val currentRouteKey = "session:VL80S:current_route"
+    const val handledKey = "session:VL80S:handled"
+
+    fun isKnownRoute(id: String): Boolean = id in knownRoutes
+
+    // A Beta selection or explicit dismissal always wins over the donor hint.
+    // Malformed Beta data must not resurrect a previously dismissed donor route.
+    fun currentResumeRouteId(current: Map<String, *>, legacy: Map<String, *>, availableIds: Set<String>): String? {
+        if (current.containsKey(handledKey) || current.containsKey(currentRouteKey)) {
+            if (current[handledKey] != true) return null
+            val id = current[currentRouteKey] as? String ?: return null
+            return id.takeIf { it in knownRoutes && it in availableIds }
+        }
+        return resumeRouteId(legacy, availableIds)
+    }
+
     fun resumeRouteId(legacy: Map<String, *>, availableIds: Set<String>): String? {
         val id = legacy[prefix + "route_id"] as? String ?: return null
         if (id !in knownRoutes || id !in availableIds) return null

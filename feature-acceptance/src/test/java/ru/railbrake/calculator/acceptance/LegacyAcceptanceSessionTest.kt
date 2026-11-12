@@ -25,4 +25,18 @@ class LegacyAcceptanceSessionTest {
         assertNull(LegacyAcceptanceSession.resumeRouteId(valid + (prefix + "started_at" to "100"), setOf(id)))
         assertNull(LegacyAcceptanceSession.resumeRouteId(valid.mapKeys { it.key.replace("VL80S", "ERMAK") }, setOf(id)))
     }
+
+    @Test fun betaSelectionWinsAndDismissalDoesNotResurrectLegacy() {
+        val other = "VL80-ROUTE-required"
+        val available = setOf(id, other)
+        val handled = LegacyAcceptanceSession.handledKey
+        val route = LegacyAcceptanceSession.currentRouteKey
+        assertEquals(id, LegacyAcceptanceSession.currentResumeRouteId(emptyMap<String, Any>(), valid, available))
+        assertEquals(other, LegacyAcceptanceSession.currentResumeRouteId(mapOf(handled to true, route to other), valid, available))
+        assertNull(LegacyAcceptanceSession.currentResumeRouteId(mapOf(handled to true), valid, available))
+        assertNull(LegacyAcceptanceSession.currentResumeRouteId(mapOf(handled to false, route to other), valid, available))
+        assertNull(LegacyAcceptanceSession.currentResumeRouteId(mapOf(route to other), valid, available))
+        assertNull(LegacyAcceptanceSession.currentResumeRouteId(mapOf(handled to true, route to "ER-ROUTE-required"), valid, available))
+        assertNull(LegacyAcceptanceSession.currentResumeRouteId(mapOf(handled to true, route to other), valid, setOf(id)))
+    }
 }
