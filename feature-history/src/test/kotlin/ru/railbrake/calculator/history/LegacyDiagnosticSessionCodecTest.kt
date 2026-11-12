@@ -47,6 +47,27 @@ class LegacyDiagnosticSessionCodecTest {
         assertEquals(2, LegacyDiagnosticSessionCodec.read(source).records.size)
     }
 
+    @Test fun collisionOrderingIsIndependentOfStringSetIteration() {
+        val a = encoded("2", "vl80s", "", "a", "Первый", "INFO", "A")
+        val b = encoded("2", "vl80s", "", "a", "Первый", "INFO", "B")
+        val first = LegacyDiagnosticSessionCodec.read(linkedSetOf(b, a))
+        val second = LegacyDiagnosticSessionCodec.read(linkedSetOf(a, b))
+        assertEquals(first, second)
+        assertEquals(listOf("A", "B"), first.records.map { it.report })
+    }
+
+    @Test fun excludedProfilesAreCountedWithoutExposingReports() {
+        val all = LegacyDiagnosticSessionCodec.read(setOf(
+            "bad",
+            encoded("2", "ermak", "msud-n", "a", "Ермак", "INFO", "Other"),
+            encoded("3", "vl80s", "", "b", "ВЛ80С", "INFO", "Own")
+        ))
+        val filtered = LegacyDiagnosticSessionCodec.forExactModel(all, "vl80s")
+        assertEquals(1, filtered.excludedProfileCount)
+        assertEquals(1, filtered.malformedCount)
+        assertEquals(listOf("Own"), filtered.records.map { it.report })
+    }
+
     @Test fun invalidTimestampAndUtf8AreRejected() {
         assertNull(LegacyDiagnosticSessionCodec.parse(encoded("-1", "vl80s", "", "a", "", "", "")))
         val bad = "////|"+encoded("vl80s", "", "a", "Title", "INFO", "Report")
