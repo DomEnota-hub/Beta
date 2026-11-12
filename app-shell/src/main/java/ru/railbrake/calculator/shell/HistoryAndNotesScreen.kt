@@ -186,8 +186,14 @@ fun HistoryAndNotesScreen(
             Text("Показаны только записи с точным идентификатором профиля " +
                 modelId + ". Неоднозначные семейные профили не подставляются автоматически.")
             if ((diagnosticArchive?.malformedCount ?: 0) > 0) {
-                Text("Часть исходных записей повреждена; исходное хранилище не изменено.",
+                Text("Повреждённых записей: ${diagnosticArchive?.malformedCount}. Исходное хранилище не изменено.",
                     color = MaterialTheme.colorScheme.error)
+            }
+            diagnosticArchive?.let { archive ->
+                if (archive.excludedProfileCount > 0) {
+                    Text("Записей других или неоднозначных профилей: ${archive.excludedProfileCount}. " +
+                        "Они сохранены в исходном архиве и не показаны для этой модели.")
+                }
             }
             val archived = diagnosticArchive?.records.orEmpty()
             if (archived.isEmpty()) Text("Архивных отчётов для выбранной модели нет.")
