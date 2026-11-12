@@ -149,12 +149,13 @@ class CommonReferencePolicyTest {
         ).isEmpty())
     }
 
-    @Test fun onlyTwoFirstAidCardsExposeIndependentlyReviewedAdultGuidance() {
+    @Test fun onlyFourFirstAidCardsExposeIndependentlyReviewedAdultGuidance() {
         val entries = donorEntries()
         val cards = CommonReferencePolicy.cards(entries, ShellHomeDestination.FIRST_AID)
         val reviewed = cards.filter { it.reviewedAid != null }
         assertEquals(
-            setOf("common.first-aid.unconscious", "common.first-aid.cpr"),
+            setOf("common.first-aid.unconscious", "common.first-aid.cpr",
+                "common.first-aid.bleeding", "common.first-aid.airway"),
             reviewed.map { it.id }.toSet(),
         )
         assertTrue(reviewed.all { it.reviewedAid!!.steps.size == 6 })
@@ -164,7 +165,16 @@ class CommonReferencePolicyTest {
                 it.reviewedAid!!.scopeNote.contains("взрослого")
         })
         assertTrue(cards.all { it.details.isEmpty() })
-        assertTrue(cards.filter { it.reviewedAid == null }.size == 16)
+        assertTrue(cards.filter { it.reviewedAid == null }.size == 14)
+        val bleeding = reviewed.single { it.id == "common.first-aid.bleeding" }.reviewedAid!!
+        assertTrue(bleeding.steps.any { it.contains("не ослабляйте") })
+        assertTrue(bleeding.steps.any { it.contains("не извлекайте") })
+        val airway = reviewed.single { it.id == "common.first-aid.airway" }.reviewedAid!!
+        assertTrue(airway.steps.any { it.contains("беременности") && it.contains("грудной клетки") })
+        assertTrue(airway.steps.any { it.contains("вслепую") })
+        assertTrue(cards.single { it.id == "common.first-aid.poisoning" }.reviewedAid == null)
+        assertTrue(cards.single { it.id == "common.first-aid.nosebleed" }.reviewedAid == null)
+
         assertTrue(reviewed.all { card ->
             card.sourceEvidence.all { it.sourceStatus == SourceStatus.UNKNOWN }
         })
