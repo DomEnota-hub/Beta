@@ -48,18 +48,16 @@ class SharedPreferencesAcceptanceStateStore(
 
     private val legacy = context.getSharedPreferences("technical_acceptance_states", Context.MODE_PRIVATE)
 
-    @Synchronized
-    override fun read(id: CanonicalId): AcceptanceItemState {
+    override fun read(id: CanonicalId): AcceptanceItemState = synchronized(storeLock) {
         migrateOnce(id)
         val state = (preferences.all[stateKey(id)] as? String)
             ?.let { runCatching { AcceptanceCheckState.valueOf(it) }.getOrNull() }
             ?: AcceptanceCheckState.NOT_CHECKED
         val note = (preferences.all[noteKey(id)] as? String).orEmpty()
-        return AcceptanceItemState(state = state, note = note)
+        AcceptanceItemState(state = state, note = note)
     }
 
-    @Synchronized
-    override fun write(id: CanonicalId, value: AcceptanceItemState) {
+    override fun write(id: CanonicalId, value: AcceptanceItemState) = synchronized(storeLock) {
         preferences.edit().apply {
             putBoolean(migrationKey(id), true)
             putString(stateKey(id), value.state.name)
@@ -68,8 +66,7 @@ class SharedPreferencesAcceptanceStateStore(
         }.apply()
     }
 
-    @Synchronized
-    override fun clear(id: CanonicalId) {
+    override fun clear(id: CanonicalId) = synchronized(storeLock) {
         preferences.edit()
             .putBoolean(migrationKey(id), true)
             .remove(stateKey(id))
@@ -78,15 +75,17 @@ class SharedPreferencesAcceptanceStateStore(
     }
 
     private fun migrateOnce(id: CanonicalId) {
-        if (preferences.contains(migrationKey(id))) return
-        // Never overwrite an existing Beta mark or note, including malformed values.
-        if (preferences.contains(stateKey(id)) || preferences.contains(noteKey(id))) return
-        val value = LegacyAcceptanceMigration.decode(id.value, legacy.all) ?: return
+        val value = LegacyAcceptanceMigration.pending(id.value, preferences.all, legacy.all) ?: return
         preferences.edit()
             .putString(stateKey(id), value.state.name)
             .putString(noteKey(id), value.note)
             .putBoolean(migrationKey(id), true)
             .apply()
+    }
+
+    private companion object {
+        // All store instances in this process share the same preferences.
+        val storeLock = Any()
     }
 
     private fun migrationKey(id: CanonicalId) = "legacy_imported:${id.value}"
@@ -165,6 +164,12 @@ internal object LegacyAcceptanceMigration {
         "VL80-ACC-065",
         "VL80-ACC-066",
     )
+
+    fun pending(id: String, current: Map<String, *>, legacy: Map<String, *>): AcceptanceItemState? {
+        if (current.containsKey("legacy_imported:$id") ||
+            current.containsKey("state:$id") || current.containsKey("note:$id")) return null
+        return decode(id, legacy)
+    }
 
     fun decode(id: String, legacy: Map<String, *>): AcceptanceItemState? {
         if (id !in verifiedIds) return null

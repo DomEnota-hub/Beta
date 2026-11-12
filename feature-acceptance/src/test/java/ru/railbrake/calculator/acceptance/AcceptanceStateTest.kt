@@ -62,4 +62,28 @@ class AcceptanceStateTest {
         assertEquals(AcceptanceItemState(AcceptanceCheckState.NOT_CHECKED, "замечание"),
             LegacyAcceptanceMigration.decode(id, mapOf("note:$id" to "замечание")))
     }
+    @Test
+    fun existingBetaValuesAndClearMarkerPreventLegacyImport() {
+        val id = "VL80-ACC-001"
+        val legacy = mapOf(id to "OK", "note:$id" to "old")
+        assertEquals(AcceptanceCheckState.CHECKED,
+            LegacyAcceptanceMigration.pending(id, emptyMap<String, Any>(), legacy)?.state)
+        for (current in listOf(
+            mapOf("state:$id" to "NOTE"),
+            mapOf("note:$id" to "new"),
+            mapOf("state:$id" to 42),
+            mapOf("legacy_imported:$id" to true),
+        )) {
+            assertEquals(null, LegacyAcceptanceMigration.pending(id, current, legacy))
+        }
+        assertEquals("old", legacy["note:$id"])
+    }
+
+    @Test
+    fun clearMarkerForOneItemDoesNotSuppressAnother() {
+        val id = "VL80-ACC-002"
+        assertEquals(AcceptanceCheckState.CHECKED,
+            LegacyAcceptanceMigration.pending(id, mapOf("legacy_imported:VL80-ACC-001" to true),
+                mapOf(id to "OK"))?.state)
+    }
 }
