@@ -189,6 +189,11 @@ class AssistantTextEngine(
             listOfNotNull(entry.summary)).map(TextQueryParser::normalize)
         val titleTokens = title.split(" ").toSet()
         val allTokens = titleTokens + terms.flatMap { it.split(" ") }.toSet()
+        // A numbered apparatus must not match a different number just because
+        // its generic equipment name matches (e.g. ВОВ-26 versus ВОВ-25).
+        // Keep exact numeric identifiers in the same normalized index as the title.
+        if (intent in setOf(TextIntent.REFERENCE, TextIntent.DIAGNOSTICS) &&
+            tokens.any { token -> token.all(Char::isDigit) && token !in allTokens }) return 0
         val matched = tokens.count { token -> token in allTokens ||
             (token.length >= 5 && allTokens.any { it.length >= 5 &&
                 (it.startsWith(token) || token.startsWith(it)) }) }

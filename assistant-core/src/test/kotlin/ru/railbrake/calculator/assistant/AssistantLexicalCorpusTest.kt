@@ -213,12 +213,35 @@ class AssistantLexicalCorpusTest {
         assertEquals(emptySet<ModelId>(), TextQueryParser.parse("восемьдесят эс").explicitModels)
         assertEquals(TextAssistantResult.UnpublishedModel(ModelId("tem2")),
             engine.query("ТЭМ2 главника", vl))
+        val numbered = engine.query("ВЛ80С ВОВ-25", ModelId("tem2")) as TextAssistantResult.Matches
+        assertEquals("VL-EQ-HV-001", numbered.hits.first().entry.id.value)
+        assertEquals(setOf("VL-SRC-001", "VL-SRC-006", "VL-SRC-008"), numbered.hits.first().sourceIds)
+        assertNull(numbered.recommended)
+        assertTrue(engine.query("ВЛ80С ВОВ-26", vl) is TextAssistantResult.NoMatches)
         val pantograph = engine.query("ВЛ80С пантограф", vl) as TextAssistantResult.Matches
         assertEquals("VL-EQ-HV-002", pantograph.hits.first().entry.id.value)
         assertTrue(engine.query("ВЛ80С пантограф не поднимается", vl)
             is TextAssistantResult.NoMatches)
         assertTrue(engine.query("ВЛ80С главник не включается", vl)
             is TextAssistantResult.NoMatches)
+    }
+
+    @Test fun numberedApparatusDoesNotFallBackToAnotherNumber() {
+        val source = entry("source-official", "Руководство завода", ContentType.SOURCE,
+            sourceStatus = SourceStatus.CURRENT, provenance = ProvenanceClass.MANUFACTURER)
+        val valve = entry("valve-483", "Воздухораспределитель 483", ContentType.EQUIPMENT,
+            refs = setOf("source-official"))
+        val fault = entry("fault-483", "Воздухораспределитель 483 не работает",
+            ContentType.DIAGNOSTIC_SCENARIO, refs = setOf("source-official"))
+        val (_, engine) = fixture(source, valve, fault)
+        val hit = engine.query("ВЛ80С ВР 483", vl) as TextAssistantResult.Matches
+        assertEquals("valve-483", hit.hits.first().entry.id.value)
+        assertTrue(hit.hits.first().sourceVerified)
+        assertTrue(engine.query("ВЛ80С воздухораспределитель 484", vl) is TextAssistantResult.NoMatches)
+        assertTrue(engine.query("ВЛ80С воздухораспределитель 484 не работает", vl) is TextAssistantResult.NoMatches)
+        val diagnostic = engine.query("ВЛ80С ВР 483 не работает", vl) as TextAssistantResult.Matches
+        assertEquals("fault-483", diagnostic.hits.first().entry.id.value)
+        assertNull(diagnostic.recommended)
     }
 
     @Test fun referenceSynonymsFindTheSamePublishedCard() {
