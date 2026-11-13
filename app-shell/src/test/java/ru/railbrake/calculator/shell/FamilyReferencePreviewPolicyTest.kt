@@ -227,7 +227,16 @@ class FamilyReferencePreviewPolicyTest {
             assertEquals(79, FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.ATLAS, "").size)
             assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.DIAGNOSTICS, "").isEmpty())
             assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.ACCEPTANCE, "").isEmpty())
-            assertTrue(excluded.all { FamilyReferenceDetails.forEntry(entry(it)) == null })
+            assertTrue(excluded.filter { it !in setOf("ER-EQ-TR-013", "ER-EQ-CT-009", "ER-EQ-SF-010") }.all { FamilyReferenceDetails.forEntry(entry(it)) != null })
+            for (id in listOf("ER-EQ-TR-013", "ER-EQ-CT-009")) {
+                val late = entry(id).copy(scope = ReferenceScope.DONOR_VARIANT, executionId = "${model}_msud_015")
+                assertEquals(null, FamilyReferenceDetails.forEntry(entry(id)))
+                assertTrue(FamilyReferenceDetails.forEntry(late) != null)
+                assertFalse(FamilyReferencePreviewPolicy.canReadBeforeExecution(late, profile, ShellHomeDestination.ATLAS))
+                assertFalse(FamilyReferencePreviewPolicy.canShow(late, profile, VariantId("${model}_msud_n"), ShellHomeDestination.ATLAS))
+                assertTrue(FamilyReferencePreviewPolicy.canShow(late, profile, VariantId("${model}_msud_015"), ShellHomeDestination.ATLAS))
+            }
+            assertEquals(model == "2es5k", FamilyReferenceDetails.forEntry(entry("ER-EQ-SF-010")) != null)
             assertTrue(FamilyReferenceDetails.forEntry(entry("ER-EQ-CB-001"))!!.description.contains("не к бустерной"))
         }
     }

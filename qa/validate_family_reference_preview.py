@@ -85,23 +85,30 @@ assert len(equipment_sources) == 111
 by_id = {key: (path, entry) for key, (path, entry) in equipment_sources.items()
          if entry["sourceObject"]["object"]["applicability"]["profiles"] == ["base_early"]}
 assert len(by_id) == 99
-assert len(equipment["entries"]) == 198
+assert len(equipment["entries"]) == 221
 assert {(e["modelId"], e["donorId"]) for e in equipment["entries"]} == {
-    (model, donor_id) for model in ("2es5k", "3es5k") for donor_id in by_id
+    (model, donor_id) for donor_id, (_, source) in equipment_sources.items() for model in [m.lower() for m in source["sourceObject"]["object"]["applicability"]["models"]]
 }
 for item in equipment["entries"]:
     assert set(item) == allowed_keys and item["id"] not in seen
     seen.add(item["id"])
-    assert item["scope"] == "EXECUTION_UNVERIFIED" and item["executionId"] is None
-    pack_path, source = by_id[item["donorId"]]
+    pack_path, source = equipment_sources[item["donorId"]]
+    applicability = source["sourceObject"]["object"]["applicability"]
+    if item["donorId"] in {"ER-EQ-TR-013", "ER-EQ-CT-009"}:
+        assert "msud_015_extended" in applicability["profiles"]
+        assert item["scope"] == "DONOR_VARIANT" and item["executionId"] == item["modelId"] + "_msud_015"
+    else:
+        assert item["scope"] == "EXECUTION_UNVERIFIED" and item["executionId"] is None
     assert item["targetPack"] == pack_path and item["targetId"] == item["donorId"]
-    assert set(source["sourceObject"]["object"]["applicability"]["exclusions"]) <= {"booster_only"}
+    if item["donorId"] in by_id:
+        assert set(applicability["exclusions"]) <= {"booster_only"}
     assert source["title"] == item["title"] and source["summary"] != item["summary"]
     assert source["publicationStatus"] == "CANDIDATE" and source["actionDisposition"] == "INFORMATION_ONLY"
     assert item["donorPath"] == source["sourceObject"]["sourcePath"] == "app/src/main/assets/technical/ermak_equipment.json.gz"
     assert item["donorBlobSha"] == source["sourceObject"]["sourceBlobSha"] == "47a8d2424d69943fba9747746aa6ad8c8f4e2e98"
     assert source["sourceObject"]["object"]["id"] == item["donorId"]
-    assert source["sourceObject"]["object"]["applicability"]["profiles"] == ["base_early"]
-    assert set(source["sourceObject"]["object"]["applicability"]["models"]) == {"2ES5K", "3ES5K"}
+    assert item["modelId"].upper() in applicability["models"]
+    if item["donorId"] == "ER-EQ-SF-010":
+        assert item["modelId"] == "2es5k"
     assert 0 < len(item["summary"]) <= 240 and "\n" not in item["summary"]
-print("ERMAK_EQUIPMENT_REFERENCE_PASS objects=99 model_entries=198 executable=0")
+print("ERMAK_EQUIPMENT_REFERENCE_PASS objects=111 model_entries=221 executable=0")

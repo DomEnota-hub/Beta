@@ -7,6 +7,54 @@ internal data class FamilyReferenceDetail(val description: String, val sourceIds
 internal object FamilyReferenceDetails {
     // Independently authored general principles; no apparatus parameters or operating steps.
     private val equipment = mapOf(
+        "ER-EQ-TR-013" to FamilyReferenceDetail(
+            "Контуры используют измерения отдельных осей для коррекции тягового момента. Справка о поздней МСУД-015, не о МСУД-Н.",
+            listOf("ER-SRC-019"),
+        ),
+        "ER-EQ-CT-009" to FamilyReferenceDetail(
+            "Вычислительные блоки координируют преобразователи и обрабатывают измерения. Справка о МСУД-015, не о МСУД-Н.",
+            listOf("ER-SRC-019", "ER-SRC-029"),
+        ),
+        "ER-EQ-BR-003" to FamilyReferenceDetail(
+            "Электрические команды преобразуются в изменения состояния пневматических каналов. Только при наличии соответствующего дистанционного комплекса; не подтверждает его установку.",
+            listOf("ER-SRC-002", "ER-SRC-013"),
+        ),
+        "ER-EQ-BR-008" to FamilyReferenceDetail(
+            "Положение органа управления преобразуется в электрический сигнал. Только для комплектации с дистанционным тормозным управлением; не описание крана №395.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-013"),
+        ),
+        "ER-EQ-BR-009" to FamilyReferenceDetail(
+            "Управляющее давление передаётся к исполнительному тормозному контуру. Конкретный тип и наличие требуют проверки комплектации.",
+            listOf("ER-SRC-013", "ER-SRC-096", "ER-SRC-097"),
+        ),
+        "ER-EQ-BR-010" to FamilyReferenceDetail(
+            "Пневматический канал может обеспечивать резервирование электрического управления в соответствующем комплексе. Наличие и конструкция требуют проверки; не инструкция переключения.",
+            listOf("ER-SRC-003", "ER-SRC-013", "ER-SRC-111", "ER-SRC-112"),
+        ),
+        "ER-EQ-BR-014" to FamilyReferenceDetail(
+            "Клапанный механизм изменяет и поддерживает давление магистрали. Только для комплектации с краном №395, не для УКТОЛ с №130/130-2.",
+            listOf("ER-SRC-007", "ER-SRC-096", "ER-SRC-097", "ER-SRC-100"),
+        ),
+        "ER-EQ-BR-015" to FamilyReferenceDetail(
+            "Электрические сигналы управляют пневматическими исполнительными элементами. Только при наличии УКТОЛ с №130 или №130-2; не относится к комплектации №395.",
+            listOf("ER-SRC-013", "ER-SRC-022"),
+        ),
+        "ER-EQ-SF-007" to FamilyReferenceDetail(
+            "Электромагнитная индукция преобразует поле рельсовой цепи в сигнал приёмного тракта. Тип катушек и комплекс безопасности требуют проверки.",
+            listOf("ER-SRC-002"),
+        ),
+        "ER-EQ-SF-010" to FamilyReferenceDetail(
+            "Объединяет обработку данных движения и защитные функции. Донор указывает только 2ЭС5К в соответствующей комплектации; наличие на конкретной машине не подтверждено.",
+            listOf("ER-SRC-031"),
+        ),
+        "ER-EQ-MC-005" to FamilyReferenceDetail(
+            "Опора передаёт нагрузки между двигателем и осью. Конструкции скольжения и качения различаются; тип требует проверки комплектации.",
+            listOf("ER-SRC-007", "ER-SRC-019"),
+        ),
+        "ER-EQ-MC-011" to FamilyReferenceDetail(
+            "Смазочный материал уменьшает трение в зоне контакта гребня с рельсом. Наличие и конструкция зависят от комплектации.",
+            listOf("ER-SRC-002", "ER-SRC-007"),
+        ),
         "ER-EQ-TR-011" to FamilyReferenceDetail(
             "Преобразует ток в сигнал измерительного канала, позволяя отделить измерительную электронику от силового тракта.",
             listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-073", "ER-SRC-075"),
@@ -406,13 +454,19 @@ internal object FamilyReferenceDetails {
     )
 
     fun forEntry(entry: FamilyReferencePreview): FamilyReferenceDetail? {
-        if (entry.modelId !in setOf("2es5k", "3es5k") ||
-            entry.scope != ReferenceScope.EXECUTION_UNVERIFIED ||
-            entry.executionId != null) return null
+        if (entry.modelId !in setOf("2es5k", "3es5k")) return null
         if (entry.donorPath == "app/src/main/assets/technical/ermak_equipment.json.gz" &&
             entry.donorBlobSha == "47a8d2424d69943fba9747746aa6ad8c8f4e2e98") {
+            val late = entry.donorId in setOf("ER-EQ-TR-013", "ER-EQ-CT-009")
+            if (late) {
+                if (entry.scope != ReferenceScope.DONOR_VARIANT ||
+                    entry.executionId != "${entry.modelId}_msud_015") return null
+            } else if (entry.scope != ReferenceScope.EXECUTION_UNVERIFIED ||
+                entry.executionId != null) return null
+            if (entry.donorId == "ER-EQ-SF-010" && entry.modelId != "2es5k") return null
             return equipment[entry.donorId]
         }
+        if (entry.scope != ReferenceScope.EXECUTION_UNVERIFIED || entry.executionId != null) return null
         if (entry.donorPath != "app/src/main/assets/technical/ermak_knowledge.json.gz" ||
             entry.donorBlobSha != "08d164fc11c33c241d04ad6ad60c13a3aec996c8") return null
         return when (entry.donorId) {
