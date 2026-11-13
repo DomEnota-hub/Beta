@@ -1,0 +1,824 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 68,
+  "originalId": "CHME3-DIAG-316",
+  "scenarioId": "chme3.diagnostics.chme3-diag-316",
+  "title": "Вентилятор охлаждения не вращается при требуемом режиме",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/15",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-316",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_SECONDARY_PLUS_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-CDOCKA-996R-CHME3"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-COOLING-FANS",
+      "CHME3-EQ-HYDRO-GEAR",
+      "CHME3-EQ-RADIATOR"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SOURCE_AND_PROFILE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N52",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §52 Охлаждающее устройство; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N53",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §53 Гидромеханический редуктор; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM / CHME3-SRC-CDOCKA-996R-CHME3",
+      "revision": "Практические материалы не подтверждены РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть прежние сведения о режиме и о том, какой вентилятор рассматривается?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Подтверждены требование вращения и его отсутствие в архиве?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет архивных сведений о требуемом режиме.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Требуемый режим и отсутствие вращения описаны, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Одновременное подтверждение режима и отказа отсутствует.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть прежние сведения о режиме и о том, какой вентилятор рассматривается?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В архиве подтверждено требование работы именно этого вентилятора?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В прежних данных зафиксирована остановка именно этого вентилятора?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Подтверждён документально тип привода на конкретной машине?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестно, какой вентилятор и режим оценивать.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Режим подтверждён, но остановка вентилятора не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не доказано, что этот вентилятор должен был вращаться.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Режим и остановка описаны, схема известна лишь по документам, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тип привода и схема конкретной машины неизвестны; диагностика BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "demand",
+      "title": "Режим включения",
+      "sourceId": "N52",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "demand-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Режим включения?",
+          "responses": {
+            "YES": "demand-yes",
+            "NO": "demand-no",
+            "UNKNOWN": "demand-stop"
+          },
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "demand-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Требование вращения зависит от конкретного контура.",
+          "responses": {},
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "demand-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "demand-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "main",
+      "title": "Главный вентилятор",
+      "sourceId": "N52",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "main-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Главный вентилятор?",
+          "responses": {
+            "YES": "main-yes",
+            "NO": "main-no",
+            "UNKNOWN": "main-stop"
+          },
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "main-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Основной контур и его вентилятор не смешивать со вспомогательным.",
+          "responses": {},
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "main-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "main-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "aux",
+      "title": "Вспомогательный вентилятор",
+      "sourceId": "N52",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "aux-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Вспомогательный вентилятор?",
+          "responses": {
+            "YES": "aux-yes",
+            "NO": "aux-no",
+            "UNKNOWN": "aux-stop"
+          },
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "aux-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вспомогательный контур имеет отдельный привод по архивной схеме.",
+          "responses": {},
+          "sourceRefs": [
+            "N52"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "aux-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "aux-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "drive",
+      "title": "Гидромеханический привод",
+      "sourceId": "N53",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "drive-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Гидромеханический привод?",
+          "responses": {
+            "YES": "drive-yes",
+            "NO": "drive-no",
+            "UNKNOWN": "drive-stop"
+          },
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "drive-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Принудительное включение и фиксация запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "control",
+      "title": "Команда и вращение",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "control-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Команда и вращение?",
+          "responses": {
+            "YES": "control-yes",
+            "NO": "control-no",
+            "UNKNOWN": "control-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "control-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие команды не равнозначно механическому отказу.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "control-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "control-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-314",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-315",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-317",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Никакого принудительного включения вентилятора или доступа к вращающимся узлам."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Нотик 1996 не действующее РЭ и не подтверждает уставки."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не декодирован независимо, равенство графов не доказано."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Вариант и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые сведения и вторичный 996/р не разрешают действия."
+    },
+    {
+      "source": "SOURCE_CONFLICT",
+      "note": "Без действующего РЭ эксплуатационное действие запрещено."
+    }
+  ],
+  "openGaps": [
+    "Действующее РЭ по номеру машины",
+    "Точный профиль ЧМЭ3/Т/Э и модернизация",
+    "Установленная схема",
+    "Применимость архивного пособия",
+    "Действующие пределы и порядок безопасности",
+    "Сопоставимые архивные данные",
+    "Независимое сравнение gzip",
+    "Роль и полномочия",
+    "Независимый safety gate",
+    "Финальная Android device QA",
+    "Первичная верификация полевых источников",
+    "Независимая проверка: Вентилятор охлаждения не вращается при требуемом режиме"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-d",
+        "NO": "obs-e",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}

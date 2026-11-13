@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "sources": [
+    {
+      "sourcePath": "app/src/main/assets/technical/stepwise_scheme_flows.json",
+      "sourceBlobSha": "ccda6a1384f3f0d0183ef4403e8593b544e40981",
+      "metadata": {
+        "schemaVersion": 1,
+        "packageId": "test-stepwise-scheme-flows-v1",
+        "updatedAt": "2026-10-01",
+        "state": "PACKAGE_B_DATA_READY_FOR_RENDERER_INTEGRATION",
+        "contract": {
+          "representationKinds": [
+            "SOURCE_BACKED_FUNCTIONAL"
+          ],
+          "domains": [
+            "ELECTRICAL",
+            "PNEUMATIC"
+          ],
+          "rules": [
+            "Каждая последовательность имеет явную применимость и источник.",
+            "SOURCE_BACKED_FUNCTIONAL описывает функциональный путь и не выдается за монтажную или принципиальную трассировку проводов/труб.",
+            "Силовой ток, питание управления, команда, обратная связь и давление кодируются разными flowKind.",
+            "Смысл шага передается подписью и типом линии; цвет не является единственным носителем смысла.",
+            "Профильные узлы ЧМЭ3Т и ЧМЭ3Э запрещено переносить на другие исполнения без отдельного подтверждения.",
+            "Данные INFORMATION_ONLY не создают права на подключение внешних источников, обход защиты или ремонтное вмешательство."
+          ],
+          "legend": [
+            {
+              "flowKind": "HIGH_VOLTAGE_POWER",
+              "label": "Высоковольтное питание",
+              "lineStyle": "solid-heavy"
+            },
+            {
+              "flowKind": "TRACTION_CURRENT",
+              "label": "Тяговый ток",
+              "lineStyle": "solid-heavy-arrow"
+            },
+            {
+              "flowKind": "REGENERATIVE_CURRENT",
+              "label": "Ток рекуперации",
+              "lineStyle": "solid-heavy-reverse"
+            },
+            {
+              "flowKind": "BRAKING_CURRENT",
+              "label": "Тормозной ток / энергия",
+              "lineStyle": "solid-heavy-brake"
+            },
+            {
+              "flowKind": "AUXILIARY_POWER",
+              "label": "Питание собственных нужд",
+              "lineStyle": "solid-medium"
+            },
+            {
+              "flowKind": "CONTROL_POWER",
+              "label": "Питание цепей управления",
+              "lineStyle": "solid-thin"
+            },
+            {
+              "flowKind": "COMMAND",
+              "label": "Команда / разрешение",
+              "lineStyle": "dashed-arrow"
+            },
+            {
+              "flowKind": "CONTROL_SIGNAL",
+              "label": "Управляющий сигнал",
+              "lineStyle": "dashed-arrow"
+            },
+            {
+              "flowKind": "FEEDBACK_SIGNAL",
+              "label": "Сигнал обратной связи",
+              "lineStyle": "dotted-arrow"
+            },
+            {
+              "flowKind": "EXCITATION",
+              "label": "Ток / воздействие возбуждения",
+              "lineStyle": "dash-dot-arrow"
+            },
+            {
+              "flowKind": "STATUS_SIGNAL",
+              "label": "Сигнал состояния",
+              "lineStyle": "dotted-arrow"
+            },
+            {
+              "flowKind": "SAFETY_COMMAND",
+              "label": "Команда системы безопасности",
+              "lineStyle": "double-dashed-arrow"
+            },
+            {
+              "flowKind": "FIRE_SIGNAL",
+              "label": "Сигнал пожарной системы",
+              "lineStyle": "dotted-alert"
+            },
+            {
+              "flowKind": "AIR_SUPPLY",
+              "label": "Подача сжатого воздуха",
+              "lineStyle": "solid-pneumatic"
+            },
+            {
+              "flowKind": "CONTROL_PRESSURE",
+              "label": "Управляющее давление",
+              "lineStyle": "dashed-pneumatic"
+            },
+            {
+              "flowKind": "BRAKE_PIPE_PRESSURE_CHANGE",
+              "label": "Изменение давления тормозной магистрали",
+              "lineStyle": "double-pneumatic"
+            },
+            {
+              "flowKind": "BRAKE_CYLINDER_CONTROL",
+              "label": "Наполнение / отпуск тормозных цилиндров",
+              "lineStyle": "solid-pneumatic-brake"
+            },
+            {
+              "flowKind": "EXHAUST_RELEASE",
+              "label": "Разрядка / выпуск в атмосферу",
+              "lineStyle": "dotted-pneumatic-out"
+            },
+            {
+              "flowKind": "COOLANT_FLOW",
+              "label": "Циркуляция теплоносителя",
+              "lineStyle": "wave-arrow"
+            },
+            {
+              "flowKind": "STARTER_CURRENT",
+              "label": "Пусковой ток",
+              "lineStyle": "solid-heavy-start"
+            }
+          ]
+        },
+        "researchGaps": [
+          "ЧМЭ: точный маршрут разрядки/выпуска через внутренние клапаны не показывается, пока приборы не заведены в канонический Атлас с подтвержденным источником.",
+          "Ермак: существующие flowLayer помечены как source-backed functional и поэтому не переименовываются в монтажную трассировку.",
+          "ЧМЭ3Э: внешний трехфазный прогрев остается INFORMATION_ONLY; порядок подключения внешней сети не моделируется."
+        ]
+      },
+      "metadataSha256": "244ad1d4729415b82908fcae328d35e155296de6c883a790b240b7d882eab2f4"
+    },
+    {
+      "sourcePath": "app/src/main/assets/technical/scheme_layout_metadata.json",
+      "sourceBlobSha": "ad34505c73ea6833ddc7a95c242874f794cd7ccd",
+      "metadata": {
+        "schemaVersion": 1,
+        "packageId": "package-c-scheme-layout-metadata",
+        "generatedAt": "2026-10-01",
+        "sourceAsset": "technical/stepwise_scheme_flows.json",
+        "purpose": "Renderer-ready display coordinates for Package B flows. Coordinates are presentation metadata, not claims about physical equipment position or wire/pipe routing.",
+        "layoutPolicy": {
+          "coordinateSpace": {
+            "width": 1600,
+            "height": 900
+          },
+          "defaultNodeSize": {
+            "width": 190,
+            "height": 72
+          },
+          "preferExistingInteractiveHotspots": true,
+          "deterministicFallbackAllowed": true,
+          "physicalSpatialClaimAllowed": false,
+          "exactWireOrPipeRouteClaimAllowed": false
+        },
+        "statistics": {
+          "sequenceCount": 55,
+          "nodeCount": 208,
+          "layoutModes": {
+            "SOURCE_HOTSPOT_COORDINATES": 55
+          }
+        }
+      },
+      "metadataSha256": "3d0af611262e65a833ddbd61d067a8c2a8716e4c2823fb6cc6c290cfafbdc72d"
+    }
+  ]
+}

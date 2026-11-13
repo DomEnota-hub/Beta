@@ -1,0 +1,768 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 53,
+  "originalId": "CHME3-DIAG-004",
+  "scenarioId": "chme3.diagnostics.chme3-diag-004",
+  "title": "Дизель не набирает обороты по позициям",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/3",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-004",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "NORMAL_DIAGNOSTIC",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_SECONDARY_PLUS_LEGACY",
+    "evidenceRefs": [
+      "CHME3-SRC-CDOCKA-996R-CHME3",
+      "CHME3-SRC-SDO-996R-CHME3-2026",
+      "CHME3-SRC-SCBIST-ELECTRICAL-2018",
+      "CHME3-SRC-TCH11-VYBORG-2007"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-GOVERNOR",
+      "CHME3-EQ-GOVERNOR-SERVOMOTOR",
+      "CHME3-EQ-DRIVER-CONTROLLER",
+      "CHME3-EQ-RELAYS"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "governorAdjustment": false,
+    "manualFuelRackMovement": false,
+    "repeatStart": false,
+    "electricalCabinetAccess": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json#/scenarios/3",
+      "revision": "Test@3176d6ee228f0ed4b78371f45209e10c1c724eff; JSON updatedAt 2026-10-01 is not observation date",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Pinned donor projection; gzip not independently decoded; procedures not imported",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N38",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/064.htm",
+      "revision": "З.Х. Нотик, Транспорт, 2-е изд., 1996, §38, дистанционное управление дизелем",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "EXPLANATORY_ONLY_NOT_CURRENT_PROCEDURE",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "INDEX",
+      "kind": "SECONDARY_NORMATIVE_REPRESENTATION",
+      "ref": "CHME3-SRC-CDOCKA-996R-CHME3 / CHME3-SRC-SDO-996R-CHME3-2026",
+      "revision": "Secondary representations of 996/р; exact current paragraph and version unverified",
+      "profiles": [
+        "chme3"
+      ],
+      "authority": "REFERENCE_ONLY_NOT_PROCEDURE",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "HISTORICAL_FIELD_PRACTICE",
+      "ref": "CHME3-SRC-SCBIST-ELECTRICAL-2018 ; CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Legacy field reports; original event date, original text and applicability not independently checked",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Из ранее полученных данных следует, что нет неконтролируемого роста оборотов и другой активной аварии?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Ранее зафиксировано отсутствие прироста оборотов при команде повышения позиции?",
+          "responses": {
+            "YES": "s3",
+            "NO": "stop-unknown",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Симптом начинается именно с пятой позиции?",
+          "responses": {
+            "YES": "s4",
+            "NO": "obs-early",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s4",
+          "type": "QUESTION",
+          "text": "Имеется достоверное историческое наблюдение о состоянии РУ3 на этой ступени?",
+          "responses": {
+            "YES": "obs-ru3",
+            "NO": "stop-unknown",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-early",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нарушение до пятой позиции: ветвь команды/ранней логики. Причина не установлена; исходные показания сохранить.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-ru3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Зафиксирован признак РУ3; он лишь разделяет гипотезы цепи ступени и регулятора. Точные контакты и действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: возможна опасная потеря управления частотой вращения. Не проводить новые проверки, не выполнять вмешательств; применять только действующий порядок для уполномоченного персонала.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: достоверных исходных данных недостаточно. Никаких новых режимных испытаний, регулировок, пусков или воздействий; сохранить журнал наблюдений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет признаков продолжающейся аварии или неуправляемого роста оборотов?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть запись о расхождении команды повышения позиции и фактических оборотов?",
+          "responses": {
+            "YES": "d3",
+            "NO": "stop-unknown",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Первое расхождение отмечено на пятой позиции?",
+          "responses": {
+            "YES": "d4",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В ранее собранных материалах подтверждено отсутствие срабатывания РУ3?",
+          "responses": {
+            "YES": "obs-ru3",
+            "NO": "d6",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть достоверная запись о сбое последовательности команды на ранних позициях?",
+          "responses": {
+            "YES": "obs-control",
+            "NO": "obs-servo",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d6",
+          "type": "QUESTION",
+          "text": "При наличии признака РУ3 ранее зафиксировано отсутствие реакции сервомотора?",
+          "responses": {
+            "YES": "obs-servo",
+            "NO": "obs-governor",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-ru3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Гипотеза о цепи РУ3 на данной ступени. Нельзя считать конкретные контакты подтверждёнными.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-control",
+          "type": "OBSERVATION_REPORT",
+          "text": "Гипотеза о формировании команды контроллера или ранней релейной логике, без утверждения причины.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-servo",
+          "type": "OBSERVATION_REPORT",
+          "text": "Гипотеза о приводе сервомотора; доступные журналы не подтверждают конкретный дефект.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-governor",
+          "type": "OBSERVATION_REPORT",
+          "text": "Гипотеза о регуляторе или механической передаче команды, без разрешения проверки механизма.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: возможна опасная потеря управления частотой вращения. Не проводить новые проверки, не выполнять вмешательств; применять только действующий порядок для уполномоченного персонала.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: достоверных исходных данных недостаточно. Никаких новых режимных испытаний, регулировок, пусков или воздействий; сохранить журнал наблюдений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "command",
+      "title": "Команда контроллера и фактический прирост",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "command-q",
+          "type": "QUESTION",
+          "text": "Есть ранее собранные сведения по теме «Команда контроллера и фактический прирост»?",
+          "responses": {
+            "YES": "command-yes",
+            "NO": "command-no",
+            "UNKNOWN": "command-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "command-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческая схема различает позицию контроллера и реакцию регулятора; запись о положении рукоятки не доказывает исправность контактов.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "command-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения отсутствуют. Не делать вывод о причине и не выполнять дополнительные проверки для заполнения пробела.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "command-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения и применимость не установлены; источник не предоставляет полномочий.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "ru3",
+      "title": "РУ3 и условная пятая позиция",
+      "sourceId": "INDEX",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "ru3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее собранные сведения по теме «РУ3 и условная пятая позиция»?",
+          "responses": {
+            "YES": "ru3-yes",
+            "NO": "ru3-no",
+            "UNKNOWN": "ru3-unknown"
+          },
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "ru3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вторичный 996/р-derived источник упоминает РУ3 при отсутствии прироста с пятой позиции; точный действующий пункт, схемная применимость и контакты не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "ru3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения отсутствуют. Не делать вывод о причине и не выполнять дополнительные проверки для заполнения пробела.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "ru3-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения и применимость не установлены; источник не предоставляет полномочий.",
+          "responses": {},
+          "sourceRefs": [
+            "INDEX"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "servo",
+      "title": "Сервомотор и кулачковый механизм",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "servo-q",
+          "type": "QUESTION",
+          "text": "Есть ранее собранные сведения по теме «Сервомотор и кулачковый механизм»?",
+          "responses": {
+            "YES": "servo-yes",
+            "NO": "servo-no",
+            "UNKNOWN": "servo-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "servo-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Учебное издание 1996 года описывает передачу команды от сервомотора к кулачковому валу и регулятору. Это объяснительная модель, не инструкция для вскрытия или испытаний.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "servo-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения отсутствуют. Не делать вывод о причине и не выполнять дополнительные проверки для заполнения пробела.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "servo-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения и применимость не установлены; источник не предоставляет полномочий.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variants",
+      "title": "Разделение ЧМЭ3, ЧМЭ3Т, ЧМЭ3Э",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variants-q",
+          "type": "QUESTION",
+          "text": "Есть ранее собранные сведения по теме «Разделение ЧМЭ3, ЧМЭ3Т, ЧМЭ3Э»?",
+          "responses": {
+            "YES": "variants-yes",
+            "NO": "variants-no",
+            "UNKNOWN": "variants-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variants-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Похожие названия оборудования не гарантируют одинаковую контактно-релейную схему; исполнение остаётся UNKNOWN.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения отсутствуют. Не делать вывод о причине и не выполнять дополнительные проверки для заполнения пробела.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variants-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения и применимость не установлены; источник не предоставляет полномочий.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "title": "Различие исторического, вторичного и полевого",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "evidence-q",
+          "type": "QUESTION",
+          "text": "Есть ранее собранные сведения по теме «Различие исторического, вторичного и полевого»?",
+          "responses": {
+            "YES": "evidence-yes",
+            "NO": "evidence-no",
+            "UNKNOWN": "evidence-unknown"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "evidence-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельства 2018/2007 и пересказы 996/р не подтверждают конкретную причину, действующий нормативный пункт или право вмешательства.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "evidence-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сведения отсутствуют. Не делать вывод о причине и не выполнять дополнительные проверки для заполнения пробела.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "evidence-unknown",
+          "type": "STOP",
+          "text": "STOP: сведения и применимость не установлены; источник не предоставляет полномочий.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Действующая редакция и точный пункт №996/р для данного симптома не подтверждены",
+    "Конкретная заводская схема и исполнение ЧМЭ3/ЧМЭ3Т/ЧМЭ3Э не установлены",
+    "Полевые первичные материалы и их даты не перепроверены",
+    "Независимая распаковка донорского gzip не выполнена",
+    "Роль, полномочия и safety gate не подтверждены",
+    "Физическая Android-приёмка отложена до итоговой тестовой сборки"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-003",
+      "rule": "Это отдельный исходный диагностический сценарий; совпадение элементов оборудования не доказывает тождество симптомов или причин."
+    },
+    {
+      "originalId": "CHME3-DIAG-005",
+      "rule": "Это отдельный исходный диагностический сценарий; совпадение элементов оборудования не доказывает тождество симптомов или причин."
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Это отдельный исходный диагностический сценарий; совпадение элементов оборудования не доказывает тождество симптомов или причин."
+    },
+    {
+      "originalId": "CHME3-DIAG-008",
+      "rule": "Это отдельный исходный диагностический сценарий; совпадение элементов оборудования не доказывает тождество симптомов или причин."
+    }
+  ]
+}

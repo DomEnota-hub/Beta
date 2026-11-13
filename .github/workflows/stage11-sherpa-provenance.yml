@@ -1,0 +1,69 @@
+name: Stage 11 Sherpa binary provenance (not APK publication)
+on:
+  push:
+    branches: [audit/information-block-gaps-20261014]
+    paths: ['.github/workflows/stage11-sherpa-provenance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-upstream-artifacts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Fetch and verify official Sherpa Android AAR, VAD and Russian model
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sherpa-check"
+          cd "$RUNNER_TEMP/sherpa-check"
+          base="https://github.com/k2-fsa/sherpa-onnx/releases/download"
+          curl -fL --retry 3 --retry-all-errors --connect-timeout 20 --max-time 360 \
+            "$base/v1.13.4/sherpa-onnx-1.13.4.aar" -o sherpa.aar
+          curl -fL --retry 3 --retry-all-errors --connect-timeout 20 --max-time 180 \
+            "$base/asr-models/silero_vad.onnx" -o silero_vad.onnx
+          curl -fL --retry 3 --retry-all-errors --connect-timeout 20 --max-time 360 \
+            "$base/asr-models/sherpa-onnx-zipformer-ru-int8-2025-04-20.tar.bz2" -o model.tar.bz2
+          echo "03f9c4df965f21c71269365a7951a7f23b5696fddd093fa318c80d65550ab780  sherpa.aar" | sha256sum -c -
+          echo "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6  silero_vad.onnx" | sha256sum -c -
+          echo "d6a651569aacc9a177259fa54705dd76acae23f6a4d62ea6797bd220d4b57163  model.tar.bz2" | sha256sum -c -
+          python3 - <<'PY'
+          import hashlib, io, pathlib, tarfile, zipfile
+          root=pathlib.Path('.')
+          expected={'encoder.int8.onnx':'eb6c12fbad810d5bc3e427802e604604c69b5943a91feebc43424dd09d9ec407',
+                    'decoder.onnx':'dcbe1ffa0211e77ca6d3a80164df13fbda3ec00e47d12b9f449f89572df12136',
+                    'joiner.int8.onnx':'93f2e1d12b78d53e7802f1606488c14bb3d764b15fadf5ef6c022f6ba1fa40f7',
+                    'tokens.txt':'93bbbc0bae6b78c0bbb743d4aa9fded3bb5ff3aac5f0200e3a769a5a05e0fdf6'}
+          names=set(expected)
+          with tarfile.open('model.tar.bz2','r:bz2') as t:
+              entries=t.getmembers()
+              for member in entries:
+                  p=pathlib.PurePosixPath(member.name)
+                  if p.is_absolute() or '..' in p.parts or member.issym() or member.islnk():
+                      raise RuntimeError('unsafe model archive member: '+member.name)
+              matches={pathlib.PurePosixPath(x.name).name:x for x in entries if x.isfile()}
+              if not names.issubset(matches):
+                  raise RuntimeError('Missing model files: '+repr(names-set(matches)))
+              print('MODEL ARCHIVE SHA256',hashlib.sha256(root.joinpath('model.tar.bz2').read_bytes()).hexdigest())
+              for name in sorted(names):
+                  member=matches[name]
+                  with t.extractfile(member) as f:
+                      h=hashlib.sha256()
+                      for block in iter(lambda:f.read(1024*1024),b''): h.update(block)
+                  if h.hexdigest()!=expected[name]: raise RuntimeError('Model file SHA256 mismatch: '+name)
+                  print('MODEL FILE',name,'size',member.size,'sha256',h.hexdigest())
+          with zipfile.ZipFile('sherpa.aar') as z:
+              contents=z.namelist()
+              if 'classes.jar' not in contents: raise RuntimeError('No classes.jar in AAR')
+              abis={part.split('/')[1] for part in contents if part.startswith('jni/') and part.endswith('.so')}
+              if 'arm64-v8a' not in abis: raise RuntimeError('Missing arm64-v8a native library')
+              with zipfile.ZipFile(io.BytesIO(z.read('classes.jar'))) as jar:
+                  classes=set(jar.namelist())
+              required={'OfflineRecognizer','OfflineModelConfig','OfflineRecognizerConfig','OfflineTransducerModelConfig','Vad','VadModelConfig','SileroVadModelConfig'}
+              missing={name for name in required if 'com/k2fsa/sherpa/onnx/'+name+'.class' not in classes}
+              if missing: raise RuntimeError('Missing donor API classes in AAR: '+repr(missing))
+              print('AAR donor API classes verified',sorted(required))
+              print('AAR ABIs',sorted(abis))
+          PY
+          echo "Verified pinned upstream SHA256 for AAR, Silero, model archive and each required model file (cross-checked with Hugging Face publisher)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Do NOT package: model derivative redistribution license and on-device integration remain unverified." >> "$GITHUB_STEP_SUMMARY"

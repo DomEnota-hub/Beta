@@ -80,7 +80,14 @@ def validate(root: Path, archive_path: Path) -> int:
             assert item["width"] > 0 and item["height"] > 0
         assert media[0]["format"] == "JPEG" and media[1]["format"] == "PNG"
     contract = (root / HISTORY_GATE).read_text(encoding="utf-8")
-    assert "const val legacyFormatVerified: Boolean = false" in contract
+    assert "const val legacyFormatVerified: Boolean = true" in contract
+    assert "const val signedUpgradeVerified: Boolean = false" in contract
+    # The donor manifest remains immutable evidence of the old format.
+    # Stage 7 migration writes a separate v2 preference file, never the donor key.
+    adapter = (root / "app-shell/src/main/java/ru/railbrake/calculator/shell/AndroidHistoryStores.kt").read_text(encoding="utf-8")
+    assert 'getSharedPreferences("calculation_history"' in adapter
+    assert 'getSharedPreferences("railbrake_history_v2"' in adapter
+    assert "legacy.edit()" not in adapter
     return len(files)
 
 

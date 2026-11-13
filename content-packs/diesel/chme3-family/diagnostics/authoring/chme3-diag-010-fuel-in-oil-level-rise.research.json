@@ -1,0 +1,801 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 56,
+  "originalId": "CHME3-DIAG-010",
+  "scenarioId": "chme3.diagnostics.chme3-diag-010",
+  "title": "Топливо попадает в масло / уровень масла растёт",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/9",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-010",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "FIELD_PRACTICE",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-OLTEP-DIESEL"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-DIESEL",
+      "CHME3-EQ-INJECTION-PUMP",
+      "CHME3-EQ-INJECTOR",
+      "CHME3-EQ-OIL-PUMP"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "governorAdjustment": false,
+    "manualFuelRackMovement": false,
+    "repeatStart": false,
+    "electricalCabinetAccess": false,
+    "openingHotCoolingCircuit": false,
+    "oilSampling": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+      "revision": "Pinned /scenarios/9, blob 63988703bb795e82f40335a756b8b9bd3cad8e0a; document updatedAt is not incident date",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Projection only; gzip not independently decoded",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N104",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., 1996, §104, с. 401: вода/топливо в масле, последствия; не действующий РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N46",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 1996, §46, с. 130: водомасляный теплообменник; не действующий РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N40",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 1996, §40, с. 118: циркуляция масла; не действующий РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "HISTORICAL_FIELD_PRACTICE",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Донорская ссылка на практику; дата и исходный случай не подтверждены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N36",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 1996, §36, с. 81: ТНВД и уплотнения; не действующий РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N37",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 1996, §37, с. 86: форсунка; не действующий РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По ранее зафиксированным сведениям исключены активное разжижение масла, падение давления и другая опасность?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве есть именно признак топлива в масле или роста уровня, а не только нарушение давления?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Рост уровня сопровождается уже документированным запахом топлива либо изменением свойств масла?",
+          "responses": {
+            "YES": "obs-fuel",
+            "NO": "obs-measure",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-fuel",
+          "type": "OBSERVATION_REPORT",
+          "text": "Совпадение архивных признаков усиливает подозрение на попадание топлива; путь через аппаратуру или цилиндры не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-measure",
+          "type": "OBSERVATION_REPORT",
+          "text": "Рост уровня без других сведений не подтверждает попадание топлива; условия старого измерения остаются неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом 010 не подтверждён. Низкое давление смазки и перебои подачи топлива относятся к отдельным сценариям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: признаки разжижения масла, падения давления либо их отсутствие не исключены. Не запускать, не нагружать, не отбирать пробы; решение только по подтверждённому РЭ.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных о признаках или исполнении недостаточно. Не проводить новых измерений и вскрытий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По архиву исключены активное разжижение масла, опасное падение давления и другие угрозы?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Сохранено наблюдение роста уровня масла или запаха топлива?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В старой записи одновременно указаны рост уровня и запах/изменение вязкости?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-measure",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В архиве уже отмечены признаки в зоне топливного насоса высокого давления либо его уплотнений?",
+          "responses": {
+            "YES": "obs-pump",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения о неисправности форсунок либо возможном внутреннем пути топлива?",
+          "responses": {
+            "YES": "obs-internal",
+            "NO": "obs-fuel",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-pump",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое описание уплотнения ТНВД указывает на возможный путь, но без профильного обследования источник не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-internal",
+          "type": "OBSERVATION_REPORT",
+          "text": "Внутренний путь через форсунку или цилиндр остаётся гипотезой; новая проверка, разборка и пуск не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-fuel",
+          "type": "OBSERVATION_REPORT",
+          "text": "Признаки совместимы с топливным разжижением; конкретный узел не локализован.",
+          "responses": {},
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-measure",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отдельный признак не позволяет подтвердить загрязнение: нужны уже существующие сведения, не новые действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сценарий 010 не подтверждён и не заменяет 008, 009 или 011.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: при активном или не исключённом разжижении/потере смазки никаких новых пусков и испытаний; действующий порядок не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестны исходные данные, профиль или источник. Остановить информационную ветвь.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "observations",
+      "title": "Архивные признаки",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "observations-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Архивные признаки»?",
+          "responses": {
+            "YES": "observations-yes",
+            "NO": "observations-no",
+            "UNKNOWN": "observations-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "observations-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сохранять раздельно уровень, запах и вязкость; рост уровня сам по себе не доказывает топливо.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "observations-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Новые измерения, отбор проб и повторный пуск не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "observations-stop",
+          "type": "STOP",
+          "text": "STOP: данные, профиль или достоверность источника неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "pump-seal",
+      "title": "Уплотнения топливного насоса",
+      "sourceId": "N36",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "pump-seal-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Уплотнения топливного насоса»?",
+          "responses": {
+            "YES": "pump-seal-yes",
+            "NO": "pump-seal-no",
+            "UNKNOWN": "pump-seal-stop"
+          },
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "pump-seal-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик §36 описывает конструктивные препятствия попаданию топлива в масло у ТНВД; их неисправность лишь гипотеза.",
+          "responses": {},
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pump-seal-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не вскрывать насос и не регулировать уплотнения.",
+          "responses": {},
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pump-seal-stop",
+          "type": "STOP",
+          "text": "STOP: данные, профиль или достоверность источника неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N36"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "injector",
+      "title": "Форсунки и внутренний путь",
+      "sourceId": "N37",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "injector-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Форсунки и внутренний путь»?",
+          "responses": {
+            "YES": "injector-yes",
+            "NO": "injector-no",
+            "UNKNOWN": "injector-stop"
+          },
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "injector-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик §37 описывает распылитель и слив топлива; путь через цилиндр не устанавливается без отдельных данных.",
+          "responses": {},
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "injector-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не проводить отключения цилиндров, испытания или разборку.",
+          "responses": {},
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "injector-stop",
+          "type": "STOP",
+          "text": "STOP: данные, профиль или достоверность источника неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N37"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "oil-history",
+      "title": "Смазка и опасность разжижения",
+      "sourceId": "N104",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "oil-history-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Смазка и опасность разжижения»?",
+          "responses": {
+            "YES": "oil-history-yes",
+            "NO": "oil-history-no",
+            "UNKNOWN": "oil-history-stop"
+          },
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "oil-history-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик §104 (1996) различает запах топлива и эмульсию воды; топливо снижает вязкость и свойства масла.",
+          "responses": {},
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-history-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Это историческая учебная информация, не действующая аварийная инструкция.",
+          "responses": {},
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-history-stop",
+          "type": "STOP",
+          "text": "STOP: данные, профиль или достоверность источника неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N104"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "title": "Практическая гипотеза",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "field-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Практическая гипотеза»?",
+          "responses": {
+            "YES": "field-yes",
+            "NO": "field-no",
+            "UNKNOWN": "field-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "field-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донорские практические сообщения допускают разные пути топлива в картер, без доказательства причины или даты случая.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не превращать форумную версию в эксплуатационное действие.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-stop",
+          "type": "STOP",
+          "text": "STOP: данные, профиль или достоверность источника неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ конкретного экземпляра не проверено",
+    "Точный профиль ЧМЭ3/ЧМЭ3Т/ЧМЭ3Э неизвестен",
+    "Донорские исходные ссылки на полевую практику не верифицированы",
+    "Независимая распаковка архивного gzip не выполнялась",
+    "Действующие нормативы и эксплуатационные полномочия не подтверждены",
+    "Отложенная Android-приёмка NOT_RUN / DEFERRED",
+    "Историческое пособие Нотика 1996 года не является современным РЭ",
+    "Не проводились физические измерения, отбор проб и испытания",
+    "Гипотезы разных узлов не являются доказанной причиной",
+    "Запрещены новые пуски, нагрузочные испытания и вскрытие оборудования",
+    "Информационные расширения не активированы в runtime"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-008",
+      "rule": "Низкое давление масла не подтверждает попадание топлива."
+    },
+    {
+      "originalId": "CHME3-DIAG-009",
+      "rule": "Отказ топливоподкачки не тождественен утечке в картер."
+    },
+    {
+      "originalId": "CHME3-DIAG-011",
+      "rule": "Вода в масле не является топливом в масле."
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Просадка оборотов под нагрузкой отдельна."
+    }
+  ]
+}

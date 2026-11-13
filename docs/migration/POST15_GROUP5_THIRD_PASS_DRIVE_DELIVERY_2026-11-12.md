@@ -1,0 +1,5 @@
+## Group 5 — verified Drive delivery (2026-11-12)
+
+IN_PROGRESS / DEVICE_QA_PENDING; main stages 11/15. No new Kotlin changes or rebuild. Source SHA 75b0dc2cd442badff741513686a23f022de2ded4; implementation c6b694fff8d236a909cca7ebc5cdc16713940cf3. Prior 16/16 CI terminal SUCCESS, history JUnit, lint, assembleDebug, APK gates: https://github.com/DomEnota-hub/Beta/actions/runs/43135492967. AndroidTest compilation/device execution still unconfirmed.
+
+Resolved delivery blocker via mounted Drive upload. Artifact 13907890451 extracted and verified; APK 9667629 bytes, SHA256 e2b8ff2047f44dc83c942d4be1015a33e57159f6221e3b8e790ccb076059087a. Uploaded to Rail: https://drive.google.com/file/d/10ypzhgN16BMkf3A96Dl-AvzSH0ngK5xp/view . Drive metadata confirms parent 1IkcRbUhf8HMU7VwtPVOpI5SBZKPJHzFd and exact size; re-download SHA256 matches, APK ZIP integrity passes. No production, donor unchanged. Next: group 5 diagnostic archive and acceptance-state migration, malformed/collision fixtures and profile isolation; confirm AndroidTest compilation. Issue #4 remains open.

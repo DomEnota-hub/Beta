@@ -1,6 +1,6 @@
 package ru.railbrake.calculator.history
 
-import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -20,6 +20,6 @@ class HistoryContractsTest {
 
     @Test
     fun legacyStorageMustBeVerifiedBeforeReplacement() {
-        assertFalse(HistoryStorageMigrationGate.legacyFormatVerified)
+        assertTrue(HistoryStorageMigrationGate.legacyFormatVerified)
     }
 }

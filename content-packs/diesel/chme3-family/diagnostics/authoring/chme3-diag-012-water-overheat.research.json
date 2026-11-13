@@ -1,0 +1,793 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 57,
+  "originalId": "CHME3-DIAG-012",
+  "scenarioId": "chme3.diagnostics.chme3-diag-012",
+  "title": "Перегрев воды / недостаточное охлаждение",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/11",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-012",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_SECONDARY_PLUS_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-CDOCKA-996R-CHME3",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-WATER-PUMP",
+      "CHME3-EQ-RADIATOR",
+      "CHME3-EQ-COOLING-FANS",
+      "CHME3-EQ-DIESEL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SOURCE_AND_PROFILE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "governorAdjustment": false,
+    "manualFuelRackMovement": false,
+    "repeatStart": false,
+    "electricalCabinetAccess": false,
+    "openingHotCoolingCircuit": false,
+    "oilSampling": false,
+    "manualLouverFixation": false,
+    "forcedFanStart": false,
+    "fanDriveIntervention": false,
+    "coolingPumpIntervention": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+      "revision": "Pinned /scenarios/11, blob 63988703bb795e82f40335a756b8b9bd3cad8e0a",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Only ID/title/profile, gzip not independently decoded",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N47",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §47, два контура воды, исторические уставки не действуют",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N53",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §53, термореле и гидромуфта вентилятора",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N56",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §56, вентилятор и жалюзи",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "SECONDARY996",
+      "kind": "SECONDARY_NORMATIVE_DERIVED",
+      "ref": "CHME3-SRC-CDOCKA-996R-CHME3",
+      "revision": "Вторичное 996/р: фиксация жалюзи не разрешена, действующий пункт не сверен",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "HISTORICAL_FIELD_PRACTICE",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Без датированного первичного случая",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По ранее сохранённым сведениям исключён активный перегрев?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве отмечен рост температуры воды?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В архиве отдельно отмечены вентилятор или жалюзи?",
+          "responses": {
+            "YES": "obs-air",
+            "NO": "obs-water",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-air",
+          "type": "OBSERVATION_REPORT",
+          "text": "Вентилятор и жалюзи отдельные гипотезы, причина неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-water",
+          "type": "OBSERVATION_REPORT",
+          "text": "Циркуляция основного и вспомогательного контуров и индикация требуют отдельной оценки; насос не признан неисправным.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев не подтверждён; не смешивать с загрязнением масла и просадкой оборотов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: продолжающийся/не исключённый перегрев. Не запускать, не нагружать, не открывать горячий контур, не трогать жалюзи или вращающийся вентилятор.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По архиву исключены кипение и активный перегрев?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Сохранено независимое наблюдение роста температуры воды?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Сохранён признак нарушения воздушного потока?",
+          "responses": {
+            "YES": "d4",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В архиве отдельно отмечены неоткрывшиеся жалюзи?",
+          "responses": {
+            "YES": "obs-louvers",
+            "NO": "obs-fan",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть архивный признак потери циркуляции?",
+          "responses": {
+            "YES": "obs-circulation",
+            "NO": "obs-indication",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-louvers",
+          "type": "OBSERVATION_REPORT",
+          "text": "Жалюзи и привод отдельно от вентилятора; временная фиксация запрещена.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-fan",
+          "type": "OBSERVATION_REPORT",
+          "text": "Термореле, гидромуфта и привод вентилятора разные версии; отказ не установлен.",
+          "responses": {},
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-circulation",
+          "type": "OBSERVATION_REPORT",
+          "text": "Два водяных контура; конкретный насос не признан неисправным.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-indication",
+          "type": "OBSERVATION_REPORT",
+          "text": "Показание без сведений о циркуляции и потоке не определяет причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет подтверждения перегрева; не смешивать с 011/006/008.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: продолжающийся/не исключённый перегрев. Не запускать, не нагружать, не открывать горячий контур, не трогать жалюзи или вращающийся вентилятор.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "water",
+      "title": "Водяные контуры",
+      "sourceId": "N47",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "water-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения: Водяные контуры?",
+          "responses": {
+            "YES": "water-yes",
+            "NO": "water-no",
+            "UNKNOWN": "water-stop"
+          },
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "water-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Два водяных контура исторически различаются; уставки не являются действующими.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "water-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не открывать горячие контуры и не запускать насосы.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "water-stop",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "N47"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "drive",
+      "title": "Гидромуфта и термореле",
+      "sourceId": "N53",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "drive-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения: Гидромуфта и термореле?",
+          "responses": {
+            "YES": "drive-yes",
+            "NO": "drive-no",
+            "UNKNOWN": "drive-stop"
+          },
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "drive-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Термореле, вентиль и гидромуфта разные звенья, дефект не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не приближаться к вращающимся частям.",
+          "responses": {},
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-stop",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "N53"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "louvers",
+      "title": "Жалюзи и вентилятор",
+      "sourceId": "N56",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "louvers-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения: Жалюзи и вентилятор?",
+          "responses": {
+            "YES": "louvers-yes",
+            "NO": "louvers-no",
+            "UNKNOWN": "louvers-stop"
+          },
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "louvers-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Воздушный поток проходит через жалюзи и шахту холодильника; неисправность не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "louvers-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не фиксировать жалюзи и не вмешиваться в привод.",
+          "responses": {},
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "louvers-stop",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "N56"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "secondary",
+      "title": "Вторичное 996/р",
+      "sourceId": "SECONDARY996",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "secondary-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения: Вторичное 996/р?",
+          "responses": {
+            "YES": "secondary-yes",
+            "NO": "secondary-no",
+            "UNKNOWN": "secondary-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY996"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "secondary-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Временная фиксация жалюзи только как заблокированное историческое утверждение.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "secondary-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не применять фиксацию, перемычки, принудительное включение и обходы.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "secondary-stop",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "title": "Полевые версии",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "field-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые сведения: Полевые версии?",
+          "responses": {
+            "YES": "field-yes",
+            "NO": "field-no",
+            "UNKNOWN": "field-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "field-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Версии о циркуляции, приводе и показании без первичного случая.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не назначать ремонт и испытания по неподтверждённой версии.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-stop",
+          "type": "STOP",
+          "text": "STOP: данных, профиля, схемы или подтверждённого источника нет; никаких новых операций.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ конкретного исполнения отсутствует.",
+    "Первичный актуальный пункт 996/р не сверен.",
+    "Полномочия бригады не подтверждены.",
+    "Привод вентилятора конкретной машины неизвестен.",
+    "Привод жалюзи неизвестен.",
+    "Основной контур воды не проверен.",
+    "Вспомогательный контур воды не проверен.",
+    "Датчики и термореле не проверены.",
+    "Исторические температуры не текущие нормы.",
+    "Gzip независимо не распакован.",
+    "Практика без первичного случая.",
+    "Runtime source/role/safety gates не пройдены.",
+    "Device QA отложено."
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-011",
+      "rule": "Смешение воды и масла не доказывает перегрев."
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Просадка оборотов не равна перегреву."
+    },
+    {
+      "originalId": "CHME3-DIAG-008",
+      "rule": "Давление масла не равно температуре воды."
+    },
+    {
+      "originalId": "CHME3-DIAG-007",
+      "rule": "Дымность не тождественна охлаждению."
+    }
+  ]
+}

@@ -1,0 +1,2917 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-batch7/1",
+    "date": "2026-11-06",
+    "baseHead": "6169c1593a48b8de1861ec993b2f45009d848499",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-023",
+      "ER-DIAG-024",
+      "ER-DIAG-025",
+      "ER-DIAG-026",
+      "ER-DIAG-027"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-source-first/4",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-023",
+      "scenarioId": "ermak.diag.ER-DIAG-023",
+      "title": "SF26 отключается при включении «Вентилятор 1»",
+      "symptom": "Автомат SF26 отключается при команде на вентилятор 1",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-40",
+        "SYS-B0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002",
+        "ER-EQ-CT-011"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 23",
+          "url": "https://rcit.su/techinfoV81.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "№671р от 31.03.2010",
+            "revision": "заменён №996/р; только историческая/симптомная сверка",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "публично подтверждена редакция №592/р от 05.03.2024; более поздняя редакция требует отдельной проверки",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "url": "https://rcit.su/techinfoV54.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-024",
+        "ER-DIAG-025"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-023",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false,
+          "locator": "РЭ1 §6.5: SF26, S11, цепь МВ1 и KM11; обозначение не доказывает причину КЗ."
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "locator": "п. 23: №671р п.23: КЗ цепи МВ1 как гипотеза; повторные включения SF26 и S11 исключены."
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        },
+        "ventilation": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ2",
+          "editionAsOf": "UNKNOWN",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§§3–4: система вентиляции и вентиляторы",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "№671р п.23: КЗ цепи МВ1 как гипотеза; повторные включения SF26 и S11 исключены. Причина на конкретной машине не доказана.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "МВ1, а не МВ2; иные причины/индикация не исключены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 различаются; актуальная редакция №996/р и серийная схема не подтверждены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 именно при команде МВ1, а не МВ2?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "SF26 связан по времени с МВ1, но КЗ его цепи не доказано.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Документально подтверждены 2ЭС5К/3ЭС5К, ранняя МСУД-Н и точная схема установленной секции?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 именно при команде МВ1, а не МВ2?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть прежние записи команды МВ1, отключения SF26 и секции?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "В прежних записях SF26 отключался также при команде МВ2?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "SF26 связан по времени с МВ1, но КЗ его цепи не доказано.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема/профиль МСУД-Н не подтверждены, перенос на МСУД-015 запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть альтернативный или более широкий симптом; конкретная причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Недостаточно записей; повторный запуск для проверки не допускается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-023.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "sourceObject.id/title/symptom/applicability",
+          "text": "Донор ER-DIAG-023: SF26 отключается при включении «Вентилятор 1»; Автомат SF26 отключается при команде на вентилятор 1. МВ1, а не МВ2. Действия не импортированы.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-023.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "РЭ1 §6.5",
+          "text": "РЭ1 §6.5: SF26, S11, цепь МВ1 и KM11; обозначение не доказывает причину КЗ. Не является разрешением на вмешательство.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-023.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "№671р, п. 23",
+          "text": "№671р п.23: КЗ цепи МВ1 как гипотеза; повторные включения SF26 и S11 исключены. Историческая гипотеза, не подтверждённая причина.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-023.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "ventilation"
+          ],
+          "locator": "РЭ2 §§3–4",
+          "text": "РЭ2 описывает вентиляцию и расположение вентиляторов; электрическую причину SF26/контакторов не устанавливает.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-023.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "ТМХ 2024, МСУД-015",
+          "text": "Поздняя МСУД-015 требует отдельной серийной схемы; перенос ранней МСУД-Н заблокирован.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/4",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-024",
+      "scenarioId": "ermak.diag.ER-DIAG-024",
+      "title": "SF26 отключается при включении «Вентилятор 2»",
+      "symptom": "Автомат SF26 отключается при команде на вентилятор 2",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-40",
+        "SYS-B0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002",
+        "ER-EQ-CT-011"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 24",
+          "url": "https://rcit.su/techinfoV81.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "№671р от 31.03.2010",
+            "revision": "заменён №996/р; только историческая/симптомная сверка",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "публично подтверждена редакция №592/р от 05.03.2024; более поздняя редакция требует отдельной проверки",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "url": "https://rcit.su/techinfoV54.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-023",
+        "ER-DIAG-025"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-024",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false,
+          "locator": "РЭ1 §6.5: SF26, S12, цепь МВ2 и KM12; обозначение не доказывает причину КЗ."
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "locator": "п. 24: №671р п.24: КЗ цепи МВ2 как гипотеза; повторные включения SF26 и S12 исключены."
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        },
+        "ventilation": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ2",
+          "editionAsOf": "UNKNOWN",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§§3–4: система вентиляции и вентиляторы",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "№671р п.24: КЗ цепи МВ2 как гипотеза; повторные включения SF26 и S12 исключены. Причина на конкретной машине не доказана.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "МВ2, а не МВ1; иные причины/индикация не исключены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 различаются; актуальная редакция №996/р и серийная схема не подтверждены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 именно при команде МВ2, а не МВ1?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "SF26 связан по времени с МВ2, но КЗ его цепи не доказано.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Документально подтверждены 2ЭС5К/3ЭС5К, ранняя МСУД-Н и точная схема установленной секции?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 именно при команде МВ2, а не МВ1?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть прежние записи команды МВ2, отключения SF26 и секции?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "В прежних записях SF26 отключался также при команде МВ1?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "SF26 связан по времени с МВ2, но КЗ его цепи не доказано.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема/профиль МСУД-Н не подтверждены, перенос на МСУД-015 запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть альтернативный или более широкий симптом; конкретная причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Недостаточно записей; повторный запуск для проверки не допускается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-024.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "sourceObject.id/title/symptom/applicability",
+          "text": "Донор ER-DIAG-024: SF26 отключается при включении «Вентилятор 2»; Автомат SF26 отключается при команде на вентилятор 2. МВ2, а не МВ1. Действия не импортированы.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-024.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "РЭ1 §6.5",
+          "text": "РЭ1 §6.5: SF26, S12, цепь МВ2 и KM12; обозначение не доказывает причину КЗ. Не является разрешением на вмешательство.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-024.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "№671р, п. 24",
+          "text": "№671р п.24: КЗ цепи МВ2 как гипотеза; повторные включения SF26 и S12 исключены. Историческая гипотеза, не подтверждённая причина.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-024.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "ventilation"
+          ],
+          "locator": "РЭ2 §§3–4",
+          "text": "РЭ2 описывает вентиляцию и расположение вентиляторов; электрическую причину SF26/контакторов не устанавливает.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-024.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "ТМХ 2024, МСУД-015",
+          "text": "Поздняя МСУД-015 требует отдельной серийной схемы; перенос ранней МСУД-Н заблокирован.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/4",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-025",
+      "scenarioId": "ermak.diag.ER-DIAG-025",
+      "title": "SF26 отключается при любой команде вентиляторов",
+      "symptom": "SF26 отключается при включении любого из вентиляторов; возможна общая цепь маслонасоса/вентиляции",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-40",
+        "SYS-B0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002",
+        "ER-EQ-AU-004",
+        "ER-EQ-CT-011"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 25",
+          "url": "https://rcit.su/techinfoV81.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "№671р от 31.03.2010",
+            "revision": "заменён №996/р; только историческая/симптомная сверка",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "публично подтверждена редакция №592/р от 05.03.2024; более поздняя редакция требует отдельной проверки",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "url": "https://rcit.su/techinfoV54.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-023",
+        "ER-DIAG-024"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-025",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false,
+          "locator": "РЭ1 §6.5: связь вентиляторов и маслонасоса через диодные панели и KM15; общая реакция не локализует дефект."
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "locator": "п. 25: №671р п.25: КЗ цепи маслонасоса как гипотеза; переключения S17/S11/S12 и повторные включения SF26 исключены."
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        },
+        "ventilation": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ2",
+          "editionAsOf": "UNKNOWN",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§§3–4: система вентиляции и вентиляторы",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "№671р п.25: КЗ цепи маслонасоса как гипотеза; переключения S17/S11/S12 и повторные включения SF26 исключены. Причина на конкретной машине не доказана.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "Общий SF26, а не одиночная ветвь; иные причины/индикация не исключены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 различаются; актуальная редакция №996/р и серийная схема не подтверждены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 при обеих командах МВ1 и МВ2?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Общая реакция SF26 не доказывает неисправность маслонасоса или общей ветви.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Документально подтверждены 2ЭС5К/3ЭС5К, ранняя МСУД-Н и точная схема установленной секции?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксировано отключение SF26 при обеих командах МВ1 и МВ2?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть независимые записи реакции SF26 на обе команды и индикации маслонасоса?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Зафиксировано лишь одно отключение SF26 без подтверждения реакции на обе команды?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Общая реакция SF26 не доказывает неисправность маслонасоса или общей ветви.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема/профиль МСУД-Н не подтверждены, перенос на МСУД-015 запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть альтернативный или более широкий симптом; конкретная причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Недостаточно записей; повторный запуск для проверки не допускается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-025.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "sourceObject.id/title/symptom/applicability",
+          "text": "Донор ER-DIAG-025: SF26 отключается при любой команде вентиляторов; SF26 отключается при включении любого из вентиляторов; возможна общая цепь маслонасоса/вентиляции. Общий SF26, а не одиночная ветвь. Действия не импортированы.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-025.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "РЭ1 §6.5",
+          "text": "РЭ1 §6.5: связь вентиляторов и маслонасоса через диодные панели и KM15; общая реакция не локализует дефект. Не является разрешением на вмешательство.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-025.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "№671р, п. 25",
+          "text": "№671р п.25: КЗ цепи маслонасоса как гипотеза; переключения S17/S11/S12 и повторные включения SF26 исключены. Историческая гипотеза, не подтверждённая причина.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-025.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "ventilation"
+          ],
+          "locator": "РЭ2 §§3–4",
+          "text": "РЭ2 описывает вентиляцию и расположение вентиляторов; электрическую причину SF26/контакторов не устанавливает.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-025.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "ТМХ 2024, МСУД-015",
+          "text": "Поздняя МСУД-015 требует отдельной серийной схемы; перенос ранней МСУД-Н заблокирован.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/4",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-026",
+      "scenarioId": "ermak.diag.ER-DIAG-026",
+      "title": "Не запускается МВ1 на обеих секциях",
+      "symptom": "Вентиляторная группа МВ1 не запускается на обеих секциях",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-B0",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 26",
+          "url": "https://rcit.su/techinfoV81.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "№671р от 31.03.2010",
+            "revision": "заменён №996/р; только историческая/симптомная сверка",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "публично подтверждена редакция №592/р от 05.03.2024; более поздняя редакция требует отдельной проверки",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "url": "https://rcit.su/techinfoV54.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-027",
+        "ER-DIAG-028"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-026",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false,
+          "locator": "РЭ1 §6.5: управление МВ1 через KM11 и общие разрешения; неисправность KM11 не доказана."
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "locator": "п. 26: №671р п.26: неисправность цепи KM11 как гипотеза; разрешение следования не импортировано."
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        },
+        "ventilation": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ2",
+          "editionAsOf": "UNKNOWN",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§§3–4: система вентиляции и вентиляторы",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "№671р п.26: неисправность цепи KM11 как гипотеза; разрешение следования не импортировано. Причина на конкретной машине не доказана.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "МВ1 обеих секций, а не МВ2 или одна секция; иные причины/индикация не исключены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 различаются; актуальная редакция №996/р и серийная схема не подтверждены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксирован отказ запуска МВ1 на обеих секциях при отсутствии общего отказа МВ2?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Групповой отказ МВ1; неисправность KM11 или общей команды не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Документально подтверждены 2ЭС5К/3ЭС5К, ранняя МСУД-Н и точная схема установленной секции?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксирован отказ запуска МВ1 на обеих секциях при отсутствии общего отказа МВ2?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть отдельные записи команды и результата МВ1 каждой секции?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Есть записи об общем отказе нескольких вспомогательных машин или SF26?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Групповой отказ МВ1; неисправность KM11 или общей команды не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема/профиль МСУД-Н не подтверждены, перенос на МСУД-015 запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть альтернативный или более широкий симптом; конкретная причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Недостаточно записей; повторный запуск для проверки не допускается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-026.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "sourceObject.id/title/symptom/applicability",
+          "text": "Донор ER-DIAG-026: Не запускается МВ1 на обеих секциях; Вентиляторная группа МВ1 не запускается на обеих секциях. МВ1 обеих секций, а не МВ2 или одна секция. Действия не импортированы.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-026.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "РЭ1 §6.5",
+          "text": "РЭ1 §6.5: управление МВ1 через KM11 и общие разрешения; неисправность KM11 не доказана. Не является разрешением на вмешательство.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-026.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "№671р, п. 26",
+          "text": "№671р п.26: неисправность цепи KM11 как гипотеза; разрешение следования не импортировано. Историческая гипотеза, не подтверждённая причина.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-026.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "ventilation"
+          ],
+          "locator": "РЭ2 §§3–4",
+          "text": "РЭ2 описывает вентиляцию и расположение вентиляторов; электрическую причину SF26/контакторов не устанавливает.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-026.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "ТМХ 2024, МСУД-015",
+          "text": "Поздняя МСУД-015 требует отдельной серийной схемы; перенос ранней МСУД-Н заблокирован.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-source-first/4",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-027",
+      "scenarioId": "ermak.diag.ER-DIAG-027",
+      "title": "Не запускается МВ2 на обеих секциях",
+      "symptom": "Вентиляторная группа МВ2 не запускается на обеих секциях",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "lateProfiles": "REVALIDATION_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-B0",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-010",
+          "document": "Рекомендации локомотивной бригаде, распоряжение ОАО «РЖД» №671р от 31.03.2010",
+          "locator": "таблица, п. 27",
+          "url": "https://rcit.su/techinfoV81.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "№671р от 31.03.2010",
+            "revision": "заменён №996/р; только историческая/симптомная сверка",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "публично подтверждена редакция №592/р от 05.03.2024; более поздняя редакция требует отдельной проверки",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "силовые, вспомогательные и управляющие цепи; диагностика МСУД-Н",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE4-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "выключатели, контакторы, предохранители, реле, переключатели",
+          "url": "https://rcit.su/techinfoV54.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-base-early-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "earlyMsud": "MSUD-N_HISTORICAL_ONLY",
+      "lateMsud": "MSUD-015_REVALIDATION_REQUIRED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-026",
+        "ER-DIAG-029"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GZIP_OBJECT",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/assets/technical/ermak_diagnostics.json.gz",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-027",
+          "proceduresImported": false
+        },
+        "manual": {
+          "kind": "ARCHIVAL_MANUFACTURER_MANUAL",
+          "title": "ИДМБ.661142.009РЭ1",
+          "editionAsOf": "2007-11-01",
+          "url": "https://rcit.su/techinfoV51.html",
+          "currentOperatingAuthority": false,
+          "locator": "РЭ1 §6.5: управление МВ2 через KM12 и общие разрешения; неисправность KM12 не доказана."
+        },
+        "legacy": {
+          "kind": "SUPERSEDED_HISTORICAL_RECOMMENDATIONS",
+          "title": "Распоряжение №671р от 31.03.2010",
+          "url": "https://rcit.su/techinfoV81.html",
+          "superseded": true,
+          "currentOperatingAuthority": false,
+          "proceduresImported": false,
+          "locator": "п. 27: №671р п.27: неисправность цепи KM12 как гипотеза; разрешение следования не импортировано."
+        },
+        "late": {
+          "kind": "MANUFACTURER_BROCHURE",
+          "title": "ТМХ Ермак 2024, МСУД-015",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "year": 2024,
+          "exactSerialVerified": false,
+          "currentOperatingAuthority": false
+        },
+        "current": {
+          "kind": "CURRENT_INSTRUCTIONS_NOT_VERIFIED",
+          "status": "UNKNOWN",
+          "actionAuthority": false
+        },
+        "ventilation": {
+          "kind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "title": "ИДМБ.661142.009РЭ2",
+          "editionAsOf": "UNKNOWN",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "§§3–4: система вентиляции и вентиляторы",
+          "currentOperatingAuthority": false,
+          "exactSerialVerified": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "№671р п.27: неисправность цепи KM12 как гипотеза; разрешение следования не импортировано. Причина на конкретной машине не доказана.",
+          "resolution": "NO_OPERATION_IMPORT"
+        },
+        {
+          "issue": "МВ2 обеих секций, а не МВ1 или одна секция; иные причины/индикация не исключены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        },
+        {
+          "issue": "МСУД-Н и МСУД-015 различаются; актуальная редакция №996/р и серийная схема не подтверждены.",
+          "resolution": "UNKNOWN/BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": []
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-scope",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксирован отказ запуска МВ2 на обеих секциях при отсутствии общего отказа МВ1?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Групповой отказ МВ2; неисправность KM12 или общей команды не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-danger",
+          "nodes": [
+            {
+              "id": "q-danger",
+              "type": "QUESTION",
+              "text": "По прежним записям есть дым, дуга, перегрев, опасная потеря охлаждения или повторное срабатывание защиты?",
+              "responses": {
+                "YES": "stop-danger",
+                "NO": "q-variant",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-variant",
+              "type": "QUESTION",
+              "text": "Документально подтверждены 2ЭС5К/3ЭС5К, ранняя МСУД-Н и точная схема установленной секции?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Зафиксирован отказ запуска МВ2 на обеих секциях при отсутствии общего отказа МВ1?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "q-alternative",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Есть отдельные записи команды и результата МВ2 каждой секции?",
+              "responses": {
+                "YES": "report-focus",
+                "NO": "report-inconclusive",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-alternative",
+              "type": "QUESTION",
+              "text": "Есть записи об общем отказе нескольких вспомогательных машин или SF26?",
+              "responses": {
+                "YES": "report-alternative",
+                "NO": "report-other",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manual"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-danger",
+              "type": "STOP",
+              "text": "STOP: опасный признак. Не повторять пуск, не восстанавливать SF26 и не вмешиваться в аппараты.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Не воспроизводить отказ ради новых данных.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-focus",
+              "type": "OBSERVATION_REPORT",
+              "text": "Групповой отказ МВ2; неисправность KM12 или общей команды не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "legacy"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-other",
+              "type": "OBSERVATION_REPORT",
+              "text": "Симптом не подтверждён; не смешивать с соседними маршрутами.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: схема/профиль МСУД-Н не подтверждены, перенос на МСУД-015 запрещён.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "late"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-alternative",
+              "type": "OBSERVATION_REPORT",
+              "text": "Есть альтернативный или более широкий симптом; конкретная причина не установлена.",
+              "responses": {},
+              "sourceRefs": [
+                "manual",
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-inconclusive",
+              "type": "OBSERVATION_REPORT",
+              "text": "Недостаточно записей; повторный запуск для проверки не допускается.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-027.info.1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "sourceObject.id/title/symptom/applicability",
+          "text": "Донор ER-DIAG-027: Не запускается МВ2 на обеих секциях; Вентиляторная группа МВ2 не запускается на обеих секциях. МВ2 обеих секций, а не МВ1 или одна секция. Действия не импортированы.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-027.info.2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manual"
+          ],
+          "locator": "РЭ1 §6.5",
+          "text": "РЭ1 §6.5: управление МВ2 через KM12 и общие разрешения; неисправность KM12 не доказана. Не является разрешением на вмешательство.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-027.info.3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "legacy"
+          ],
+          "locator": "№671р, п. 27",
+          "text": "№671р п.27: неисправность цепи KM12 как гипотеза; разрешение следования не импортировано. Историческая гипотеза, не подтверждённая причина.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-027.info.4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "ventilation"
+          ],
+          "locator": "РЭ2 §§3–4",
+          "text": "РЭ2 описывает вентиляцию и расположение вентиляторов; электрическую причину SF26/контакторов не устанавливает.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-027.info.5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "late"
+          ],
+          "locator": "ТМХ 2024, МСУД-015",
+          "text": "Поздняя МСУД-015 требует отдельной серийной схемы; перенос ранней МСУД-Н заблокирован.",
+          "warningRequired": true,
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    }
+  ]
+}

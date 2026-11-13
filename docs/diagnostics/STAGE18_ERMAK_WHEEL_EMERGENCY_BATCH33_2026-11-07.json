@@ -1,0 +1,2086 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-wheel-emergency-batch33/1",
+    "date": "2026-11-07",
+    "baseHead": "c903c0d87862a497bf9cfe35ecc4d0a47182e542",
+    "previousCiRun": 42343171425,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-108",
+      "ER-DIAG-109",
+      "ER-DIAG-110"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight fields checked against pinned projection, raw gzip not independently re-decoded; latest applicable rules and specific machine authority UNKNOWN/BLOCKED.",
+    "batchBoundary": "108 flat/cavity, 109 tyre looseness/rotation, 110 shock/suspected derailment distinct"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-wheel-emergency-batch33-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-108",
+      "scenarioId": "ermak.diag.ER-DIAG-108",
+      "title": "Ползун/выбоина на колёсной паре локомотива",
+      "symptom": "Обнаружен ползун, выбоина или характерный периодический удар колёсной пары",
+      "hazardCategory": "WHEEL_TREAD_FLAT_OR_CAVITY",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-A0",
+        "SYS-71",
+        "SYS-20"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-MC-003",
+        "ER-EQ-MC-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть",
+          "locator": "тележки, КМБ, песочницы, форсунки песочниц",
+          "url": "https://rcit.su/techinfoV56.html",
+          "role": "manufacturer_mechanical_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; конструкцию подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "крепление ТЭД/букс МОП, масло МОП и смазка зубчатых передач",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; профиль МОП подтверждать",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE8-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ8. Техническое обслуживание",
+          "locator": "колесные пары, пескоподача, МОП, тяговая передача",
+          "url": "https://rcit.su/techinfoV58.html",
+          "role": "manufacturer_maintenance_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ8",
+            "revision": "ремонтные операции не являются маршрутными действиями бригады",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-TECH-KMB-B11",
+          "document": "RCIT: технические материалы по подшипниковым узлам КМБ",
+          "locator": "нагрев, вибрация, износ подшипников",
+          "url": "https://rcit.su/techinfoG5.html",
+          "role": "supporting_technical_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT technical article",
+            "revision": "не источник разрешения движения/ремонта",
+            "verifiedAt": "2026-09-26",
+            "status": "SUPPORTING_ONLY"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-MECH-B11",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 150, 155: колесные пары локомотивов, подшипники, бандажи, ползуны/выбоины",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действует до 01.08.2028; проект изменений 2026 не является действующей редакцией",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2022-08-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-wheel-emergency-source-profile-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-109",
+        "ER-DIAG-110",
+        "ER-DIAG-107",
+        "ER-DIAG-106"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-108; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-108",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: точный пункт, последняя редакция, параметры и эксплуатационные полномочия не проверены",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные поездки, новые измерения, осмотр под составом, самостоятельный выбор скорости и ремонт.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Исходная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"} не подтверждает машину, секцию, редакцию и полномочия.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "Действующий ПТЭ №250, архивные РЭ и донорская ссылка №2580/р не доказывают точные пределы, действия или возможность движения.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Ползун/выбоина на колёсной паре локомотива» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «Обнаружен ползун, выбоина или характерный периодический удар колёсной пары», а не соседний симптом?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Обнаружен ползун, выбоина или характерный периодический удар колёсной пары. Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107. Запрещены пробные поездки, новые измерения, осмотр под составом, самостоятельный выбор скорости и ремонт. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Ползун/выбоина на колёсной паре локомотива» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «Обнаружен ползун, выбоина или характерный периодический удар колёсной пары», а не соседний симптом?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежние сведения различают наблюдаемый удар и документально установленное повреждение поверхности катания без выдуманного размера?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "В прежней записи отдельно рассмотрены ползун/выбоина, бандаж, передача и вибрация без приписывания причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Колёсная пара и применимый документ установлены для конкретной машины, а не взяты из чужого РЭ?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежних сведений, источников или разделения симптомов недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Обнаружен ползун, выбоина или характерный периодический удар колёсной пары. Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107. Запрещены пробные поездки, новые измерения, осмотр под составом, самостоятельный выбор скорости и ремонт. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-108-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь полей ER-DIAG-108; CURRENT_RULE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"}. Raw gzip не перепроверен.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-108; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-108-INFO-2",
+          "title": "Историческая конструкция",
+          "text": "РЭ6 описывает раннюю механическую конструкцию; нельзя переносить её на конкретную машину без проверки.",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-108-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "Приказ №250 действует, но точные пункты, редакция и полномочия не установлены. Для 110 №2580/р требует отдельной проверки.",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-108-INFO-4",
+          "title": "Разделение симптомов",
+          "text": "Ползун/выбоина не равнозначны периодическому удару без подтверждения поверхности катания; нельзя выводить размер дефекта, скорость или возможность следования по одному звуку. Не смешивать с 109 и 107.",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-108-INFO-5",
+          "title": "Safety, профиль и роль",
+          "text": "Запрещены пробные поездки, новые измерения, осмотр под составом, самостоятельный выбор скорости и ремонт. UNKNOWN → STOP; профиль/источник/роль неизвестны → BLOCKED.",
+          "locator": "ПТЭ №250: точный пункт, последняя редакция, параметры и эксплуатационные полномочия не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-108: eight source fields matched pinned projection."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV56.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "РЭ6: историческая механическая часть, конкретная машина не установлена."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_CATALOG",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_EXISTS_CLAUSE_AUTHORITY_UNKNOWN",
+          "finding": "Приказ №250 действует до 31.07.2028; применимый пункт, редакция и полномочия не подтверждены."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-wheel-emergency-batch33-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-109",
+      "scenarioId": "ermak.diag.ER-DIAG-109",
+      "title": "Ослабление или проворот бандажа",
+      "symptom": "На колёсной паре обнаружены признаки ослабления/проворота бандажа или стопорного кольца",
+      "hazardCategory": "TYRE_LOOSENING_OR_ROTATION",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-A0",
+        "SYS-71",
+        "SYS-20"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-MC-003",
+        "ER-EQ-MC-002"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть",
+          "locator": "тележки, КМБ, песочницы, форсунки песочниц",
+          "url": "https://rcit.su/techinfoV56.html",
+          "role": "manufacturer_mechanical_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; конструкцию подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "крепление ТЭД/букс МОП, масло МОП и смазка зубчатых передач",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; профиль МОП подтверждать",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE8-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ8. Техническое обслуживание",
+          "locator": "колесные пары, пескоподача, МОП, тяговая передача",
+          "url": "https://rcit.su/techinfoV58.html",
+          "role": "manufacturer_maintenance_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ8",
+            "revision": "ремонтные операции не являются маршрутными действиями бригады",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-TECH-KMB-B11",
+          "document": "RCIT: технические материалы по подшипниковым узлам КМБ",
+          "locator": "нагрев, вибрация, износ подшипников",
+          "url": "https://rcit.su/techinfoG5.html",
+          "role": "supporting_technical_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT technical article",
+            "revision": "не источник разрешения движения/ремонта",
+            "verifiedAt": "2026-09-26",
+            "status": "SUPPORTING_ONLY"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-MECH-B11",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 150, 155: колесные пары локомотивов, подшипники, бандажи, ползуны/выбоины",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действует до 01.08.2028; проект изменений 2026 не является действующей редакцией",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2022-08-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-wheel-emergency-source-profile-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-108",
+        "ER-DIAG-110",
+        "ER-DIAG-107",
+        "ER-DIAG-106"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-109; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-109",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: точный пункт, последняя редакция, параметры и эксплуатационные полномочия не проверены",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены простукивание, осмотр под движущимся составом, разборка, новые измерения и пробное движение.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Исходная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"} не подтверждает машину, секцию, редакцию и полномочия.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "Действующий ПТЭ №250, архивные РЭ и донорская ссылка №2580/р не доказывают точные пределы, действия или возможность движения.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Ослабление или проворот бандажа» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «На колёсной паре обнаружены признаки ослабления/проворота бандажа или стопорного кольца», а не соседний симптом?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. На колёсной паре обнаружены признаки ослабления/проворота бандажа или стопорного кольца. Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку. Запрещены простукивание, осмотр под движущимся составом, разборка, новые измерения и пробное движение. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Ослабление или проворот бандажа» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «На колёсной паре обнаружены признаки ослабления/проворота бандажа или стопорного кольца», а не соседний симптом?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежний документ фиксирует признаки бандажа/кольца, а не только стук или вибрацию?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Разделены бандаж, стопорное кольцо, поверхность катания и другие узлы без вывода о виновной детали?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Документально подтверждены колесная пара и тип колеса именно этой машины?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежних сведений, источников или разделения симптомов недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. На колёсной паре обнаружены признаки ослабления/проворота бандажа или стопорного кольца. Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку. Запрещены простукивание, осмотр под движущимся составом, разборка, новые измерения и пробное движение. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-109-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь полей ER-DIAG-109; CURRENT_RULE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"}. Raw gzip не перепроверен.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-109; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-109-INFO-2",
+          "title": "Историческая конструкция",
+          "text": "РЭ6 описывает раннюю механическую конструкцию; нельзя переносить её на конкретную машину без проверки.",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-109-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "Приказ №250 действует, но точные пункты, редакция и полномочия не установлены. Для 110 №2580/р требует отдельной проверки.",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-109-INFO-4",
+          "title": "Разделение симптомов",
+          "text": "Признаки ослабления/проворота бандажа или кольца не равнозначны ползуну 108, вибрации 107 или доказанному смещению по одному стуку.",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-109-INFO-5",
+          "title": "Safety, профиль и роль",
+          "text": "Запрещены простукивание, осмотр под движущимся составом, разборка, новые измерения и пробное движение. UNKNOWN → STOP; профиль/источник/роль неизвестны → BLOCKED.",
+          "locator": "ПТЭ №250: точный пункт, последняя редакция, параметры и эксплуатационные полномочия не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-109: eight source fields matched pinned projection."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV56.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "РЭ6: историческая механическая часть, конкретная машина не установлена."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_CATALOG",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_EXISTS_CLAUSE_AUTHORITY_UNKNOWN",
+          "finding": "Приказ №250 действует до 31.07.2028; применимый пункт, редакция и полномочия не подтверждены."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-wheel-emergency-batch33-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-110",
+      "scenarioId": "ermak.diag.ER-DIAG-110",
+      "title": "Боковой/вертикальный толчок, признаки схода",
+      "symptom": "В движении возник резкий боковой/вертикальный толчок, необычные колебания или признаки схода",
+      "hazardCategory": "SUSPECTED_DERAILMENT_OR_LATERAL_VERTICAL_SHOCK",
+      "sourceObjectStatus": "CURRENT_RULE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "all_confirmed_profiles"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-A0",
+        "SYS-60",
+        "SYS-71"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-MC-001",
+        "ER-EQ-MC-003",
+        "ER-EQ-MC-008",
+        "ER-EQ-MC-010"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-2025",
+          "role": "current_general_emergency_rule",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях, распоряжение ОАО «РЖД» №2580/р от 12.12.2017",
+          "locator": "редакция №387/р от 18.02.2025; применимый раздел аварийного порядка",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "№387/р от 18.02.2025",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть",
+          "locator": "тележки, КМБ, песочницы, форсунки песочниц",
+          "url": "https://rcit.su/techinfoV56.html",
+          "role": "manufacturer_mechanical_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; конструкцию подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "крепление ТЭД/букс МОП, масло МОП и смазка зубчатых передач",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; профиль МОП подтверждать",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE8-MECH-B11",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ8. Техническое обслуживание",
+          "locator": "колесные пары, пескоподача, МОП, тяговая передача",
+          "url": "https://rcit.su/techinfoV58.html",
+          "role": "manufacturer_maintenance_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ8",
+            "revision": "ремонтные операции не являются маршрутными действиями бригады",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-TECH-KMB-B11",
+          "document": "RCIT: технические материалы по подшипниковым узлам КМБ",
+          "locator": "нагрев, вибрация, износ подшипников",
+          "url": "https://rcit.su/techinfoG5.html",
+          "role": "supporting_technical_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT technical article",
+            "revision": "не источник разрешения движения/ремонта",
+            "verifiedAt": "2026-09-26",
+            "status": "SUPPORTING_ONLY"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-MECH-B11",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 150, 155: колесные пары локомотивов, подшипники, бандажи, ползуны/выбоины",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действует до 01.08.2028; проект изменений 2026 не является действующей редакцией",
+            "verifiedAt": "2026-09-26",
+            "effectiveFrom": "2022-08-01",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-2580R-MECH-B11",
+          "document": "Регламент взаимодействия работников при аварийных и нестандартных ситуациях №2580/р",
+          "locator": "раздел 7: боковой/вертикальный толчок, признаки схода",
+          "url": "https://www.garant.ru/products/ipo/prime/doc/71754780/",
+          "role": "emergency_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№2580/р",
+            "revision": "последняя публично подтвержденная редакция №387/р от 18.02.2025; точные действия остаются source-bound",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "all_confirmed_profiles"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "authoringProfileId": "ermak-wheel-emergency-source-profile-research-only",
+      "earlyMsud": "MSUD_N_NOT_ASSUMED",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-108",
+        "ER-DIAG-109",
+        "ER-DIAG-107",
+        "ER-DIAG-106"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-110; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-110",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://www.garant.ru/products/ipo/prime/doc/71754780/",
+          "locator": "№2580/р: донор указывает редакцию №387/р 18.02.2025; актуальный аварийный порядок, местные инструкции и полномочия не проверены",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "При подозрении на сход прекращается исследовательская диагностика; запрещены пробные передвижения, опасный осмотр и самовольное решение о следовании.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Исходная применимость {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"} не подтверждает машину, секцию, редакцию и полномочия.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "Действующий ПТЭ №250, архивные РЭ и донорская ссылка №2580/р не доказывают точные пределы, действия или возможность движения.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Боковой/вертикальный толчок, признаки схода» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «В движении возник резкий боковой/вертикальный толчок, необычные колебания или признаки схода», а не соседний симптом?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В движении возник резкий боковой/вертикальный толчок, необычные колебания или признаки схода. Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108. При подозрении на сход прекращается исследовательская диагностика; запрещены пробные передвижения, опасный осмотр и самовольное решение о следовании. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Опасный признак «Боковой/вертикальный толчок, признаки схода» продолжается или безопасное состояние по прежним сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретные серия, секция, колёсная пара, исполнение, документ и роль?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Прежняя запись содержит именно «В движении возник резкий боковой/вертикальный толчок, необычные колебания или признаки схода», а не соседний симптом?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В прежней записи есть время, место и характер толчка без выдуманного механизма?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Отдельно записаны факт толчка, подозрение на сход и неподтверждённые причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Подтверждены действующий аварийный порядок и роль персонала без предположения о разрешении движения?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: прежних сведений, источников или разделения симптомов недостаточно.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: возможен опасный дефект или сход. Карточка не разрешает движение и новые испытания; только применимый действующий порядок.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Новые проверки, движение и вмешательства не разрешены.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: конкретная машина, документ, профиль или роль не подтверждены; all_confirmed_profiles не означает допуск.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: симптом не подтверждён. Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. В движении возник резкий боковой/вертикальный толчок, необычные колебания или признаки схода. Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108. При подозрении на сход прекращается исследовательская диагностика; запрещены пробные передвижения, опасный осмотр и самовольное решение о следовании. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-110-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь полей ER-DIAG-110; CURRENT_RULE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"all_confirmed_profiles\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"AS_LISTED\"}. Raw gzip не перепроверен.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-110; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-110-INFO-2",
+          "title": "Историческая конструкция",
+          "text": "РЭ6 описывает раннюю механическую конструкцию; нельзя переносить её на конкретную машину без проверки.",
+          "locator": "ИДМБ.661142.009РЭ6: историческая конструкция колесной пары и тележки, применимость к конкретной машине не подтверждена",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-110-INFO-3",
+          "title": "Нормативный контекст",
+          "text": "Приказ №250 действует, но точные пункты, редакция и полномочия не установлены. Для 110 №2580/р требует отдельной проверки.",
+          "locator": "Приказ Минтранса №250 действует, но применимые пункты, редакция и полномочия по конкретной машине не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-110-INFO-4",
+          "title": "Разделение симптомов",
+          "text": "Боковой/вертикальный толчок и необычные колебания не доказывают сход; отсутствие внешних признаков не исключает опасность. Не смешивать с 107 и 108.",
+          "locator": "ИДМБ.661142.009РЭ8: ТО/ремонт колёсных пар, только архивное сравнение, не право на действия",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-110-INFO-5",
+          "title": "Safety, профиль и роль",
+          "text": "При подозрении на сход прекращается исследовательская диагностика; запрещены пробные передвижения, опасный осмотр и самовольное решение о следовании. UNKNOWN → STOP; профиль/источник/роль неизвестны → BLOCKED.",
+          "locator": "№2580/р: донор указывает редакцию №387/р 18.02.2025; актуальный аварийный порядок, местные инструкции и полномочия не проверены",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-110: eight source fields matched pinned projection."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV56.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "РЭ6: историческая механическая часть, конкретная машина не установлена."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_CATALOG",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_EXISTS_CLAUSE_AUTHORITY_UNKNOWN",
+          "finding": "Приказ №250 действует до 31.07.2028; применимый пункт, редакция и полномочия не подтверждены."
+        }
+      ]
+    }
+  ]
+}

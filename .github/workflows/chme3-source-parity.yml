@@ -1,0 +1,48 @@
+name: CHME3 pinned source object parity
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/migrate_chme3.py'
+      - 'qa/validate_chme3.py'
+      - 'content-packs/diesel/chme3-family/**'
+      - '.github/workflows/chme3-source-parity.yml'
+  pull_request:
+    paths:
+      - 'qa/migrate_chme3.py'
+      - 'qa/validate_chme3.py'
+      - 'content-packs/diesel/chme3-family/**'
+      - '.github/workflows/chme3-source-parity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch six pinned CHME3/T/E GZIP assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="$RUNNER_TEMP/chme3-donor"
+          mkdir -p "$dir"
+          for variant in chme3 chme3t chme3e; do
+            for kind in catalog diagnostics; do
+              name="chme3_${variant}_${kind}.json.gz"
+              curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+                --connect-timeout 20 --max-time 180 \
+                "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/$name" \
+                --output "$dir/$name"
+              base64 -w0 "$dir/$name" > "$dir/$name.b64"
+            done
+          done
+          echo "CHME3_DONOR_FETCHED six pinned GZIP assets"
+      - name: Verify 1231 source occurrences and 738 canonical candidate entries
+        shell: bash
+        run: python3 qa/validate_chme3.py --donor-dir "$RUNNER_TEMP/chme3-donor"

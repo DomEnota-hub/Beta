@@ -1,17 +1,31 @@
 package ru.railbrake.calculator.shell
 
 import android.os.Bundle
+import android.os.SystemClock
+import ru.railbrake.calculator.history.HistoryRecord
+import ru.railbrake.calculator.assistant.AssistantTextEngine
+import ru.railbrake.calculator.assistant.AssistantUiNavigationGate
+import ru.railbrake.calculator.assistant.TextQueryParser
+import ru.railbrake.calculator.domain.ContentTarget
+import ru.railbrake.calculator.domain.ContentLayer
 import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.key
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import ru.railbrake.calculator.acceptance.AcceptanceFeatureIndexJsonLoader
 import ru.railbrake.calculator.acceptance.AcceptanceItemScreen
 import ru.railbrake.calculator.acceptance.AcceptanceRouteResolution
@@ -34,6 +48,7 @@ import ru.railbrake.calculator.diagnostics.DiagnosticCatalogScreen
 import ru.railbrake.calculator.diagnostics.DiagnosticFeatureIndexJsonLoader
 import ru.railbrake.calculator.diagnostics.ExecutableDiagnosticFlowJsonLoader
 import ru.railbrake.calculator.diagnostics.PublishedDiagnosticCatalog
+import ru.railbrake.calculator.diagnostics.DiagnosticReferenceCatalog
 import ru.railbrake.calculator.domain.CanonicalId
 import ru.railbrake.calculator.domain.ContentLink
 import ru.railbrake.calculator.domain.ContentOwner
@@ -44,28 +59,394 @@ import ru.railbrake.calculator.link.LinkNavigationResult
 import ru.railbrake.calculator.link.LinkResolver
 import ru.railbrake.calculator.navigation.FeatureDestination
 import ru.railbrake.calculator.navigation.featureDestination
+import ru.railbrake.calculator.navigation.ShellNavigationPolicy
+import ru.railbrake.calculator.navigation.ShellHomeDestination
+import ru.railbrake.calculator.navigation.ShellHomeNavigationPolicy
+import ru.railbrake.calculator.navigation.ShellHomeRoute
+import ru.railbrake.calculator.navigation.WorkingModelResolution
 import ru.railbrake.calculator.runtime.ContentPackIndexJsonLoader
 import ru.railbrake.calculator.runtime.ContentPackJsonLoader
 import ru.railbrake.calculator.runtime.ContentRegistry
 import ru.railbrake.calculator.runtime.ModelProfileCatalogJsonLoader
+import ru.railbrake.calculator.safety.CommonReferenceScreen
 import ru.railbrake.calculator.safety.SafetyContentScreen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val historyStore = AndroidHistoryStore(applicationContext)
+        val notesStore = AndroidWorkNotesStore(applicationContext)
+        val legacyDiagnosticStore = AndroidLegacyDiagnosticSessionStore(applicationContext)
 
-        val bootstrap = runCatching { loadVl80sVerticalSlice() }
-            .onFailure { Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it) }
-
+        // Do not parse VL80S packs on the UI thread before model selection.
+        // The validated runtime is loaded only for the explicitly selected VL80S.
         setContent {
             MaterialTheme {
-                val loaded = bootstrap.getOrNull()
+                // A fresh launch never assumes VL80S (or any other working model).
+                // Saved instance state preserves an explicit selection on recreation only.
+                var selectedModelId by rememberSaveable { mutableStateOf<String?>(null) }
+                var shellDestinationName by rememberSaveable(selectedModelId) {
+                    mutableStateOf(ShellHomeDestination.HOME.name)
+                }
+                val workingModel = when (val selection = ShellNavigationPolicy.resolve(selectedModelId)) {
+                    WorkingModelResolution.NotSelected -> {
+                        WorkingModelSelectionScreen { selectedModelId = it.id.value }
+                        return@MaterialTheme
+                    }
+                    is WorkingModelResolution.Unknown -> {
+                        BackHandler { selectedModelId = null }
+                        Column {
+                            Text("Неизвестная модель: доступ к материалам закрыт.")
+                            TextButton(onClick = { selectedModelId = null }) {
+                                Text("← Сменить локомотив")
+                            }
+                        }
+                        return@MaterialTheme
+                    }
+                    is WorkingModelResolution.Selected -> selection.model
+                }
+                val shellDestination = ShellHomeDestination.entries.firstOrNull {
+                    it.name == shellDestinationName
+                } ?: ShellHomeDestination.HOME
+                // Stage 9: keep query while opening a result card and returning.
+                var assistantDraft by rememberSaveable(selectedModelId) { mutableStateOf("") }
+                var assistantSubmitted by rememberSaveable(selectedModelId) { mutableStateOf("") }
+                var assistantCategory by rememberSaveable(selectedModelId) {
+                    mutableStateOf<AssistantSearchCategory?>(null)
+                }
+                var assistantVisibleCount by rememberSaveable(selectedModelId) { mutableStateOf(5) }
+                var assistantOpenedTarget by remember(selectedModelId) {
+                    mutableStateOf<ContentTarget?>(null)
+                }
+                var assistantCommonSection by rememberSaveable(selectedModelId) { mutableStateOf<String?>(null) }
+                var assistantCommonCardId by rememberSaveable(selectedModelId) { mutableStateOf<String?>(null) }
+                val assistantCommonTarget = assistantCommonSection?.let { name ->
+                    ShellHomeDestination.entries.firstOrNull { it.name == name }
+                        ?.takeIf { it in setOf(ShellHomeDestination.KNOWLEDGE, ShellHomeDestination.TRAFFIC_SAFETY,
+                            ShellHomeDestination.OCCUPATIONAL_SAFETY, ShellHomeDestination.FIRST_AID) }
+                        ?.let { section -> assistantCommonCardId?.let { section to it } }
+                }
+                var assistantFamilyTarget by remember(selectedModelId) {
+                    mutableStateOf<Triple<ModelId, VariantId?, String>?>(null)
+                }
+                var assistantViewedModel by remember(selectedModelId) {
+                    mutableStateOf<ModelId?>(null)
+                }
+                var assistantNotice by remember(selectedModelId) { mutableStateOf<String?>(null) }
+                val assistantHistory = remember(selectedModelId) {
+                    mutableStateListOf<ContentTarget>()
+                }
+                // Do not parse the VL80S runtime on the home screen or in independent
+                // common/calculation sections. Once requested, keep it for this model
+                // until the selection changes; returning home must not reload the packs.
+                var runtimeRequested by remember(workingModel.id.value) { mutableStateOf(false) }
+                androidx.compose.runtime.LaunchedEffect(workingModel.id.value, shellDestination, assistantSubmitted) {
+                    if (Vl80sBootstrapPolicy.shouldRequest(workingModel.id.value, shellDestination, assistantSubmitted)) {
+                        runtimeRequested = true
+                    }
+                }
+                // Key the *state slot*, not only the coroutine: produceState's
+                // initialValue is otherwise retained across key changes, which
+                // could briefly expose a previous model's runtime on model switch.
+                val bootstrap by key(workingModel.id.value) {
+                    produceState<Result<Vl80sVerticalSlice>?>(null, runtimeRequested) {
+                    if (runtimeRequested) {
+                        val startedAt = SystemClock.elapsedRealtime()
+                        val loaded = withContext(Dispatchers.IO) {
+                            runCatching { loadVl80sVerticalSlice() }
+                        }
+                        val durationMs = SystemClock.elapsedRealtime() - startedAt
+                        Log.i("RailBrake", "VL80S runtime load ms=$durationMs success=${loaded.isSuccess}")
+                        loaded.exceptionOrNull()?.let {
+                            Log.e("RailBrake", "VL80S vertical slice bootstrap failed", it)
+                        }
+                        value = loaded
+                    }
+                    }
+                }
+                if (shellDestination == ShellHomeDestination.HOME) {
+                    BackHandler { selectedModelId = null }
+                    ShellHomeScreen(
+                        model = workingModel,
+                        onChangeModel = { selectedModelId = null },
+                        onOpen = { shellDestinationName = it.name },
+                    )
+                    return@MaterialTheme
+                }
+                if (shellDestination == ShellHomeDestination.ASSISTANT) {
+                    val loaded = bootstrap?.getOrNull()
+                    val opened = assistantOpenedTarget
+                    if (assistantFamilyTarget != null) {
+                        val (model, execution, cardId) = requireNotNull(assistantFamilyTarget)
+                        FamilyContentScreen(
+                            modelId = model,
+                            modelTitle = ShellNavigationPolicy.resolve(model.value).let {
+                                if (it is WorkingModelResolution.Selected) it.model.title
+                                else "Неизвестная модель"
+                            },
+                            destination = ShellHomeDestination.ATLAS,
+                            assets = assets,
+                            initialExecutionId = execution?.value,
+                            initialReferenceId = cardId,
+                            onBack = { assistantFamilyTarget = null },
+                        )
+                    } else if (assistantCommonTarget != null) {
+                        val (section, cardId) = requireNotNull(assistantCommonTarget)
+                        CommonReferenceScreen(
+                            destination = section,
+                            assets = assets,
+                            initialCardId = cardId,
+                            onBack = {
+                                assistantCommonSection = null
+                                assistantCommonCardId = null
+                            },
+                        )
+                    } else if (opened == null) {
+                        BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                        AssistantSearchScreen(
+                            engine = loaded?.assistantEngine,
+                            publishedCatalogLoading = Vl80sBootstrapPolicy.shouldRequest(
+                                workingModel.id.value, shellDestination, assistantSubmitted) && bootstrap == null,
+                            assets = assets,
+                            workingModelId = workingModel.id,
+                            workingModelTitle = workingModel.title,
+                            draft = assistantDraft,
+                            submitted = assistantSubmitted,
+                            category = assistantCategory,
+                            visibleCount = assistantVisibleCount,
+                            notice = assistantNotice,
+                            onDraftChange = { assistantDraft = it },
+                            onSubmit = {
+                                assistantSubmitted = assistantDraft.trim()
+                                assistantVisibleCount = 5
+                                assistantNotice = null
+                            },
+                            onCategoryChange = {
+                                assistantCategory = it
+                                assistantVisibleCount = 5
+                                assistantNotice = null
+                            },
+                            onShowMore = {
+                                assistantVisibleCount = (assistantVisibleCount + 5).coerceAtMost(50)
+                            },
+                            onClarify = { model ->
+                                assistantSubmitted =
+                                    TextQueryParser.parse(assistantSubmitted).searchText +
+                                        " " + model.value
+                                assistantDraft = assistantSubmitted
+                                assistantVisibleCount = 5
+                            },
+                            onOpen = { result, target ->
+                                val allowed = loaded?.let {
+                                    AssistantUiNavigationGate.openHit(
+                                        result, target, it.registry, setOf(ModelId("vl80s")))
+                                }
+                                if (allowed == null) {
+                                    assistantNotice = "Материал недоступен: проверка применимости не пройдена."
+                                } else {
+                                    assistantOpenedTarget = target
+                                    assistantViewedModel = result.scope.modelId
+                                    assistantHistory.clear()
+                                    assistantNotice = null
+                                }
+                            },
+                            onOpenCommon = { section, cardId ->
+                                assistantCommonSection = section.name
+                                assistantCommonCardId = cardId
+                                assistantNotice = null
+                            },
+                            onOpenFamily = { model, execution, cardId ->
+                                assistantFamilyTarget = Triple(model, execution, cardId)
+                                assistantNotice = null
+                            },
+                            onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                        )
+                    } else {
+                        val context = RuntimeContext(
+                            workingModelId = workingModel.id,
+                            viewedModelId = assistantViewedModel,
+                            activeVariantId = null,
+                            allowedLayers = setOf(ContentLayer.STANDARD),
+                        )
+                        val entry = loaded?.let {
+                            AssistantUiNavigationGate.resolveSafeTarget(
+                                opened, it.registry, context, setOf(ModelId("vl80s")))
+                        }
+                        val goBack: () -> Unit = {
+                            assistantNotice = null
+                            assistantOpenedTarget = if (assistantHistory.isNotEmpty()) {
+                                assistantHistory.removeAt(assistantHistory.lastIndex)
+                            } else null
+                        }
+                        BackHandler(onBack = goBack)
+                        if (entry == null || loaded == null) {
+                            ShellUnavailableScreen(
+                                title = "Материал недоступен",
+                                explanation = "Проверка публикации или исполнения не пройдена.",
+                                onBack = goBack,
+                            )
+                        } else {
+                            val handleLink: (ContentLink) -> Unit = { link ->
+                                when (val resolved = loaded.linkResolver.resolve(
+                                    sourceId = entry.id, link = link, context = context)) {
+                                    is LinkNavigationResult.Found -> {
+                                        val next = ContentTarget(
+                                            resolved.target.id, resolved.target.contentType)
+                                        if (AssistantUiNavigationGate.resolveSafeTarget(
+                                                next, loaded.registry, resolved.targetContext,
+                                                setOf(ModelId("vl80s"))) != null) {
+                                            assistantHistory.add(opened)
+                                            assistantOpenedTarget = next
+                                            assistantNotice = null
+                                        } else {
+                                            assistantNotice = "Переход закрыт: источник или профиль не подтверждён."
+                                        }
+                                    }
+                                    else -> {
+                                        assistantNotice = "Связанный материал не опубликован или неприменим."
+                                    }
+                                }
+                            }
+                            when (entry.type.featureDestination()) {
+                                FeatureDestination.ACCEPTANCE -> AcceptanceItemScreen(
+                                    entry = entry, modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                                FeatureDestination.SAFETY -> SafetyContentScreen(
+                                    entry = entry, modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                                else -> RailContentEntryScreen(
+                                    entry = entry,
+                                    destination = entry.type.featureDestination(),
+                                    modelTitle = "ВЛ80С",
+                                    notice = assistantNotice, onLink = handleLink, onBack = goBack)
+                            }
+                        }
+                    }
+                    return@MaterialTheme
+                }
+                // Stage 6: two independent calculation tools behind one common hub.
+                // Both are arithmetic previews, never operational approval.
+                if (shellDestination == ShellHomeDestination.CALCULATIONS) {
+                    var calculationsPage by rememberSaveable(selectedModelId) { mutableStateOf("HUB") }
+                    BackHandler {
+                        if (calculationsPage == "HUB") {
+                            shellDestinationName = ShellHomeDestination.HOME.name
+                        } else {
+                            calculationsPage = "HUB"
+                        }
+                    }
+                    when (calculationsPage) {
+                        "VU45" -> Vu45VerificationScreen(onBack = { calculationsPage = "HUB" }, onSave = { record ->
+                            runCatching { historyStore.add(record) }.isSuccess
+                        })
+                        "SECURING" -> SecuringScreen(onBack = { calculationsPage = "HUB" }, onSave = { record ->
+                            runCatching { historyStore.add(record) }.isSuccess
+                        })
+                        else -> CalculationsHomeScreen(
+                            onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                            onOpenVu45 = { calculationsPage = "VU45" },
+                            onOpenSecuring = { calculationsPage = "SECURING" },
+                        )
+                    }
+                    return@MaterialTheme
+                }
+                if (shellDestination == ShellHomeDestination.RECORDS) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    HistoryAndNotesScreen(
+                        historyStore = historyStore,
+                        notesStore = notesStore,
+                        diagnosticStore = legacyDiagnosticStore,
+                        modelId = workingModel.id.value,
+                        modelTitle = workingModel.title,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
+                // Stage 14: common reference sections are independent of the
+                // working locomotive. Candidate knowledge is readable with
+                // provenance warnings, but not promoted to executable actions.
+                if (shellDestination in setOf(
+                        ShellHomeDestination.KNOWLEDGE,
+                        ShellHomeDestination.TRAFFIC_SAFETY,
+                        ShellHomeDestination.OCCUPATIONAL_SAFETY,
+                        ShellHomeDestination.FIRST_AID,
+                    )
+                ) {
+                    CommonReferenceScreen(
+                        destination = shellDestination,
+                        assets = assets,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
+                // Stage 13: family-specific execution is selected inside the section.
+                // Unverified family candidates are never routed through VL80S runtime.
+                if (workingModel.id != ModelId("vl80s") &&
+                    shellDestination in setOf(
+                        ShellHomeDestination.ATLAS,
+                        ShellHomeDestination.ACCEPTANCE,
+                        ShellHomeDestination.DIAGNOSTICS,
+                    )
+                ) {
+                    FamilyContentScreen(
+                        modelId = workingModel.id,
+                        modelTitle = workingModel.title,
+                        destination = shellDestination,
+                        assets = assets,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
+                val shellRoute = ShellHomeNavigationPolicy.resolve(selectedModelId, shellDestination)
+                if (shellRoute !is ShellHomeRoute.PublishedModelFeature) {
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    val explanation = when (shellRoute) {
+                        is ShellHomeRoute.Unavailable -> {
+                            if (shellRoute.modelId != null && !workingModel.runtimePublished) {
+                                "Материалы этой модели пока не опубликованы. " +
+                                    "Непроверенные источники и исполнения не открываются."
+                            } else {
+                                "Раздел ещё не подключён к рабочему приложению. " +
+                                    "Его материалы будут доступны после отдельной проверки."
+                            }
+                        }
+                        ShellHomeRoute.ModelSelectionRequired ->
+                            "Сначала выберите рабочий локомотив."
+                        is ShellHomeRoute.PublishedModelFeature -> error("Unreachable")
+                    }
+                    ShellUnavailableScreen(
+                        title = shellDestination.title,
+                        explanation = explanation,
+                        onBack = { shellDestinationName = ShellHomeDestination.HOME.name },
+                    )
+                    return@MaterialTheme
+                }
+                val loaded = bootstrap?.getOrNull()
                 if (loaded == null) {
-                    Text("Не удалось загрузить модуль ВЛ80С.")
+                    BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
+                    Column {
+                        Text(if (bootstrap == null) "Загрузка материалов ВЛ80С…"
+                            else "Не удалось загрузить модуль ВЛ80С. Проверка данных не пройдена.")
+                        TextButton(onClick = {
+                            shellDestinationName = ShellHomeDestination.HOME.name
+                        }) {
+                            Text("← На главную")
+                        }
+                        TextButton(onClick = { selectedModelId = null }) {
+                            Text("Сменить локомотив")
+                        }
+                    }
                     return@MaterialTheme
                 }
 
-                var currentScreen by remember { mutableStateOf(Vl80sScreen.LAYOUT) }
+                val initialScreen = when (shellDestination) {
+                    ShellHomeDestination.DIAGNOSTICS -> Vl80sScreen.DIAGNOSTICS
+                    ShellHomeDestination.ACCEPTANCE -> Vl80sScreen.ACCEPTANCE_ROUTES
+                    else -> Vl80sScreen.LAYOUT
+                }
+                var currentScreen by remember(shellDestination) { mutableStateOf(initialScreen) }
                 var returnFromEntry by remember { mutableStateOf(Vl80sScreen.LAYOUT) }
                 var currentId by remember { mutableStateOf(CanonicalId("VL-EQ-HV-002")) }
                 var notice by remember { mutableStateOf<String?>(null) }
@@ -73,14 +454,35 @@ class MainActivity : ComponentActivity() {
                 val entryHistory = remember { mutableStateListOf<CanonicalId>() }
 
                 if (currentScreen != Vl80sScreen.ENTRY) {
-                    BackHandler(enabled = currentScreen != Vl80sScreen.LAYOUT) {
+                    BackHandler {
                         currentScreen = when (currentScreen) {
+                            Vl80sScreen.LAYOUT -> {
+                                shellDestinationName = ShellHomeDestination.HOME.name
+                                Vl80sScreen.LAYOUT
+                            }
+                            Vl80sScreen.DIAGNOSTICS -> {
+                                if (shellDestination == ShellHomeDestination.DIAGNOSTICS) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                }
+                                Vl80sScreen.LAYOUT
+                            }
+                            Vl80sScreen.ACCEPTANCE_ROUTES -> {
+                                if (shellDestination == ShellHomeDestination.ACCEPTANCE) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                }
+                                Vl80sScreen.LAYOUT
+                            }
                             Vl80sScreen.ACCEPTANCE_ROUTE -> Vl80sScreen.ACCEPTANCE_ROUTES
                             else -> Vl80sScreen.LAYOUT
                         }
                     }
                     when (currentScreen) {
-                        Vl80sScreen.LAYOUT -> AtlasLayoutScreen(
+                        Vl80sScreen.LAYOUT -> Column {
+                            TextButton(onClick = { shellDestinationName = ShellHomeDestination.HOME.name }) {
+                                Text("← На главную")
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                AtlasLayoutScreen(
                             layout = loaded.atlasLayout,
                             modelTitle = "ВЛ80С",
                             onEquipmentTarget = { target ->
@@ -102,7 +504,9 @@ class MainActivity : ComponentActivity() {
                             onAcceptanceRoutes = {
                                 currentScreen = Vl80sScreen.ACCEPTANCE_ROUTES
                             },
-                        )
+                                )
+                            }
+                        }
 
                         Vl80sScreen.PNEUMATIC -> AtlasPneumaticFlowScreen(
                             document = loaded.pneumaticFlow,
@@ -125,8 +529,15 @@ class MainActivity : ComponentActivity() {
 
                         Vl80sScreen.DIAGNOSTICS -> DiagnosticCatalogScreen(
                             catalog = loaded.diagnosticCatalog,
+                            referenceCatalog = loaded.diagnosticReferenceCatalog,
                             modelTitle = "ВЛ80С",
-                            onBack = { currentScreen = Vl80sScreen.LAYOUT },
+                            onBack = {
+                                if (shellDestination == ShellHomeDestination.DIAGNOSTICS) {
+                                    shellDestinationName = ShellHomeDestination.HOME.name
+                                } else {
+                                    currentScreen = Vl80sScreen.LAYOUT
+                                }
+                            },
                         )
 
                         Vl80sScreen.ACCEPTANCE_ROUTES -> AcceptanceRoutesScreen(
@@ -167,9 +578,13 @@ class MainActivity : ComponentActivity() {
                 }
                 BackHandler(onBack = backFromEntry)
 
-                val entry = loaded.registry.find(currentId)
+                val entry = Vl80sEntryGate.open(loaded.registry, currentId, loaded.context)
                 if (entry == null) {
-                    Text("Связанный материал временно недоступен.")
+                    ShellUnavailableScreen(
+                        title = "Материал недоступен",
+                        explanation = "Карточка не опубликована, не соответствует исполнению или требует отдельного допуска.",
+                        onBack = backFromEntry,
+                    )
                     return@MaterialTheme
                 }
 
@@ -346,7 +761,12 @@ class MainActivity : ComponentActivity() {
         check(acceptanceIndex.itemPacks.all { it in index.packs }) {
             "Acceptance index references a pack outside the model runtime index"
         }
-        val routeResolver = AcceptanceRouteResolver(registry)
+        val routeContext = RuntimeContext(
+            workingModelId = ModelId("vl80s"),
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = profileCatalog.defaultVariantId,
+        )
+        val routeResolver = AcceptanceRouteResolver(registry, routeContext)
         val acceptanceRoutes = acceptanceIndex.routes.map { route ->
             val result = routeResolver.resolve(route)
             check(result is AcceptanceRouteResolution.Ready) {
@@ -397,6 +817,12 @@ class MainActivity : ComponentActivity() {
             registry = registry,
             context = context,
         )
+        // Reference-only donor candidates are not passed to the executable flow.
+        val diagnosticReferenceCatalog = DiagnosticReferenceCatalog(
+            runtime = diagnosticRuntime,
+            registry = registry,
+            context = context,
+        )
 
         return Vl80sVerticalSlice(
             registry = registry,
@@ -405,8 +831,10 @@ class MainActivity : ComponentActivity() {
             pneumaticFlow = pneumaticFlow,
             electricalFlow = electricalFlow,
             diagnosticCatalog = diagnosticCatalog,
+            diagnosticReferenceCatalog = diagnosticReferenceCatalog,
             acceptanceRoutes = acceptanceRoutes,
             context = context,
+            assistantEngine = AssistantTextEngine(registry, setOf(ModelId("vl80s"))),
         )
     }
 }
@@ -418,8 +846,11 @@ private data class Vl80sVerticalSlice(
     val pneumaticFlow: PneumaticFlowDocument,
     val electricalFlow: ElectricalFunctionalFlowDocument,
     val diagnosticCatalog: PublishedDiagnosticCatalog,
+    val diagnosticReferenceCatalog: DiagnosticReferenceCatalog,
     val acceptanceRoutes: List<ResolvedAcceptanceRoute>,
     val context: RuntimeContext,
+    /** Stage 8 text backend, wired to the validated published runtime; UI is stage 9. */
+    val assistantEngine: AssistantTextEngine,
 )
 
 private enum class Vl80sScreen {

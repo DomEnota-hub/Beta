@@ -1,0 +1,60 @@
+name: VL80S pinned source candidate parity
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/validate_vl80s_source_parity.py'
+      - 'qa/test_vl80s_source_parity.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'content-packs/electric/vl80s/**'
+      - '.github/workflows/vl80s-source-parity.yml'
+  pull_request:
+    paths:
+      - 'qa/validate_vl80s_source_parity.py'
+      - 'qa/test_vl80s_source_parity.py'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'content-packs/electric/vl80s/**'
+      - '.github/workflows/vl80s-source-parity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests (including fail-closed negative cases)
+        run: python3 -m unittest qa/test_vl80s_source_parity.py -v
+      - name: Fetch nine pinned VL80S JSON/GZIP catalogs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest="$RUNNER_TEMP/vl80s-donor/app/src/main/assets/technical"
+          mkdir -p "$dest"
+          for name in vl80s_acceptance vl80s_diagnostics vl80s_electrical vl80s_electrical_variants vl80s_equipment vl80s_pneumatic vl80s_pneumatic_variants vl80s_variants; do
+            curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+              --connect-timeout 20 --max-time 180 \
+              "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/$name.json.gz" \
+              --output "$dest/$name.json.gz"
+          done
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 \
+            "https://raw.githubusercontent.com/DomEnota-hub/Test-/3176d6ee228f0ed4b78371f45209e10c1c724eff/app/src/main/assets/technical/vl80s_pantograph_reference_pack.json" \
+            --output "$dest/vl80s_pantograph_reference_pack.json"
+          echo "VL80S_PINNED_ASSETS_FETCHED 9"
+      - name: Compare source objects, IDs, variants and candidate publication boundary
+        run: python3 qa/validate_vl80s_source_parity.py --donor-dir "$RUNNER_TEMP/vl80s-donor"
+      - name: Existing VL80S model consistency checks
+        run: |
+          python3 qa/validate_vl80s_acceptance_source.py
+          python3 qa/validate_vl80s_diagnostic_source.py
+          python3 qa/validate_vl80s_scheme_sources.py
+          python3 qa/validate_vl80s_equipment_context.py
+          python3 qa/validate_vl80s_diagnostics.py
+          python3 qa/validate_vl80s_profile_catalog.py
+          python3 qa/validate_donor_asset_crosswalk.py

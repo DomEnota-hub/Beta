@@ -1,0 +1,907 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 78,
+  "originalId": "TEM2-DIAG-018",
+  "title": "Самопроизвольно снижается давление в уравнительном резервуаре / тормозной магистрали",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/17",
+    "documentBlob": "4234e401eb9d6ec03802669d0f74962cb23ea5c4",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-018",
+      "tem2u": "tem2.diagnostics.tem2-diag-018"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-018": "93b3e9b79ab5f3a7847a3090b316969ae0b88226"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "SAFETY_CRITICAL_BRAKE",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "equipmentIds": [
+      "TEM2-EQ-DRV-BRAKE",
+      "TEM2-EQ-EQ-RES",
+      "TEM2-EQ-BRAKE-PIPE",
+      "TEM2-EQ-FEED-PIPE"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-BRAKES-2026",
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-TRAIN-BRAKE"
+    ],
+    "lineageBlob": "24e617c3d5599cb96169f79d660200d6cd684fac"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Test- pinned 3176d6ee; Stage3 2026-10-01; source blob 4234e401",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "One canonical ID shared by TEM2/TEM2U; equivalence of installed equipment not established",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "В. Л. Ковалёв и др., Тепловоз ТЭМ2, Транспорт, 1980, прил. 2: компрессор и тормозные краны; исторические неисправности, не действующие операции",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "ТЭМ2У, 1988; факт исторического издания, детальная схема конкретного исполнения не проверена",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "BRAKES_2026",
+      "kind": "CURRENT_SECONDARY_IDENTITY_ONLY",
+      "ref": "https://prg.kz/m/amp/document/39816410/",
+      "revision": "Приложение №65 к протоколу №83 (25–26.11.2025), введено с 01.07.2026; вторичная копия текста, первичная заверенная редакция и конкретные пункты не верифицированы",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "No independent machine event record",
+      "revision": "Hypothesis only, not cause confirmation",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current verified factory RE/IDMB, installed equipment, authorized roles and local procedures",
+      "revision": "No current variant-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого события без текущей опасности и без новых испытаний?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архивных показаниях давление уравнительного резервуара или тормозной магистрали снижалось без команды торможения?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Сохранённые записи позволяют различить падение УР и изменение давления в тормозной магистрали?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Самопроизвольное снижение давления не подтверждено архивными данными.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже раздельные записи УР и ТМ не устанавливают неисправный кран или соединение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без раздельных показаний нельзя приписать снижение одному управляющему узлу.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: при текущей опасности, неподтверждённой исправности тормозов или необходимости новой проверки опрос прекращён. Никаких повторных пусков, регулировок, измерений, обходов защит и попыток движения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных данных недостаточно. Не восполнять их новыми тормозными пробами, включениями, измерениями, разборкой или регулировкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого события без текущей опасности и без новых испытаний?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архивных показаниях давление уравнительного резервуара или тормозной магистрали снижалось без команды торможения?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Сохранённые записи позволяют различить падение УР и изменение давления в тормозной магистрали?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть запись положения крана машиниста и момента начала отклонения, без повторной проверки?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Имеются независимые последовательные показания УР и ТМ для одного события?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Самопроизвольное снижение давления не подтверждено архивными данными.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже раздельные записи УР и ТМ не устанавливают неисправный кран или соединение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без раздельных показаний нельзя приписать снижение одному управляющему узлу.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет достоверной динамики двух контуров для различения возможных объяснений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Наблюдение описано, но безопасность тормозов и конкретная причина не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: при текущей опасности, неподтверждённой исправности тормозов или необходимости новой проверки опрос прекращён. Никаких повторных пусков, регулировок, измерений, обходов защит и попыток движения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных данных недостаточно. Не восполнять их новыми тормозными пробами, включениями, измерениями, разборкой или регулировкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Уравнительный резервуар и ТМ",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Уравнительный резервуар и ТМ» без новых проверок?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "УР и ТМ являются разными объектами наблюдения; совместное падение не доказывает утечку.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно: не делать вывод о причине, применимости или допустимых действиях.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать опасными новыми действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Кран машиниста",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Кран машиниста» без новых проверок?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ковалёв 1980 описывает исторические варианты утечки и стабилизатора, но не даёт актуального допуска.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно: не делать вывод о причине, применимости или допустимых действиях.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать опасными новыми действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Стабилизатор и соединения",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Стабилизатор и соединения» без новых проверок?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивные причины требуют разделения; без первичного РЭ регулировки не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно: не делать вывод о причине, применимости или допустимых действиях.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать опасными новыми действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Тормозные правила 2026",
+      "sourceId": "BRAKES_2026",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Тормозные правила 2026» без новых проверок?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "BRAKES_2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Идентичность новой редакции подтверждается вторичными публикациями; конкретная процедура не переносится.",
+          "responses": {},
+          "sourceRefs": [
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно: не делать вывод о причине, применимости или допустимых действиях.",
+          "responses": {},
+          "sourceRefs": [
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать опасными новыми действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "BRAKES_2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Разные варианты ТЭМ2У",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Разные варианты ТЭМ2У» без новых проверок?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Схема установленного крана и трубопроводов ТЭМ2У требует отдельного подтверждения.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно: не делать вывод о причине, применимости или допустимых действиях.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать опасными новыми действиями.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "DIAG-017: недостаточный набор ГР, не самопроизвольное падение УР/ТМ",
+    "DIAG-019: отсутствие наполнения ТЦ при первой ступени",
+    "DIAG-020: неотпуск вспомогательного тормоза"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "TEM2-DIAG-018: исходный runtimeGraph и новые исследовательские SHORT/DETAILED не признаны эквивалентными; донорские проверки/действия не копируются."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Общий canonicalId не доказывает совпадение установленного оборудования ТЭМ2 и ТЭМ2У."
+    },
+    {
+      "status": "FACTORY_1980_VS_1988",
+      "detail": "Ковалёв 1980 и руководство ТЭМ2У 1988 относятся к разным историческим изданиям и исполнениям."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "Архивные причины из 1980 года не являются современными нормами или разрешёнными процедурами."
+    },
+    {
+      "status": "BRAKES_2026_SECONDARY_ONLY",
+      "detail": "Приложение №65 к протоколу №83, дата 01.07.2026: идентичность подтверждена по вторичной публикации; первичная актуальная редакция, конкретные пункты и применимость не подтверждены."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Независимое сравнение исходных gzip/runtime-графов не выполнено."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Нет независимого журнала конкретной неисправности, гипотезы не повышены до причин."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Действующие РЭ/ИДМБ, полномочия и safety review не подтверждены."
+    },
+    {
+      "status": "SAFETY_BOUNDARY",
+      "detail": "Новые проверки тормозов, движение при неясном состоянии, регулировки, перемычки и обходы защит не разрешены."
+    }
+  ],
+  "openGaps": [
+    "Действующее первичное заводское РЭ/ИДМБ",
+    "Первичная заверенная редакция Правил 2026 и точные применимые пункты",
+    "Серийный номер и схема установленного исполнения",
+    "Независимое сравнение gzip/runtime-графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Независимый журнал симптомов",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "emergencyInteractionRequired": false
+  }
+}

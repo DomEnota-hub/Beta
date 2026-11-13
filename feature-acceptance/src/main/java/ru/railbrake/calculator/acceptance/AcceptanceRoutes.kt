@@ -4,6 +4,10 @@ import com.google.gson.Gson
 import ru.railbrake.calculator.domain.CanonicalId
 import ru.railbrake.calculator.domain.ContentEntry
 import ru.railbrake.calculator.domain.ContentType
+import ru.railbrake.calculator.domain.ContentOwner
+import ru.railbrake.calculator.domain.ContentTarget
+import ru.railbrake.calculator.domain.RuntimeContext
+import ru.railbrake.calculator.runtime.ResolveResult
 import ru.railbrake.calculator.domain.PublicationStatus
 import ru.railbrake.calculator.runtime.ContentRegistry
 
@@ -93,25 +97,23 @@ sealed interface AcceptanceRouteResolution {
 
 class AcceptanceRouteResolver(
     private val registry: ContentRegistry,
+    private val context: RuntimeContext,
 ) {
     fun resolve(route: AcceptanceRoute): AcceptanceRouteResolution {
         val issues = mutableListOf<AcceptanceRouteIssue>()
+        val expectedOwner = context.contentModelId?.let(ContentOwner::Model)
         val items = route.sequence.mapNotNull { id ->
-            val entry = registry.find(id)
-            when {
-                entry == null -> {
-                    issues += AcceptanceRouteIssue(id, "acceptance item is missing")
-                    null
-                }
-                entry.type != ContentType.ACCEPTANCE_ITEM -> {
-                    issues += AcceptanceRouteIssue(id, "target is not an acceptance item")
-                    null
-                }
-                entry.publicationStatus != PublicationStatus.ACTIVE -> {
-                    issues += AcceptanceRouteIssue(id, "acceptance item is not active")
-                    null
-                }
-                else -> entry
+            // Raw find() bypasses publication, variant and layer policy.
+            val result = registry.resolve(ContentTarget(id, ContentType.ACCEPTANCE_ITEM), context)
+            val entry = (result as? ResolveResult.Found)?.entry
+            if (entry == null || expectedOwner == null || entry.owner != expectedOwner) {
+                issues += AcceptanceRouteIssue(
+                    id,
+                    "acceptance item denied by publication, model or variant policy: $result",
+                )
+                null
+            } else {
+                entry
             }
         }
 

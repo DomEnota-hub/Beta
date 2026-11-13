@@ -1,0 +1,1755 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-msud-batch12/1",
+    "date": "2026-11-06",
+    "baseHead": "c6b2286a29466fb7eed1e6b87b4c471a5547d543",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-037",
+      "ER-DIAG-038",
+      "ER-DIAG-039"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Pinned donor gzip blob identity and preserved exact sourceObject projection; direct independent gzip decoding not performed",
+    "batchBoundary": "037 power indication, 038 network signal, 039 SAUT restriction; 040 current transient deferred to separate safety review"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-msud-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-037",
+      "scenarioId": "ermak.diag.ER-DIAG-037",
+      "title": "Загорелась «ЗБ» / МСУД показывает «ОБ»",
+      "symptom": "На пульте горит «ЗБ», на МСУД появляется «ОБ» или признаки отказа питания оборудования",
+      "hazardCategory": "CONTROL_POWER_INDICATION",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-40",
+        "SYS-C0",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-005",
+        "ER-EQ-CT-006",
+        "ER-EQ-CT-013"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, питание, диагностика, синхронизация и датчики скорости",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "МСУД-Н: СИ СЕТЬ / СИ САУТ / питание / связь / скоростные каналы",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старые практические рекомендации; не источник разрешения ремонтных действий",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-n-archival-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-001",
+        "ER-DIAG-017",
+        "ER-DIAG-038"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "objectId": "ER-DIAG-037",
+          "rawGzipIndependentlyDecoded": false,
+          "currentOperatingAuthority": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "document": "ИДМБ.661142.009РЭ1, ранний МСУД-Н",
+          "locator": "§6.1, §6.8, §6.11, §7.1",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "memo": {
+          "sourceKind": "TRAINING_HISTORICAL",
+          "document": "Памятка локомотивным бригадам по неисправностям Ермак",
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "url": "https://rcit.su/techinfoW04.html",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false
+        },
+        "practice": {
+          "sourceKind": "PRACTICAL_DONOR_UNVERIFIED",
+          "document": "Практические рекомендации по раннему 2ЭС5К/3ЭС5К",
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "status": "UNVERIFIED_CONTEXT_ONLY",
+          "currentOperatingAuthority": false
+        },
+        "variant": {
+          "sourceKind": "MANUFACTURER_BROCHURE_CONTEXT",
+          "document": "ТМХ «Ермак», обзор 2024",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "status": "LATE_CONTEXT_NOT_EQUIVALENT",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательское ограничение по результатам сопоставления источников",
+          "locator": "текущие полномочия и точная редакция №996/р не подтверждены; для САУТ запрет обхода",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "«ОБ» не является автоматическим доказательством неисправности шкафа питания или АКБ.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Ранний МСУД-Н не доказывает соответствие позднему МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Актуальные полномочия и редакции процедур не подтверждены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи указана индикация «ЗБ» или «ОБ», а не только отключение тяги?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-037. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-037; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По архивным документам подтверждён именно ранний МСУД-Н и применимость обозначения к этой записи?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи указана индикация «ЗБ» или «ОБ», а не только отключение тяги?",
+              "responses": {
+                "YES": "q-independent",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-independent",
+              "type": "QUESTION",
+              "text": "В записи отдельно отражено, сохранялось ли питание цепей управления независимо от сообщения МСУД?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "Отдельно отмечено, какой секции и какому времени относится индикация?",
+              "responses": {
+                "YES": "q-record-source",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "practice"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record-source",
+              "type": "QUESTION",
+              "text": "Записаны происхождение индикации и точное раннее исполнение без подмены причиной?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-037. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-037; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: МСУД-015 и неизвестное исполнение не приравнивать к ранней МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: записи недостаточно для установления причины, источника команды или полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-037-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный симптом: На пульте горит «ЗБ», на МСУД появляется «ОБ» или признаки отказа питания оборудования. Соседние исходные ID не эквивалентны.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "locator": "Pinned sourceObject projection, diagnostics-02.pack.json, ER-DIAG-037"
+        },
+        {
+          "id": "ER-DIAG-037-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная схема",
+          "text": "Публичная заводская схема раннего исполнения; §6.1, §6.8, §6.11, §7.1. Номера аппаратов не переносятся на неизвестное исполнение.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "§6.1, §6.8, §6.11, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-037-INFO-3",
+          "version": "DETAILED",
+          "title": "Историческая памятка",
+          "text": "Памятка помогает различить индикацию и наблюдаемые эффекты, но не подтверждает современную процедуру или разрешение на действия.",
+          "sourceRefs": [
+            "memo"
+          ],
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-037-INFO-4",
+          "version": "DETAILED",
+          "title": "Практический подход",
+          "text": "Исторические практические варианты сохраняются как гипотезы, не как диагноз и не как инструкция; автор и редакция ER-SRC-011 не подтверждены.",
+          "sourceRefs": [
+            "practice"
+          ],
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-037-INFO-5",
+          "version": "DETAILED",
+          "title": "Конфликт и применимость",
+          "text": "«ОБ» не является автоматическим доказательством неисправности шкафа питания или АКБ. МСУД-015 не приравнивается к МСУД-Н. При UNKNOWN действует BLOCKED.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-038",
+      "scenarioId": "ermak.diag.ER-DIAG-038",
+      "title": "МСУД: «СИ СЕТЬ»",
+      "symptom": "МСУД снимает импульсы с сообщением «СИ СЕТЬ»",
+      "hazardCategory": "MSUD_NETWORK_SIGNAL",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-70",
+        "SYS-71",
+        "SYS-10",
+        "SYS-C0",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-001",
+        "ER-EQ-HV-009",
+        "ER-EQ-HV-004"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, питание, диагностика, синхронизация и датчики скорости",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "МСУД-Н: СИ СЕТЬ / СИ САУТ / питание / связь / скоростные каналы",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старые практические рекомендации; не источник разрешения ремонтных действий",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-n-archival-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-039",
+        "ER-DIAG-040",
+        "ER-DIAG-005"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "objectId": "ER-DIAG-038",
+          "rawGzipIndependentlyDecoded": false,
+          "currentOperatingAuthority": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "document": "ИДМБ.661142.009РЭ1, ранний МСУД-Н",
+          "locator": "§6.8, §7.1; цепи контроля напряжения",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "memo": {
+          "sourceKind": "TRAINING_HISTORICAL",
+          "document": "Памятка локомотивным бригадам по неисправностям Ермак",
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "url": "https://rcit.su/techinfoW04.html",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false
+        },
+        "practice": {
+          "sourceKind": "PRACTICAL_DONOR_UNVERIFIED",
+          "document": "Практические рекомендации по раннему 2ЭС5К/3ЭС5К",
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "status": "UNVERIFIED_CONTEXT_ONLY",
+          "currentOperatingAuthority": false
+        },
+        "variant": {
+          "sourceKind": "MANUFACTURER_BROCHURE_CONTEXT",
+          "document": "ТМХ «Ермак», обзор 2024",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "status": "LATE_CONTEXT_NOT_EQUIVALENT",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательское ограничение по результатам сопоставления источников",
+          "locator": "текущие полномочия и точная редакция №996/р не подтверждены; для САУТ запрет обхода",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Сообщение «СИ СЕТЬ» не доказывает ни реальный провал напряжения сети, ни отказ датчика.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Ранний МСУД-Н не доказывает соответствие позднему МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Актуальные полномочия и редакции процедур не подтверждены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи буквально указано «СИ СЕТЬ», а не иной код МСУД?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-038. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-038; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По архивным документам подтверждён именно ранний МСУД-Н и применимость обозначения к этой записи?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи буквально указано «СИ СЕТЬ», а не иной код МСУД?",
+              "responses": {
+                "YES": "q-independent",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-independent",
+              "type": "QUESTION",
+              "text": "Отдельно зафиксировано, была ли потеря импульсов, а не только отображение сообщения?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В записи отделены данные о состоянии контактной сети от внутреннего сигнала МСУД?",
+              "responses": {
+                "YES": "q-record-source",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "practice"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record-source",
+              "type": "QUESTION",
+              "text": "Есть подтверждение происхождения записи и версии МСУД-Н без вывода о первопричине?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-038. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-038; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: МСУД-015 и неизвестное исполнение не приравнивать к ранней МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: записи недостаточно для установления причины, источника команды или полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-038-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный симптом: МСУД снимает импульсы с сообщением «СИ СЕТЬ». Соседние исходные ID не эквивалентны.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "locator": "Pinned sourceObject projection, diagnostics-02.pack.json, ER-DIAG-038"
+        },
+        {
+          "id": "ER-DIAG-038-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная схема",
+          "text": "Публичная заводская схема раннего исполнения; §6.8, §7.1; цепи контроля напряжения. Номера аппаратов не переносятся на неизвестное исполнение.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "§6.8, §7.1; цепи контроля напряжения",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-038-INFO-3",
+          "version": "DETAILED",
+          "title": "Историческая памятка",
+          "text": "Памятка помогает различить индикацию и наблюдаемые эффекты, но не подтверждает современную процедуру или разрешение на действия.",
+          "sourceRefs": [
+            "memo"
+          ],
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-038-INFO-4",
+          "version": "DETAILED",
+          "title": "Практический подход",
+          "text": "Исторические практические варианты сохраняются как гипотезы, не как диагноз и не как инструкция; автор и редакция ER-SRC-011 не подтверждены.",
+          "sourceRefs": [
+            "practice"
+          ],
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-038-INFO-5",
+          "version": "DETAILED",
+          "title": "Конфликт и применимость",
+          "text": "Сообщение «СИ СЕТЬ» не доказывает ни реальный провал напряжения сети, ни отказ датчика. МСУД-015 не приравнивается к МСУД-Н. При UNKNOWN действует BLOCKED.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-039",
+      "scenarioId": "ermak.diag.ER-DIAG-039",
+      "title": "МСУД: «СИ САУТ»",
+      "symptom": "МСУД снимает тягу с индикацией «СИ САУТ»",
+      "hazardCategory": "MSUD_SAUT_RESTRICTION",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-70",
+        "SYS-71",
+        "SYS-80",
+        "SYS-60",
+        "SYS-C0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-001",
+        "ER-EQ-SF-004",
+        "ER-EQ-SF-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "legacy_symptom_crosscheck_only",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          },
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING"
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "МСУД-Н, питание, диагностика, синхронизация и датчики скорости",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-MSUD-MEMO",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "МСУД-Н: СИ СЕТЬ / СИ САУТ / питание / связь / скоростные каналы",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старые практические рекомендации; не источник разрешения ремонтных действий",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-n-archival-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "earlyMsud": "MSUD-N_ARCHIVAL_ONLY",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-038",
+        "ER-DIAG-040",
+        "ER-DIAG-017"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-02.pack.json",
+          "objectId": "ER-DIAG-039",
+          "rawGzipIndependentlyDecoded": false,
+          "currentOperatingAuthority": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "document": "ИДМБ.661142.009РЭ1, ранний МСУД-Н",
+          "locator": "§6.8, §6.18, §7.1",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "memo": {
+          "sourceKind": "TRAINING_HISTORICAL",
+          "document": "Памятка локомотивным бригадам по неисправностям Ермак",
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "url": "https://rcit.su/techinfoW04.html",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false
+        },
+        "practice": {
+          "sourceKind": "PRACTICAL_DONOR_UNVERIFIED",
+          "document": "Практические рекомендации по раннему 2ЭС5К/3ЭС5К",
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "status": "UNVERIFIED_CONTEXT_ONLY",
+          "currentOperatingAuthority": false
+        },
+        "variant": {
+          "sourceKind": "MANUFACTURER_BROCHURE_CONTEXT",
+          "document": "ТМХ «Ермак», обзор 2024",
+          "url": "https://tmholding.ru/upload/TMH_ERMAK_A4_2024.pdf",
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "status": "LATE_CONTEXT_NOT_EQUIVALENT",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательское ограничение по результатам сопоставления источников",
+          "locator": "текущие полномочия и точная редакция №996/р не подтверждены; для САУТ запрет обхода",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Индикация МСУД не даёт основания обходить или отменять запрет САУТ.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Ранний МСУД-Н не доказывает соответствие позднему МСУД-015.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Актуальные полномочия и редакции процедур не подтверждены.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи буквально указано «СИ САУТ» и ограничение тяги?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-039. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-039; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По имеющейся записи событие ещё продолжается либо его завершение неизвестно?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По архивным документам подтверждён именно ранний МСУД-Н и применимость обозначения к этой записи?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённой записи буквально указано «СИ САУТ» и ограничение тяги?",
+              "responses": {
+                "YES": "q-independent",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-independent",
+              "type": "QUESTION",
+              "text": "Отдельно записано, был ли запрет сформирован САУТ, либо только отображён МСУД?",
+              "responses": {
+                "YES": "q-scope",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "memo"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-scope",
+              "type": "QUESTION",
+              "text": "В записи различены активная кабина и источник команды без отключения функций безопасности?",
+              "responses": {
+                "YES": "q-record-source",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "practice"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-record-source",
+              "type": "QUESTION",
+              "text": "Подтверждены происхождение записи и вариант установленной САУТ, а не только название кода?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: действующее либо неясное событие. Исследовательский материал не является инструкцией по действиям; применять только действующие требования уполномоченных служб.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Никаких дополнительных включений, измерений или вмешательств ради ответа.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: запись не соответствует исходному симптому ER-DIAG-039. Не смешивать соседние коды.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Только ретроспективная классификация записи ER-DIAG-039; причина, эксплуатационная применимость и допустимость действий не подтверждены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: МСУД-015 и неизвестное исполнение не приравнивать к ранней МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "variant"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: записи недостаточно для установления причины, источника команды или полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-039-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Буквальный симптом: МСУД снимает тягу с индикацией «СИ САУТ». Соседние исходные ID не эквивалентны.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          },
+          "locator": "Pinned sourceObject projection, diagnostics-02.pack.json, ER-DIAG-039"
+        },
+        {
+          "id": "ER-DIAG-039-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная схема",
+          "text": "Публичная заводская схема раннего исполнения; §6.8, §6.18, §7.1. Номера аппаратов не переносятся на неизвестное исполнение.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "§6.8, §6.18, §7.1",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-039-INFO-3",
+          "version": "DETAILED",
+          "title": "Историческая памятка",
+          "text": "Памятка помогает различить индикацию и наблюдаемые эффекты, но не подтверждает современную процедуру или разрешение на действия.",
+          "sourceRefs": [
+            "memo"
+          ],
+          "locator": "МСУД-Н, симптомы и сообщения",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-039-INFO-4",
+          "version": "DETAILED",
+          "title": "Практический подход",
+          "text": "Исторические практические варианты сохраняются как гипотезы, не как диагноз и не как инструкция; автор и редакция ER-SRC-011 не подтверждены.",
+          "sourceRefs": [
+            "practice"
+          ],
+          "locator": "ER-SRC-011; точная редакция и автор не установлены",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-039-INFO-5",
+          "version": "DETAILED",
+          "title": "Конфликт и применимость",
+          "text": "Индикация МСУД не даёт основания обходить или отменять запрет САУТ. МСУД-015 не приравнивается к МСУД-Н. При UNKNOWN действует BLOCKED.",
+          "sourceRefs": [
+            "variant"
+          ],
+          "locator": "поздняя система управления; не подтверждает конкретный серийный номер",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA"
+    }
+  ]
+}

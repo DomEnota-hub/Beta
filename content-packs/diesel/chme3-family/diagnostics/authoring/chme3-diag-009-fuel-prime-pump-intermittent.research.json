@@ -1,0 +1,798 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 55,
+  "originalId": "CHME3-DIAG-009",
+  "scenarioId": "chme3.diagnostics.chme3-diag-009",
+  "title": "Топливоподкачивающий насос не вращается или работает с перебоями",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/8",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-009",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "NORMAL_DIAGNOSTIC",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_SECONDARY_PLUS_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SDO-996R-CHME3-2026",
+      "CHME3-SRC-SCBIST-TROUBLE-2020"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-FUEL-PRIME-PUMP",
+      "CHME3-EQ-BATTERY",
+      "CHME3-EQ-RELAYS"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "governorAdjustment": false,
+    "manualFuelRackMovement": false,
+    "repeatStart": false,
+    "electricalCabinetAccess": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+      "revision": "Pinned /scenarios/8, blob 63988703bb795e82f40335a756b8b9bd3cad8e0a; updatedAt is document timestamp, not incident date",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Projection only, gzip not independently decoded",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N30",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §30: система подачи топлива; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N34",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §34: топливоподкачивающий и ручной насосы; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N35",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §35: топливные фильтры; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "R996",
+      "kind": "SECONDARY_REGULATORY_DERIVATIVE",
+      "ref": "CHME3-SRC-SDO-996R-CHME3-2026",
+      "revision": "Неофициальное вторичное представление №996/р; пункт, редакция и применимость не подтверждены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "HISTORICAL_FIELD_PRACTICE",
+      "ref": "CHME3-SRC-SCBIST-TROUBLE-2020",
+      "revision": "Форумный материал с указанием 2020 в ID; первичная публикация и профиль не проверены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По архиву исключены активная утечка топлива, пожар, остановка по защите и другая опасность?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть ранее записанный симптом отсутствия подачи или перебоев именно топливоподкачки?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Подтверждён по документации установленный тип привода насоса?",
+          "responses": {
+            "YES": "obs-identified",
+            "NO": "obs-unverified",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N34"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-identified",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тип привода указан в архиве; сравнение с историческим §34 допустимо только как информация, не как разрешение действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N34"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-unverified",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тип привода не подтверждён; электрическую неисправность нельзя объявлять причиной, поскольку исторический насос механический.",
+          "responses": {},
+          "sourceRefs": [
+            "N34",
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исходный симптом подкачки не подтверждён; отделить от отказа пуска, остановки дизеля и просадки под нагрузкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: активное или не исключённое нарушение смазки/топливоподачи либо другая опасность. Не воспроизводить неисправность, не запускать и не нагружать дизель. Действующий аварийный порядок и полномочия требуют отдельного подтверждения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных или подтверждения исполнения недостаточно. Не проводить новых испытаний, измерений, вскрытий и регулировок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По сохранённым данным исключены пожар, утечка и опасная остановка дизеля?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Ранее зафиксированы перебои подачи или признаки отсутствия подкачки?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть подтверждение установленного механического привода насоса на данной машине?",
+          "responses": {
+            "YES": "obs-mechanical",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N34"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Сохранился документ о другом, электрическом приводе именно этой машины?",
+          "responses": {
+            "YES": "obs-electric-unverified",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "R996"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В архиве различены вращение привода и фактическая подача топлива?",
+          "responses": {
+            "YES": "obs-fuelpath",
+            "NO": "obs-unresolved",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N30"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-mechanical",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §34 описывает механический привод от дизеля. По одному отсутствию вращения нельзя предполагать отказ электрической цепи.",
+          "responses": {},
+          "sourceRefs": [
+            "N34",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-electric-unverified",
+          "type": "OBSERVATION_REPORT",
+          "text": "Упоминание электрического привода требует сверки оригинальной схемы и модификации; эксплуатационная проверка заблокирована.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "R996",
+            "N34"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-fuelpath",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отдельно рассмотрены насос, фильтры, воздух и коллектор; нет доказательства конкретного дефекта.",
+          "responses": {},
+          "sourceRefs": [
+            "N30",
+            "N35"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствует доказательство типа привода и состояния подачи; никаких новых пусков и разборок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет признаков именно 009; не смешивать с дизелем, который глохнет после запуска.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: активное или не исключённое нарушение смазки/топливоподачи либо другая опасность. Не воспроизводить неисправность, не запускать и не нагружать дизель. Действующий аварийный порядок и полномочия требуют отдельного подтверждения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных или подтверждения исполнения недостаточно. Не проводить новых испытаний, измерений, вскрытий и регулировок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "identity",
+      "title": "Различение привода насоса",
+      "sourceId": "N34",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "identity-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: различение привода насоса?",
+          "responses": {
+            "YES": "identity-yes",
+            "NO": "identity-no",
+            "UNKNOWN": "identity-stop"
+          },
+          "sourceRefs": [
+            "N34"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "identity-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В §34 Нотика описан шестерённый топливоподкачивающий насос с механическим приводом от дизеля; нельзя автоматически искать электропитание насоса.",
+          "responses": {},
+          "sourceRefs": [
+            "N34"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "identity-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждённого исполнения тип привода неизвестен; действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N34"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "identity-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N34"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "fuelpath",
+      "title": "Топливный тракт",
+      "sourceId": "N30",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "fuelpath-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: топливный тракт?",
+          "responses": {
+            "YES": "fuelpath-yes",
+            "NO": "fuelpath-no",
+            "UNKNOWN": "fuelpath-stop"
+          },
+          "sourceRefs": [
+            "N30"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "fuelpath-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В §30 разделены бак, подкачка, фильтры, коллектор и впрыск; отсутствие подачи не равно отказу насоса.",
+          "responses": {},
+          "sourceRefs": [
+            "N30"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fuelpath-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без архивных показаний нельзя локализовать тракт.",
+          "responses": {},
+          "sourceRefs": [
+            "N30"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fuelpath-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N30"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "filters",
+      "title": "Фильтры и сопротивление",
+      "sourceId": "N35",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "filters-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: фильтры и сопротивление?",
+          "responses": {
+            "YES": "filters-yes",
+            "NO": "filters-no",
+            "UNKNOWN": "filters-stop"
+          },
+          "sourceRefs": [
+            "N35"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "filters-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В §35 описаны фильтры топлива; засорение остаётся гипотезой, а не установленной причиной.",
+          "responses": {},
+          "sourceRefs": [
+            "N35"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "filters-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не открывать фильтры ради проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "N35"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "filters-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N35"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "electrical",
+      "title": "Электрическая версия из донора",
+      "sourceId": "R996",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "electrical-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: электрическая версия из донора?",
+          "responses": {
+            "YES": "electrical-yes",
+            "NO": "electrical-no",
+            "UNKNOWN": "electrical-stop"
+          },
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "electrical-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В исходном сценарии предложена проверка питания привода, но для механического насоса из §34 это может быть неприменимо. Электрическая ветвь UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "electrical-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нельзя переносить схему электрического привода без подтверждения оборудования.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "electrical-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "title": "Практические сообщения",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "field-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: практические сообщения?",
+          "responses": {
+            "YES": "field-yes",
+            "NO": "field-no",
+            "UNKNOWN": "field-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "field-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческая форумная запись о перебоях сохранена как версия, дата и условия эксплуатации не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Практика не предоставляет права на принудительную подкачку или вмешательство.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Действующая заводская инструкция и схема конкретной машины не проверены",
+    "Профиль ЧМЭ3/ЧМЭ3Т/ЧМЭ3Э не установлен",
+    "Неофициальный материал №996/р не даёт полномочий",
+    "Независимая распаковка gzip не выполнялась",
+    "Финальная Android-приёмка NOT_RUN / DEFERRED",
+    "Историческая книга 1996 не является современной инструкцией",
+    "Нельзя инициировать новые измерения, пуски или испытания",
+    "Конфликт: донор предлагает электрическую диагностику, Нотик §34 описывает механический привод",
+    "Не подтверждены тип привода и точное исполнение конкретной машины",
+    "Официальный пункт и действующая редакция №996/р не проверены",
+    "Нельзя выводить отказ насоса только из отсутствия давления топлива"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-001",
+      "rule": "Неуспешный пуск не доказывает отказ подкачки."
+    },
+    {
+      "originalId": "CHME3-DIAG-002",
+      "rule": "Остановка после пуска имеет самостоятельный исходный ID."
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Просадка под нагрузкой не тождественна неисправности насоса."
+    },
+    {
+      "originalId": "CHME3-DIAG-008",
+      "rule": "Масляный насос смазки не является топливоподкачивающим."
+    },
+    {
+      "originalId": "CHME3-DIAG-010",
+      "rule": "Попадание топлива в масло не доказывает отсутствие подачи."
+    }
+  ]
+}

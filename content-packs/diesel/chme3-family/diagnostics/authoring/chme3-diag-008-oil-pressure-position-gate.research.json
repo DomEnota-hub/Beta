@@ -1,0 +1,802 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 55,
+  "originalId": "CHME3-DIAG-008",
+  "scenarioId": "chme3.diagnostics.chme3-diag-008",
+  "title": "Малое давление масла / нет перехода с 4 на 5 позицию",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/7",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-008",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_CONFIRMED_SECONDARY",
+    "evidenceRefs": [
+      "CHME3-SRC-CDOCKA-996R-CHME3",
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-OIL-PUMP",
+      "CHME3-EQ-OIL-FILTER",
+      "CHME3-EQ-OIL-WATER-HEX",
+      "CHME3-EQ-DIESEL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false,
+    "governorAdjustment": false,
+    "manualFuelRackMovement": false,
+    "repeatStart": false,
+    "electricalCabinetAccess": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+      "revision": "Pinned /scenarios/7, blob 63988703bb795e82f40335a756b8b9bd3cad8e0a; updatedAt is document timestamp, not incident date",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Projection only, gzip not independently decoded",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N40",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §40: циркуляция масла; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N44",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §44: масляные фильтры; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N46",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик, 2-е изд., Транспорт, 1996, §46: водомасляный теплообменник; не действующая инструкция",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "R996",
+      "kind": "SECONDARY_REGULATORY_DERIVATIVE",
+      "ref": "CHME3-SRC-CDOCKA-996R-CHME3",
+      "revision": "№996/р от 12.04.2022; упомянута редакция №592/р от 05.03.2024; первичный пункт, последующие изменения и применимость не сверены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "HISTORICAL_FIELD_PRACTICE",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Историческая практика: дата и оригинал не проверены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По ранее сохранённым сведениям исключены активное падение давления, масляное голодание и другая опасность?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве действительно указано малое давление масла либо блокировка перехода с четвёртой позиции?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть архивная запись именно о снижении показания давления, а не только об отсутствии перехода?",
+          "responses": {
+            "YES": "obs-pressure",
+            "NO": "obs-position",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N40"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-pressure",
+          "type": "OBSERVATION_REPORT",
+          "text": "Есть запись о снижении давления; реальная потеря смазки, погрешность индикации и температурная причина остаются разными гипотезами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N40"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-position",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие перехода позиции без подтверждённого давления не доказывает масляную блокировку; цепь управления отдельно не проверена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом 008 не подтверждён; не смешивать с просадкой оборотов под нагрузкой или неисправностью топливной подкачки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: активное или не исключённое нарушение смазки/топливоподачи либо другая опасность. Не воспроизводить неисправность, не запускать и не нагружать дизель. Действующий аварийный порядок и полномочия требуют отдельного подтверждения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных или подтверждения исполнения недостаточно. Не проводить новых испытаний, измерений, вскрытий и регулировок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По архиву исключены опасное падение давления и активная неисправность смазки?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Симптом относится к давлению масла либо переходу 4→5, а не только к оборотам под нагрузкой?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-other",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Имеется сохранённое показание давления с указанием момента наблюдения?",
+          "responses": {
+            "YES": "obs-pressure",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N40"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Отсутствие перехода на пятую позицию зафиксировано отдельно от низкого давления?",
+          "responses": {
+            "YES": "obs-position",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "R996"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В старых материалах отдельно зафиксирована температура масла или состояние охлаждения?",
+          "responses": {
+            "YES": "obs-temperature",
+            "NO": "obs-unresolved",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N46"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-pressure",
+          "type": "OBSERVATION_REPORT",
+          "text": "Показание и его время известны, но точность канала и реальное состояние смазки не установлены; действующую уставку не применять.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N40"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-position",
+          "type": "OBSERVATION_REPORT",
+          "text": "Есть только позиционный симптом; гипотеза о блокировке по маслу не подтверждена и не даёт разрешения переключать позиции.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-temperature",
+          "type": "OBSERVATION_REPORT",
+          "text": "Температурный контекст есть; влияние теплообменника и вязкости остаётся гипотезой без профиля.",
+          "responses": {},
+          "sourceRefs": [
+            "N46",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-unresolved",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных о давлении, температуре и переходе недостаточно для локализации; новые испытания запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-other",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сценарий не подтверждён; возможен иной независимый симптом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: активное или не исключённое нарушение смазки/топливоподачи либо другая опасность. Не воспроизводить неисправность, не запускать и не нагружать дизель. Действующий аварийный порядок и полномочия требуют отдельного подтверждения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: данных или подтверждения исполнения недостаточно. Не проводить новых испытаний, измерений, вскрытий и регулировок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "history",
+      "title": "История давления и позиции",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "history-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: история давления и позиции?",
+          "responses": {
+            "YES": "history-yes",
+            "NO": "history-no",
+            "UNKNOWN": "history-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "history-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сохранённая хронология давления и команды позиции позволяет различить события, но не устанавливает причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "history-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие хронологии не разрешает пробное переключение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "history-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "oil",
+      "title": "Система смазки",
+      "sourceId": "N40",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "oil-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: система смазки?",
+          "responses": {
+            "YES": "oil-yes",
+            "NO": "oil-no",
+            "UNKNOWN": "oil-stop"
+          },
+          "sourceRefs": [
+            "N40"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "oil-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §40 различает циркуляцию, показание давления и защитные элементы; установленная схема не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "N40"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без подтверждения схемы конкретной машины вывод о масляном насосе недопустим.",
+          "responses": {},
+          "sourceRefs": [
+            "N40"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N40"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "filter",
+      "title": "Масляные фильтры",
+      "sourceId": "N44",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "filter-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: масляные фильтры?",
+          "responses": {
+            "YES": "filter-yes",
+            "NO": "filter-no",
+            "UNKNOWN": "filter-stop"
+          },
+          "sourceRefs": [
+            "N44"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "filter-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §44 различает фильтр грубой и тонкой очистки; это не доказательство засорения.",
+          "responses": {},
+          "sourceRefs": [
+            "N44"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "filter-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие данных о фильтрах не разрешает их вскрытие.",
+          "responses": {},
+          "sourceRefs": [
+            "N44"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "filter-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N44"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cooling",
+      "title": "Водомасляный теплообменник",
+      "sourceId": "N46",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cooling-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: водомасляный теплообменник?",
+          "responses": {
+            "YES": "cooling-yes",
+            "NO": "cooling-no",
+            "UNKNOWN": "cooling-stop"
+          },
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cooling-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §46 описывает охлаждение масла водой; температура и давление требуют раздельной оценки.",
+          "responses": {},
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без сведений о температуре охлаждение нельзя объявить причиной.",
+          "responses": {},
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooling-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "N46"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "norm",
+      "title": "Непроверенная вторичная норма 996/р",
+      "sourceId": "R996",
+      "sourceStatus": "HISTORICAL_OR_SECONDARY_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "norm-q",
+          "type": "QUESTION",
+          "text": "В уже сохранённых материалах есть сведения: непроверенная вторичная норма 996/р?",
+          "responses": {
+            "YES": "norm-yes",
+            "NO": "norm-no",
+            "UNKNOWN": "norm-stop"
+          },
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "norm-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донор упоминает 2,6 кгс/см² и ограничение позиции, но пункт и редакция не сверены по официальному оригиналу; число не является рабочей уставкой.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "norm-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет официального пункта и профиля: любое действие по числу заблокировано.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "norm-stop",
+          "type": "STOP",
+          "text": "STOP: источник, исполнение или достоверность неизвестны; новые действия запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "R996"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "Действующая заводская инструкция и схема конкретной машины не проверены",
+    "Профиль ЧМЭ3/ЧМЭ3Т/ЧМЭ3Э не установлен",
+    "Неофициальный материал №996/р не даёт полномочий",
+    "Независимая распаковка gzip не выполнялась",
+    "Финальная Android-приёмка NOT_RUN / DEFERRED",
+    "Историческая книга 1996 не является современной инструкцией",
+    "Нельзя инициировать новые измерения, пуски или испытания",
+    "Официальный полный пункт №996/р и редакция на дату применения не подтверждены",
+    "Вторичное значение 2,6 кгс/см² не допущено как действующая уставка",
+    "Профиль установленной защиты и измерительного канала не подтверждён",
+    "Связь отсутствия перехода 4→5 с маслом на конкретной машине не доказана"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-004",
+      "rule": "Отказ набора оборотов по позициям не равен масляной блокировке 4→5."
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Просадка под нагрузкой не равна малому давлению масла."
+    },
+    {
+      "originalId": "CHME3-DIAG-009",
+      "rule": "Топливоподкачка не относится к смазочному давлению."
+    },
+    {
+      "originalId": "CHME3-DIAG-010",
+      "rule": "Разжижение масла топливом является отдельным симптомом."
+    },
+    {
+      "originalId": "CHME3-DIAG-011",
+      "rule": "Смешение воды и масла не тождественно низкому давлению."
+    },
+    {
+      "originalId": "CHME3-DIAG-012",
+      "rule": "Перегрев воды не равен измерению температуры масла."
+    }
+  ]
+}

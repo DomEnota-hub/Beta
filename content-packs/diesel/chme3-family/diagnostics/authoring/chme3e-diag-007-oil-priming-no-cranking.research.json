@@ -1,0 +1,854 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 73,
+  "originalId": "CHME3E-DIAG-007",
+  "scenarioId": "chme3.diagnostics.chme3e-diag-007",
+  "title": "Электронная последовательность пуска не переходит от маслопрокачки к провороту",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+    "documentPointer": "/scenarios/6",
+    "documentBlob": "e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3e-diag-007",
+    "gzipBlob": "1ab9ae40bc90479eacb006d0eb62dd45e9f387fe",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_EQUIPMENT_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "provenanceStatus": "TRAINING_REFERENCE",
+    "evidenceRefs": [
+      "CHME3E-SRC-NOTIK-EQUIPMENT-67",
+      "CHME3E-SRC-NOTIK-CH17"
+    ],
+    "equipmentIds": [
+      "CHME3E-EQ-CONTROLLER-HH106",
+      "CHME3E-EQ-ER-YCRA1",
+      "CHME3-EQ-OIL-PRIME-PUMP",
+      "CHME3-EQ-CONTACTORS",
+      "CHME3-EQ-BATTERY",
+      "CHME3-EQ-TRACTION-GENERATOR",
+      "CHME3E-EQ-RELAY-RD"
+    ],
+    "schemeRefs": [
+      "CHME3E-SCH-START-ELECTRONIC"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3e"
+    ],
+    "profileId": "chme3e-electronic",
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+      "revision": "Pinned e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e; updatedAt 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-04.pack.json",
+      "revision": "ID/title/equipment parity; gzip graph not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик З.Х., 1996, §92 YCRA1 и пуск; архив, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_EXPERIENCE_UNVERIFIED",
+      "ref": "No independent practical evidence supplied; donor symptom wording retained",
+      "revision": "No practical procedure imported",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current execution-specific manufacturer RE/IDMB and approved schematic",
+      "revision": "No verified revision or applicability to installed machine",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет непосредственной опасности, используются только ранее сохранённые записи без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архиве есть маслопрокачка без проворота?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть запись о завершении стадии прокачки?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом перехода к провороту не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Прокачка завершена, но разрешения и стартерная цепь не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Завершение прокачки не подтверждено, нельзя локализовать стартер.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена; никаких новых пусков, переключений, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения не восполнять испытанием или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет непосредственной опасности, используются только ранее сохранённые записи без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архиве есть маслопрокачка без проворота?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть запись о завершении стадии прокачки?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть независимое подтверждение разрешения следующей стадии?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть запись команды стартерного режима?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптом перехода к провороту не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Прокачка завершена, но разрешения и стартерная цепь не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Завершение прокачки не подтверждено, нельзя локализовать стартер.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Разрешение неизвестно; отказ YCRA1/КД не доказан.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Команда не доказывает срабатывание контакторов и причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "HISTORICAL"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена; никаких новых пусков, переключений, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения не восполнять испытанием или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Блок YCRA1",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Блок YCRA1» без новых действий?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§92 описывает электронное реле времени, не состояние блока.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Блок YCRA1» архивных данных нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Маслопрокачка КМН",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Маслопрокачка КМН» без новых действий?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Прокачка и проворот являются разными стадиями.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Маслопрокачка КМН» архивных данных нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "КД1/КД2",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «КД1/КД2» без новых действий?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический стартерный режим не даёт права на вмешательства.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «КД1/КД2» архивных данных нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Граница с другими отказами пуска",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Граница с другими отказами пуска» без новых действий?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие прокачки и прекращение проворота отдельные симптомы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Граница с другими отказами пуска» архивных данных нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Запрет повторных пусков",
+      "sourceId": "CURRENT_GAP",
+      "sourceStatus": "CURRENT_PRIMARY_MISSING_BLOCKED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Запрет повторных пусков» без новых действий?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не удерживать пуск и не обходить защиту.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "По теме «Запрет повторных пусков» архивных данных нет, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "CURRENT_GAP",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестное нельзя восполнять испытанием.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "Отсутствие маслопрокачки"
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "Прекращение уже начавшегося проворота"
+    },
+    {
+      "status": "SEPARATE_SYMPTOM",
+      "detail": "DIAG-004 GC40P"
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Донор содержит check/terminal с возможными действиями; исследовательский кандидат содержит только ранее записанные наблюдения."
+    },
+    {
+      "source": "ARCHIVE_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Книга 1996 года подтверждает принцип электронного управления, но не актуальную применимость схемы и процедуру."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "Граф исходного gzip не декодирован независимо; совпадение ID и названия не доказывает идентичность графов."
+    },
+    {
+      "source": "PROFILE_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "ЧМЭ3Э не отождествлять с ЧМЭ3/Т или модернизированным исполнением без схемы конкретной машины."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Полевой опыт не подтверждён и не разрешает вмешательства."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Отдельные source/role/safety gates не пройдены; предупреждение не выдаёт прав."
+    },
+    {
+      "source": "SCENARIO_SPECIFIC",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Электронная последовательность пуска не переходит от маслопрокачки к провороту: исходные сведения не доказывают конкретную причину."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ с редакцией и применимостью",
+    "Схема конкретного исполнения ЧМЭ3Э и модернизаций",
+    "Независимая проверка исходного gzip-графа",
+    "Подтверждение источника и полномочий роли",
+    "Отдельная safety-экспертиза",
+    "Разграничение индикации и реального состояния без новых измерений",
+    "Финальная ручная device QA после тестового APK",
+    "Нет независимого подтверждения архивных записей по CHME3E-DIAG-007 и схемы исполнения."
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

@@ -1,0 +1,746 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-control-air-batch26/1",
+    "date": "2026-11-07",
+    "baseHead": "07b26fe17481484238792a311d15ea9333fb19ce",
+    "previousCiRun": 42305820569,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-080"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Independent raw gzip decompression and exact identity parity PASS for 080; specific installed variant, current procedure and authority remain unverified",
+    "batchBoundary": "080 control-air to pantograph/GV separate from 071 auxiliary compressor, 073 feed-main pressure, 074 reservoirs, 081-085 brake-cylinder faults."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-control-air-batch26-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-080",
+      "scenarioId": "ermak.diag.ER-DIAG-080",
+      "title": "Нет воздуха в цепи токоприёмника и ГВ",
+      "symptom": "При наличии воздуха в основных резервуарах не обеспечивается давление пневмоприводов токоприёмника/ГВ",
+      "hazardCategory": "CONTROL_AIR_PANTOGRAPH_GV_VS_GENERAL_AIR",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-10",
+        "SYS-50",
+        "SYS-30",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-PN-010",
+        "ER-EQ-PN-011",
+        "ER-EQ-AU-008",
+        "ER-EQ-HV-004"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-004",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ3. Электрические машины",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV53.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ3",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-032",
+          "role": "technical_basis",
+          "document": "ОАО «НЗВА»: ВОВ-25А-10/400",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://nzva.narod.ru/VOV.htm",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ВОВ-25А-10/400",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-PUBLIC",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая часть и пневматическая система",
+          "locator": "пневмосистема и пневмооборудование",
+          "role": "manufacturer_technical_basis_public_copy",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://rcit.su/techinfoV56.html"
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-2024",
+          "document": "Перечень действий локомотивных бригад по выявлению и устранению неисправностей на локомотивах, распоряжение ОАО «РЖД» №996/р от 12.04.2022",
+          "locator": "Приложение 9: 2ЭС5К/3ЭС5К; публично проверена редакция №592/р от 05.03.2024",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; полнота более поздних изменений требует контроля",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          },
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/"
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-control-air-pantograph-gv-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-071",
+        "ER-DIAG-073",
+        "ER-DIAG-074"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_RAW_GZIP_VERIFIED",
+          "url": "",
+          "locator": "Test- @ 3176d6ee / app/src/main/assets/technical/ermak_diagnostics.json.gz / scenarios[ER-DIAG-080]; independently gunzipped and 8 identity fields compared to diagnostics-04.pack.json",
+          "status": "RAW_GZIP_PARITY_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-080",
+          "rawGzipIndependentlyDecoded": true
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6 §5.3 «Цепи вспомогательные» указан в оглавлении; публичная HTML-копия не доказывает конкретный монтаж.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "subsystem": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2004",
+          "url": "https://djvu.online/file/E75mwAqZiaTrD",
+          "locator": "РЭ6 2004, §5.1–5.3: вспомогательный компрессор КМ2, цепи ГВ и токоприёмника; текст исторический и имеет расхождение по SP7 с RCIT.",
+          "status": "ARCHIVAL_PARTIAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "operational": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_OPERATION",
+          "url": "https://rcit.su/techinfoV57.html",
+          "locator": "Архивная РЭ7: не подтверждает действующие полномочия на операции с токоприёмником, ГВ и пневматикой для ER-DIAG-080",
+          "status": "ARCHIVAL_NOT_CURRENT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "TECHNICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Описание пневмосхемы 3ЭС5К: «Система приготовления сжатого воздуха» и «Цепи вспомогательные», КМ2/КО3/SP7/КП3, фильтрация ГВ, редуктор/клапан токоприёмника; ранний вариант.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_VERSION_SCOPE_ONLY",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "locator": "№996/р от 12.04.2022, приложение 9; публично известна редакция №592/р от 05.03.2024. Полнота действующих изменений, точные пункты, роль и полномочия для ER-DIAG-080 не установлены.",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит. Действующая потеря пневморесурса или неопределённость в состоянии ГВ/токоприёмника → STOP.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "CAUSE_VS_SYMPTOM",
+          "detail": "Общий дефицит воздуха, отсутствие наполнения резервуара цепей управления, общий участок питания двух потребителей, отдельный привод и ошибочная индикация являются разными гипотезами. Наличие воздуха в ГР само по себе не подтверждает давление в каждой ветви. В публичном тексте схемы RCIT для SP7 указано 0,76 МПа, в доступном скане РЭ6 2004 года 0,7 МПа. Редакции различаются; уставка конкретной машины UNKNOWN. Числа не использовать для проверки, регулировки или решения о допуске.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE",
+          "detail": "base_early относится к раннему МСУД-Н, МСУД-015 не эквивалентен. Фактическое исполнение UNKNOWN, действия BLOCKED.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "AUTHORITY",
+          "detail": "Заводские 2004/2007 и учебные материалы не подтверждают полномочия локомотивной бригады в 2026; №996/р без полного действующего текста не даёт конкретного разрешения.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с недостатком воздуха продолжается, есть угроза безопасной работе или по архивной записи нельзя подтвердить его завершение?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н, схема пневмопитания ГВ/токоприёмника и установленная секция?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В уже завершённой записи одновременно подтверждены запас воздуха ГР/ПМ и отсутствие достаточного воздуха именно в цепи токоприёмника/ГВ?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: при действующем отсутствии воздуха в цепи ГВ/токоприёмника дальнейшие решения только по действующим инструкциям и допуску, не по исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: не подтверждена схема пневматической цепи конкретной секции или ранний профиль; МСУД-015 не приравнивать к МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-080; общий дефицит ГР, отказ КМ2, отказ токоприёмника и ГВ имеют самостоятельные маршруты.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "При сохранённом запасе ГР/ПМ нет подтверждённого давления пневмоприводов токоприёмника и ГВ. Это не доказывает отказ обоих аппаратов, одного клапана или электрической команды. Общий дефицит воздуха, отсутствие наполнения резервуара цепей управления, общий участок питания двух потребителей, отдельный привод и ошибочная индикация являются разными гипотезами. Наличие воздуха в ГР само по себе не подтверждает давление в каждой ветви. Ранняя публичная пневмосхема 3ЭС5К описывает КМ2, КО3, SP7 и КП3 во вспомогательной подаче, а для ГВ и токоприёмника отдельные фильтрацию, редуцирование и управление. Обозначения и параметры не переносить на неподтверждённое исполнение. В публичном тексте схемы RCIT для SP7 указано 0,76 МПа, в доступном скане РЭ6 2004 года 0,7 МПа. Редакции различаются; уставка конкретной машины UNKNOWN. Числа не использовать для проверки, регулировки или решения о допуске. STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие с недостатком воздуха продолжается, есть угроза безопасной работе или по архивной записи нельзя подтвердить его завершение?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены раннее исполнение МСУД-Н, схема пневмопитания ГВ/токоприёмника и установленная секция?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В уже завершённой записи одновременно подтверждены запас воздуха ГР/ПМ и отсутствие достаточного воздуха именно в цепи токоприёмника/ГВ?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены ранее полученные штатные показания ГР/ПМ и цепи управления, состояние обоих потребителей и секция без повторных команд?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Различены общий дефицит, резервуар цепи управления, общий участок питания двух аппаратов, локальный потребитель и недостоверная индикация без выбора непроверенной причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "subsystem"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Записаны время, секция, фактическая схема, источник, неоднозначность SP7 и отсутствие новых вмешательств?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: при действующем отсутствии воздуха в цепи ГВ/токоприёмника дальнейшие решения только по действующим инструкциям и допуску, не по исследовательской карточке.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: не подтверждена схема пневматической цепи конкретной секции или ранний профиль; МСУД-015 не приравнивать к МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: признак не соответствует ER-DIAG-080; общий дефицит ГР, отказ КМ2, отказ токоприёмника и ГВ имеют самостоятельные маршруты.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: архивные записи не позволяют разделить давление и потребителей; нельзя воспроизводить отказ, включать аппараты или менять положения кранов.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "При сохранённом запасе ГР/ПМ нет подтверждённого давления пневмоприводов токоприёмника и ГВ. Это не доказывает отказ обоих аппаратов, одного клапана или электрической команды. Общий дефицит воздуха, отсутствие наполнения резервуара цепей управления, общий участок питания двух потребителей, отдельный привод и ошибочная индикация являются разными гипотезами. Наличие воздуха в ГР само по себе не подтверждает давление в каждой ветви. Ранняя публичная пневмосхема 3ЭС5К описывает КМ2, КО3, SP7 и КП3 во вспомогательной подаче, а для ГВ и токоприёмника отдельные фильтрацию, редуцирование и управление. Обозначения и параметры не переносить на неподтверждённое исполнение. В публичном тексте схемы RCIT для SP7 указано 0,76 МПа, в доступном скане РЭ6 2004 года 0,7 МПа. Редакции различаются; уставка конкретной машины UNKNOWN. Числа не использовать для проверки, регулировки или решения о допуске. STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "subsystem",
+                "normative",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-080-INFO-1",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "title": "Исходная идентичность ER-DIAG-080",
+          "text": "Донорский gzip 256613 байт, blob c3a22c62..., независимо распакован (136 сценариев); ID, title, symptom, status, applicability, systemIds, equipmentRefs и sourceRefs точно совпали с закреплённой проекцией.",
+          "locator": "Test- @ 3176d6ee / ermak_diagnostics.json.gz / scenarios[ER-DIAG-080]",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-080-INFO-2",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer",
+            "subsystem"
+          ],
+          "title": "РЭ6: ранние цепи пневмопитания",
+          "text": "Ранняя публичная пневмосхема 3ЭС5К описывает КМ2, КО3, SP7 и КП3 во вспомогательной подаче, а для ГВ и токоприёмника отдельные фильтрацию, редуцирование и управление. Обозначения и параметры не переносить на неподтверждённое исполнение. Архивная РЭ6 §5.3 и скан 2004 года не подтверждают комплектацию конкретной секции.",
+          "locator": "РЭ6 §5.3 «Цепи вспомогательные», редакции 2004/2007",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-080-INFO-3",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "title": "Публичная схема и расхождение SP7",
+          "text": "Ранняя публичная пневмосхема 3ЭС5К описывает КМ2, КО3, SP7 и КП3 во вспомогательной подаче, а для ГВ и токоприёмника отдельные фильтрацию, редуцирование и управление. Обозначения и параметры не переносить на неподтверждённое исполнение. В публичном тексте схемы RCIT для SP7 указано 0,76 МПа, в доступном скане РЭ6 2004 года 0,7 МПа. Редакции различаются; уставка конкретной машины UNKNOWN. Числа не использовать для проверки, регулировки или решения о допуске.",
+          "locator": "RCIT «Цепи вспомогательные»; РЭ6 2004, раздел 5",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-080-INFO-4",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "operational"
+          ],
+          "title": "Нормативные полномочия и редакции",
+          "text": "Для ER-DIAG-080 полный действующий текст и точные полномочия по №996/р не подтверждены. Архивная РЭ7 не разрешает действия; Правила тормозов 2026 не подменяют отдельные процедуры токоприёмника/ГВ.",
+          "locator": "№996/р приложение 9; РЭ7 архивная; проверка применимости обязательна",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-080-INFO-5",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "title": "Разделение признаков и остановка",
+          "text": "При сохранённом запасе ГР/ПМ нет подтверждённого давления пневмоприводов токоприёмника и ГВ. Это не доказывает отказ обоих аппаратов, одного клапана или электрической команды. Общий дефицит воздуха, отсутствие наполнения резервуара цепей управления, общий участок питания двух потребителей, отдельный привод и ошибочная индикация являются разными гипотезами. Наличие воздуха в ГР само по себе не подтверждает давление в каждой ветви. STOP: никаких новых команд подъёма токоприёмника или включения ГВ, пуска КМ2, переключения кранов, создания давления, разборки, измерений под напряжением, обхода блокировок или защит.",
+          "locator": "Сравнение исторических РЭ6 и пневмосхемы; только ранее записанные данные",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "РЭ6 §5.3 «Цепи вспомогательные»: публичная HTML-копия неполна; исполнение не доказано.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "TECHNICAL_TRAINING_PNEUMATIC_SCHEME",
+          "url": "https://rcit.su/techinfoV8.html",
+          "locator": "Публичная пневмосхема 3ЭС5К: КМ2, КО3, SP7, КП3, фильтр ГВ, редуктор/клапан токоприёмника; ранний вариант.",
+          "status": "HISTORICAL_VARIANT_DEPENDENT",
+          "verifiedAt": "2026-11-07"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_2004_CONFLICT",
+          "url": "https://djvu.online/file/E75mwAqZiaTrD",
+          "locator": "РЭ6 2004, §5: SP7 0,7 МПа против 0,76 МПа на RCIT. Историческое расхождение, не уставка для работы.",
+          "status": "ARCHIVAL_DISCREPANCY_UNRESOLVED",
+          "verifiedAt": "2026-11-07"
+        }
+      ]
+    }
+  ]
+}

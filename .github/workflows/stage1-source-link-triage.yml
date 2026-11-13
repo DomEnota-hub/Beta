@@ -1,0 +1,117 @@
+name: Stage 1 source-link triage ledger
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'content-packs/diesel/chme3-family/migration/source-audit.json'
+      - 'content-packs/electric/ermak/migration/source-audit.json'
+      - 'qa/validate_stage1_source_link_triage.py'
+      - 'qa/test_stage1_source_link_triage.py'
+      - 'docs/migration/chme3t-edb-historical-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/atlas-source-index.json'
+      - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
+      - 'qa/validate_chme3t_edb_evidence.py'
+      - 'qa/test_chme3t_edb_evidence.py'
+      - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
+      - 'qa/validate_ermak_996r_edition.py'
+      - 'qa/test_ermak_996r_edition.py'
+      - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
+      - 'qa/validate_ermak_re1_public_mirror.py'
+      - 'qa/test_ermak_re1_public_mirror.py'
+      - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'docs/migration/chme3-remaining-scheme-evidence.candidate.json'
+      - 'qa/validate_chme3_priority_schemes.py'
+      - 'qa/test_chme3_priority_schemes.py'
+      - 'qa/validate_chme3_remaining_schemes.py'
+      - 'qa/test_chme3_remaining_schemes.py'
+      - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
+      - 'qa/validate_chme3t_serial_revision.py'
+      - 'qa/test_chme3t_serial_revision.py'
+      - 'docs/migration/chme3-public-drawing-leads.candidate.json'
+      - 'qa/validate_chme3_public_drawing_leads.py'
+      - 'qa/test_chme3_public_drawing_leads.py'
+      - '.github/workflows/stage1-source-link-triage.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'content-packs/diesel/chme3-family/migration/source-audit.json'
+      - 'content-packs/electric/ermak/migration/source-audit.json'
+      - 'qa/validate_stage1_source_link_triage.py'
+      - 'qa/test_stage1_source_link_triage.py'
+      - 'docs/migration/chme3t-edb-historical-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/raw-target-evidence.candidate.json'
+      - 'content-packs/diesel/chme3-family/migration/atlas-source-index.json'
+      - 'content-packs/diesel/chme3-family/migration/remaining-document-source-index.json'
+      - 'qa/validate_chme3t_edb_evidence.py'
+      - 'qa/test_chme3t_edb_evidence.py'
+      - 'docs/migration/ermak-996r-edition-evidence.candidate.json'
+      - 'qa/validate_ermak_996r_edition.py'
+      - 'qa/test_ermak_996r_edition.py'
+      - 'docs/migration/ermak-re1-public-mirror-evidence.candidate.json'
+      - 'qa/validate_ermak_re1_public_mirror.py'
+      - 'qa/test_ermak_re1_public_mirror.py'
+      - 'docs/migration/chme3-priority-scheme-evidence.candidate.json'
+      - 'docs/migration/chme3-remaining-scheme-evidence.candidate.json'
+      - 'qa/validate_chme3_priority_schemes.py'
+      - 'qa/test_chme3_priority_schemes.py'
+      - 'qa/validate_chme3_remaining_schemes.py'
+      - 'qa/test_chme3_remaining_schemes.py'
+      - 'docs/migration/chme3t-serial-revision-evidence.candidate.json'
+      - 'qa/validate_chme3t_serial_revision.py'
+      - 'qa/test_chme3t_serial_revision.py'
+      - 'docs/migration/chme3-public-drawing-leads.candidate.json'
+      - 'qa/validate_chme3_public_drawing_leads.py'
+      - 'qa/test_chme3_public_drawing_leads.py'
+      - '.github/workflows/stage1-source-link-triage.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-link-triage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regression tests (18)
+        run: python3 -m unittest qa/test_stage1_source_link_triage.py -v
+      - name: Validate 19 CHME3 targets and 57 Ermak source IDs
+        run: python3 qa/validate_stage1_source_link_triage.py
+      - name: Verify CHME3T EDB original-source historical evidence (18 tests)
+        run: python3 -m unittest qa/test_chme3t_edb_evidence.py -v
+      - name: Validate 3 original CHME3T object pointers and 8 blocked cross-variant links
+        run: python3 qa/validate_chme3t_edb_evidence.py
+      - name: Verify 996r original order and 2024 amendment identity (10 tests)
+        run: python3 -m unittest qa/test_ermak_996r_edition.py -v
+      - name: Keep 57 Ermak 996r source occurrences quarantined
+        run: python3 qa/validate_ermak_996r_edition.py
+      - name: Preserve original quarantine boundary
+        run: python3 qa/validate_stage1_unresolved_source_quarantine.py
+      - name: Verify historical RE1 public mirror and MSUD-N/015 boundary (12 tests)
+        run: python3 -m unittest qa/test_ermak_re1_public_mirror.py -v
+      - name: Keep 56 RE1 public source occurrences quarantined
+        run: python3 qa/validate_ermak_re1_public_mirror.py
+      - name: Cross-check 222 CHME3 source edges and donor scheme objects (17 tests)
+        run: python3 -m unittest qa/test_chme3_priority_schemes.py -v
+      - name: Verify three priority schemes remain non-runtime training references
+        run: python3 -m qa.validate_chme3_priority_schemes
+
+      - name: Cross-check remaining 388 CHME3 source edges (21 tests)
+        run: python3 -m unittest qa/test_chme3_remaining_schemes.py -v
+      - name: Verify 16 remaining targets and 8 quarantined cross-variant conflicts
+        run: python3 -m qa.validate_chme3_remaining_schemes
+
+      - name: Check CHME3T serial-6245 revision and component differences (25 tests)
+        run: python3 -m unittest qa/test_chme3t_serial_revision.py -v
+      - name: Validate historical serial gate remains quarantined
+        run: python3 -m qa.validate_chme3t_serial_revision
+
+      - name: Check CHME3T/CHME3E public archive leads (12 tests)
+        run: python3 -m unittest qa/test_chme3_public_drawing_leads.py -v
+      - name: Reject unverified factory claims and cross-variant candidate promotion
+        run: python3 -m qa.validate_chme3_public_drawing_leads

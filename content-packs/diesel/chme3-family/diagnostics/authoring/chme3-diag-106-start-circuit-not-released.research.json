@@ -1,0 +1,769 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 61,
+  "originalId": "CHME3-DIAG-106",
+  "scenarioId": "chme3.diagnostics.chme3-diag-106",
+  "title": "После пуска цепь пуска не разбирается",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+    "documentPointer": "/scenarios/5",
+    "documentBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-106",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "EMERGENCY_ELECTRICAL",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-TROUBLE-2020",
+      "CHME3-SRC-TCH11-VYBORG-2007"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-CONTACTORS",
+      "CHME3-EQ-DIESEL",
+      "CHME3-EQ-BATTERY"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "mechanicalContactSeparation": false,
+    "batteryExternalCharging": false,
+    "voltageRegulatorAdjustment": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "revision": "Pinned donor blob 41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N148",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/148.htm",
+      "revision": "Нотик, 1996, §68: цепь пуска и штатное отключение КД1/КД2; историческое описание, не действующая инструкция",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/146.htm",
+      "revision": "Нотик 1996 §67: электрические различия ЧМЭ3Т/ЧМЭ3Э",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "UNVERIFIED_TRAINING_OR_FIELD",
+      "ref": "CHME3-SRC-SCBIST-TROUBLE-2020",
+      "revision": "Донорский практический/учебный источник без актуальной первичной нормы",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местный материал 2007 года, текущий статус не подтверждён",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По ранее оформленным сведениям подтверждено, что сейчас отсутствуют продолжающийся пусковой режим, нагрев, дым и другие опасные признаки?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Речь о завершённом эпизоде, а не о продолжающемся включении пусковой цепи?",
+          "responses": {
+            "YES": "s3",
+            "NO": "stop-active",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В записи эпизода отдельно указаны состояния КД1 и КД2 после окончания пуска?",
+          "responses": {
+            "YES": "obs-a",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Запись о двух аппаратах позволяет описать симптом, но не доказывает сваривание контактов, причину или безопасное состояние машины.",
+          "responses": {},
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи состояний КД1 и КД2 причина и сам факт неразобранной цепи остаются неподтверждёнными.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: текущее безопасное состояние не подтверждено. Не продолжать диагностику, не повторять пуск, не выполнять измерения, вскрытие или вмешательство. Действовать только по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-active",
+          "type": "STOP",
+          "text": "STOP: возможное продолжающееся удержание пуска. Никаких попыток разъединять КД1/КД2, переключать или запускать снова.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Текущее безопасное состояние подтверждено ранее оформленным протоколом, без признаков удержания пуска, перегрева и дыма?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Неразбор пусковой цепи относится только к завершённому историческому событию?",
+          "responses": {
+            "YES": "d3",
+            "NO": "stop-active",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Имеются независимые записи о КД1 и КД2, сделанные до начала данного анализа?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В записи различены механическое положение аппарата и косвенная индикация пускового режима?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Зафиксирован ли момент прекращения команды пуска отдельно от признака состояния КД1/КД2?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без раздельных сведений о КД1 и КД2 невозможно локализовать симптом; новые проверки в этом материале не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Индикатор или косвенное свидетельство не доказывает сваривание силового контакта.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Временная последовательность помогает описать эпизод, но не подтверждает электрическую причину.",
+          "responses": {},
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без раздельной временной записи нельзя установить, что именно оставалось включённым после пуска.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: текущее безопасное состояние не подтверждено. Не продолжать диагностику, не повторять пуск, не выполнять измерения, вскрытие или вмешательство. Действовать только по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-active",
+          "type": "STOP",
+          "text": "STOP: пусковая цепь может оставаться активной. Никакого воздействия на КД1/КД2, повторного пуска или ремонта.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "kd",
+      "title": "КД1 и КД2 в архивной схеме",
+      "sourceId": "N148",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "kd-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «КД1 и КД2 в архивной схеме»?",
+          "responses": {
+            "YES": "kd-yes",
+            "NO": "kd-no",
+            "UNKNOWN": "kd-stop"
+          },
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "kd-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§68 Нотика различает пусковые контакторы КД1/КД2; номера цепей и способы воздействия не переносить в инструкции.",
+          "responses": {},
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "kd-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "kd-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "shutdown",
+      "title": "Штатное окончание пуска",
+      "sourceId": "N148",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "shutdown-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Штатное окончание пуска»?",
+          "responses": {
+            "YES": "shutdown-yes",
+            "NO": "shutdown-no",
+            "UNKNOWN": "shutdown-stop"
+          },
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "shutdown-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивный §68 описывает отключение пусковых контакторов после завершения пуска; событие с их удержанием рассматривается как потенциально опасное.",
+          "responses": {},
+          "sourceRefs": [
+            "N148"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "shutdown-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "shutdown-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "profiles",
+      "title": "Исполнения и модернизации",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "profiles-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Исполнения и модернизации»?",
+          "responses": {
+            "YES": "profiles-yes",
+            "NO": "profiles-no",
+            "UNKNOWN": "profiles-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "profiles-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Электрические аппараты ЧМЭ3Т/ЧМЭ3Э отличаются; без схемы конкретной машины перенос логики недопустим.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "legacy",
+      "title": "Опасная архивная практика",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "legacy-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Опасная архивная практика»?",
+          "responses": {
+            "YES": "legacy-yes",
+            "NO": "legacy-no",
+            "UNKNOWN": "legacy-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "legacy-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донор содержит упоминание механического разделения контактов; в исследовательском кандидате это только запись о риске, не действие.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Аварийный запрет действий",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "safety-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Аварийный запрет действий»?",
+          "responses": {
+            "YES": "safety-yes",
+            "NO": "safety-no",
+            "UNKNOWN": "safety-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "safety-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "При продолжающемся или неизвестном пусковом режиме STOP; никаких повторных пусков, вскрытия, перемычек или воздействия на контакторы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "safety-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "safety-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-107",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    },
+    {
+      "originalId": "CHME3-DIAG-101",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    },
+    {
+      "originalId": "CHME3-DIAG-109",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    }
+  ],
+  "sourceDiscrepancies": [
+    "Донор упоминает механическое разделение контактов; этот архивный приём не включён в действия и требует отдельного современного safety gate.",
+    "Нотик 1996 §68 объясняет нормальную последовательность КД1/КД2, но не устанавливает действующий порядок аварийного вмешательства или применимость к модернизациям."
+  ],
+  "openGaps": [
+    "Текущий аварийный порядок для конкретного исполнения",
+    "Независимая фиксация безопасного состояния",
+    "Документальные признаки КД1/КД2",
+    "Действующее заводское РЭ",
+    "Профиль и модернизация",
+    "Ролевые полномочия и safety review",
+    "Независимая распаковка gzip",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

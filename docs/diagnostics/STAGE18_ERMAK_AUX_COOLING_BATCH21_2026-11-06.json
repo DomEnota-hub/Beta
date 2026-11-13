@@ -1,0 +1,3810 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-aux-cooling-batch21/1",
+    "date": "2026-11-06",
+    "baseHead": "d7db1560d482f78e536774d7cd9a973b4a955dcc",
+    "previousCiRun": 42262913866,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-065",
+      "ER-DIAG-066",
+      "ER-DIAG-067",
+      "ER-DIAG-068",
+      "ER-DIAG-069"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Pinned sourceObject projection; donor gzip not independently decoded",
+    "batchBoundary": "065 cold-oil interlock, 066 transformer temperature, 067 TED cooling, 068 VIP cooling, 069 M13 ballast fan; 070 PCHF separate"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-aux-cooling-batch21-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-065",
+      "scenarioId": "ermak.diag.ER-DIAG-065",
+      "title": "Маслонасос не запускается при холодном масле",
+      "symptom": "При низкой температуре масло трансформатора холодное, маслонасос не включается",
+      "hazardCategory": "COLD_OIL_PUMP_INHIBIT_VS_FAILURE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-B0",
+        "SYS-10",
+        "SYS-20",
+        "SYS-40",
+        "SYS-C0",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-004",
+        "ER-EQ-HV-008",
+        "ER-EQ-CT-013"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-011",
+          "role": "profile_diagnostic_material",
+          "document": "Практические рекомендации по неисправностям 2ЭС5К/3ЭС5К раннего исполнения",
+          "locator": "симптомы МСУД-Н/рекуперации; точная редакция памятки не подтверждена",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "памятка раннего исполнения",
+            "revision": "не является действующим нормативным разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-AUX",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи вспомогательных машин, M11/M12/M13/M15, KM7-KM15, U5, SP6/SP7, цепи обогрева и кондиционера",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_auxiliary_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "ВС1-ВС3, охлаждение ТЭД, ВИП, реакторов, трансформатора и блока балластных резисторов",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_ventilation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-PCHF",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "преобразователь частоты и числа фаз U5 / ПЧФ-177, питание M11/M12/M15 на низкой частоте",
+          "url": "https://rcit.su/techinfoV5.html",
+          "role": "manufacturer_converter_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; исполнение ПЧФ подтверждать по электровозу",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-OPS-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "проверка вентиляторов/маслонасоса; зимний режим SK11/KV47; вспомогательный компрессор",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; ранние температурные алгоритмы профильны",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-AUX-B10",
+          "document": "Перечень действий локомотивных бригад №996/р от 12.04.2022",
+          "locator": "Приложение 9: вспомогательные машины 2ЭС5К/3ЭС5К; публично подтверждена редакция №592/р от 05.03.2024",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; более поздние изменения контролировать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-AUX-B10",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "вспомогательные машины, ПЧФ, компрессоры, блок №8",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; ручные переключения и восстановления не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-auxiliary-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-066",
+        "ER-DIAG-070",
+        "ER-DIAG-067"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-065",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-065"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §5, §6.5–6.6: М15 через КМ9/КМ15; холодное масло и цепь SK11/KV47 могут штатно препятствовать включению. Это не доказательство отказа насоса.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3 ВС1/ВС2/ВС3, только для применимой ранней схемы",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "РЭ7 эксплуатационный исторический контекст; режимы и действия не перенесены",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT_NOT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит восстановительные операции для вспомогательных машин; они не разрешены исследовательской карточкой. Исторический ER-SRC-011 не даёт полномочий.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-SRC-011 исторический; М15, KM9/KM15, SK11/KV47 привязаны только к архивной ранней схеме",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Нельзя запускать М15, переключать S18/S17, сбрасывать тепловые реле, нагревать трансформатор для проверки или принимать архивный температурный порог за действующий для данной машины.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Различие штатной блокировки холодного масла и отказа М15 без новых испытаний.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н ранней схемы и МСУД-015 позднего исполнения не взаимозаменяемы; серийная комплектация неизвестна.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные заводские схемы, исторические памятки и найденные нормативы не устанавливают текущие полномочия для конкретной машины.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: При низкой температуре масло трансформатора холодное, маслонасос не включается?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §5, §6.5–6.6: М15 через КМ9/КМ15; холодное масло и цепь SK11/KV47 могут штатно препятствовать включению. Это не доказательство отказа насоса. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: При низкой температуре масло трансформатора холодное, маслонасос не включается?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Зафиксированы температура масла, состояние маслонасоса М15 и момент наблюдения, а не только отсутствие пуска?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены предусмотренная архивной схемой холодная блокировка KV47/SK11 и возможная неисправность питания/насоса?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходное сообщение, время, секция, исполнение, условия и документ-источник?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ1 §5, §6.5–6.6: М15 через КМ9/КМ15; холодное масло и цепь SK11/KV47 могут штатно препятствовать включению. Это не доказательство отказа насоса. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-065-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом и разграничение",
+          "text": "ER-DIAG-065: При низкой температуре масло трансформатора холодное, маслонасос не включается. Различие штатной блокировки холодного масла и отказа М15 без новых испытаний. Не подтверждает первопричину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-065",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-065-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная техническая схема",
+          "text": "РЭ1 §5, §6.5–6.6: М15 через КМ9/КМ15; холодное масло и цепь SK11/KV47 могут штатно препятствовать включению. Это не доказательство отказа насоса.",
+          "sourceRefs": [
+            "manufacturer",
+            "ventilation"
+          ],
+          "locator": "РЭ1 §5, §6.5–6.6; РЭ7 использование по назначению",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-065-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Памятка содержит восстановительные операции для вспомогательных машин; они не разрешены исследовательской карточкой. Исторический ER-SRC-011 не даёт полномочий. ER-SRC-011 исторический; М15, KM9/KM15, SK11/KV47 привязаны только к архивной ранней схеме",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "Памятка Ермак; исходные ER-SRC записи",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-065-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "№996/р: публично известна редакция 2024, полнота последующих изменений неизвестна; №3508/р относится к ТО/ремонту; Правила тормозов 2026 не являются разрешением на испытания охлаждения.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "№996/р, №3508/р; приложение 65 Правил 2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-065-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и пределы",
+          "text": "Нельзя запускать М15, переключать S18/S17, сбрасывать тепловые реле, нагревать трансформатор для проверки или принимать архивный температурный порог за действующий для данной машины. Только завершённые записи; UNKNOWN→STOP, неподтверждённое исполнение→BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ1 §5, §6.5–6.6: М15 через КМ9/КМ15; холодное масло и цепь SK11/KV47 могут штатно препятствовать включению. Это не доказательство отказа насоса.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_VENTILATION",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 охлаждают ВИП, ТЭД и теплообменники; ВС3 охлаждает ББР. Применимость зависит от исполнения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Памятка содержит восстановительные операции для вспомогательных машин; они не разрешены исследовательской карточкой. Исторический ER-SRC-011 не даёт полномочий.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-aux-cooling-batch21-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-066",
+      "scenarioId": "ermak.diag.ER-DIAG-066",
+      "title": "Растёт температура тягового трансформатора",
+      "symptom": "Наблюдаются признаки перегрева трансформатора или недостаточной циркуляции масла",
+      "hazardCategory": "TRANSFORMER_TEMPERATURE_RISE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-10",
+        "SYS-20",
+        "SYS-30",
+        "SYS-B0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-HV-008",
+        "ER-EQ-AU-004",
+        "ER-EQ-AU-003"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-033",
+          "role": "technical_basis",
+          "document": "Чирчикский трансформаторный завод: ОНДЦЭ-4350/25П-У2",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://chtz.uz/product/single/transformatory-tiagovye-dlia-elektrovozov/transformator-tiagovyi-ondtse-435025p-u2",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ОНДЦЭ-4350/25П-У2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-AUX",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи вспомогательных машин, M11/M12/M13/M15, KM7-KM15, U5, SP6/SP7, цепи обогрева и кондиционера",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_auxiliary_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "ВС1-ВС3, охлаждение ТЭД, ВИП, реакторов, трансформатора и блока балластных резисторов",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_ventilation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-PCHF",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "преобразователь частоты и числа фаз U5 / ПЧФ-177, питание M11/M12/M15 на низкой частоте",
+          "url": "https://rcit.su/techinfoV5.html",
+          "role": "manufacturer_converter_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; исполнение ПЧФ подтверждать по электровозу",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-OPS-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "проверка вентиляторов/маслонасоса; зимний режим SK11/KV47; вспомогательный компрессор",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; ранние температурные алгоритмы профильны",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-AUX-B10",
+          "document": "Перечень действий локомотивных бригад №996/р от 12.04.2022",
+          "locator": "Приложение 9: вспомогательные машины 2ЭС5К/3ЭС5К; публично подтверждена редакция №592/р от 05.03.2024",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; более поздние изменения контролировать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-AUX-B10",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "вспомогательные машины, ПЧФ, компрессоры, блок №8",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; ручные переключения и восстановления не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-auxiliary-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-065",
+        "ER-DIAG-067",
+        "ER-DIAG-068"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-066",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-066"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3 описывает воздушное охлаждение теплообменников трансформатора; РЭ1 §5/§6.5 описывает маслонасос М15. Рост показания сам по себе не доказывает отказ М15 или вентилятора.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3 ВС1/ВС2/ВС3, только для применимой ранней схемы",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "РЭ7 эксплуатационный исторический контекст; режимы и действия не перенесены",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT_NOT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические памятки предлагают вмешательства в вспомогательные цепи, но не подтверждают текущие действия. Нельзя переносить метод на конкретную секцию.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-SRC-033 заводская карточка трансформатора не доказывает комплектацию установленной секции",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Нельзя открывать ВВК, осматривать трансформатор под напряжением, измерять масло, запускать насос/вентилятор или продолжать нагрев для проверки.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Показание и реальный нагрев, циркуляция масла и вентиляция являются разными гипотезами.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н ранней схемы и МСУД-015 позднего исполнения не взаимозаменяемы; серийная комплектация неизвестна.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные заводские схемы, исторические памятки и найденные нормативы не устанавливают текущие полномочия для конкретной машины.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Наблюдаются признаки перегрева трансформатора или недостаточной циркуляции масла?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3 описывает воздушное охлаждение теплообменников трансформатора; РЭ1 §5/§6.5 описывает маслонасос М15. Рост показания сам по себе не доказывает отказ М15 или вентилятора. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Наблюдаются признаки перегрева трансформатора или недостаточной циркуляции масла?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённой записи есть независимые сведения о росте температуры трансформатора и работе системы охлаждения?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены показание температуры, реальный нагрев, циркуляция масла М15 и воздушное охлаждение теплообменника?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходное сообщение, время, секция, исполнение, условия и документ-источник?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3 описывает воздушное охлаждение теплообменников трансформатора; РЭ1 §5/§6.5 описывает маслонасос М15. Рост показания сам по себе не доказывает отказ М15 или вентилятора. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-066-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом и разграничение",
+          "text": "ER-DIAG-066: Наблюдаются признаки перегрева трансформатора или недостаточной циркуляции масла. Показание и реальный нагрев, циркуляция масла и вентиляция являются разными гипотезами. Не подтверждает первопричину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-066",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-066-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная техническая схема",
+          "text": "РЭ2 §3 описывает воздушное охлаждение теплообменников трансформатора; РЭ1 §5/§6.5 описывает маслонасос М15. Рост показания сам по себе не доказывает отказ М15 или вентилятора.",
+          "sourceRefs": [
+            "manufacturer",
+            "ventilation"
+          ],
+          "locator": "РЭ2 §3; РЭ1 §5 и §6.5; РЭ4 профиль трансформатора",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-066-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Исторические памятки предлагают вмешательства в вспомогательные цепи, но не подтверждают текущие действия. Нельзя переносить метод на конкретную секцию. ER-SRC-033 заводская карточка трансформатора не доказывает комплектацию установленной секции",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "Памятка Ермак; исходные ER-SRC записи",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-066-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "№996/р: публично известна редакция 2024, полнота последующих изменений неизвестна; №3508/р относится к ТО/ремонту; Правила тормозов 2026 не являются разрешением на испытания охлаждения.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "№996/р, №3508/р; приложение 65 Правил 2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-066-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и пределы",
+          "text": "Нельзя открывать ВВК, осматривать трансформатор под напряжением, измерять масло, запускать насос/вентилятор или продолжать нагрев для проверки. Только завершённые записи; UNKNOWN→STOP, неподтверждённое исполнение→BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3 описывает воздушное охлаждение теплообменников трансформатора; РЭ1 §5/§6.5 описывает маслонасос М15. Рост показания сам по себе не доказывает отказ М15 или вентилятора.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_VENTILATION",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 охлаждают ВИП, ТЭД и теплообменники; ВС3 охлаждает ББР. Применимость зависит от исполнения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические памятки предлагают вмешательства в вспомогательные цепи, но не подтверждают текущие действия. Нельзя переносить метод на конкретную секцию.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-aux-cooling-batch21-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-067",
+      "scenarioId": "ermak.diag.ER-DIAG-067",
+      "title": "Нет охлаждения ТЭД",
+      "symptom": "Вентиляция тяговых двигателей отсутствует или явно недостаточна",
+      "hazardCategory": "TRACTION_MOTOR_COOLING_AIRFLOW_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-30",
+        "SYS-B0",
+        "SYS-20",
+        "SYS-21",
+        "SYS-A0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-002",
+        "ER-EQ-AU-003",
+        "ER-EQ-TR-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-004",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ3. Электрические машины",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV53.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ3",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-AUX",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи вспомогательных машин, M11/M12/M13/M15, KM7-KM15, U5, SP6/SP7, цепи обогрева и кондиционера",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_auxiliary_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "ВС1-ВС3, охлаждение ТЭД, ВИП, реакторов, трансформатора и блока балластных резисторов",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_ventilation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-PCHF",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "преобразователь частоты и числа фаз U5 / ПЧФ-177, питание M11/M12/M15 на низкой частоте",
+          "url": "https://rcit.su/techinfoV5.html",
+          "role": "manufacturer_converter_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; исполнение ПЧФ подтверждать по электровозу",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-OPS-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "проверка вентиляторов/маслонасоса; зимний режим SK11/KV47; вспомогательный компрессор",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; ранние температурные алгоритмы профильны",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-AUX-B10",
+          "document": "Перечень действий локомотивных бригад №996/р от 12.04.2022",
+          "locator": "Приложение 9: вспомогательные машины 2ЭС5К/3ЭС5К; публично подтверждена редакция №592/р от 05.03.2024",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; более поздние изменения контролировать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-AUX-B10",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "вспомогательные машины, ПЧФ, компрессоры, блок №8",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; ручные переключения и восстановления не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-auxiliary-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-068",
+        "ER-DIAG-069",
+        "ER-DIAG-066"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-067",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-067"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 подают воздух через ВИП/реакторы к ТЭД и теплообменникам; РЭ1 §5 описывает М11/М12 и U5. Неравенство показаний и реального потока требует отдельного подтверждения.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3 ВС1/ВС2/ВС3, только для применимой ранней схемы",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "РЭ7 эксплуатационный исторический контекст; режимы и действия не перенесены",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT_NOT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Историческая памятка связывает запуск вентиляторов с контакторами и защитами, но не даёт права на сбросы или перемычки.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-SRC-003 и ER-SRC-004 дают только архивную техническую основу",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Нельзя запускать вентиляторы для пробы, открывать кожухи/воздуховоды, работать у вращающихся механизмов, восстанавливать защиту и создавать тяговую нагрузку.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Отсутствие потока к ТЭД не тождественно неисправности конкретного двигателя М11/М12.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н ранней схемы и МСУД-015 позднего исполнения не взаимозаменяемы; серийная комплектация неизвестна.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные заводские схемы, исторические памятки и найденные нормативы не устанавливают текущие полномочия для конкретной машины.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Вентиляция тяговых двигателей отсутствует или явно недостаточна?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: ВС1/ВС2 подают воздух через ВИП/реакторы к ТЭД и теплообменникам; РЭ1 §5 описывает М11/М12 и U5. Неравенство показаний и реального потока требует отдельного подтверждения. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Вентиляция тяговых двигателей отсутствует или явно недостаточна?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В архивной записи отдельно указаны недостаточный поток охлаждения ТЭД и состояние вентиляторной группы?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены вращение вентилятора, реальная подача воздуха к ТЭД, воздуховоды и индикация МСУД?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходное сообщение, время, секция, исполнение, условия и документ-источник?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: ВС1/ВС2 подают воздух через ВИП/реакторы к ТЭД и теплообменникам; РЭ1 §5 описывает М11/М12 и U5. Неравенство показаний и реального потока требует отдельного подтверждения. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-067-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом и разграничение",
+          "text": "ER-DIAG-067: Вентиляция тяговых двигателей отсутствует или явно недостаточна. Отсутствие потока к ТЭД не тождественно неисправности конкретного двигателя М11/М12. Не подтверждает первопричину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-067",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-067-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная техническая схема",
+          "text": "РЭ2 §3: ВС1/ВС2 подают воздух через ВИП/реакторы к ТЭД и теплообменникам; РЭ1 §5 описывает М11/М12 и U5. Неравенство показаний и реального потока требует отдельного подтверждения.",
+          "sourceRefs": [
+            "manufacturer",
+            "ventilation"
+          ],
+          "locator": "РЭ2 §3 ВС1/ВС2; РЭ1 §5 М11/М12/U5",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-067-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Историческая памятка связывает запуск вентиляторов с контакторами и защитами, но не даёт права на сбросы или перемычки. ER-SRC-003 и ER-SRC-004 дают только архивную техническую основу",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "Памятка Ермак; исходные ER-SRC записи",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-067-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "№996/р: публично известна редакция 2024, полнота последующих изменений неизвестна; №3508/р относится к ТО/ремонту; Правила тормозов 2026 не являются разрешением на испытания охлаждения.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "№996/р, №3508/р; приложение 65 Правил 2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-067-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и пределы",
+          "text": "Нельзя запускать вентиляторы для пробы, открывать кожухи/воздуховоды, работать у вращающихся механизмов, восстанавливать защиту и создавать тяговую нагрузку. Только завершённые записи; UNKNOWN→STOP, неподтверждённое исполнение→BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 подают воздух через ВИП/реакторы к ТЭД и теплообменникам; РЭ1 §5 описывает М11/М12 и U5. Неравенство показаний и реального потока требует отдельного подтверждения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_VENTILATION",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 охлаждают ВИП, ТЭД и теплообменники; ВС3 охлаждает ББР. Применимость зависит от исполнения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Историческая памятка связывает запуск вентиляторов с контакторами и защитами, но не даёт права на сбросы или перемычки.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-aux-cooling-batch21-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-068",
+      "scenarioId": "ermak.diag.ER-DIAG-068",
+      "title": "Нет вентиляции ВИП / силовых аппаратов",
+      "symptom": "Не создаётся требуемый воздушный поток в зоне силовой аппаратуры",
+      "hazardCategory": "VIP_POWER_EQUIPMENT_AIRFLOW_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-B0",
+        "SYS-20",
+        "SYS-21",
+        "SYS-40",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-003",
+        "ER-EQ-TR-001",
+        "ER-EQ-CT-010"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-AUX",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи вспомогательных машин, M11/M12/M13/M15, KM7-KM15, U5, SP6/SP7, цепи обогрева и кондиционера",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_auxiliary_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "ВС1-ВС3, охлаждение ТЭД, ВИП, реакторов, трансформатора и блока балластных резисторов",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_ventilation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-PCHF",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "преобразователь частоты и числа фаз U5 / ПЧФ-177, питание M11/M12/M15 на низкой частоте",
+          "url": "https://rcit.su/techinfoV5.html",
+          "role": "manufacturer_converter_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; исполнение ПЧФ подтверждать по электровозу",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-OPS-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "проверка вентиляторов/маслонасоса; зимний режим SK11/KV47; вспомогательный компрессор",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; ранние температурные алгоритмы профильны",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-AUX-B10",
+          "document": "Перечень действий локомотивных бригад №996/р от 12.04.2022",
+          "locator": "Приложение 9: вспомогательные машины 2ЭС5К/3ЭС5К; публично подтверждена редакция №592/р от 05.03.2024",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; более поздние изменения контролировать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-AUX-B10",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "вспомогательные машины, ПЧФ, компрессоры, блок №8",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; ручные переключения и восстановления не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-auxiliary-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-067",
+        "ER-DIAG-069",
+        "ER-DIAG-066"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-068",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-068"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: поток ВС1/ВС2 проходит через ВИП, затем через реакторы и далее к ТЭД/теплообменникам. Признак недостаточного охлаждения ВИП не равен отказу вентилятора и не доказывает температуру узла.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3 ВС1/ВС2/ВС3, только для применимой ранней схемы",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "РЭ7 эксплуатационный исторический контекст; режимы и действия не перенесены",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT_NOT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические способы восстановления вентиляторов/ПЧФ не разрешают диагностику ВИП в движении и ВВ-измерения.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-SRC-006 описывает архивное электронное оборудование, но не идентифицирует позднюю МСУД-015",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Нельзя входить в ВВК, трогать ВИП/силовые аппараты, проверять воздушный тракт при работе, сбрасывать защиты или принудительно запускать вентиляторы.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "ВИП/силовая аппаратура и ТЭД получают воздух по связанным, но не тождественным участкам.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н ранней схемы и МСУД-015 позднего исполнения не взаимозаменяемы; серийная комплектация неизвестна.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные заводские схемы, исторические памятки и найденные нормативы не устанавливают текущие полномочия для конкретной машины.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Не создаётся требуемый воздушный поток в зоне силовой аппаратуры?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: поток ВС1/ВС2 проходит через ВИП, затем через реакторы и далее к ТЭД/теплообменникам. Признак недостаточного охлаждения ВИП не равен отказу вентилятора и не доказывает температуру узла. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: Не создаётся требуемый воздушный поток в зоне силовой аппаратуры?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённой записи различены признаки недостаточного охлаждения ВИП/силовой аппаратуры и показания вентиляторов?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены потоки ВС1/ВС2 к ВИП, реакторам и ТЭД; отсутствие охлаждения одного узла не приписано всей системе?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходное сообщение, время, секция, исполнение, условия и документ-источник?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: поток ВС1/ВС2 проходит через ВИП, затем через реакторы и далее к ТЭД/теплообменникам. Признак недостаточного охлаждения ВИП не равен отказу вентилятора и не доказывает температуру узла. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-068-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом и разграничение",
+          "text": "ER-DIAG-068: Не создаётся требуемый воздушный поток в зоне силовой аппаратуры. ВИП/силовая аппаратура и ТЭД получают воздух по связанным, но не тождественным участкам. Не подтверждает первопричину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-068",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-068-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная техническая схема",
+          "text": "РЭ2 §3: поток ВС1/ВС2 проходит через ВИП, затем через реакторы и далее к ТЭД/теплообменникам. Признак недостаточного охлаждения ВИП не равен отказу вентилятора и не доказывает температуру узла.",
+          "sourceRefs": [
+            "manufacturer",
+            "ventilation"
+          ],
+          "locator": "РЭ2 §3 ВС1/ВС2; РЭ1 §5; РЭ5 ПЧФ",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-068-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Исторические способы восстановления вентиляторов/ПЧФ не разрешают диагностику ВИП в движении и ВВ-измерения. ER-SRC-006 описывает архивное электронное оборудование, но не идентифицирует позднюю МСУД-015",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "Памятка Ермак; исходные ER-SRC записи",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-068-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "№996/р: публично известна редакция 2024, полнота последующих изменений неизвестна; №3508/р относится к ТО/ремонту; Правила тормозов 2026 не являются разрешением на испытания охлаждения.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "№996/р, №3508/р; приложение 65 Правил 2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-068-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и пределы",
+          "text": "Нельзя входить в ВВК, трогать ВИП/силовые аппараты, проверять воздушный тракт при работе, сбрасывать защиты или принудительно запускать вентиляторы. Только завершённые записи; UNKNOWN→STOP, неподтверждённое исполнение→BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: поток ВС1/ВС2 проходит через ВИП, затем через реакторы и далее к ТЭД/теплообменникам. Признак недостаточного охлаждения ВИП не равен отказу вентилятора и не доказывает температуру узла.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_VENTILATION",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 охлаждают ВИП, ТЭД и теплообменники; ВС3 охлаждает ББР. Применимость зависит от исполнения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические способы восстановления вентиляторов/ПЧФ не разрешают диагностику ВИП в движении и ВВ-измерения.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-aux-cooling-batch21-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-069",
+      "scenarioId": "ermak.diag.ER-DIAG-069",
+      "title": "Не работает вентилятор балластных резисторов",
+      "symptom": "В режиме рекуперации вентилятор блока балластных резисторов не запускается/останавливается",
+      "hazardCategory": "BALLAST_RESISTOR_FAN_M13_FAILURE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-21",
+        "SYS-30",
+        "SYS-B0",
+        "SYS-20"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-AU-005",
+        "ER-EQ-TR-010",
+        "ER-EQ-TR-001"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-AUX",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "цепи вспомогательных машин, M11/M12/M13/M15, KM7-KM15, U5, SP6/SP7, цепи обогрева и кондиционера",
+          "url": "https://rcit.su/techinfoV51.html",
+          "role": "manufacturer_auxiliary_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; обозначения и уставки подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE2-VENT-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Система вентиляции",
+          "locator": "ВС1-ВС3, охлаждение ТЭД, ВИП, реакторов, трансформатора и блока балластных резисторов",
+          "url": "https://rcit.su/techinfoV52.html",
+          "role": "manufacturer_ventilation_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; применимость зависит от исполнения",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE5-PCHF",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование. Преобразователи",
+          "locator": "преобразователь частоты и числа фаз U5 / ПЧФ-177, питание M11/M12/M15 на низкой частоте",
+          "url": "https://rcit.su/techinfoV5.html",
+          "role": "manufacturer_converter_technical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; исполнение ПЧФ подтверждать по электровозу",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE7-OPS-B10",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ7. Использование по назначению",
+          "locator": "проверка вентиляторов/маслонасоса; зимний режим SK11/KV47; вспомогательный компрессор",
+          "url": "https://rcit.su/techinfoV57.html",
+          "role": "manufacturer_operation_crosscheck",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ7",
+            "revision": "публичная копия; ранние температурные алгоритмы профильны",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-996R-AUX-B10",
+          "document": "Перечень действий локомотивных бригад №996/р от 12.04.2022",
+          "locator": "Приложение 9: вспомогательные машины 2ЭС5К/3ЭС5К; публично подтверждена редакция №592/р от 05.03.2024",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-na-lokomo/неисправности-на-электровозах-2эс5к-3э/",
+          "role": "current_procedure_crosscheck",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№996/р",
+            "revision": "№592/р от 05.03.2024; более поздние изменения контролировать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-LEGACY-AUX-B10",
+          "document": "Памятка локомотивным бригадам по неисправностям 2ЭС5К/3ЭС5К",
+          "locator": "вспомогательные машины, ПЧФ, компрессоры, блок №8",
+          "url": "https://rcit.su/techinfoW04.html",
+          "role": "legacy_symptom_crosscheck_only",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "legacy-public-copy",
+            "revision": "старая памятка; ручные переключения и восстановления не являются текущим разрешением",
+            "verifiedAt": "2026-09-26",
+            "status": "HISTORICAL"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-msud-n-early-auxiliary-research-only",
+      "earlyMsud": "MSUD-N_PROFILE_DEPENDENT",
+      "lateMsud": "MSUD-015_NOT_EQUIVALENT",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-062",
+        "ER-DIAG-067",
+        "ER-DIAG-068"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "objectId": "ER-DIAG-069",
+          "rawGzipIndependentlyDecoded": false,
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "locator": "diagnostics-04.pack.json ER-DIAG-069"
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: ВС3 предназначена для охлаждения ББР при рекуперации; РЭ1 §5 и §6.7 связывают М13 с КМ13. Сигнал защиты R10 не доказывает неисправность вентилятора М13.",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "ventilation": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC_2007",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3 ВС1/ВС2/ВС3, только для применимой ранней схемы",
+          "status": "ARCHIVAL_VARIANT_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance": {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_MAINTENANCE",
+          "url": "https://rcit.su/techinfoV58.html",
+          "locator": "РЭ7 эксплуатационный исторический контекст; режимы и действия не перенесены",
+          "status": "ARCHIVAL_PROFILE_DEPENDENT_NOT_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "memo": {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические рекомендации по принудительному запуску или изменению схемы вентилятора не являются действующими разрешениями.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "practice": {
+          "sourceKind": "UNRESOLVED_HISTORICAL_DONOR",
+          "url": "",
+          "locator": "ER-SRC-002/003/005/006 являются архивными источниками, не современными допусками",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "normative": {
+          "sourceKind": "NORMATIVE_PUBLIC_REQUIRES_REVIEW",
+          "url": "https://птэ-ржд.рф/ustraneniyu-neispravnostej-на-локомо/",
+          "locator": "№996/р, редакция 2024, полнота изменений не установлена",
+          "status": "CURRENT_COMPLETENESS_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "brakeRules2026": {
+          "sourceKind": "NORMATIVE_CURRENT_PUBLIC_TEXT",
+          "url": "https://prg.kz/m/amp/document/39816410/",
+          "locator": "Приложение 65, введено 01.07.2026; точные полномочия не установлены",
+          "status": "DOCUMENT_IDENTIFIED_SPECIFIC_AUTHORITY_UNVERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "maintenance3508": {
+          "sourceKind": "NORMATIVE_TECHNICAL_PUBLIC",
+          "url": "https://meganorm.ru/mega_doc/norm/instrukciya/1/instruktsiya_po_tekhnicheskomu_obsluzhivaniyu_remontu_i.html",
+          "locator": "ТО и ремонт, не поездные полномочия",
+          "status": "MAINTENANCE_SCOPE_NOT_CREW_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE",
+          "url": "",
+          "locator": "Нельзя собирать рекуперацию для испытания, принудительно включать М13/КМ13, сбрасывать защиту ББР, осматривать вращающиеся части или делать перемычки.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-06"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Неисправность вентилятора М13 не равна срабатыванию защиты R10 и не тождественна отказам ВС1/ВС2.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "МСУД-Н ранней схемы и МСУД-015 позднего исполнения не взаимозаменяемы; серийная комплектация неизвестна.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Архивные заводские схемы, исторические памятки и найденные нормативы не устанавливают текущие полномочия для конкретной машины.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: В режиме рекуперации вентилятор блока балластных резисторов не запускается/останавливается?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: ВС3 предназначена для охлаждения ББР при рекуперации; РЭ1 §5 и §6.7 связывают М13 с КМ13. Сигнал защиты R10 не доказывает неисправность вентилятора М13. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Событие по завершённой записи продолжается или его окончание не подтверждено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Документально подтверждены ранняя МСУД-Н, установленное оборудование и схема именно этой секции?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее завершённой записи подтверждён исходный симптом: В режиме рекуперации вентилятор блока балластных резисторов не запускается/останавливается?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В завершённой записи отдельно указано отсутствие работы вентилятора ББР при рекуперации, а не только сигнал перегрева?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Разделены вентилятор М13/ВС3, защита ББР R10 и сам факт режима рекуперации?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "ventilation"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены исходное сообщение, время, секция, исполнение, условия и документ-источник?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: событие продолжается либо его завершение неизвестно; карточка не предназначена для поездных действий.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP; не выполнять новые измерения, пуски, переключения и испытания.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: точное исполнение и схема секции не подтверждены; МСУД-015 не эквивалентна МСУД-Н.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не подтверждён; не подменять другой неисправностью.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: нет независимой завершённой записи либо происхождения данных.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "РЭ2 §3: ВС3 предназначена для охлаждения ББР при рекуперации; РЭ1 §5 и §6.7 связывают М13 с КМ13. Сигнал защиты R10 не доказывает неисправность вентилятора М13. Совпадение событий не устанавливает причину и не даёт полномочий.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer",
+                "ventilation",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-069-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом и разграничение",
+          "text": "ER-DIAG-069: В режиме рекуперации вентилятор блока балластных резисторов не запускается/останавливается. Неисправность вентилятора М13 не равна срабатыванию защиты R10 и не тождественна отказам ВС1/ВС2. Не подтверждает первопричину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "diagnostics-04.pack.json ER-DIAG-069",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-069-INFO-2",
+          "version": "SHORT",
+          "title": "Архивная техническая схема",
+          "text": "РЭ2 §3: ВС3 предназначена для охлаждения ББР при рекуперации; РЭ1 §5 и §6.7 связывают М13 с КМ13. Сигнал защиты R10 не доказывает неисправность вентилятора М13.",
+          "sourceRefs": [
+            "manufacturer",
+            "ventilation"
+          ],
+          "locator": "РЭ2 §3 ВС3; РЭ1 §5 и §6.7 М13/КМ13",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-069-INFO-3",
+          "version": "DETAILED",
+          "title": "Исторические и практические сведения",
+          "text": "Исторические рекомендации по принудительному запуску или изменению схемы вентилятора не являются действующими разрешениями. ER-SRC-002/003/005/006 являются архивными источниками, не современными допусками",
+          "sourceRefs": [
+            "memo",
+            "practice"
+          ],
+          "locator": "Памятка Ермак; исходные ER-SRC записи",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-069-INFO-4",
+          "version": "DETAILED",
+          "title": "Нормативная применимость",
+          "text": "№996/р: публично известна редакция 2024, полнота последующих изменений неизвестна; №3508/р относится к ТО/ремонту; Правила тормозов 2026 не являются разрешением на испытания охлаждения.",
+          "sourceRefs": [
+            "normative",
+            "brakeRules2026",
+            "maintenance3508"
+          ],
+          "locator": "№996/р, №3508/р; приложение 65 Правил 2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-069-INFO-5",
+          "version": "DETAILED",
+          "title": "Безопасность и пределы",
+          "text": "Нельзя собирать рекуперацию для испытания, принудительно включать М13/КМ13, сбрасывать защиту ББР, осматривать вращающиеся части или делать перемычки. Только завершённые записи; UNKNOWN→STOP, неподтверждённое исполнение→BLOCKED.",
+          "sourceRefs": [
+            "safety",
+            "manufacturer"
+          ],
+          "locator": "SOURCE_AND_PROFILE_REQUIRED / SAFETY_GATE_REQUIRED",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": [
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_PUBLIC",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "РЭ2 §3: ВС3 предназначена для охлаждения ББР при рекуперации; РЭ1 §5 и §6.7 связывают М13 с КМ13. Сигнал защиты R10 не доказывает неисправность вентилятора М13.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "MANUFACTURER_ARCHIVAL_VENTILATION",
+          "url": "https://rcit.su/techinfoV52.html",
+          "locator": "РЭ2 §3: ВС1/ВС2 охлаждают ВИП, ТЭД и теплообменники; ВС3 охлаждает ББР. Применимость зависит от исполнения.",
+          "verifiedAt": "2026-11-06",
+          "status": "PROFILE_DEPENDENT"
+        },
+        {
+          "sourceKind": "HISTORICAL_TRAINING_PUBLIC",
+          "url": "https://rcit.su/techinfoW04.html",
+          "locator": "Исторические рекомендации по принудительному запуску или изменению схемы вентилятора не являются действующими разрешениями.",
+          "verifiedAt": "2026-11-06",
+          "status": "HISTORICAL_NOT_OPERATIONAL"
+        }
+      ]
+    }
+  ]
+}

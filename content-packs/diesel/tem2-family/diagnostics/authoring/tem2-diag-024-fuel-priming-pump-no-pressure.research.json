@@ -1,0 +1,895 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 79,
+  "originalId": "TEM2-DIAG-024",
+  "title": "Топливоподкачивающий насос не работает либо работает, но не создаёт нормального давления",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/23",
+    "documentBlob": "4234e401eb9d6ec03802669d0f74962cb23ea5c4",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-024.tem2",
+      "tem2u": "tem2.diagnostics.tem2-diag-024.tem2u"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-024.tem2": "93b3e9b79ab5f3a7847a3090b316969ae0b88226",
+      "tem2.diagnostics.tem2-diag-024.tem2u": "360ced5392b4cd19b819ad8c11b148f0651959d2"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "ELEVATED_MECHANICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "equipmentIds": [
+      "TEM2-EQ-DIESEL",
+      "TEM2U-EQ-DIESEL",
+      "TEM2-EQ-BAT",
+      "TEM2-EQ-START-CIRCUIT"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980",
+      "TEM2-ST3-VPOEZDKU-2017"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-START"
+    ],
+    "lineageBlob": "24e617c3d5599cb96169f79d660200d6cd684fac"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Test- pinned 3176d6ee; Stage3 source blob 4234e401; original pointer /scenarios/23",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical entries: tem2.diagnostics.tem2-diag-024.tem2, tem2.diagnostics.tem2-diag-024.tem2u; source projection not runtime equivalence",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "Ковалёв 1980: историческое описание электродвигателя топливоподкачки и топливной системы, без действующих уставок",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "ТЭМ2У, Транспорт 1988; independently checked contents list for §2.10.3, §2.10.10, §2.11.10–11 and cooling/fuel chapters; installed variant not verified",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "No independent machine event record",
+      "revision": "Field practice is hypothesis only, no machine-specific log",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current verified factory RE/IDMB, installed equipment, authorized roles and local procedures",
+      "revision": "No current variant-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Это только ретроспективный анализ завершённого события, без текущей опасности, новых испытаний и команд?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В архивной записи зафиксировано отсутствие работы топливоподкачивающего насоса или недостаточное давление топлива?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В сохранённых признаках различены неподвижный насос и работающий насос при низком давлении?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неисправность топливоподкачки по архивным признакам не установлена; пусковые жалобы могут иметь другие причины.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ работы электродвигателя и низкое давление при работающем насосе требуют разных гипотез, не ремонта.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без разделения работы насоса и давления топлива нельзя указать даже исследовательскую ветвь.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / SAFETY: при текущем событии, опасности или необходимости новой проверки опрос прекращён. Не выполнять включений, измерений, нагрузочных проб, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных сведений недостаточно. Не получать их повторным запуском, переключениями, движением, разборкой, измерениями или перемычками.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Это только ретроспективный анализ завершённого события, без текущей опасности, новых испытаний и команд?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В архивной записи зафиксировано отсутствие работы топливоподкачивающего насоса или недостаточное давление топлива?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В сохранённых признаках различены неподвижный насос и работающий насос при низком давлении?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть записи штатной индикации насоса и давления, полученные до остановки события?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В архиве отдельно отмечены признаки воздуха или ограничения подачи без новых проверок?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неисправность топливоподкачки по архивным признакам не установлена; пусковые жалобы могут иметь другие причины.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ работы электродвигателя и низкое давление при работающем насосе требуют разных гипотез, не ремонта.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без разделения работы насоса и давления топлива нельзя указать даже исследовательскую ветвь.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без штатных показаний нельзя отделить ошибку наблюдения от отказа питания или гидравлики.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Указанные признаки воздуха или ограничения подачи не доказывают неисправность фильтра, насоса либо трубопровода.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE",
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / SAFETY: при текущем событии, опасности или необходимости новой проверки опрос прекращён. Не выполнять включений, измерений, нагрузочных проб, обходов защит и вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивных сведений недостаточно. Не получать их повторным запуском, переключениями, движением, разборкой, измерениями или перемычками.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Два типа симптома",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Два типа симптома» без новых действий и проверок?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донор различает электрическое отсутствие работы насоса и недостаток давления при работающем насосе.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Электродвигатель топливоподкачки",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Электродвигатель топливоподкачки» без новых действий и проверок?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ковалёв 1980 описывает отдельный электродвигатель топливоподкачивающего насоса; проверочные действия не переносятся.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Гидравлическая ветвь",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Гидравлическая ветвь» без новых действий и проверок?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Недостаток давления не равен отказу электропитания; точные нормы давления по машине не подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Исполнение ТЭМ2У",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Исполнение ТЭМ2У» без новых действий и проверок?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Руководство 1988 относится к ТЭМ2У, но конкретная топливная схема и модернизации не сверены.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Практические гипотезы",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Сохранены ранее полученные сведения по теме «Практические гипотезы» без новых действий и проверок?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Полевые советы 2017 года имеют статус FIELD_PRACTICE, не разрешают аварийные схемы и вмешательства.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных недостаточно для установления причины, применимости или разрешённых действий.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя получать новыми испытаниями, включениями или вмешательствами.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "DIAG-002: медленный проворот дизеля не равен отказу топливоподкачки",
+    "DIAG-003: остановка после запуска не доказывает недостаток давления подкачки",
+    "Различать неподвижный насос и работающий насос с недостаточным давлением"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "TEM2-DIAG-024: исходный runtimeGraph не эквивалентен новым SHORT/DETAILED; исходный граф не заменён."
+    },
+    {
+      "status": "PROFILE_BOUNDARY",
+      "detail": "Только профили tem2-base, tem2u-improved; фактическое установленное оборудование не подтверждено."
+    },
+    {
+      "status": "CANONICAL_PROJECTION",
+      "detail": "Canonical targets: tem2.diagnostics.tem2-diag-024.tem2, tem2.diagnostics.tem2-diag-024.tem2u; source blob не означает эквивалентность установленных схем."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "1980/1988 исторические издания не являются действующим разрешением на операции."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Различия вариантов, модификаций и оборудования требуют серийной/заводской проверки."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Независимое сравнение gzip/runtime-графов не выполнено."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Практический материал не подтверждает причину конкретного события."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Нет действующих РЭ/ИДМБ, полномочий и safety review."
+    },
+    {
+      "status": "SAFETY_BOUNDARY",
+      "detail": "Никаких новых испытаний, включений, перемычек, защитных обходов и вмешательств."
+    }
+  ],
+  "openGaps": [
+    "Действующее первичное заводское РЭ/ИДМБ",
+    "Документально подтверждённое установленное исполнение",
+    "Подтверждённая применимость конкретной схемы",
+    "Независимое сравнение gzip/runtime-графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Независимый журнал симптомов",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "emergencyInteractionRequired": false
+  }
+}

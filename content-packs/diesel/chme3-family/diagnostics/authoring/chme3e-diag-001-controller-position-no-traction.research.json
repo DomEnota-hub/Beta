@@ -1,0 +1,839 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 72,
+  "originalId": "CHME3E-DIAG-001",
+  "scenarioId": "chme3.diagnostics.chme3e-diag-001",
+  "title": "Позиция контроллера есть, тяговая мощность не появляется",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+    "documentPointer": "/scenarios/0",
+    "documentBlob": "e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3e-diag-001",
+    "gzipBlob": "1ab9ae40bc90479eacb006d0eb62dd45e9f387fe",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_EQUIPMENT_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "provenanceStatus": "TRAINING_REFERENCE",
+    "evidenceRefs": [
+      "CHME3E-SRC-NOTIK-EQUIPMENT-67",
+      "CHME3E-SRC-NOTIK-CH17"
+    ],
+    "equipmentIds": [
+      "CHME3E-EQ-CONTROLLER-HH106",
+      "CHME3E-EQ-ER-YZJK9-YIND5",
+      "CHME3E-EQ-ER-YZV9",
+      "CHME3E-EQ-ER-YKS5",
+      "CHME3-EQ-EXCITER",
+      "CHME3-EQ-TRACTION-GENERATOR"
+    ],
+    "schemeRefs": [
+      "CHME3E-SCH-TRACTION-CONTROL"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3e"
+    ],
+    "profileId": "chme3e-electronic",
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/chme3-family/chme3e/diagnostics_stage3.json",
+      "revision": "Pinned e6ac2baebda3a9f545a5ff1612b0b24d3c58be6e; updatedAt 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/equipment parity; gzip graph not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З. Х. Нотик, Тепловозы ЧМЭ3/Т/Э, Транспорт, 1996, §67 and §85; historical context, not current RE",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_EXPERIENCE_UNVERIFIED",
+      "ref": "No independent practical evidence supplied; donor symptom wording retained",
+      "revision": "No practical procedure imported",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current execution-specific manufacturer RE/IDMB and approved schematic",
+      "revision": "No verified revision or applicability to installed machine",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Отсутствует непосредственная опасность, и рассматриваются исключительно ранее полученные записи без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В ранее сохранённом журнале подтверждено изменение позиции контроллера НН106 при отсутствии тяговой мощности?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В тех же старых показаниях напряжение тягового генератора не увеличивалось?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Позиция или отсутствие тяги не подтверждены: этот случай нельзя относить к отказу электронного управления по одному сообщению.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Позиция подтверждена, но рост напряжения не отмечен. Отдельно сопоставить архивный случай CHME3E-DIAG-002; причины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Напряжение росло, но тяги не было: отделить силовой путь и условия нагрузки; это не доказывает дефект YZV9.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасность или безопасный режим не исключены. Никаких новых пусков, перевода позиций, проверок под нагрузкой, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведений недостаточно. Не восполнять неизвестное экспериментом или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Отсутствует непосредственная опасность, и рассматриваются исключительно ранее полученные записи без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В ранее сохранённом журнале подтверждено изменение позиции контроллера НН106 при отсутствии тяговой мощности?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "В тех же старых показаниях напряжение тягового генератора не увеличивалось?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть независимая прежняя запись о распознавании позиции электронным регулятором (YIND5/YZJK9)?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Ранее фиксировались признаки отсутствия роста возбуждения при распознанной команде?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Позиция или отсутствие тяги не подтверждены: этот случай нельзя относить к отказу электронного управления по одному сообщению.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Позиция подтверждена, но рост напряжения не отмечен. Отдельно сопоставить архивный случай CHME3E-DIAG-002; причины не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Напряжение росло, но тяги не было: отделить силовой путь и условия нагрузки; это не доказывает дефект YZV9.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивная позиция НН106 не подтверждает её электронное распознавание. Канал YIND5/YZJK9 остаётся возможной областью локализации, не установленным дефектом.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Команда в архиве распознана, но признаки возбуждения отсутствовали: возможны ограничения регулятора, YZV9/YKS5, возбудитель; без вывода о причине.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасность или безопасный режим не исключены. Никаких новых пусков, перевода позиций, проверок под нагрузкой, измерений или вмешательств.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: сведений недостаточно. Не восполнять неизвестное экспериментом или догадкой.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Положение НН106 и команда",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Положение НН106 и команда» без необходимости новых действий?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отличать физическое положение рукоятки от подтверждённого распознавания электронной схемой. Это информационная локализация, не доказательство неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных по теме «Положение НН106 и команда» нет. Не подменять отсутствие сведений гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя заменять новым испытанием, вмешательством или предположением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "YIND5 и YZJK9",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «YIND5 и YZJK9» без необходимости новых действий?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Архивное описание различает кодирование положения и передачу команды; нельзя считать неисправность блока доказанной. Это информационная локализация, не доказательство неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных по теме «YIND5 и YZJK9» нет. Не подменять отсутствие сведений гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя заменять новым испытанием, вмешательством или предположением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "YZV9 и ограничения",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «YZV9 и ограничения» без необходимости новых действий?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Блок регулирования мощности может ограничивать режим; отсутствие тяги не равнозначно отказу YZV9. Это информационная локализация, не доказательство неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных по теме «YZV9 и ограничения» нет. Не подменять отсутствие сведений гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя заменять новым испытанием, вмешательством или предположением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Возбудитель и генератор",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Возбудитель и генератор» без необходимости новых действий?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сопоставлять старые признаки возбуждения и напряжения без измерений и новых испытаний. Это информационная локализация, не доказательство неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных по теме «Возбудитель и генератор» нет. Не подменять отсутствие сведений гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя заменять новым испытанием, вмешательством или предположением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Граница с DIAG-002",
+      "sourceId": "HISTORICAL",
+      "sourceStatus": "HISTORICAL_1996_TRAINING_NOT_CURRENT_RE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые сведения по теме «Граница с DIAG-002» без необходимости новых действий?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "HISTORICAL"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие тяговой мощности при позиции шире, чем отсутствие роста напряжения генератора; не объединять ID. Это информационная локализация, не доказательство неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных по теме «Граница с DIAG-002» нет. Не подменять отсутствие сведений гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "HISTORICAL",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные сведения нельзя заменять новым испытанием, вмешательством или предположением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3E-DIAG-002",
+      "boundary": "Не путать отсутствие тяги при позиции с отдельным отказом роста напряжения генератора."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Донор содержит check/terminal с возможными действиями; исследовательский кандидат содержит только ранее записанные наблюдения."
+    },
+    {
+      "source": "ARCHIVE_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Книга 1996 года подтверждает принцип электронного управления, но не актуальную применимость схемы и процедуру."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "Граф исходного gzip не декодирован независимо; совпадение ID и названия не доказывает идентичность графов."
+    },
+    {
+      "source": "PROFILE_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "ЧМЭ3Э не отождествлять с ЧМЭ3/Т или модернизированным исполнением без схемы конкретной машины."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Полевой опыт не подтверждён и не разрешает вмешательства."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Отдельные source/role/safety gates не пройдены; предупреждение не выдаёт прав."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ/ИДМБ с редакцией и применимостью",
+    "Схема конкретного исполнения ЧМЭ3Э и модернизаций",
+    "Независимая проверка исходного gzip-графа",
+    "Подтверждение источника и полномочий роли",
+    "Отдельная safety-экспертиза",
+    "Разграничение индикации и реального состояния без новых измерений",
+    "Финальная ручная device QA после тестового APK"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

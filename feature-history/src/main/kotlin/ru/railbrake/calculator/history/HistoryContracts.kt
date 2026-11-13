@@ -15,12 +15,22 @@ interface HistoryStore {
 }
 
 /**
- * Storage implementation is deliberately not defined yet.
- *
- * The legacy Test application already has persisted calculation history.
- * Its exact persistence format must be recovered and migrated before the
- * modular application writes to the same user-facing history.
+ * The pinned legacy StringSet format is verified by HistoryCodec tests.
+ * AndroidHistoryStore reads the legacy source without modifying it and
+ * writes versioned records to an independent preference file.
  */
 object HistoryStorageMigrationGate {
-    const val legacyFormatVerified: Boolean = false
+    const val legacyFormatVerified: Boolean = true
+    const val signedUpgradeVerified: Boolean = false
+}
+
+/** Read-only original Test- backup; never a replacement for damaged v2 storage. */
+data class LegacyHistoryBackup(
+    val records: List<HistoryRecord>,
+    val malformedCount: Int,
+    val omittedCount: Int,
+)
+
+interface LegacyHistoryRecovery {
+    fun readLegacyBackup(): LegacyHistoryBackup
 }

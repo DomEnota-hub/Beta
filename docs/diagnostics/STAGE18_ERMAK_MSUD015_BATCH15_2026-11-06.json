@@ -1,0 +1,2523 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-msud015-batch15/1",
+    "date": "2026-11-06",
+    "baseHead": "e6c743abf46e49befac5c93de797dc92993345ea",
+    "previousCiRun": 42211270532,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-045",
+      "ER-DIAG-046",
+      "ER-DIAG-047",
+      "ER-DIAG-048"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Git blob identity confirmed in pinned donor, binary gzip decoding unavailable; exact sourceObject projection preserved and compared, not raw decoded.",
+    "batchBoundary": "045-048 late MSUD-015 axle-control; no early MSUD-N graph or automatic 896plus serial applicability."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-msud015-batch15-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-045",
+      "scenarioId": "ermak.diag.ER-DIAG-045",
+      "title": "МСУД-015: отказ канала поосного управления",
+      "symptom": "Поздний профиль с МСУД-015 показывает отказ/недоступность одного канала поосного управления",
+      "hazardCategory": "LATE_MSUD015_AXLE_CONTROL_CHANNEL_UNAVAILABLE",
+      "sourceObjectStatus": "EVOLUTION_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "msud_015_extended",
+          "traction_axle_control_modern",
+          "3es5k_axle_control_896plus"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-70",
+        "SYS-71",
+        "SYS-20"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CT-009",
+        "ER-EQ-TR-013",
+        "ER-EQ-MC-006"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-029",
+          "role": "technical_basis",
+          "document": "АО «Локомотивные электронные системы»: МСУД-015",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://zaoles.ru/catalog/msud-015/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "МСУД-015",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-019",
+          "role": "technical_basis",
+          "document": "ТМХ: «Ермак» с поосным регулированием",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://tmholding.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ТМХ, 19.07.2019",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-027",
+          "role": "profile_diagnostic_material",
+          "document": "Профильный диагностический материал ER-SRC-027",
+          "locator": "точное происхождение и редакция не подтверждены; не использовать для разрешения действий",
+          "sourceKind": "UNKNOWN",
+          "version": {
+            "label": "ER-SRC-027",
+            "revision": "unresolved profile provenance",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-TECH-2022",
+          "document": "Электрическая схема электровоза типа ЭС5К «Ермак»: МСУД-015",
+          "locator": "поосное управление ТЭД, диагностика, CAN, блоки управления и датчики",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "role": "late_profile_technical_crosscheck",
+          "sourceKind": "TECHNICAL_SECONDARY",
+          "version": {
+            "label": "МСУД-015 technical description",
+            "revision": "профильное описание; исполнение и ПО подтверждать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-OPS-2026",
+          "document": "Проблемы эксплуатации электровозов серии 2(3)ЭС5К «Ермак»",
+          "locator": "поосное регулирование, датчики скорости, алгоритмы боксования и ограничения МСУД-015",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "TECHNICAL_ANALYSIS",
+          "version": {
+            "label": "02-2026",
+            "revision": "эксплуатационный анализ, не нормативное разрешение действий",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_SECONDARY"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-015-axle-control-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "msud_015_extended",
+        "traction_axle_control_modern",
+        "3es5k_axle_control_896plus"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "earlyMsud": "MSUD-N_NOT_EQUIVALENT",
+      "lateMsud": "MSUD-015_PROFILE_SPECIFIC",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-041",
+        "ER-DIAG-046",
+        "ER-DIAG-047"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "document": "Закреплённый каталог Test-@3176d6e",
+          "locator": "diagnostics-03.pack.json, ER-DIAG-045",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-045",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "document": "ЛЭС: МСУД-015",
+          "url": "https://www.zaoles.ru/catalog/msud-015/",
+          "locator": "Состав БУ-006/БУ-006-01, управление ТЭД, обмен данными",
+          "status": "PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "tmh": {
+          "sourceKind": "MANUFACTURER_PUBLIC_2019",
+          "document": "ТМХ: Ермак с поосным регулированием",
+          "url": "https://tmholding.ru/media/events/5439.html",
+          "locator": "19.07.2019: поосное регулирование и независимое возбуждение",
+          "status": "HISTORICAL_FAMILY_CONTEXT",
+          "currentOperatingAuthority": false
+        },
+        "technical": {
+          "sourceKind": "TECHNICAL_SECONDARY_2022",
+          "document": "Электрическая схема ЭС5К: МСУД-015",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "locator": "01.2022, описание режимов управления и диагностики",
+          "status": "PROFILE_DEPENDENT_SECONDARY",
+          "currentOperatingAuthority": false
+        },
+        "operations": {
+          "sourceKind": "TECHNICAL_ANALYSIS_2026",
+          "document": "Проблемы эксплуатации 2(3)ЭС5К Ермак",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "locator": "02.2026, частные наблюдения противобоксовочной защиты",
+          "status": "CURRENT_SECONDARY_NOT_NORMATIVE",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательские ограничения",
+          "locator": "Только завершённые записи; UNKNOWN STOP, профиль BLOCKED, без операций",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        },
+        "unresolved": {
+          "sourceKind": "UNKNOWN_DONOR_PROFILE_MATERIAL",
+          "document": "ER-SRC-027",
+          "locator": "Редакция, автор и происхождение не установлены",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Публичное описание МСУД-015 подтверждает обработку датчиков и обмен между блоками, но не позволяет по одному сообщению определить отказ БУ-006, БУ-006-01, CAN или датчика.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Указанные в доноре поздние профили не подтверждают фактическое исполнение, версию ПО и секцию конкретной машины.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Происхождение ER-SRC-027 не установлено там, где он присутствует; технические статьи не являются действующим разрешением операций.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённом архиве действительно зафиксирована недоступность одного канала поосного управления МСУД-015, а не только общий сбой связи или индикации?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-045; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отдельная исследовательская классификация отказа канала поосного управления. Отсутствие канала, потеря связи, неисправность датчика и снижение тяги не тождественны. Ни аппарат БУ-006, ни CAN, ни программное обеспечение не объявлены установленной причиной. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документам ранее установлены конкретное позднее поосное исполнение МСУД-015, секция и версия установленного ПО?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "tmh"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённом архиве действительно зафиксирована недоступность одного канала поосного управления МСУД-015, а не только общий сбой связи или индикации?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В ранее сохранённых данных указаны точная секция, ось, сообщение канала и временная отметка без попыток воспроизведения?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "technical"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Запись различает отсутствие данных канала, отказ команды управления и фактическую потерю тяги соответствующей оси?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "technical",
+                "operations"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "В материалах сохранены происхождение записи и конфигурация МСУД-015, но не сделан вывод о неисправности БУ-006 или датчика без подтверждения?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-045; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Отдельная исследовательская классификация отказа канала поосного управления. Отсутствие канала, потеря связи, неисправность датчика и снижение тяги не тождественны. Ни аппарат БУ-006, ни CAN, ни программное обеспечение не объявлены установленной причиной. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: точный профиль МСУД-015, схема, состав секций и версия ПО не подтверждены; ранний МСУД-Н неприменим.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: архивных данных недостаточно для различения источников сигнала, режима или фактической причины.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-045-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Точное описание ER-DIAG-045: Поздний профиль с МСУД-015 показывает отказ/недоступность одного канала поосного управления Наличие похожей индикации не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "Закреплённая sourceObject-проекция ER-DIAG-045",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-045-INFO-2",
+          "version": "SHORT",
+          "title": "Заводская архитектура",
+          "text": "МСУД-015 использует блоки управления БУ-006/БУ-006-01 и средства отображения; описание состава не является картой неисправности канала. МСУД-Н и МСУД-015 не тождественны.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ЛЭС, публичная страница МСУД-015",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-045-INFO-3",
+          "version": "DETAILED",
+          "title": "Изменения позднего семейства",
+          "text": "ТМХ 19.07.2019 подтверждает серийные поздние поосные исполнения. Дата выпуска сама по себе не подтверждает профиль установленной машины.",
+          "sourceRefs": [
+            "tmh"
+          ],
+          "locator": "ТМХ, публикация 19.07.2019",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-045-INFO-4",
+          "version": "DETAILED",
+          "title": "Техническое сопоставление",
+          "text": "Не смешивать отказ канала МСУД-015 с общим нарушением межсекционного обмена ER-DIAG-041 и фактической потерей тяги одной оси ER-DIAG-046. Архивные и учебные описания не устанавливают конкретный дефект.",
+          "sourceRefs": [
+            "technical"
+          ],
+          "locator": "СЦБИСТ, технический материал 01.2022",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-045-INFO-5",
+          "version": "DETAILED",
+          "title": "Эксплуатационные расхождения",
+          "text": "Операционные заметки о боксовании не позволяют вывести отказ одного канала; нет подтверждённой версии ПО и журнала событий. Это исследование, не норма и не разрешение операций.",
+          "sourceRefs": [
+            "operations"
+          ],
+          "locator": "СЦБИСТ, исследовательская публикация 02.2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": {
+        "manufacturerProductPage": "CHECKED_2026-11-06",
+        "tmhAnnouncement": "CHECKED_2026-11-06",
+        "technical2022": "SECONDARY_2026-11-06",
+        "operations2026": "SECONDARY_2026-11-06",
+        "donorDirectGzip": "UNAVAILABLE_FOR_BINARY_DECODING",
+        "modernOperationalAuthorization": "NOT_CONFIRMED"
+      }
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud015-batch15-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-046",
+      "scenarioId": "ermak.diag.ER-DIAG-046",
+      "title": "Поосник: одна ось не развивает тягу",
+      "symptom": "На позднем поосном исполнении одна ось имеет существенно меньшую тягу/ток при нормальной работе остальных",
+      "hazardCategory": "LATE_SINGLE_AXLE_TRACTION_DEFICIT",
+      "sourceObjectStatus": "EVOLUTION_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "traction_axle_control_modern",
+          "msud_015_extended",
+          "3es5k_axle_control_896plus"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-20",
+        "SYS-70",
+        "SYS-71",
+        "SYS-21",
+        "SYS-A0"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-TR-013",
+        "ER-EQ-TR-005",
+        "ER-EQ-MC-006",
+        "ER-EQ-CT-009"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-029",
+          "role": "technical_basis",
+          "document": "АО «Локомотивные электронные системы»: МСУД-015",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://zaoles.ru/catalog/msud-015/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "МСУД-015",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-019",
+          "role": "technical_basis",
+          "document": "ТМХ: «Ермак» с поосным регулированием",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://tmholding.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ТМХ, 19.07.2019",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-027",
+          "role": "profile_diagnostic_material",
+          "document": "Профильный диагностический материал ER-SRC-027",
+          "locator": "точное происхождение и редакция не подтверждены; не использовать для разрешения действий",
+          "sourceKind": "UNKNOWN",
+          "version": {
+            "label": "ER-SRC-027",
+            "revision": "unresolved profile provenance",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-TECH-2022",
+          "document": "Электрическая схема электровоза типа ЭС5К «Ермак»: МСУД-015",
+          "locator": "поосное управление ТЭД, диагностика, CAN, блоки управления и датчики",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "role": "late_profile_technical_crosscheck",
+          "sourceKind": "TECHNICAL_SECONDARY",
+          "version": {
+            "label": "МСУД-015 technical description",
+            "revision": "профильное описание; исполнение и ПО подтверждать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-OPS-2026",
+          "document": "Проблемы эксплуатации электровозов серии 2(3)ЭС5К «Ермак»",
+          "locator": "поосное регулирование, датчики скорости, алгоритмы боксования и ограничения МСУД-015",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "TECHNICAL_ANALYSIS",
+          "version": {
+            "label": "02-2026",
+            "revision": "эксплуатационный анализ, не нормативное разрешение действий",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_SECONDARY"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-015-axle-control-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "traction_axle_control_modern",
+        "msud_015_extended",
+        "3es5k_axle_control_896plus"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "earlyMsud": "MSUD-N_NOT_EQUIVALENT",
+      "lateMsud": "MSUD-015_PROFILE_SPECIFIC",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-045",
+        "ER-DIAG-047",
+        "ER-DIAG-048"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "document": "Закреплённый каталог Test-@3176d6e",
+          "locator": "diagnostics-03.pack.json, ER-DIAG-046",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-046",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "document": "ЛЭС: МСУД-015",
+          "url": "https://www.zaoles.ru/catalog/msud-015/",
+          "locator": "Состав БУ-006/БУ-006-01, управление ТЭД, обмен данными",
+          "status": "PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "tmh": {
+          "sourceKind": "MANUFACTURER_PUBLIC_2019",
+          "document": "ТМХ: Ермак с поосным регулированием",
+          "url": "https://tmholding.ru/media/events/5439.html",
+          "locator": "19.07.2019: поосное регулирование и независимое возбуждение",
+          "status": "HISTORICAL_FAMILY_CONTEXT",
+          "currentOperatingAuthority": false
+        },
+        "technical": {
+          "sourceKind": "TECHNICAL_SECONDARY_2022",
+          "document": "Электрическая схема ЭС5К: МСУД-015",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "locator": "01.2022, описание режимов управления и диагностики",
+          "status": "PROFILE_DEPENDENT_SECONDARY",
+          "currentOperatingAuthority": false
+        },
+        "operations": {
+          "sourceKind": "TECHNICAL_ANALYSIS_2026",
+          "document": "Проблемы эксплуатации 2(3)ЭС5К Ермак",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "locator": "02.2026, частные наблюдения противобоксовочной защиты",
+          "status": "CURRENT_SECONDARY_NOT_NORMATIVE",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательские ограничения",
+          "locator": "Только завершённые записи; UNKNOWN STOP, профиль BLOCKED, без операций",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        },
+        "unresolved": {
+          "sourceKind": "UNKNOWN_DONOR_PROFILE_MATERIAL",
+          "document": "ER-SRC-027",
+          "locator": "Редакция, автор и происхождение не установлены",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Поосное регулирование предполагает независимое управление, но отсутствие тока в одном канале не доказывает механический или электрический отказ конкретного ТЭД; режим и программные ограничения неизвестны.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Указанные в доноре поздние профили не подтверждают фактическое исполнение, версию ПО и секцию конкретной машины.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Происхождение ER-SRC-027 не установлено там, где он присутствует; технические статьи не являются действующим разрешением операций.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Завершённая запись показывает меньший ток или тяговое усилие именно одной оси при сохранении тяги других осей, а не просто отсутствие телеметрии?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-046; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективно выделен симптом снижения тяги одной оси. Различаются показания канала, физическое усилие, ограничения алгоритма и сцепление. Ни двигатель, ни силовой преобразователь, ни датчик не диагностируются по одному сравнению. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документам ранее установлены конкретное позднее поосное исполнение МСУД-015, секция и версия установленного ПО?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "tmh"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "Завершённая запись показывает меньший ток или тяговое усилие именно одной оси при сохранении тяги других осей, а не просто отсутствие телеметрии?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В сохранённой записи есть привязка к одной оси, секции и моменту, а также отдельные данные о других осях без новых измерений?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "technical"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "Из записей можно отличить реальную разницу токов/тяги от пропуска измерения или защитного ограничения при боксовании?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "technical",
+                "operations"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены условия движения, источник данных и профиль МСУД-015 без вывода о конкретном ТЭД, ВИП или датчике?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-046; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективно выделен симптом снижения тяги одной оси. Различаются показания канала, физическое усилие, ограничения алгоритма и сцепление. Ни двигатель, ни силовой преобразователь, ни датчик не диагностируются по одному сравнению. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: точный профиль МСУД-015, схема, состав секций и версия ПО не подтверждены; ранний МСУД-Н неприменим.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: архивных данных недостаточно для различения источников сигнала, режима или фактической причины.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-046-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Точное описание ER-DIAG-046: На позднем поосном исполнении одна ось имеет существенно меньшую тягу/ток при нормальной работе остальных Наличие похожей индикации не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "Закреплённая sourceObject-проекция ER-DIAG-046",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-046-INFO-2",
+          "version": "SHORT",
+          "title": "Заводская архитектура",
+          "text": "Описание поосного регулирования подтверждает наличие отдельного управления осью, но не устанавливает нормативную границу допустимого различия токов. МСУД-Н и МСУД-015 не тождественны.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ЛЭС, публичная страница МСУД-015",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-046-INFO-3",
+          "version": "DETAILED",
+          "title": "Изменения позднего семейства",
+          "text": "ТМХ 19.07.2019 подтверждает серийные поздние поосные исполнения. Дата выпуска сама по себе не подтверждает профиль установленной машины.",
+          "sourceRefs": [
+            "tmh"
+          ],
+          "locator": "ТМХ, публикация 19.07.2019",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-046-INFO-4",
+          "version": "DETAILED",
+          "title": "Техническое сопоставление",
+          "text": "Не подменять снижение тяги одной оси отказом канала ER-DIAG-045, устойчивой асимметрией ER-DIAG-047 либо повторным боксованием ER-DIAG-048. Архивные и учебные описания не устанавливают конкретный дефект.",
+          "sourceRefs": [
+            "technical"
+          ],
+          "locator": "СЦБИСТ, технический материал 01.2022",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-046-INFO-5",
+          "version": "DETAILED",
+          "title": "Эксплуатационные расхождения",
+          "text": "Эксплуатационный анализ 2026 описывает зависимость поведения от режима возбуждения и противобоксовочных алгоритмов, но не даёт универсального диагноза одной оси. Это исследование, не норма и не разрешение операций.",
+          "sourceRefs": [
+            "operations"
+          ],
+          "locator": "СЦБИСТ, исследовательская публикация 02.2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": {
+        "manufacturerProductPage": "CHECKED_2026-11-06",
+        "tmhAnnouncement": "CHECKED_2026-11-06",
+        "technical2022": "SECONDARY_2026-11-06",
+        "operations2026": "SECONDARY_2026-11-06",
+        "donorDirectGzip": "UNAVAILABLE_FOR_BINARY_DECODING",
+        "modernOperationalAuthorization": "NOT_CONFIRMED"
+      }
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud015-batch15-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-047",
+      "scenarioId": "ermak.diag.ER-DIAG-047",
+      "title": "Поосник: заметная разница токов/моментов между осями",
+      "symptom": "МСУД-015 показывает устойчивую несимметрию токов/моментов осей без очевидного боксования",
+      "hazardCategory": "LATE_AXLE_CURRENT_TORQUE_ASYMMETRY",
+      "sourceObjectStatus": "EVOLUTION_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "traction_axle_control_modern",
+          "msud_015_extended",
+          "3es5k_axle_control_896plus"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-20",
+        "SYS-70",
+        "SYS-71",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-TR-013",
+        "ER-EQ-TR-011",
+        "ER-EQ-CT-009"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-029",
+          "role": "technical_basis",
+          "document": "АО «Локомотивные электронные системы»: МСУД-015",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://zaoles.ru/catalog/msud-015/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "МСУД-015",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-019",
+          "role": "technical_basis",
+          "document": "ТМХ: «Ермак» с поосным регулированием",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://tmholding.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ТМХ, 19.07.2019",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-027",
+          "role": "profile_diagnostic_material",
+          "document": "Профильный диагностический материал ER-SRC-027",
+          "locator": "точное происхождение и редакция не подтверждены; не использовать для разрешения действий",
+          "sourceKind": "UNKNOWN",
+          "version": {
+            "label": "ER-SRC-027",
+            "revision": "unresolved profile provenance",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-TECH-2022",
+          "document": "Электрическая схема электровоза типа ЭС5К «Ермак»: МСУД-015",
+          "locator": "поосное управление ТЭД, диагностика, CAN, блоки управления и датчики",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "role": "late_profile_technical_crosscheck",
+          "sourceKind": "TECHNICAL_SECONDARY",
+          "version": {
+            "label": "МСУД-015 technical description",
+            "revision": "профильное описание; исполнение и ПО подтверждать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-OPS-2026",
+          "document": "Проблемы эксплуатации электровозов серии 2(3)ЭС5К «Ермак»",
+          "locator": "поосное регулирование, датчики скорости, алгоритмы боксования и ограничения МСУД-015",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "TECHNICAL_ANALYSIS",
+          "version": {
+            "label": "02-2026",
+            "revision": "эксплуатационный анализ, не нормативное разрешение действий",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_SECONDARY"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-015-axle-control-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "traction_axle_control_modern",
+        "msud_015_extended",
+        "3es5k_axle_control_896plus"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "earlyMsud": "MSUD-N_NOT_EQUIVALENT",
+      "lateMsud": "MSUD-015_PROFILE_SPECIFIC",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-045",
+        "ER-DIAG-046",
+        "ER-DIAG-048"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "document": "Закреплённый каталог Test-@3176d6e",
+          "locator": "diagnostics-03.pack.json, ER-DIAG-047",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-047",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "document": "ЛЭС: МСУД-015",
+          "url": "https://www.zaoles.ru/catalog/msud-015/",
+          "locator": "Состав БУ-006/БУ-006-01, управление ТЭД, обмен данными",
+          "status": "PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "tmh": {
+          "sourceKind": "MANUFACTURER_PUBLIC_2019",
+          "document": "ТМХ: Ермак с поосным регулированием",
+          "url": "https://tmholding.ru/media/events/5439.html",
+          "locator": "19.07.2019: поосное регулирование и независимое возбуждение",
+          "status": "HISTORICAL_FAMILY_CONTEXT",
+          "currentOperatingAuthority": false
+        },
+        "technical": {
+          "sourceKind": "TECHNICAL_SECONDARY_2022",
+          "document": "Электрическая схема ЭС5К: МСУД-015",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "locator": "01.2022, описание режимов управления и диагностики",
+          "status": "PROFILE_DEPENDENT_SECONDARY",
+          "currentOperatingAuthority": false
+        },
+        "operations": {
+          "sourceKind": "TECHNICAL_ANALYSIS_2026",
+          "document": "Проблемы эксплуатации 2(3)ЭС5К Ермак",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "locator": "02.2026, частные наблюдения противобоксовочной защиты",
+          "status": "CURRENT_SECONDARY_NOT_NORMATIVE",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательские ограничения",
+          "locator": "Только завершённые записи; UNKNOWN STOP, профиль BLOCKED, без операций",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        },
+        "unresolved": {
+          "sourceKind": "UNKNOWN_DONOR_PROFILE_MATERIAL",
+          "document": "ER-SRC-027",
+          "locator": "Редакция, автор и происхождение не установлены",
+          "status": "UNRESOLVED_NO_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Публичные материалы не устанавливают универсальный допустимый порог межосевой асимметрии для всех версий ПО МСУД-015; опубликованные параметры испытаний не заменяют заводскую настройку конкретной машины.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Указанные в доноре поздние профили не подтверждают фактическое исполнение, версию ПО и секцию конкретной машины.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Происхождение ER-SRC-027 не установлено там, где он присутствует; технические статьи не являются действующим разрешением операций.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённых записях присутствует устойчивая несимметрия токов/моментов между осями без зафиксированного очевидного боксования?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-047; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исследовательская фиксация несимметрии токов/моментов между осями. Различия измерения, режима возбуждения, задания регулятора и сцепления требуют отдельного подтверждения. Числовой порог и конкретная причина не установлены. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документам ранее установлены конкретное позднее поосное исполнение МСУД-015, секция и версия установленного ПО?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "tmh"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённых записях присутствует устойчивая несимметрия токов/моментов между осями без зафиксированного очевидного боксования?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "В архиве есть сопоставимые по времени значения нескольких осей, режим тяги и контекст измерения?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "technical"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "По ранее записанным данным отделены асимметрия измерений, разные алгоритмические задания и эпизоды противобоксовочной защиты?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "technical",
+                "operations"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Сохранены идентичность секции, режим возбуждения, версия данных и границы наблюдения без выдуманного порога допустимой асимметрии?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-047; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Исследовательская фиксация несимметрии токов/моментов между осями. Различия измерения, режима возбуждения, задания регулятора и сцепления требуют отдельного подтверждения. Числовой порог и конкретная причина не установлены. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: точный профиль МСУД-015, схема, состав секций и версия ПО не подтверждены; ранний МСУД-Н неприменим.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: архивных данных недостаточно для различения источников сигнала, режима или фактической причины.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-047-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Точное описание ER-DIAG-047: МСУД-015 показывает устойчивую несимметрию токов/моментов осей без очевидного боксования Наличие похожей индикации не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "Закреплённая sourceObject-проекция ER-DIAG-047",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-047-INFO-2",
+          "version": "SHORT",
+          "title": "Заводская архитектура",
+          "text": "Публикации 2019/2022 описывают поосное управление, но не позволяют объявить любое различие токов аварией. МСУД-Н и МСУД-015 не тождественны.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ЛЭС, публичная страница МСУД-015",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-047-INFO-3",
+          "version": "DETAILED",
+          "title": "Изменения позднего семейства",
+          "text": "ТМХ 19.07.2019 подтверждает серийные поздние поосные исполнения. Дата выпуска сама по себе не подтверждает профиль установленной машины.",
+          "sourceRefs": [
+            "tmh"
+          ],
+          "locator": "ТМХ, публикация 19.07.2019",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-047-INFO-4",
+          "version": "DETAILED",
+          "title": "Техническое сопоставление",
+          "text": "Не считать устойчивую несимметрию автоматически отказом одной оси ER-DIAG-046 или повторным боксованием ER-DIAG-048. Архивные и учебные описания не устанавливают конкретный дефект.",
+          "sourceRefs": [
+            "technical"
+          ],
+          "locator": "СЦБИСТ, технический материал 01.2022",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-047-INFO-5",
+          "version": "DETAILED",
+          "title": "Эксплуатационные расхождения",
+          "text": "Анализ 2026 различает алгоритмы по режимам возбуждения; нельзя механически переносить отдельные наблюдения и уставки на все исполнения. Это исследование, не норма и не разрешение операций.",
+          "sourceRefs": [
+            "operations"
+          ],
+          "locator": "СЦБИСТ, исследовательская публикация 02.2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": {
+        "manufacturerProductPage": "CHECKED_2026-11-06",
+        "tmhAnnouncement": "CHECKED_2026-11-06",
+        "technical2022": "SECONDARY_2026-11-06",
+        "operations2026": "SECONDARY_2026-11-06",
+        "donorDirectGzip": "UNAVAILABLE_FOR_BINARY_DECODING",
+        "modernOperationalAuthorization": "NOT_CONFIRMED"
+      }
+    },
+    {
+      "schemaVersion": "ermak-stage18-msud015-batch15-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-048",
+      "scenarioId": "ermak.diag.ER-DIAG-048",
+      "title": "Поосник: повторное боксование одной оси",
+      "symptom": "Одна ось позднего поосного исполнения регулярно уходит в боксование, остальные оси устойчивы",
+      "hazardCategory": "LATE_REPEATED_SINGLE_AXLE_WHEELSLIP",
+      "sourceObjectStatus": "EVOLUTION_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "traction_axle_control_modern",
+          "msud_015_extended"
+        ],
+        "variantSelectionRequired": true,
+        "lateProfiles": "AS_LISTED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-20",
+        "SYS-70",
+        "SYS-71",
+        "SYS-A0",
+        "SYS-90"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-TR-013",
+        "ER-EQ-MC-003",
+        "ER-EQ-MC-006",
+        "ER-EQ-PR-007",
+        "ER-EQ-MC-007"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-029",
+          "role": "technical_basis",
+          "document": "АО «Локомотивные электронные системы»: МСУД-015",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://zaoles.ru/catalog/msud-015/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "МСУД-015",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-019",
+          "role": "technical_basis",
+          "document": "ТМХ: «Ермак» с поосным регулированием",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://tmholding.ru/",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ТМХ, 19.07.2019",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-TECH-2022",
+          "document": "Электрическая схема электровоза типа ЭС5К «Ермак»: МСУД-015",
+          "locator": "поосное управление ТЭД, диагностика, CAN, блоки управления и датчики",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "role": "late_profile_technical_crosscheck",
+          "sourceKind": "TECHNICAL_SECONDARY",
+          "version": {
+            "label": "МСУД-015 technical description",
+            "revision": "профильное описание; исполнение и ПО подтверждать отдельно",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MSUD015-OPS-2026",
+          "document": "Проблемы эксплуатации электровозов серии 2(3)ЭС5К «Ермак»",
+          "locator": "поосное регулирование, датчики скорости, алгоритмы боксования и ограничения МСУД-015",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "role": "current_operational_crosscheck",
+          "sourceKind": "TECHNICAL_ANALYSIS",
+          "version": {
+            "label": "02-2026",
+            "revision": "эксплуатационный анализ, не нормативное разрешение действий",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_SECONDARY"
+          }
+        }
+      ],
+      "authoringProfileId": "ermak-msud-015-axle-control-research-only",
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "traction_axle_control_modern",
+        "msud_015_extended"
+      ],
+      "lateProfileRule": "AS_LISTED",
+      "earlyMsud": "MSUD-N_NOT_EQUIVALENT",
+      "lateMsud": "MSUD-015_PROFILE_SPECIFIC",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-046",
+        "ER-DIAG-047",
+        "ER-DIAG-045"
+      ],
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "document": "Закреплённый каталог Test-@3176d6e",
+          "locator": "diagnostics-03.pack.json, ER-DIAG-048",
+          "status": "PROJECTION_NOT_RAW_DECODED",
+          "currentOperatingAuthority": false,
+          "repo": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "projectionPath": "content-packs/electric/ermak/diagnostics/recommended/diagnostics-03.pack.json",
+          "objectId": "ER-DIAG-048",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "MANUFACTURER_PUBLIC",
+          "document": "ЛЭС: МСУД-015",
+          "url": "https://www.zaoles.ru/catalog/msud-015/",
+          "locator": "Состав БУ-006/БУ-006-01, управление ТЭД, обмен данными",
+          "status": "PROFILE_DEPENDENT",
+          "currentOperatingAuthority": false,
+          "exactInstalledVariantVerified": false
+        },
+        "tmh": {
+          "sourceKind": "MANUFACTURER_PUBLIC_2019",
+          "document": "ТМХ: Ермак с поосным регулированием",
+          "url": "https://tmholding.ru/media/events/5439.html",
+          "locator": "19.07.2019: поосное регулирование и независимое возбуждение",
+          "status": "HISTORICAL_FAMILY_CONTEXT",
+          "currentOperatingAuthority": false
+        },
+        "technical": {
+          "sourceKind": "TECHNICAL_SECONDARY_2022",
+          "document": "Электрическая схема ЭС5К: МСУД-015",
+          "url": "https://scbist.com/xx2/55369-01-2022-elektricheskaya-shema-elektrovoza-tipa-es5k-ermak.html",
+          "locator": "01.2022, описание режимов управления и диагностики",
+          "status": "PROFILE_DEPENDENT_SECONDARY",
+          "currentOperatingAuthority": false
+        },
+        "operations": {
+          "sourceKind": "TECHNICAL_ANALYSIS_2026",
+          "document": "Проблемы эксплуатации 2(3)ЭС5К Ермак",
+          "url": "https://scbist.com/xx2/63268-02-2026-problemy-ekspluatacii-elektrovozov-serii-2-3-es5k-ermak.html",
+          "locator": "02.2026, частные наблюдения противобоксовочной защиты",
+          "status": "CURRENT_SECONDARY_NOT_NORMATIVE",
+          "currentOperatingAuthority": false
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_SAFETY_GATE_NOT_NORMATIVE",
+          "document": "Исследовательские ограничения",
+          "locator": "Только завершённые записи; UNKNOWN STOP, профиль BLOCKED, без операций",
+          "status": "NOT_OPERATIONAL_AUTHORITY",
+          "currentOperatingAuthority": false
+        }
+      },
+      "sourceConflicts": [
+        {
+          "issue": "Исследование 2026 описывает синхронное боксование всех четырёх колёсных пар и различие каналов защиты по режимам. Его нельзя использовать как доказательство причин повторного боксования только одной оси.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "issue": "Указанные в доноре поздние профили не подтверждают фактическое исполнение, версию ПО и секцию конкретной машины.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "issue": "Происхождение ER-SRC-027 не установлено там, где он присутствует; технические статьи не являются действующим разрешением операций.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-symptom",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённых записях повторное боксование локализовано одной осью, а остальные оси в те же моменты не показывают аналогичного события?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-048; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективно выделено повторное боксование одной оси. Это не эквивалентно синхронному боксованию всех осей и не доказывает дефект датчика скорости, пескоподачи или ТЭД. Алгоритмы и режимы возбуждения зависят от исполнения. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "По ранее сохранённым сведениям событие ещё продолжается либо его завершение не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "По документам ранее установлены конкретное позднее поосное исполнение МСУД-015, секция и версия установленного ПО?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "tmh"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В завершённых записях повторное боксование локализовано одной осью, а остальные оси в те же моменты не показывают аналогичного события?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Сохранены временные отметки нескольких событий, ось и данные об остальных осях, без требования повторного движения или искусственного боксования?",
+              "responses": {
+                "YES": "q-separation",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "technical"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-separation",
+              "type": "QUESTION",
+              "text": "По архиву различаются одиночное повторное боксование, синхронное боксование всей секции и ошибка измерения скорости?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "technical",
+                "operations"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Указаны режим возбуждения, источник сигнала и версия ПО либо их неизвестность явно отмечена без вывода о конкретном датчике или рельсовых условиях?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP: текущее либо неясное событие. Это исследовательская карточка, а не инструкция; никаких новых проверок или операций.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP. Отсутствие сведений нельзя заменять предположением или физической проверкой.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: это не самостоятельный исходный симптом ER-DIAG-048; соседний сценарий нельзя подставлять автоматически.",
+              "responses": {},
+              "sourceRefs": [
+                "donor"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ретроспективно выделено повторное боксование одной оси. Это не эквивалентно синхронному боксованию всех осей и не доказывает дефект датчика скорости, пескоподачи или ТЭД. Алгоритмы и режимы возбуждения зависят от исполнения. Точная причина и эксплуатационные полномочия не установлены.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: точный профиль МСУД-015, схема, состав секций и версия ПО не подтверждены; ранний МСУД-Н неприменим.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP/BLOCKED: архивных данных недостаточно для различения источников сигнала, режима или фактической причины.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-048-INFO-1",
+          "version": "SHORT",
+          "title": "Исходный симптом",
+          "text": "Точное описание ER-DIAG-048: Одна ось позднего поосного исполнения регулярно уходит в боксование, остальные оси устойчивы Наличие похожей индикации не доказывает причину.",
+          "sourceRefs": [
+            "donor"
+          ],
+          "locator": "Закреплённая sourceObject-проекция ER-DIAG-048",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-048-INFO-2",
+          "version": "SHORT",
+          "title": "Заводская архитектура",
+          "text": "Описание МСУД-015 и материалы о поосной защите подтверждают отдельное регулирование, но не универсальную процедуру устранения боксования. МСУД-Н и МСУД-015 не тождественны.",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "locator": "ЛЭС, публичная страница МСУД-015",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-048-INFO-3",
+          "version": "DETAILED",
+          "title": "Изменения позднего семейства",
+          "text": "ТМХ 19.07.2019 подтверждает серийные поздние поосные исполнения. Дата выпуска сама по себе не подтверждает профиль установленной машины.",
+          "sourceRefs": [
+            "tmh"
+          ],
+          "locator": "ТМХ, публикация 19.07.2019",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-048-INFO-4",
+          "version": "DETAILED",
+          "title": "Техническое сопоставление",
+          "text": "Одиночное повторное боксование не объединять с потерей тяги одной оси ER-DIAG-046 и несимметрией токов ER-DIAG-047. Архивные и учебные описания не устанавливают конкретный дефект.",
+          "sourceRefs": [
+            "technical"
+          ],
+          "locator": "СЦБИСТ, технический материал 01.2022",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-048-INFO-5",
+          "version": "DETAILED",
+          "title": "Эксплуатационные расхождения",
+          "text": "Анализ 2026 содержит частный случай синхронного боксования 3ЭС5К №1090; не переносить его уставки и поведение на одиночную ось и другое ПО. Это исследование, не норма и не разрешение операций.",
+          "sourceRefs": [
+            "operations"
+          ],
+          "locator": "СЦБИСТ, исследовательская публикация 02.2026",
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "actionAuthorityGranted": false,
+          "executable": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "independentCrosschecks": {
+        "manufacturerProductPage": "CHECKED_2026-11-06",
+        "tmhAnnouncement": "CHECKED_2026-11-06",
+        "technical2022": "SECONDARY_2026-11-06",
+        "operations2026": "SECONDARY_2026-11-06",
+        "donorDirectGzip": "UNAVAILABLE_FOR_BINARY_DECODING",
+        "modernOperationalAuthorization": "NOT_CONFIRMED"
+      }
+    }
+  ]
+}

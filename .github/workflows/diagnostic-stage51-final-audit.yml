@@ -1,0 +1,33 @@
+name: Stage 51 final research and device handoff audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'qa/validate_stage51_final_readiness.py'
+      - '.github/workflows/diagnostic-stage51-final-audit.yml'
+      - 'docs/diagnostics/STAGE51_FINAL_QA_HANDOFF_2026-11-09.md'
+      - 'docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md'
+  pull_request:
+    paths:
+      - 'qa/validate_stage51_final_readiness.py'
+      - '.github/workflows/diagnostic-stage51-final-audit.yml'
+      - 'docs/diagnostics/STAGE51_FINAL_QA_HANDOFF_2026-11-09.md'
+
+permissions:
+  contents: read
+
+jobs:
+  final-research-gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recheck Stage 49 source and negative gates
+        run: python3 qa/validate_stage49_cross_family_research.py --negative
+      - name: Recheck Stage 50 runtime isolation and negative gates
+        run: python3 qa/validate_stage50_runtime_boundary.py --negative
+      - name: Stage 51 corpus, handoff and negative authorization tests
+        run: python3 qa/validate_stage51_final_readiness.py --negative

@@ -1,0 +1,2797 @@
+{
+  "ledger": {
+    "schemaVersion": "stage18-ermak-cab-systems-batch34/1",
+    "date": "2026-11-07",
+    "baseHead": "1e911f9c2720478608fb542309fd791a9c54b08c",
+    "previousCiRun": 42347990219,
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorGzipBlobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+    "sourceCatalogCount": 136,
+    "scenarioIds": [
+      "ER-DIAG-111",
+      "ER-DIAG-112",
+      "ER-DIAG-113",
+      "ER-DIAG-114"
+    ],
+    "status": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceLimitation": "Eight fields checked against pinned pack projection; original donor gzip not independently decoded. Early/late hardware, exact machine and operational authority UNKNOWN/BLOCKED.",
+    "batchBoundary": "111 radio; 112 horn/whistle; 113 light/window heating; 114 wiper/washer. 115 roof damage is separate emergency batch."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ermak-stage18-cab-systems-batch34-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-111",
+      "scenarioId": "ermak.diag.ER-DIAG-111",
+      "title": "Не работает локомотивная радиостанция",
+      "symptom": "Нет устойчивой поездной радиосвязи из рабочей кабины",
+      "hazardCategory": "CAB_RADIO_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-C0",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CB-001",
+        "ER-EQ-CB-002",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-761R-RADIO-B12",
+          "document": "Правила эксплуатации железнодорожной радиосвязи ОАО «РЖД», распоряжение №761/р от 07.04.2025",
+          "locator": "ПРС/СРС, действия и местные инструкции при неисправности радиосвязи",
+          "url": "https://base.garant.ru/413182399/",
+          "role": "current_radio_operation_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "№761/р",
+            "revision": "07.04.2025; заменило №127р и №954/р",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-cab-service-early-research-only",
+      "earlyMsud": "MSUD_N_SOURCE_PROFILE_ONLY",
+      "lateMsud": "MSUD-015_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-096",
+        "ER-DIAG-097",
+        "ER-DIAG-112",
+        "ER-DIAG-093"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-111; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-111",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.15: A60, нормальное SF35 и резервное SF28 питание, S37/S38, Z2; архивная схема раннего исполнения.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.normacs.ru/Doclist/doc/27HB3.html",
+          "locator": "Распоряжение №761/р от 07.04.2025: правила ПРС/СРС и ответственности; локальный порядок, конкретная станция и полномочия не подтверждены.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://www.normacs.ru/Doclist/doc/24DJ7.html",
+          "locator": "Правила №127р (2017, с изменением №954/р 2024) отменены №761/р; архив для истории, не действующая инструкция.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://meganorm.ru/mega_doc/norm_update_02082025/pravila/0/pravila_ekspluatatsii_zheleznodorozhnoy_radiosvyazi_oao_rzhd.html",
+          "locator": "Правила №761/р, разделы 5–7: применимость конкретной локомотивной радиостанции, местная инструкция и полномочия UNKNOWN.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные передачи, переключение SF35/SF28/S37/S38, вскрытие A60/АФУ, обход связи и самостоятельное разрешение движения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "historical": {
+          "sourceKind": "SUPERSEDED_NORMATIVE_ARCHIVE",
+          "url": "https://www.normacs.ru/Doclist/doc/24DJ7.html",
+          "locator": "№127р от 23.01.2017 и №954/р от 15.04.2024 отменены №761/р от 07.04.2025; архивный контекст",
+          "status": "SUPERSEDED_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Donor applicability {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"} does not confirm installed early/late equipment or operator role.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "№127р и №954/р отменены распоряжением №761/р 07.04.2025; архивный порядок не применять вместо нового и местных инструкций. Действующий документ не разрешает диагностику на машине без source/role/safety gates.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работает локомотивная радиостанция» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Нет устойчивой поездной радиосвязи из рабочей кабины», а не соседняя неисправность?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: отсутствие подтверждённой поездной связи. Не выполнять пробные передачи, переключения питания или самостоятельный выбор порядка движения; действовать только по утверждённому порядку через уполномоченных лиц.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Нет устойчивой поездной радиосвязи из рабочей кабины. Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции. Запрещены пробные передачи, переключение SF35/SF28/S37/S38, вскрытие A60/АФУ, обход связи и самостоятельное разрешение движения. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работает локомотивная радиостанция» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Нет устойчивой поездной радиосвязи из рабочей кабины», а не соседняя неисправность?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежняя запись отдельно описывает питание/индикацию, приём и передачу, участок/сеть без нового радиоиспытания?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "В прежней записи разделены возможные ограничения ПРС/СРС, питания A60, АФУ и неподтверждённый отказ устройства?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Ранняя схема A60/SF35/SF28/S37/S38/Z2 и местные документы по №761/р подтверждены именно для установленной радиостанции?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: документальных данных, независимых источников или разделения симптомов недостаточно; не устанавливать причину.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: отсутствие подтверждённой поездной связи. Не выполнять пробные передачи, переключения питания или самостоятельный выбор порядка движения; действовать только по утверждённому порядку через уполномоченных лиц.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Нет устойчивой поездной радиосвязи из рабочей кабины. Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции. Запрещены пробные передачи, переключение SF35/SF28/S37/S38, вскрытие A60/АФУ, обход связи и самостоятельное разрешение движения. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-111-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь исходных полей ER-DIAG-111; BASE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}. Независимая распаковка gzip не выполнена.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-111; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-111-INFO-2",
+          "title": "Архивная схема и исполнения",
+          "text": "ИДМБ.661142.009РЭ1, раздел 6.15: A60, нормальное SF35 и резервное SF28 питание, S37/S38, Z2; архивная схема раннего исполнения. Только для изучения различий; поздняя МСУД-015 не приравнена к МСУД-Н.",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.15: A60, нормальное SF35 и резервное SF28 питание, S37/S38, Z2; архивная схема раннего исполнения.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-111-INFO-3",
+          "title": "Действующие документы и полномочия",
+          "text": "Распоряжение №761/р от 07.04.2025: правила ПРС/СРС и ответственности; локальный порядок, конкретная станция и полномочия не подтверждены. Правила №761/р, разделы 5–7: применимость конкретной локомотивной радиостанции, местная инструкция и полномочия UNKNOWN.",
+          "locator": "Распоряжение №761/р от 07.04.2025: правила ПРС/СРС и ответственности; локальный порядок, конкретная станция и полномочия не подтверждены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-111-INFO-4",
+          "title": "Разночтения и дифференциальные признаки",
+          "text": "Отсутствие питания/индикации A60 не тождественно отсутствию приёма/передачи: возможны сеть ПРС, АФУ, режим и условия участка. Не считать неудачный сеанс доказанным отказом радиостанции. №127р и №954/р отменены распоряжением №761/р 07.04.2025; архивный порядок не применять вместо нового и местных инструкций.",
+          "locator": "Правила №127р (2017, с изменением №954/р 2024) отменены №761/р; архив для истории, не действующая инструкция.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training",
+            "historical"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-111-INFO-5",
+          "title": "Безопасность, профиль и роль",
+          "text": "Запрещены пробные передачи, переключение SF35/SF28/S37/S38, вскрытие A60/АФУ, обход связи и самостоятельное разрешение движения. UNKNOWN → STOP; неизвестная машина/источник/роль → BLOCKED. Подтверждение предупреждения не даёт полномочий.",
+          "locator": "Правила №761/р, разделы 5–7: применимость конкретной локомотивной радиостанции, местная инструкция и полномочия UNKNOWN.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-111: eight source fields compared with pinned diagnostics-06.pack.json, not raw gzip."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "ИДМБ.661142.009РЭ1, раздел 6.15: A60, нормальное SF35 и резервное SF28 питание, S37/S38, Z2; архивная схема раннего исполнения."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_REVIEW",
+          "url": "https://meganorm.ru/mega_doc/norm_update_02082025/pravila/0/pravila_ekspluatatsii_zheleznodorozhnoy_radiosvyazi_oao_rzhd.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_TEXT_OR_CATALOG_REVIEWED_AUTHORITY_UNKNOWN",
+          "finding": "Правила №761/р, разделы 5–7: применимость конкретной локомотивной радиостанции, местная инструкция и полномочия UNKNOWN."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-cab-systems-batch34-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-112",
+      "scenarioId": "ermak.diag.ER-DIAG-112",
+      "title": "Не работает звуковой сигнал",
+      "symptom": "Тифон/свисток не срабатывает либо работает нестабильно",
+      "hazardCategory": "CAB_HORN_WHISTLE_FAILURE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-C0",
+        "SYS-50",
+        "SYS-60",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CB-003",
+        "ER-EQ-PN-002",
+        "ER-EQ-CT-011"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-013",
+          "role": "technical_basis",
+          "document": "Описание пневматической схемы 3ЭС5К",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV8.html",
+          "sourceKind": "TRAINING",
+          "version": {
+            "label": "RCIT: пневматическая схема 3ЭС5К",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE6-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ6. Механическая и пневматическая часть",
+          "locator": "ручной тормоз; система смазки гребней; У30/КН45/КН46; звуковые сигналы",
+          "url": "https://rcit.su/techinfoV56.html",
+          "role": "manufacturer_mechanical_pneumatic_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ6",
+            "revision": "публичная копия; профиль системы подтверждать",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-cab-service-early-research-only",
+      "earlyMsud": "MSUD_N_SOURCE_PROFILE_ONLY",
+      "lateMsud": "MSUD-015_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-111",
+        "ER-DIAG-103",
+        "ER-DIAG-114",
+        "ER-DIAG-113"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-112; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-112",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.15: У17/У18, S58/S59, S27/S28, SF30; схема раннего исполнения, без разрешения на вмешательства.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://sudact.ru/law/prikaz-mintransa-rossii-ot-23062022-n-250/pravila-tekhnicheskoi-ekspluatatsii-zheleznykh-dorog/prilozhenie-n-1/ix_1/",
+          "locator": "ПТЭ №250, приложение 1, раздел IX, пункт 104: виды звуковых сигналов; порядок эксплуатации неисправного локомотива и полномочия не выведены.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoV56.html",
+          "locator": "ИДМБ.661142.009РЭ6, механическая/пневматическая часть: историческая конструкция, применимость к установленной машине неизвестна.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://sudact.ru/law/prikaz-mintransa-rossii-ot-23062022-n-250/pravila-tekhnicheskoi-ekspluatatsii-zheleznykh-dorog/prilozhenie-n-1/ix_1/",
+          "locator": "ПТЭ №250, приложение 1, раздел IX (в т.ч. пункт 104): сигнализация; не разрешает ремонт, тесты и движение при отказе.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные подачи сигналов, переключения SF30, вмешательство в клапаны У17/У18 и пневматику, самовольное продолжение движения.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Donor applicability {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"} does not confirm installed early/late equipment or operator role.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "SF30 в РЭ1 обслуживает сигналы и продувку; общность цепи не доказывает общий отказ. Сигнальные обязанности из ПТЭ не дают права менять пневматику. Действующий документ не разрешает диагностику на машине без source/role/safety gates.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работает звуковой сигнал» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Тифон/свисток не срабатывает либо работает нестабильно», а не соседняя неисправность?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: неисправность звукового сигнала влияет на безопасность. Не инициировать новые проверки звучания; порядок сообщений и движения только по действующим правилам и роли.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Тифон/свисток не срабатывает либо работает нестабильно. Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств. Запрещены пробные подачи сигналов, переключения SF30, вмешательство в клапаны У17/У18 и пневматику, самовольное продолжение движения. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работает звуковой сигнал» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Тифон/свисток не срабатывает либо работает нестабильно», а не соседняя неисправность?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежняя запись различает отсутствие тифона и свистка, а не приписывает обоим один отказ?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "Прежняя запись различает электрическое управление У17/У18, питание SF30 и возможный пневматический фактор без определения причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Обозначения У17/У18, SF30 и наличие нужного вида сигнала подтверждены по конкретной редакции и машине?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: документальных данных, независимых источников или разделения симптомов недостаточно; не устанавливать причину.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: неисправность звукового сигнала влияет на безопасность. Не инициировать новые проверки звучания; порядок сообщений и движения только по действующим правилам и роли.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Тифон/свисток не срабатывает либо работает нестабильно. Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств. Запрещены пробные подачи сигналов, переключения SF30, вмешательство в клапаны У17/У18 и пневматику, самовольное продолжение движения. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-112-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь исходных полей ER-DIAG-112; BASE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}. Независимая распаковка gzip не выполнена.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-112; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-112-INFO-2",
+          "title": "Архивная схема и исполнения",
+          "text": "ИДМБ.661142.009РЭ1, раздел 6.15: У17/У18, S58/S59, S27/S28, SF30; схема раннего исполнения, без разрешения на вмешательства. Только для изучения различий; поздняя МСУД-015 не приравнена к МСУД-Н.",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.15: У17/У18, S58/S59, S27/S28, SF30; схема раннего исполнения, без разрешения на вмешательства.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-112-INFO-3",
+          "title": "Действующие документы и полномочия",
+          "text": "ПТЭ №250, приложение 1, раздел IX, пункт 104: виды звуковых сигналов; порядок эксплуатации неисправного локомотива и полномочия не выведены. ПТЭ №250, приложение 1, раздел IX (в т.ч. пункт 104): сигнализация; не разрешает ремонт, тесты и движение при отказе.",
+          "locator": "ПТЭ №250, приложение 1, раздел IX, пункт 104: виды звуковых сигналов; порядок эксплуатации неисправного локомотива и полномочия не выведены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-112-INFO-4",
+          "title": "Разночтения и дифференциальные признаки",
+          "text": "Тифон и свисток имеют разные органы и клапаны У17/У18. Отсутствие звука не доказывает неисправность клапана, электрической цепи или пневматики; SF30 общий и для других устройств. SF30 в РЭ1 обслуживает сигналы и продувку; общность цепи не доказывает общий отказ. Сигнальные обязанности из ПТЭ не дают права менять пневматику.",
+          "locator": "ИДМБ.661142.009РЭ6, механическая/пневматическая часть: историческая конструкция, применимость к установленной машине неизвестна.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-112-INFO-5",
+          "title": "Безопасность, профиль и роль",
+          "text": "Запрещены пробные подачи сигналов, переключения SF30, вмешательство в клапаны У17/У18 и пневматику, самовольное продолжение движения. UNKNOWN → STOP; неизвестная машина/источник/роль → BLOCKED. Подтверждение предупреждения не даёт полномочий.",
+          "locator": "ПТЭ №250, приложение 1, раздел IX (в т.ч. пункт 104): сигнализация; не разрешает ремонт, тесты и движение при отказе.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-112: eight source fields compared with pinned diagnostics-06.pack.json, not raw gzip."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "ИДМБ.661142.009РЭ1, раздел 6.15: У17/У18, S58/S59, S27/S28, SF30; схема раннего исполнения, без разрешения на вмешательства."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_REVIEW",
+          "url": "https://sudact.ru/law/prikaz-mintransa-rossii-ot-23062022-n-250/pravila-tekhnicheskoi-ekspluatatsii-zheleznykh-dorog/prilozhenie-n-1/ix_1/",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_TEXT_OR_CATALOG_REVIEWED_AUTHORITY_UNKNOWN",
+          "finding": "ПТЭ №250, приложение 1, раздел IX (в т.ч. пункт 104): сигнализация; не разрешает ремонт, тесты и движение при отказе."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-cab-systems-batch34-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-113",
+      "scenarioId": "ermak.diag.ER-DIAG-113",
+      "title": "Нет освещения / обогрева стёкол рабочей кабины",
+      "symptom": "Пропало освещение, обогрев стёкол или рабочей зоны",
+      "hazardCategory": "CAB_LIGHT_OR_WINDOW_HEAT_LOSS",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-C0",
+        "SYS-30",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CB-005",
+        "ER-EQ-CT-011",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-cab-service-early-research-only",
+      "earlyMsud": "MSUD_N_SOURCE_PROFILE_ONLY",
+      "lateMsud": "MSUD-015_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-114",
+        "ER-DIAG-111",
+        "ER-DIAG-112",
+        "ER-DIAG-070"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-113; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-113",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1, разделы 5.2.7, 6.12, 6.16: обогрев A43/A44/A45, U82/U83, KM45, свет SF32; А42/А45 в тексте противоречат друг другу.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: общая эксплуатационная рамка; точные положения для конкретного отказа освещения/обогрева и полномочия не установлены.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoS5.html",
+          "locator": "Сводная архивная схема 2ЭС5К: вторичная сравнительная публикация, не подтверждение установленного исполнения.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: конкретный раздел для продолжения движения при отказе света/обогрева и местный порядок не проверены.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные включения нагрева, переключения SF32/SF37, вскрытие цепей U82/U83/KM45, замеры под напряжением и движение при неподтверждённой видимости.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Donor applicability {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"} does not confirm installed early/late equipment or operator role.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "В РЭ1 пункт 5.2.7 обозначает управление нагревом стекол А42, пункт 6.12 называет А45. Не нормализовать автоматически и не выдавать замену узла. Действующий документ не разрешает диагностику на машине без source/role/safety gates.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Нет освещения / обогрева стёкол рабочей кабины» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Пропало освещение, обогрев стёкол или рабочей зоны», а не соседняя неисправность?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: при нарушении видимости или рабочих условий никакого самостоятельного допуска к движению; только действующие правила и уполномоченные лица.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Пропало освещение, обогрев стёкол или рабочей зоны. Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено. Запрещены пробные включения нагрева, переключения SF32/SF37, вскрытие цепей U82/U83/KM45, замеры под напряжением и движение при неподтверждённой видимости. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Нет освещения / обогрева стёкол рабочей кабины» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Пропало освещение, обогрев стёкол или рабочей зоны», а не соседняя неисправность?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежняя запись отдельно фиксирует освещение кабины и обогрев лобового/бокового стекла, а также видимость?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "В прежней записи различены свет, обогрев стекол, отопление кабины и механическая очистка без приписывания общего питания?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Разночтение А42/А45 в РЭ1 и схема SF32/U82/U83/KM45 проверены для редакции и установленного оборудования?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: документальных данных, независимых источников или разделения симптомов недостаточно; не устанавливать причину.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: при нарушении видимости или рабочих условий никакого самостоятельного допуска к движению; только действующие правила и уполномоченные лица.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Пропало освещение, обогрев стёкол или рабочей зоны. Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено. Запрещены пробные включения нагрева, переключения SF32/SF37, вскрытие цепей U82/U83/KM45, замеры под напряжением и движение при неподтверждённой видимости. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-113-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь исходных полей ER-DIAG-113; BASE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}. Независимая распаковка gzip не выполнена.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-113; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-113-INFO-2",
+          "title": "Архивная схема и исполнения",
+          "text": "ИДМБ.661142.009РЭ1, разделы 5.2.7, 6.12, 6.16: обогрев A43/A44/A45, U82/U83, KM45, свет SF32; А42/А45 в тексте противоречат друг другу. Только для изучения различий; поздняя МСУД-015 не приравнена к МСУД-Н.",
+          "locator": "ИДМБ.661142.009РЭ1, разделы 5.2.7, 6.12, 6.16: обогрев A43/A44/A45, U82/U83, KM45, свет SF32; А42/А45 в тексте противоречат друг другу.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-113-INFO-3",
+          "title": "Действующие документы и полномочия",
+          "text": "ПТЭ №250: общая эксплуатационная рамка; точные положения для конкретного отказа освещения/обогрева и полномочия не установлены. ПТЭ №250: конкретный раздел для продолжения движения при отказе света/обогрева и местный порядок не проверены.",
+          "locator": "ПТЭ №250: общая эксплуатационная рамка; точные положения для конкретного отказа освещения/обогрева и полномочия не установлены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-113-INFO-4",
+          "title": "Разночтения и дифференциальные признаки",
+          "text": "Освещение кабины (SF32, лампы) и обогрев стекол (U82/U83, KM45) разные ветви; не смешивать с калориферами и кондиционером. В РЭ1 встречаются А42 и А45 как регулятор обогрева, это разночтение не разрешено. В РЭ1 пункт 5.2.7 обозначает управление нагревом стекол А42, пункт 6.12 называет А45. Не нормализовать автоматически и не выдавать замену узла.",
+          "locator": "Сводная архивная схема 2ЭС5К: вторичная сравнительная публикация, не подтверждение установленного исполнения.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-113-INFO-5",
+          "title": "Безопасность, профиль и роль",
+          "text": "Запрещены пробные включения нагрева, переключения SF32/SF37, вскрытие цепей U82/U83/KM45, замеры под напряжением и движение при неподтверждённой видимости. UNKNOWN → STOP; неизвестная машина/источник/роль → BLOCKED. Подтверждение предупреждения не даёт полномочий.",
+          "locator": "ПТЭ №250: конкретный раздел для продолжения движения при отказе света/обогрева и местный порядок не проверены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-113: eight source fields compared with pinned diagnostics-06.pack.json, not raw gzip."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "ИДМБ.661142.009РЭ1, разделы 5.2.7, 6.12, 6.16: обогрев A43/A44/A45, U82/U83, KM45, свет SF32; А42/А45 в тексте противоречат друг другу."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_REVIEW",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_TEXT_OR_CATALOG_REVIEWED_AUTHORITY_UNKNOWN",
+          "finding": "ПТЭ №250: конкретный раздел для продолжения движения при отказе света/обогрева и местный порядок не проверены."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "ermak-stage18-cab-systems-batch34-research/1",
+      "stage": "18/51",
+      "originalId": "ER-DIAG-114",
+      "scenarioId": "ermak.diag.ER-DIAG-114",
+      "title": "Не работают стеклоочистители / омыватель",
+      "symptom": "Стеклоочиститель или омыватель не работает при необходимости очистки стекла",
+      "hazardCategory": "CAB_WIPER_OR_WASHER_FAILURE",
+      "sourceObjectStatus": "BASE_CONFIRMED",
+      "sourceObjectApplicability": {
+        "families": [
+          "2ES5K",
+          "3ES5K"
+        ],
+        "profiles": [
+          "base_early"
+        ],
+        "variantSelectionRequired": false,
+        "lateProfiles": "PROFILE_SOURCE_REQUIRED"
+      },
+      "sourceObjectSystemIds": [
+        "SYS-C0",
+        "SYS-40"
+      ],
+      "sourceObjectEquipmentRefs": [
+        "ER-EQ-CB-006",
+        "ER-EQ-CT-011",
+        "ER-EQ-CT-005"
+      ],
+      "sourceObjectSourceRefs": [
+        {
+          "sourceId": "ER-SRC-002",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV51.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-006",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ5. Электронное оборудование и преобразователи",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV55.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ5",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-003",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ2. Компоновка, монтаж и вентиляция",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV52.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ2",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-SRC-005",
+          "role": "technical_basis",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ4. Электрические аппараты и оборудование",
+          "locator": "применимый раздел по узлу сценария; лист/пункт подтверждать по исполнению",
+          "url": "https://rcit.su/techinfoV54.html",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ4",
+            "revision": "публичная копия; редакцию и применимость подтверждать по исполнению",
+            "verifiedAt": "2026-09-26",
+            "status": "REQUIRES_REVIEW"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-MFR-RE1-CAB-B12",
+          "document": "2ЭС5К/3ЭС5К. ИДМБ.661142.009РЭ1. Электрические схемы",
+          "locator": "A60/SF35/SF28/S37/S38/Z2; У17/У18/SF30; A120/A121/A122/A123/SA7/KT11; A42/KM45/U82/U83; PJ1/T7/T12/U21",
+          "url": "https://www.rcit.su/techinfoV51.html",
+          "role": "manufacturer_cab_electrical_basis",
+          "sourceKind": "MANUFACTURER",
+          "version": {
+            "label": "ИДМБ.661142.009РЭ1",
+            "revision": "публичная копия раннего исполнения; обозначения подтверждать по профилю",
+            "verifiedAt": "2026-09-26",
+            "status": "PROFILE_DEPENDENT"
+          }
+        },
+        {
+          "sourceId": "ER-AUDIT-NORM-PTE250-CAB-B12",
+          "document": "Правила технической эксплуатации железных дорог Российской Федерации, приказ Минтранса России от 23.06.2022 №250",
+          "locator": "пп. 103, 139, 141: радиосвязь; локомотивные устройства безопасности; звуковой сигнал; очистка лобовых стекол; тормоза; техническое обслуживание систем учета",
+          "url": "https://base.garant.ru/405042985/",
+          "role": "current_primary_operational_rule",
+          "sourceKind": "NORMATIVE",
+          "version": {
+            "label": "Приказ №250",
+            "revision": "действующая публичная редакция",
+            "verifiedAt": "2026-09-26",
+            "status": "CURRENT_CONFIRMED"
+          }
+        }
+      ],
+      "families": [
+        "2ES5K",
+        "3ES5K"
+      ],
+      "profileApplicability": [
+        "base_early"
+      ],
+      "lateProfileRule": "PROFILE_SOURCE_REQUIRED",
+      "authoringProfileId": "ermak-cab-service-early-research-only",
+      "earlyMsud": "MSUD_N_SOURCE_PROFILE_ONLY",
+      "lateMsud": "MSUD-015_NOT_ASSUMED",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "mustRemainDistinctFrom": [
+        "ER-DIAG-113",
+        "ER-DIAG-111",
+        "ER-DIAG-112",
+        "ER-DIAG-110"
+      ],
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "exactInstalledVariantConfirmed": false,
+      "substantiveSafetyReviewed": false,
+      "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+      "warningGate": {
+        "default": "HIDDEN",
+        "warningReadToEnd": true,
+        "warningAcknowledged": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safePolicy": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "unknownProfile": "BLOCKED",
+        "operationsAllowed": [],
+        "activeFaultImmediateStop": true
+      },
+      "sourceRecords": {
+        "donor": {
+          "sourceKind": "PINNED_DONOR_PRESERVED_PROJECTION",
+          "url": "",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-114; eight fields; raw gzip not independently decoded",
+          "status": "PROJECTED_FIELDS_MATCH_RAW_PARITY_NOT_RECHECKED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "blobSha": "c3a22c62db42308eb4b7ee44ff2da02f47686625",
+          "packBlobSha": "5d016e774bf72c618f50aa01d213a9995ab9d441",
+          "objectId": "ER-DIAG-114",
+          "rawGzipIndependentlyDecoded": false
+        },
+        "manufacturer": {
+          "sourceKind": "ARCHIVAL_MANUFACTURER_PUBLIC_COPY",
+          "url": "https://rcit.su/techinfoV51.html",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.13: A120, A121, A122/A123, SF34, SA7, KT11; историческая электрическая схема раннего исполнения.",
+          "status": "ARCHIVAL_VARIANT_REVIEW_REQUIRED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "official": {
+          "sourceKind": "CURRENT_RULE_EXISTENCE_ONLY",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: общие требования к эксплуатации; конкретные условия следования при отказе очистки стекла и полномочия не проверены.",
+          "status": "DOCUMENT_EXISTS_CURRENT_CLAUSE_NOT_VERIFIED",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "training": {
+          "sourceKind": "ARCHIVAL_COMPARATIVE_MATERIAL",
+          "url": "https://rcit.su/techinfoS5.html",
+          "locator": "Сводная архивная схема 2ЭС5К, раздел 6.13: вторичное сравнение, не подтверждает позднюю конфигурацию.",
+          "status": "HISTORICAL_NOT_OPERATIONAL",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "normative": {
+          "sourceKind": "CURRENT_AUTHORITY_NOT_VERIFIED",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "locator": "ПТЭ №250: точный применимый пункт и локальная инструкция при отказе стеклоочистителя/омывателя не установлены.",
+          "status": "ACTION_AUTHORITY_UNKNOWN",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        },
+        "safety": {
+          "sourceKind": "ANALYTICAL_FAIL_CLOSED_GATE",
+          "url": "",
+          "locator": "Запрещены пробные включения щёток/омывателя, переключения SF34/SA7, ремонт под напряжением, вмешательство в механизмы и движение при недостаточной видимости.",
+          "status": "NO_OPERATING_AUTHORITY",
+          "currentOperatingAuthority": false,
+          "verifiedAt": "2026-11-07"
+        }
+      },
+      "sourceConflicts": [
+        {
+          "topic": "SYMPTOM_VS_CAUSE",
+          "detail": "Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7.",
+          "resolution": "NO_CAUSE_INFERENCE"
+        },
+        {
+          "topic": "PROFILE_AND_SYSTEM",
+          "detail": "Donor applicability {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"} does not confirm installed early/late equipment or operator role.",
+          "resolution": "PROFILE_BLOCKED"
+        },
+        {
+          "topic": "SOURCE_VERSION_AND_AUTHORITY",
+          "detail": "Управление А122/А123 и омывателем А121 описано вместе, но причины и последствия различны; ухудшение видимости может быть внешним, а не электрическим отказом. Действующий документ не разрешает диагностику на машине без source/role/safety gates.",
+          "resolution": "SOURCE_AUTHORITY_BLOCKED"
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работают стеклоочистители / омыватель» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Стеклоочиститель или омыватель не работает при необходимости очистки стекла», а не соседняя неисправность?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: при недостаточной видимости не разрешено самостоятельное движение. Никаких новых включений очистителей; только действующие правила и роль.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Стеклоочиститель или омыватель не работает при необходимости очистки стекла. Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7. Запрещены пробные включения щёток/омывателя, переключения SF34/SA7, ремонт под напряжением, вмешательство в механизмы и движение при недостаточной видимости. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        },
+        "DETAILED": {
+          "startNodeId": "q-active",
+          "nodes": [
+            {
+              "id": "q-active",
+              "type": "QUESTION",
+              "text": "Признак «Не работают стеклоочистители / омыватель» продолжается сейчас либо безопасное состояние по ранее оформленным сведениям не установлено?",
+              "responses": {
+                "YES": "stop-active",
+                "NO": "q-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-profile",
+              "type": "QUESTION",
+              "text": "Подтверждены конкретная машина, секция, установленная аппаратура, применимый документ, профиль и полномочия роли?",
+              "responses": {
+                "YES": "q-symptom",
+                "NO": "stop-profile",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-symptom",
+              "type": "QUESTION",
+              "text": "В ранее оформленной записи зафиксирован именно исходный симптом «Стеклоочиститель или омыватель не работает при необходимости очистки стекла», а не соседняя неисправность?",
+              "responses": {
+                "YES": "q-evidence",
+                "NO": "stop-mismatch",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-evidence",
+              "type": "QUESTION",
+              "text": "Прежняя запись раздельно фиксирует работу щёток, омывателя и видимость, без нового испытания?",
+              "responses": {
+                "YES": "q-differential",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "donor",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-differential",
+              "type": "QUESTION",
+              "text": "В прежней записи разделены А121, А122/А123, питание А120, SA7/KT11 и механическое загрязнение, без установления причины?",
+              "responses": {
+                "YES": "q-provenance",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "training"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "q-provenance",
+              "type": "QUESTION",
+              "text": "Обозначения A120/A121/A122/A123/SF34/SA7/KT11 подтверждены для редакции конкретной машины, не заимствованы из ранней схемы?",
+              "responses": {
+                "YES": "report-match",
+                "NO": "stop-unverified",
+                "UNKNOWN": "stop-unknown"
+              },
+              "sourceRefs": [
+                "manufacturer",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unverified",
+              "type": "STOP",
+              "text": "STOP: документальных данных, независимых источников или разделения симптомов недостаточно; не устанавливать причину.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-active",
+              "type": "STOP",
+              "text": "STOP карточки: при недостаточной видимости не разрешено самостоятельное движение. Никаких новых включений очистителей; только действующие правила и роль.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "normative"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-unknown",
+              "type": "STOP",
+              "text": "UNKNOWN → STOP информационного маршрута. Новые испытания, вмешательства и разрешение движения недопустимы.",
+              "responses": {},
+              "sourceRefs": [
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-profile",
+              "type": "STOP",
+              "text": "BLOCKED: установленное исполнение, источник или полномочия роли не подтверждены; base_early не доказывает конкретную машину.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "stop-mismatch",
+              "type": "STOP",
+              "text": "STOP: исходный симптом не установлен. Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7.",
+              "responses": {},
+              "sourceRefs": [
+                "safety",
+                "manufacturer"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            },
+            {
+              "id": "report-match",
+              "type": "OBSERVATION_REPORT",
+              "text": "ИССЛЕДОВАТЕЛЬСКАЯ ЗАПИСЬ, НЕ ИНСТРУКЦИЯ. Стеклоочиститель или омыватель не работает при необходимости очистки стекла. Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7. Запрещены пробные включения щёток/омывателя, переключения SF34/SA7, ремонт под напряжением, вмешательство в механизмы и движение при недостаточной видимости. Эксплуатационных полномочий нет.",
+              "responses": {},
+              "sourceRefs": [
+                "donor",
+                "safety"
+              ],
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false
+            }
+          ],
+          "authoringStatus": "RESEARCH_DRAFT_BLOCKED",
+          "operatingInstructionsIncluded": false
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "ER-DIAG-114-INFO-1",
+          "title": "Исходный объект и применимость",
+          "text": "Точные восемь исходных полей ER-DIAG-114; BASE_CONFIRMED; {\"families\":[\"2ES5K\",\"3ES5K\"],\"profiles\":[\"base_early\"],\"variantSelectionRequired\":false,\"lateProfiles\":\"PROFILE_SOURCE_REQUIRED\"}. Независимая распаковка gzip не выполнена.",
+          "locator": "Test- pinned gzip → diagnostics-06.pack.json / ER-DIAG-114; eight fields; raw gzip not independently decoded",
+          "version": "SHORT",
+          "sourceRefs": [
+            "donor"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-114-INFO-2",
+          "title": "Архивная схема и исполнения",
+          "text": "ИДМБ.661142.009РЭ1, раздел 6.13: A120, A121, A122/A123, SF34, SA7, KT11; историческая электрическая схема раннего исполнения. Только для изучения различий; поздняя МСУД-015 не приравнена к МСУД-Н.",
+          "locator": "ИДМБ.661142.009РЭ1, раздел 6.13: A120, A121, A122/A123, SF34, SA7, KT11; историческая электрическая схема раннего исполнения.",
+          "version": "SHORT",
+          "sourceRefs": [
+            "manufacturer"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-114-INFO-3",
+          "title": "Действующие документы и полномочия",
+          "text": "ПТЭ №250: общие требования к эксплуатации; конкретные условия следования при отказе очистки стекла и полномочия не проверены. ПТЭ №250: точный применимый пункт и локальная инструкция при отказе стеклоочистителя/омывателя не установлены.",
+          "locator": "ПТЭ №250: общие требования к эксплуатации; конкретные условия следования при отказе очистки стекла и полномочия не проверены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "official",
+            "normative"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-114-INFO-4",
+          "title": "Разночтения и дифференциальные признаки",
+          "text": "Отказ стеклоочистителей А122/А123 и омывателя А121 не один симптом. Загрязнение стекла и ухудшение видимости не доказывают неисправность моторедуктора, блока питания А120 или управления SA7. Управление А122/А123 и омывателем А121 описано вместе, но причины и последствия различны; ухудшение видимости может быть внешним, а не электрическим отказом.",
+          "locator": "Сводная архивная схема 2ЭС5К, раздел 6.13: вторичное сравнение, не подтверждает позднюю конфигурацию.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "training"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        },
+        {
+          "id": "ER-DIAG-114-INFO-5",
+          "title": "Безопасность, профиль и роль",
+          "text": "Запрещены пробные включения щёток/омывателя, переключения SF34/SA7, ремонт под напряжением, вмешательство в механизмы и движение при недостаточной видимости. UNKNOWN → STOP; неизвестная машина/источник/роль → BLOCKED. Подтверждение предупреждения не даёт полномочий.",
+          "locator": "ПТЭ №250: точный применимый пункт и локальная инструкция при отказе стеклоочистителя/омывателя не установлены.",
+          "version": "DETAILED",
+          "sourceRefs": [
+            "normative",
+            "safety"
+          ],
+          "visibility": {
+            "default": "HIDDEN",
+            "warningReadToEnd": true,
+            "warningAcknowledged": true,
+            "warningGrantsActionAuthority": false
+          },
+          "warningRequired": true,
+          "executable": false,
+          "actionAuthorityGranted": false,
+          "operationalSteps": [],
+          "applicability": {
+            "exactEquipmentProfileConfirmed": false,
+            "modernSchemeConfirmed": false
+          }
+        }
+      ],
+      "independentCrosschecks": [
+        {
+          "sourceKind": "PINNED_DONOR_PROJECTION",
+          "url": "",
+          "verifiedAt": "2026-11-07",
+          "status": "EIGHT_FIELDS_MATCH_RAW_GZIP_NOT_RECHECKED",
+          "finding": "ER-DIAG-114: eight source fields compared with pinned diagnostics-06.pack.json, not raw gzip."
+        },
+        {
+          "sourceKind": "ARCHIVAL_MANUFACTURER",
+          "url": "https://rcit.su/techinfoV51.html",
+          "verifiedAt": "2026-11-07",
+          "status": "ARCHIVAL_CONSTRUCTION_ONLY",
+          "finding": "ИДМБ.661142.009РЭ1, раздел 6.13: A120, A121, A122/A123, SF34, SA7, KT11; историческая электрическая схема раннего исполнения."
+        },
+        {
+          "sourceKind": "INDEPENDENT_CURRENT_RULE_REVIEW",
+          "url": "https://www.01.normacs.ru/Doclist/doc/21LIE.html",
+          "verifiedAt": "2026-11-07",
+          "status": "RULE_TEXT_OR_CATALOG_REVIEWED_AUTHORITY_UNKNOWN",
+          "finding": "ПТЭ №250: точный применимый пункт и локальная инструкция при отказе стеклоочистителя/омывателя не установлены."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,774 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 63,
+  "originalId": "CHME3-DIAG-202",
+  "scenarioId": "chme3.diagnostics.chme3-diag-202",
+  "title": "Компрессор не отключается / работает непрерывно",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/1",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-202",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-SCBIST-TROUBLE-2020"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-COMPRESSOR",
+      "CHME3-EQ-PRESSURE-GOV",
+      "CHME3-EQ-MAIN-RESERVOIRS"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Test-@3176d6ee, blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/1",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З.Х. Нотик, 1996, §§55, 58, 59; archival description, not current РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "RULE2026",
+      "kind": "CURRENT_NORMATIVE_EXISTENCE_VERIFIED_CLAUSE_PENDING",
+      "ref": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+      "revision": "Приложение 65 к протоколу 83-го заседания, ввод с 01.07.2026; конкретные пункты и применение не сверены",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM; CHME3-SRC-SCBIST-TROUBLE-2020",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключено опасное превышение давления и другие нештатные признаки?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Подтверждена именно непрерывная работа компрессора, а не обычный цикл наполнения?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Давление ГР по ранее записанным показаниям достигало области штатной разгрузки?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Непрерывная работа не подтверждена; обычный цикл не доказывает неисправность регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достижение области разгрузки не доказывает дефект регулятора: исполнительная часть и схема исполнения неизвестны.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: давление не достигает области разгрузки либо имеются признаки опасного роста. Не регулировать регулятор, не воздействовать на арматуру; разграничить 201 и опасное превышение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду исключено опасное превышение давления и другие нештатные признаки?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Подтверждена непрерывная работа либо отсутствие разгрузки компрессора?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Давление ГР достигало ожидаемой области разгрузки по документации именно этого исполнения?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Из штатной записи исключён рост давления за допустимую область?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть документированная штатная индикация команды разгрузки, не требующая новых проверок?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не доказана непрерывность, поэтому неисправность 202 не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если давление не достигнуто, первичен сценарий 201, а не регулировка регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "При наличии записи команды разгрузки возможна отдельная исполнительная ветвь, но причина не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии записи команды нельзя объявлять неисправным регулятор или разгрузочный механизм.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: давление не достигает области разгрузки либо имеются признаки опасного роста. Не регулировать регулятор, не воздействовать на арматуру; разграничить 201 и опасное превышение.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "cycle",
+      "title": "Цикл давления",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cycle-q",
+          "type": "QUESTION",
+          "text": "Есть ли штатная временная запись изменения давления?",
+          "responses": {
+            "YES": "cycle-yes",
+            "NO": "cycle-no",
+            "UNKNOWN": "cycle-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cycle-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Время и тенденция важнее предположений о неисправности регулятора; пороги не переносить.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cycle-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без динамики нельзя установить отсутствие разгрузки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cycle-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "regulator",
+      "title": "Регулятор давления",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "regulator-q",
+          "type": "QUESTION",
+          "text": "Зафиксирована ли команда разгрузки штатным средством?",
+          "responses": {
+            "YES": "regulator-yes",
+            "NO": "regulator-no",
+            "UNKNOWN": "regulator-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "regulator-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое описание регулятора не подтверждает его состояние на конкретном исполнении.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "regulator-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи команды ветвь регулятора не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "regulator-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "unloader",
+      "title": "Механизм разгрузки",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "unloader-q",
+          "type": "QUESTION",
+          "text": "Есть ли уже существующее наблюдение о разгрузке под нагрузкой?",
+          "responses": {
+            "YES": "unloader-yes",
+            "NO": "unloader-no",
+            "UNKNOWN": "unloader-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "unloader-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отличать непрерывное вращение от работы под нагрузкой, не вскрывая узел.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unloader-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Непрерывное вращение само по себе не подтверждает неисправность разгрузки.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unloader-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "overpressure",
+      "title": "Опасный рост давления",
+      "sourceId": "RULE2026",
+      "sourceStatus": "CURRENT_RULE_EXISTS_EXACT_CLAUSE_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "overpressure-q",
+          "type": "QUESTION",
+          "text": "Зафиксирован ли выход давления за разрешённую область?",
+          "responses": {
+            "YES": "overpressure-yes",
+            "NO": "overpressure-no",
+            "UNKNOWN": "overpressure-stop"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "overpressure-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Это safety-событие: прекратить диагностику, действовать по действующим правилам; не сбрасывать защиту.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "overpressure-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие записи не доказывает норму; значения не угадывать.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "overpressure-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "route201",
+      "title": "Отличие от недостаточного набора",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "route201-q",
+          "type": "QUESTION",
+          "text": "Давление действительно не достигает области разгрузки?",
+          "responses": {
+            "YES": "route201-yes",
+            "NO": "route201-no",
+            "UNKNOWN": "route201-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "route201-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отнести наблюдение к исследовательскому 201, без эксплуатационных инструкций.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "route201-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если область достигнута, гипотезы 201 и 202 не смешивать.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "route201-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-201",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-205",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RUNTIME",
+      "note": "Донорские check/action-пункты требуют физических проверок; исследовательская карточка использует только ранее сохранённые штатные наблюдения."
+    },
+    {
+      "source": "1996_vs_2026",
+      "note": "Учебное пособие 1996 года не является действующей нормой; с 01.07.2026 действуют новые правила тормозов, точные пункты и пороги не подтверждены."
+    },
+    {
+      "source": "GZIP_vs_DOCUMENT",
+      "note": "Миграционный индекс связывает ID и название, но gzip не декодирован независимо: равенство исходных графов не утверждается."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ по конкретному номеру машины",
+    "Точное исполнение и модернизация пневмосхемы",
+    "Схема и номера аппаратов конкретной машины",
+    "Точные пункты новых Правил тормозов 2026",
+    "Нормативные значения давления для данного исполнения",
+    "Состояние приборов и штатная хронология эпизода",
+    "Право работника на конкретные операции",
+    "Независимая проверка исходного gzip-графа",
+    "Результат отдельной safety-проверки",
+    "Ручная Android-приёмка после тестового APK"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

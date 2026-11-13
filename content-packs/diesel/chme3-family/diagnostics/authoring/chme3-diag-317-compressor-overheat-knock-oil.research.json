@@ -1,0 +1,825 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 68,
+  "originalId": "CHME3-DIAG-317",
+  "scenarioId": "chme3.diagnostics.chme3-diag-317",
+  "title": "Компрессор перегревается, стучит или выбрасывает масло",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+    "documentPointer": "/scenarios/16",
+    "documentBlob": "9fa23a5c9e3da49fb025fb55245227314f6020da",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-317",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-SCBIST-TROUBLE-2020"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-COMPRESSOR",
+      "CHME3-EQ-INTERCOOLER",
+      "CHME3-EQ-AIR-DRY-SEPARATOR",
+      "CHME3-EQ-COMPRESSOR-DRIVE"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_extended_pass3.json",
+      "revision": "Pinned blob 9fa23a5c9e3da49fb025fb55245227314f6020da",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N55",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §55 Привод компрессора; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N59",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "Нотик 1996 §59 Компрессор и регулятор давления; не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM / CHME3-SRC-SCBIST-TROUBLE-2020",
+      "revision": "Практические материалы не подтверждены РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "Исторические материалы, вторичный 996/р",
+      "revision": "Не действующая инструкция",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Есть прежние записи температуры, шума, производительности и масла в воздушном тракте?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Отмечены сильный стук или резкое падение производительности?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет достаточных архивных сведений.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук или падение подачи требуют отдельного безопасного порядка.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук/потеря подачи не подтверждены, прочие дефекты не исключены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и анализ ограничен уже имеющимися записями без новых пусков, осмотров и вмешательств?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Есть прежние записи температуры, шума, производительности и масла в воздушном тракте?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Отмечены сильный стук или резкое падение производительности?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В прежних наблюдениях есть перегрев компрессора?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "В архиве отмечено масло в нагнетательном тракте?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неисправность не локализована без прежних записей.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сильный стук/потеря подачи: safety STOP, не считать одним лишь отказом регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Перегрев описан; причина охлаждения, трения или привода неизвестна.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Масло в воздушном тракте отмечено; источник и последствия для тормозов не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Компрессор, привод и холодильник не исключены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Никаких пусков, нагрузок, вскрытий, измерений, принудительных включений и ремонтов; только отдельно действующий порядок.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: профиль, источник или прежние данные неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "mechanics",
+      "title": "Механика компрессора",
+      "sourceId": "N59",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "mechanics-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Механика компрессора?",
+          "responses": {
+            "YES": "mechanics-yes",
+            "NO": "mechanics-no",
+            "UNKNOWN": "mechanics-stop"
+          },
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "mechanics-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Двухступенчатый компрессор описан в архиве; шум не указывает на одну деталь.",
+          "responses": {},
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "mechanics-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "mechanics-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cooler",
+      "title": "Промежуточный холодильник",
+      "sourceId": "N59",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cooler-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Промежуточный холодильник?",
+          "responses": {
+            "YES": "cooler-yes",
+            "NO": "cooler-no",
+            "UNKNOWN": "cooler-stop"
+          },
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cooler-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Промежуточный холодильник входит в тракт сжатия.",
+          "responses": {},
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooler-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cooler-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "oil",
+      "title": "Масло в воздушном тракте",
+      "sourceId": "N59",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "oil-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Масло в воздушном тракте?",
+          "responses": {
+            "YES": "oil-yes",
+            "NO": "oil-no",
+            "UNKNOWN": "oil-stop"
+          },
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "oil-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Масло в тракте и перегрев не являются одним диагнозом.",
+          "responses": {},
+          "sourceRefs": [
+            "N59"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "drive",
+      "title": "Привод компрессора",
+      "sourceId": "N55",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "drive-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Привод компрессора?",
+          "responses": {
+            "YES": "drive-yes",
+            "NO": "drive-no",
+            "UNKNOWN": "drive-stop"
+          },
+          "sourceRefs": [
+            "N55"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "drive-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Привод отличается от регулятора давления; принудительная работа запрещена.",
+          "responses": {},
+          "sourceRefs": [
+            "N55"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "drive-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "brakes",
+      "title": "Тормозная безопасность",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "brakes-q",
+          "type": "QUESTION",
+          "text": "Есть ранее документированные сведения: Тормозная безопасность?",
+          "responses": {
+            "YES": "brakes-yes",
+            "NO": "brakes-no",
+            "UNKNOWN": "brakes-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "brakes-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Допуск движения требует отдельного действующего порядка, а не архивной карточки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "brakes-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Данных нет: причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "brakes-stop",
+          "type": "STOP",
+          "text": "STOP: сведения или профиль неизвестны; никаких действий.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-318",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-316",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    },
+    {
+      "originalId": "CHME3-DIAG-208",
+      "distinction": "Отдельный исходный симптом; выводы и разрешения не переносить."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "При сильном стуке и падении подачи не продолжать работу без отдельного действующего порядка."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "note": "Нотик 1996 не действующее РЭ и не подтверждает уставки."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "note": "Gzip не декодирован независимо, равенство графов не доказано."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "note": "Вариант и модернизация UNKNOWN/BLOCKED."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "note": "Полевые сведения и вторичный 996/р не разрешают действия."
+    },
+    {
+      "source": "SOURCE_CONFLICT",
+      "note": "Без действующего РЭ эксплуатационное действие запрещено."
+    }
+  ],
+  "openGaps": [
+    "Действующее РЭ по номеру машины",
+    "Точный профиль ЧМЭ3/Т/Э и модернизация",
+    "Установленная схема",
+    "Применимость архивного пособия",
+    "Действующие пределы и порядок безопасности",
+    "Сопоставимые архивные данные",
+    "Независимое сравнение gzip",
+    "Роль и полномочия",
+    "Независимый safety gate",
+    "Финальная Android device QA",
+    "Первичная верификация полевых источников",
+    "Независимая проверка: Компрессор перегревается, стучит или выбрасывает масло"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  },
+  "branchContracts": {
+    "SHORT": {
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-c",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-d",
+        "NO": "obs-e",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  }
+}

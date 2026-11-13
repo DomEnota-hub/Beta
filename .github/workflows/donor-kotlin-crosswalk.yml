@@ -1,0 +1,79 @@
+name: Pinned donor Kotlin feature/state crosswalk
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'qa/validate_donor_kotlin_crosswalk.py'
+      - 'qa/test_donor_kotlin_crosswalk.py'
+      - '**/src/main/**/*.kt'
+      - '.github/workflows/donor-kotlin-crosswalk.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'qa/validate_donor_kotlin_crosswalk.py'
+      - 'qa/test_donor_kotlin_crosswalk.py'
+      - '**/src/main/**/*.kt'
+      - '.github/workflows/donor-kotlin-crosswalk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  kotlin-source-crosswalk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail-closed unit tests
+        run: python3 -m unittest qa/test_donor_kotlin_crosswalk.py -v
+      - name: Retrieve pinned read-only donor Git tree
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Authenticated public donor read avoids anonymous GitHub API rate-limit 403.
+          curl --fail --location --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 20 --max-time 180 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            'https://api.github.com/repos/DomEnota-hub/Test-/git/trees/3176d6ee228f0ed4b78371f45209e10c1c724eff?recursive=1' \
+            --output "$RUNNER_TEMP/pinned-donor-tree.json"
+      - name: Check all 74 Kotlin sources, hashes and target touchpoints
+        run: python3 qa/validate_donor_kotlin_crosswalk.py --donor-tree "$RUNNER_TEMP/pinned-donor-tree.json"
+      - name: Gate stage 7 versioned history migration and safe VU-45 wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          shell = Path('app-shell/build.gradle.kts').read_text()
+          main = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/MainActivity.kt').read_text()
+          history = Path('feature-history/src/main/kotlin/ru/railbrake/calculator/history/HistoryContracts.kt').read_text()
+          # Stage 7 wires versioned history without modifying the donor StringSet.
+          # Arithmetic results still cannot grant operational approval.
+          verifier = Path('feature-calculations/src/main/kotlin/ru/railbrake/calculator/calculations/Vu45Verifier.kt').read_text()
+          policy = Path('feature-calculations/src/main/kotlin/ru/railbrake/calculator/calculations/CalculationPublicationPolicy.kt').read_text()
+          screen = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/Vu45VerificationScreen.kt').read_text()
+          assert 'implementation(project(":feature-calculations"))' in shell
+          assert 'implementation(project(":feature-history"))' in shell
+          assert 'Vu45VerificationScreen(' in main
+          assert 'loadVl80sVerticalSlice()' in main
+          assert 'ARITHMETICALLY_CONSISTENT_NOT_APPROVED' in verifier
+          assert 'requireOperationalApproval' in policy
+          assert 'Vu45Verifier.check(' in screen
+          assert Path('feature-calculations/src/test/kotlin/ru/railbrake/calculator/calculations/Vu45VerifierTest.kt').is_file()
+          assert 'legacyFormatVerified: Boolean = true' in history
+          assert 'signedUpgradeVerified: Boolean = false' in history
+          store = Path('app-shell/src/main/java/ru/railbrake/calculator/shell/AndroidHistoryStores.kt').read_text()
+          assert 'getSharedPreferences("calculation_history"' in store
+          assert 'getSharedPreferences("railbrake_history_v2"' in store
+          assert 'legacy.edit()' not in store
+          assert 'HistoryAndNotesScreen(' in main
+          assert 'onSave = { record ->' in main
+          print('STAGE7_HISTORY_VERSIONED_READ_LEGACY_SAFE_ARITHMETIC_ONLY')
+          PY

@@ -1,0 +1,34 @@
+name: Stage 1 unresolved source quarantine
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'content-packs/diesel/chme3-family/**'
+      - 'content-packs/electric/ermak/**'
+      - 'qa/validate_stage1_unresolved_source_quarantine.py'
+      - 'qa/test_stage1_unresolved_source_quarantine.py'
+      - '.github/workflows/stage1-unresolved-source-quarantine.yml'
+  pull_request:
+    paths:
+      - 'content-packs/diesel/chme3-family/**'
+      - 'content-packs/electric/ermak/**'
+      - 'qa/validate_stage1_unresolved_source_quarantine.py'
+      - 'qa/test_stage1_unresolved_source_quarantine.py'
+      - '.github/workflows/stage1-unresolved-source-quarantine.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-quarantine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Seven fail-closed quarantine regression tests
+        run: python3 -m unittest qa/test_stage1_unresolved_source_quarantine.py -v
+      - name: Verify source-link quarantine and non-runtime status
+        run: python3 qa/validate_stage1_unresolved_source_quarantine.py

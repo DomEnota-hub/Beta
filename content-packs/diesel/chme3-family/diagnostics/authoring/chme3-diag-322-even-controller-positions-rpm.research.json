@@ -1,0 +1,862 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 70,
+  "originalId": "CHME3-DIAG-322",
+  "scenarioId": "chme3.diagnostics.chme3-diag-322",
+  "title": "Обороты не увеличиваются на чётных позициях",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_996r_detail_pass3.json",
+    "documentPointer": "/scenarios/1",
+    "documentBlob": "f29c287c2eae1fb60e0cac61cab098fa8cae3c0f",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-322",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "NORMAL_DIAGNOSTIC",
+    "actionAuthority": "SOURCE_AND_PROFILE_REQUIRED",
+    "evidenceStatus": "996R_CONFIRMED_SECONDARY",
+    "evidenceRefs": [
+      "CHME3-SRC-CDOCKA-996R-CHME3"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-DRIVER-CONTROLLER",
+      "CHME3-EQ-GOVERNOR-SERVOMOTOR",
+      "CHME3-EQ-GOVERNOR"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SOURCE_AND_PROFILE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_996r_detail_pass3.json",
+      "revision": "Pinned blob f29c287c2eae1fb60e0cac61cab098fa8cae3c0f",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-03.pack.json",
+      "revision": "Only ID/title/variant parity; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "SECONDARY",
+      "kind": "SECONDARY_996R_UNVERIFIED_PRIMARY",
+      "ref": "CHME3-SRC-CDOCKA-996R-CHME3",
+      "revision": "996R_CONFIRMED_SECONDARY in donor; original primary instruction, date and validity not verified",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HISTORICAL",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З. Х. Нотик, 1996, book-level historical context only; not a current RE or a 996/r verification",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_TRAINING_UNVERIFIED",
+      "ref": "donor secondary 996/r-derived case",
+      "revision": "Practice is retained only as donor pointer; operational techniques intentionally not transcribed",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "current original 996/r and execution-specific approved RE",
+      "revision": "Not located or independently validated",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и рассматриваются только ранее полученные записи, без новых действий?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "В прежних наблюдениях обороты не увеличивались именно на чётных позициях, при отличии от нечётных?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть архивные признаки нештатного режима дизеля или опасного изменения оборотов?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Чётность отказа не подтверждена; нельзя сводить общий отказ набора оборотов к этому сценарию.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Есть опасные признаки режима дизеля: STOP, повторные проверки нагрузкой запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Закономерность чётных позиций отмечена, но причина не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не выполнять пуск, движение, измерения, вмешательства, обходы защит или принудительные действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивные сведения, источник или профиль неизвестны; причин и разрешённых действий не установлено.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Нет текущей опасности, и рассматриваются только ранее полученные записи, без новых действий?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "В прежних наблюдениях обороты не увеличивались именно на чётных позициях, при отличии от нечётных?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть архивные признаки нештатного режима дизеля или опасного изменения оборотов?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "d4",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Сохранилось ранее полученное сообщение о дефекте механизма контроллера?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "d5",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть архивные сведения об отклонении команды сервомотора или регулятора?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Чётность отказа не подтверждена; нельзя сводить общий отказ набора оборотов к этому сценарию.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Есть опасные признаки режима дизеля: STOP, повторные проверки нагрузкой запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Закономерность чётных позиций отмечена, но причина не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Механизм контроллера упомянут в архиве; палец КМЗ остаётся вторичной гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "В архиве отмечен сервомотор/регулятор; связь с причиной не подтверждена.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: безопасность не подтверждена. Не выполнять пуск, движение, измерения, вмешательства, обходы защит или принудительные действия.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: архивные сведения, источник или профиль неизвестны; причин и разрешённых действий не установлено.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Различие чётных и нечётных позиций",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_996R_NOT_PRIMARY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть ранее записанные сведения по теме «Различие чётных и нечётных позиций» без необходимости новых проверок?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тема «Различие чётных и нечётных позиций» присутствует в прежних записях; это не подтверждает причину, актуальность схемы или право на действия.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет ранее полученных данных по теме «Различие чётных и нечётных позиций». Новые проверки и вмешательства не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные данные не заменяются предположением или экспериментом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Механика контроллера",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_996R_NOT_PRIMARY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть ранее записанные сведения по теме «Механика контроллера» без необходимости новых проверок?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тема «Механика контроллера» присутствует в прежних записях; это не подтверждает причину, актуальность схемы или право на действия.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет ранее полученных данных по теме «Механика контроллера». Новые проверки и вмешательства не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные данные не заменяются предположением или экспериментом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Гипотеза пальца КМЗ",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_996R_NOT_PRIMARY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть ранее записанные сведения по теме «Гипотеза пальца КМЗ» без необходимости новых проверок?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тема «Гипотеза пальца КМЗ» присутствует в прежних записях; это не подтверждает причину, актуальность схемы или право на действия.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет ранее полученных данных по теме «Гипотеза пальца КМЗ». Новые проверки и вмешательства не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные данные не заменяются предположением или экспериментом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Команда сервомотора и регулятора",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_996R_NOT_PRIMARY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть ранее записанные сведения по теме «Команда сервомотора и регулятора» без необходимости новых проверок?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тема «Команда сервомотора и регулятора» присутствует в прежних записях; это не подтверждает причину, актуальность схемы или право на действия.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет ранее полученных данных по теме «Команда сервомотора и регулятора». Новые проверки и вмешательства не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные данные не заменяются предположением или экспериментом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Исполнение контроллера",
+      "sourceId": "SECONDARY",
+      "sourceStatus": "SECONDARY_996R_NOT_PRIMARY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть ранее записанные сведения по теме «Исполнение контроллера» без необходимости новых проверок?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Тема «Исполнение контроллера» присутствует в прежних записях; это не подтверждает причину, актуальность схемы или право на действия.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет ранее полученных данных по теме «Исполнение контроллера». Новые проверки и вмешательства не предлагаются.",
+          "responses": {},
+          "sourceRefs": [
+            "SECONDARY"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: неизвестные данные не заменяются предположением или экспериментом.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "obs-b",
+        "NO": "d4",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "obs-d",
+        "NO": "d5",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-321",
+      "boundary": "Соседний симптом и источник требуют самостоятельной диагностической ветви; совпадение аппаратов не доказывает общую причину."
+    },
+    {
+      "originalId": "CHME3-DIAG-323",
+      "boundary": "Соседний симптом и источник требуют самостоятельной диагностической ветви; совпадение аппаратов не доказывает общую причину."
+    },
+    {
+      "originalId": "CHME3-DIAG-324",
+      "boundary": "Соседний симптом и источник требуют самостоятельной диагностической ветви; совпадение аппаратов не доказывает общую причину."
+    },
+    {
+      "originalId": "CHME3-DIAG-326",
+      "boundary": "Соседний симптом и источник требуют самостоятельной диагностической ветви; совпадение аппаратов не доказывает общую причину."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "status": "SEPARATE",
+      "detail": "Исходные проверки и действия из донорского дерева не превращены в разрешённые процедуры; только ранее зафиксированные наблюдения."
+    },
+    {
+      "source": "SECONDARY_996R_vs_PRIMARY",
+      "status": "UNVERIFIED",
+      "detail": "Донор утверждает вторичную 996/р-основу, но первичный действующий текст и пункт не подтверждены."
+    },
+    {
+      "source": "HISTORICAL_1996_vs_CURRENT",
+      "status": "ARCHIVE_ONLY",
+      "detail": "Нотик 1996 подтверждает исторический контекст серии, но не современный порядок или точную схему."
+    },
+    {
+      "source": "GZIP_vs_PINNED_JSON",
+      "status": "NOT_EQUIVALENTLY_VERIFIED",
+      "detail": "Сверены ID/название/профили; gzip граф независимо не распакован."
+    },
+    {
+      "source": "SERIAL_VARIANT",
+      "status": "UNKNOWN_BLOCKED",
+      "detail": "ЧМЭ3/Т/Э и модернизации не сведены к одной электрической/пневматической схеме."
+    },
+    {
+      "source": "FIELD_vs_AUTHORIZED",
+      "status": "HYPOTHESIS_ONLY",
+      "detail": "Практические и аварийные обходы остаются только в ссылке на донор, без инструкций в кандидате."
+    },
+    {
+      "source": "SAFETY_GATE",
+      "status": "BLOCKED",
+      "detail": "Source/role/safety gates не пройдены; предупреждение не разрешает действий."
+    }
+  ],
+  "openGaps": [
+    "Действующий первичный текст 996/р и конкретный пункт",
+    "Статус и дата редакции 996/р",
+    "Действующее заводское РЭ/ИДМБ",
+    "Подтверждение серии и исполнения на машине",
+    "Сверка установленной схемы и модернизаций",
+    "Сверка контактов и обозначений с конкретным исполнением",
+    "Независимое распаковывание исходного gzip-графа",
+    "Независимая проверка роли пользователя",
+    "Отдельная safety-экспертиза",
+    "Разрешение эксплуатационного источника",
+    "Фактические наблюдения, не требующие новых действий",
+    "Ручная device QA после тестового APK"
+  ],
+  "secondaryRiskNote": "Вторичный источник не является разрешением действий, проверки и ремонты не перенесены в кандидат.",
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

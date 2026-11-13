@@ -1,0 +1,769 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 61,
+  "originalId": "CHME3-DIAG-108",
+  "scenarioId": "chme3.diagnostics.chme3-diag-108",
+  "title": "Регулятор напряжения работает неустойчиво / большой зарядный ток",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+    "documentPointer": "/scenarios/7",
+    "documentBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-108",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "ELEVATED_ELECTRICAL",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "LEGACY_TRAINING",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-TCH11-VYBORG-2007"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-VOLTAGE-REG",
+      "CHME3-EQ-AUX-GENERATOR",
+      "CHME3-EQ-BATTERY"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "mechanicalContactSeparation": false,
+    "batteryExternalCharging": false,
+    "voltageRegulatorAdjustment": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "revision": "Pinned donor blob 41d241cb0b58e5657ef0d6210e7b272d44df52d0",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "ID/title/profile only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N149",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/149.htm",
+      "revision": "Нотик, 1996, §69: регулятор напряжения и зарядная цепь ЧМЭ3; историческая информация",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N67",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/146.htm",
+      "revision": "Нотик 1996 §67: электрические различия ЧМЭ3Т/ЧМЭ3Э",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "UNVERIFIED_TRAINING_OR_FIELD",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Донорский практический/учебный источник без актуальной первичной нормы",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "LOCAL",
+      "kind": "LOCAL_LEGACY_UNVERIFIED",
+      "ref": "CHME3-SRC-TCH11-VYBORG-2007",
+      "revision": "Местный материал 2007 года, текущий статус не подтверждён",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По уже имеющимся сведениям исключены перегрев, искрение, газовыделение или другие опасные признаки батареи?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Зарядный ток наблюдался как неустойчивый или завышенный, а не полностью отсутствующий?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "В записях различены устойчиво большой ток и колебания показаний?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие зарядного тока относится к CHME3-DIAG-107; не смешивать с неисправностью регулирования.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Устойчиво повышенный ток не доказывает дефект регулятора: состояние АКБ остаётся альтернативной гипотезой.",
+          "responses": {},
+          "sourceRefs": [
+            "N149"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Колебания показаний не доказывают неисправность регулятора или конкретной контактной группы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: текущее безопасное состояние не подтверждено. Не продолжать диагностику, не повторять пуск, не выполнять измерения, вскрытие или вмешательство. Действовать только по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По ранее сохранённым наблюдениям отсутствуют опасные признаки батареи или электрооборудования?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Наблюдается повышенный/нестабильный зарядный ток, а не его полное отсутствие?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть независимая запись характера отклонения: колебания или устойчивое повышение?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "В прежних записях указан режим работы и длительность наблюдения?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Состояние АКБ документально оценено отдельно от предположения о неисправности регулятора?",
+          "responses": {
+            "YES": "obs-d",
+            "NO": "obs-e",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "При отсутствии тока применяется отдельный CHME3-DIAG-107; причина здесь не устанавливается.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без характера отклонения нельзя различить устойчиво большой ток и колебания.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без контекста режима сравнение исторических показаний не подтверждает отказ регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Даже при наличии данных об АКБ электрическая причина остаётся неподтверждённой без применимой схемы.",
+          "responses": {},
+          "sourceRefs": [
+            "N149"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состояние АКБ неизвестно; завышенный ток нельзя автоматически приписывать регулятору.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: текущее безопасное состояние не подтверждено. Не продолжать диагностику, не повторять пуск, не выполнять измерения, вскрытие или вмешательство. Действовать только по действующим инструкциям и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "regulator",
+      "title": "Регулятор напряжения ЧМЭ3",
+      "sourceId": "N149",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "regulator-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Регулятор напряжения ЧМЭ3»?",
+          "responses": {
+            "YES": "regulator-yes",
+            "NO": "regulator-no",
+            "UNKNOWN": "regulator-stop"
+          },
+          "sourceRefs": [
+            "N149"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "regulator-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик §69 описывает регулирование ВГ и зарядку АКБ; историческая конструкция не является действующей инструкцией.",
+          "responses": {},
+          "sourceRefs": [
+            "N149"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "regulator-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "regulator-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "battery",
+      "title": "Альтернативная причина: АКБ",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "battery-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Альтернативная причина: АКБ»?",
+          "responses": {
+            "YES": "battery-yes",
+            "NO": "battery-no",
+            "UNKNOWN": "battery-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "battery-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Состояние батареи и регулятора должны рассматриваться раздельно; большой ток сам по себе не доказывает неисправность регулятора.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "battery-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "battery-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "unstable",
+      "title": "Колебания против постоянного повышения",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "unstable-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Колебания против постоянного повышения»?",
+          "responses": {
+            "YES": "unstable-yes",
+            "NO": "unstable-no",
+            "UNKNOWN": "unstable-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "unstable-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неустойчивые показания и устойчиво большой зарядный ток являются разными наблюдениями, их нельзя объединять в одну установленную причину.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unstable-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "unstable-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "profiles",
+      "title": "Электронные регуляторы модификаций",
+      "sourceId": "N67",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "profiles-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Электронные регуляторы модификаций»?",
+          "responses": {
+            "YES": "profiles-yes",
+            "NO": "profiles-no",
+            "UNKNOWN": "profiles-stop"
+          },
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "profiles-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§67 Нотика описывает электронные регуляторы ЧМЭ3Т/ЧМЭ3Э; алгоритмы нельзя переносить с ЧМЭ3 без профиля.",
+          "responses": {},
+          "sourceRefs": [
+            "N67"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "profiles-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "legacy",
+      "title": "Архивные схемы и местные материалы",
+      "sourceId": "FIELD",
+      "sourceStatus": "HISTORICAL_OR_DONOR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "legacy-q",
+          "type": "QUESTION",
+          "text": "Есть ранее сохранённые сведения по теме «Архивные схемы и местные материалы»?",
+          "responses": {
+            "YES": "legacy-yes",
+            "NO": "legacy-no",
+            "UNKNOWN": "legacy-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "legacy-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донорская учебная литература не подтверждает текущие уставки, способы настройки и допустимые роли.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Подтверждённых данных нет; информация не применена к конкретной машине, причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "legacy-stop",
+          "type": "STOP",
+          "text": "STOP: отсутствуют подтверждённые наблюдения, схема или профиль. Причина UNKNOWN/BLOCKED, действий нет.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-107",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    },
+    {
+      "originalId": "CHME3-DIAG-106",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    },
+    {
+      "originalId": "CHME3-DIAG-109",
+      "distinction": "Самостоятельная исходная неисправность; нельзя переносить причину, режим и схему без источника и профиля."
+    }
+  ],
+  "sourceDiscrepancies": [
+    "Донорский граф предлагает проверку контактной части и сопротивлений регулятора; без актуального РЭ и допуска эти действия исключены.",
+    "Нотик §69 описывает историческую схему ЧМЭ3, тогда как §67 указывает на электронные регуляторы ЧМЭ3Т/ЧМЭ3Э; объединять схемы нельзя."
+  ],
+  "openGaps": [
+    "Действующее РЭ регулятора",
+    "Тип регулятора и профиль конкретной машины",
+    "Актуальные уставки без переноса архивных чисел",
+    "Подтверждение характера отклонения",
+    "Отдельное состояние АКБ",
+    "Ролевые полномочия и safety review",
+    "Независимая распаковка gzip",
+    "Финальная device QA"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

@@ -1,0 +1,81 @@
+name: Stage 15 cross-feature integration QA
+
+on:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'app-shell/**'
+      - 'feature-diagnostics/**'
+      - 'qa/check_post15_group2_reference_parity.py'
+      - 'feature-safety/**'
+      - 'content-packs/common/**'
+      - 'content-packs/crew-reference/**'
+      - 'content-packs/electric/vl80s/**'
+      - 'qa/check_stage15_integration_apk.py'
+      - 'qa/test_stage15_integration_apk.py'
+      - '.github/workflows/stage15-integration-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install pinned Gradle 8.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/gradle-8.7-bin.zip"
+          ok=0
+          for url in \
+            "https://github.com/gradle/gradle-distributions/releases/download/v8.7.0/gradle-8.7-bin.zip" \
+            "https://downloads.gradle.org/distributions/gradle-8.7-bin.zip" \
+            "https://services.gradle.org/distributions/gradle-8.7-bin.zip"; do
+            rm -f "$archive"
+            if curl --fail --location --retry 4 --retry-delay 6 --retry-all-errors \
+              --connect-timeout 20 --max-time 300 "$url" --output "$archive" \
+              && echo "544c35d6bd849ae8a5ed0bcea39ba677dc40f49df7d1835561582da2009b961d  $archive" | sha256sum --check; then
+              ok=1
+              break
+            fi
+          done
+          test "$ok" -eq 1
+          unzip -q "$archive" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
+      - name: Build app and Android UI tests, JVM tests and lint
+        run: gradle :feature-safety:testDebugUnitTest :app-shell:testDebugUnitTest :app-shell:lintDebug :app-shell:assembleDebug :app-shell:assembleDebugAndroidTest --stacktrace --console=plain
+      - name: Exercise integration APK gate against negative fixtures
+        run: python3 -m unittest discover -s qa -p test_stage15_integration_apk.py -v
+      - name: Audit built APK and source/profile boundaries
+        run: |
+          python3 qa/check_stage15_integration_apk.py
+          python3 qa/check_stage13_apk_quarantine.py
+          python3 qa/check_post15_group2_reference_parity.py
+          python3 qa/check_stage14_common_reference.py
+          python3 qa/validate_family_reference_preview.py
+      - name: Verify QA APK integrity and record SHA256/size
+        shell: bash
+        run: |
+          set -euo pipefail
+          apk=app-shell/build/outputs/apk/debug/app-shell-debug.apk
+          test -s "$apk"
+          sha256sum "$apk"
+          stat -c 'QA_APK_BYTES=%s' "$apk"
+          python3 -c 'import sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; print("QA_APK_ZIP_INTEGRITY_PASS")' "$apk"
+      - name: Upload unapproved Debug QA APK for final device acceptance
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: railbrake-stage15-debug-qa-unapproved
+          path: app-shell/build/outputs/apk/debug/app-shell-debug.apk
+          if-no-files-found: error
+          retention-days: 7

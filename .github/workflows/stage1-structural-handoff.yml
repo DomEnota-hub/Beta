@@ -1,0 +1,34 @@
+name: Stage 1 structural handoff gate
+on:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/stage1-structural-handoff.json'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'qa/validate_stage1_structural_handoff.py'
+      - 'qa/test_stage1_structural_handoff.py'
+      - '.github/workflows/stage1-structural-handoff.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/stage1-structural-handoff.json'
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'docs/migration/donor-kotlin-crosswalk.json'
+      - 'docs/migration/stage1-source-link-triage.json'
+      - 'qa/validate_stage1_structural_handoff.py'
+      - 'qa/test_stage1_structural_handoff.py'
+      - '.github/workflows/stage1-structural-handoff.yml'
+permissions:
+  contents: read
+jobs:
+  stage1-handoff:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate source accounting and quarantine handoff
+        run: python3 qa/validate_stage1_structural_handoff.py
+      - name: Regression tests
+        run: python3 -m unittest qa.test_stage1_structural_handoff -v

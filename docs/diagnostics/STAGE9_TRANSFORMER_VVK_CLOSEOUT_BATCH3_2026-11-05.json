@@ -1,0 +1,1070 @@
+{
+  "ledger": {
+    "schemaVersion": "stage9-hv-transformer-vvk-closeout-batch3/1",
+    "date": "2026-11-05",
+    "stage": "9/51",
+    "baseHead": "60a13a35afefdfd1b2bb567952931d0a8b228e84",
+    "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "donorBlobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+    "scenarioIds": [
+      "vl80s.diag.transformer-oil-signs",
+      "vl80s.diag.vvk-interlock-fault"
+    ],
+    "publicationStatus": "CANDIDATE",
+    "runtimeImport": false,
+    "actionAuthorityGranted": false,
+    "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+    "sourceAudit": "Factory 1990 and independently authored textbook 2006 checked at printed page locators; neither is current operational authority.",
+    "next": "After successful CI, close Stage9 HV/protection group by source-ID coverage; begin Stage10 next catalog group, no runtime promotion."
+  },
+  "candidates": [
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_TRANSFORMER_VVK_CLOSEOUT_BATCH3",
+      "scenarioId": "vl80s.diag.transformer-oil-signs",
+      "originalId": "transformer-oil-signs",
+      "category": "Высоковольтные цепи",
+      "title": "Следы масла или ненормальная работа трансформатора",
+      "summary": "Обнаружены подтёки, запах, нагрев или необычный гул трансформатора.",
+      "canonicalBoundary": "TRANSFORMER_OIL_OR_ABNORMAL_SIGNS",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.transformer-protection",
+        "vl80s.diag.oil-pump-failure",
+        "vl80s.diag.ventilation-duct-damage",
+        "vl80s.diag.rectifier-group-fault"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"transformer-oil-signs\"",
+          "seedFields": {
+            "equipment": "тяговый трансформатор, масляная система, защиты",
+            "signs": "подтёк, запах, гул, нагрев",
+            "danger": "дым, газовая защита, открытое горение"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, III §1, печ. стр. 41–43: бак, масло, расширитель, маслоуказатель и принудительное охлаждение трансформатора",
+            "Раздел Б, техническое обслуживание трансформатора, печ. стр. 300–301: маслоуказатель, швы бака, приборы; ремонтные операции исключены"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 3 §3.1, печ. стр. 114–116: ОДЦЭ-5000/25Б, расширитель, маслоуказатель и масляные радиаторы",
+            "Глава 3 §3.1, печ. стр. 119–120: уровень масла, температурная индикация и циркуляция через радиаторы"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "transformer-oil-signs-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, III §1, печ. стр. 41–43: бак, масло, расширитель, маслоуказатель и принудительное охлаждение трансформатора",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "transformer-oil-signs-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел Б, техническое обслуживание трансформатора, печ. стр. 300–301: маслоуказатель, швы бака, приборы; ремонтные операции исключены",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "transformer-oil-signs-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 3 §3.1, печ. стр. 114–116: ОДЦЭ-5000/25Б, расширитель, маслоуказатель и масляные радиаторы",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "transformer-oil-signs-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 3 §3.1, печ. стр. 119–120: уровень масла, температурная индикация и циркуляция через радиаторы",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы дым, открытое горение, резкий перегрев либо защитное отключение с неясным состоянием трансформатора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Имеется прежняя запись о масляном следе, уровне либо тепловом или звуковом признаке именно трансформатора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: нет достаточных ранее записанных сведений или исполнение не подтверждено. STOP/BLOCKED; новые действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён. Передача сведений ответственным согласно действующему порядку, без вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее записанные признаки только систематизированы. Причина, безопасное состояние и разрешение на эксплуатацию НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Недостаточно данных для разграничения причин: UNKNOWN/BLOCKED. Никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксированы дым, открытое горение, резкий перегрев либо защитное отключение с неясным состоянием трансформатора?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В прежних записях указаны следы масла именно у трансформатора, а не только посторонний запах или шум?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Ранее отмечено место масляного следа: бак, радиатор, расширитель либо ввод, без нового осмотра?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: При отсутствии подтверждённого масляного следа отдельно записан необычный гул, запах или тепловой признак?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Уровень масла приведён как прежнее показание конкретного прибора, а не предположение об утечке?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Известны секция и время появления признака, позволяющие отделить его от соседнего оборудования?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Записи о маслонасосе и вентиляции существуют отдельно от предположения о причине нагрева?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Исполнение трансформатора и применимая схема этой секции документально подтверждены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: нет достаточных ранее записанных сведений или исполнение не подтверждено. STOP/BLOCKED; новые действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён. Передача сведений ответственным согласно действующему порядку, без вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее записанные признаки только систематизированы. Причина, безопасное состояние и разрешение на эксплуатацию НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Недостаточно данных для разграничения причин: UNKNOWN/BLOCKED. Никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "transformer-oil-signs-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Масляный след и уровень не тождественны",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, III §1, печ. стр. 41–43: бак, масло, расширитель, маслоуказатель и принудительное охлаждение трансформатора",
+          "text": "Историческое руководство различает бак, расширитель и систему охлаждения. След масла в прежней записи не доказывает место нарушения герметичности и не разрешает вскрытие.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-oil-signs-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Гул, запах и следы масла как разные признаки",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 3 §3.1, печ. стр. 114–116: ОДЦЭ-5000/25Б, расширитель, маслоуказатель и масляные радиаторы",
+          "text": "Учебное описание трансформатора не позволяет по одному звуку, запаху или пятну уверенно установить дефект обмоток, масла либо корпуса; сведения нужно хранить раздельно.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-oil-signs-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Маслоуказатель и место подтёка",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел Б, техническое обслуживание трансформатора, печ. стр. 300–301: маслоуказатель, швы бака, приборы; ремонтные операции исключены",
+          "text": "Уровень в расширителе и след на шве бака описывают разные наблюдения. Исторические ремонтные рекомендации не переносятся в действия локомотивной бригады.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-oil-signs-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Насос и радиаторы как отдельный контур",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 3 §3.1, печ. стр. 119–120: уровень масла, температурная индикация и циркуляция через радиаторы",
+          "text": "В учебном источнике охлаждение связано с циркуляцией масла и обдувом радиаторов. Признак нагрева сам по себе не подтверждает отказ насоса или вентилятора.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "transformer-oil-signs-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Исполнение трансформатора и модернизации",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 3 §3.1, печ. стр. 114–116: ОДЦЭ-5000/25Б, расширитель, маслоуказатель и масляные радиаторы",
+          "text": "Описание ОДЦЭ-5000/25Б относится к учебному историческому исполнению. Без документации конкретной секции нельзя переносить устройство, показания и ограничения на установленный агрегат.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    },
+    {
+      "schemaVersion": "diagnostic-stage9-hv-source-first/2",
+      "stage": "9/51",
+      "batch": "HV_TRANSFORMER_VVK_CLOSEOUT_BATCH3",
+      "scenarioId": "vl80s.diag.vvk-interlock-fault",
+      "originalId": "vvk-interlock-fault",
+      "category": "Высоковольтные цепи",
+      "title": "Не подтверждается блокировка ВВК",
+      "summary": "Штатно закрытая дверь или штора не даёт разрешения либо сигнализация противоречива.",
+      "canonicalBoundary": "VVK_INTERLOCK_STATE_CONTRADICTION",
+      "mustRemainDistinctFrom": [
+        "vl80s.diag.pantograph-no-rise",
+        "vl80s.diag.pantograph-wrong-selection",
+        "vl80s.diag.gv-no-close",
+        "vl80s.diag.roof-insulation-signs"
+      ],
+      "donorPinnedSha": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+      "donorOriginalQuestions": [
+        "Признак относится только к одной секции, тележке или группе?",
+        "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+        "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+      ],
+      "authoringProfileId": "vl80s-general",
+      "exactInstalledVariant": "UNKNOWN",
+      "unknownVariantDisposition": "BLOCKED",
+      "sourceRecords": {
+        "donor": {
+          "kind": "PINNED_DONOR_GENERATED_CATALOG",
+          "repository": "DomEnota-hub/Test-",
+          "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+          "path": "app/src/main/java/ru/railbrake/calculator/core/DiagnosticExtendedCatalog.kt",
+          "blobSha": "090d448d0e9de20d002edf07361764e524298bf8",
+          "sourcePointer": "Seed(\"vvk-interlock-fault\"",
+          "seedFields": {
+            "equipment": "ВВК, дверные и шторные блокировки, цепи 50 В",
+            "signs": "нет разрешения, ложная индикация",
+            "danger": "обход блокировки, доступ к токоведущим частям"
+          },
+          "questionGenerator": "toScenario(seed), shared three questions",
+          "originalQuestions": [
+            "Признак относится только к одной секции, тележке или группе?",
+            "Признак устойчиво повторяется при одинаковом безопасном наблюдении?",
+            "Есть опасный нагрев, дым, дуга, утечка, разрушение или защитное отключение?"
+          ],
+          "currentOperatingAuthority": false,
+          "proceduresImported": false
+        },
+        "manual1990": {
+          "kind": "HISTORICAL_FACTORY_MANUAL",
+          "title": "Васько Н. М. и др. Электровоз ВЛ80С. 2-е изд.",
+          "year": 1990,
+          "url": "https://djvu.online/file/wXVHhRmTUUuqq",
+          "verifiedLocators": [
+            "Раздел А, аппараты, печ. стр. 90–91: блокировочное устройство БУ-01-02 и взаимное блокирование штор и токоприёмника",
+            "Раздел А, цепи управления, печ. стр. 215–216: ПБ1/ПБ2, контроль 232/235 и зависимость разрешения от секций"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        },
+        "textbook2006": {
+          "kind": "HISTORICAL_EDUCATIONAL_TEXTBOOK",
+          "title": "Николаев А. Ю., Сесявин Н. В. Устройство и работа электровоза ВЛ80С",
+          "year": 2006,
+          "url": "https://djvu.online/file/pqNFfrSxFsGWi",
+          "verifiedLocators": [
+            "Глава 7, печ. стр. 266–269: пневматические блокировки ПБ1/ПБ2 и вентиль защиты ВЗ-57-02",
+            "Глава 7 §7.10, печ. стр. 275–276: БУ-01-02, ключевая блокировка и условие закрытия ВВК"
+          ],
+          "currentOperatingAuthority": false,
+          "modernRevisionVerified": false,
+          "exactInstalledEquipmentVerified": false,
+          "proceduresImported": false
+        }
+      },
+      "historicalEvidenceClaims": [
+        {
+          "id": "vvk-interlock-fault-manual-0",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, аппараты, печ. стр. 90–91: блокировочное устройство БУ-01-02 и взаимное блокирование штор и токоприёмника",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "vvk-interlock-fault-manual-1",
+          "sourceId": "manual1990",
+          "locator": "Раздел А, цепи управления, печ. стр. 215–216: ПБ1/ПБ2, контроль 232/235 и зависимость разрешения от секций",
+          "confidence": "HISTORICAL_DESCRIPTION_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "vvk-interlock-fault-textbook-0",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7, печ. стр. 266–269: пневматические блокировки ПБ1/ПБ2 и вентиль защиты ВЗ-57-02",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        },
+        {
+          "id": "vvk-interlock-fault-textbook-1",
+          "sourceId": "textbook2006",
+          "locator": "Глава 7 §7.10, печ. стр. 275–276: БУ-01-02, ключевая блокировка и условие закрытия ВВК",
+          "confidence": "EDUCATIONAL_HISTORICAL_ONLY",
+          "provesCurrentEquipment": false,
+          "provesFaultCause": false,
+          "authorizesAction": false
+        }
+      ],
+      "versions": {
+        "SHORT": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть прежняя запись о возможном доступе к ВВК при неподтверждённом снятии высокого напряжения или о нарушении защитного блокирования?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть прежняя запись о несоответствии состояния ВВК и разрешения либо об отсутствии подтверждения блокировки?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: нет достаточных ранее записанных сведений или исполнение не подтверждено. STOP/BLOCKED; новые действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён. Передача сведений ответственным согласно действующему порядку, без вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее записанные признаки только систематизированы. Причина, безопасное состояние и разрешение на эксплуатацию НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Недостаточно данных для разграничения причин: UNKNOWN/BLOCKED. Никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        },
+        "DETAILED": {
+          "startNodeId": "q1",
+          "nodes": [
+            {
+              "id": "q1",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Есть прежняя запись о возможном доступе к ВВК при неподтверждённом снятии высокого напряжения или о нарушении защитного блокирования?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_danger",
+                "NO": "q2",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q2",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Зафиксировано противоречие между записанным состоянием двери или шторы и сигналом разрешения?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q3",
+                "NO": "q4",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q3",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Из прежних сведений известна секция, в которой обнаружено противоречие индикации и состояния?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q5",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q4",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Отмечено только отсутствие разрешения без независимого подтверждения состояния двери или шторы?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q6",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q5",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В записи отдельно указано, что сигнал разрешения не принят за доказательство безопасного состояния ВВК?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q6",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Имеются прежние сведения о состоянии питания или воздуха цепей управления, без нового испытания?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q7",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q7",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: В документах секции определён вариант блокирования ПБ1/ПБ2 и контроля 232 либо БУ-01-02/235?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "q8",
+                "NO": "s_record",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "q8",
+              "type": "QUESTION",
+              "text": "По ранее записанным сведениям: Точная схема и комплектация блокировок данной секции независимо документально подтверждены?",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {
+                "YES": "s_record",
+                "NO": "s_unresolved",
+                "UNKNOWN": "s_unknown"
+              }
+            },
+            {
+              "id": "s_unknown",
+              "type": "STOP",
+              "text": "UNKNOWN: нет достаточных ранее записанных сведений или исполнение не подтверждено. STOP/BLOCKED; новые действия запрещены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_danger",
+              "type": "STOP",
+              "text": "Опасный признак: информационный маршрут прекращён. Передача сведений ответственным согласно действующему порядку, без вмешательств.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_record",
+              "type": "OBSERVATION_REPORT",
+              "text": "Ранее записанные признаки только систематизированы. Причина, безопасное состояние и разрешение на эксплуатацию НЕ подтверждены.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            },
+            {
+              "id": "s_unresolved",
+              "type": "STOP",
+              "text": "Недостаточно данных для разграничения причин: UNKNOWN/BLOCKED. Никаких пробных включений, обходов или измерений.",
+              "recordedOnly": true,
+              "operationRequested": false,
+              "causeConfirmed": false,
+              "sourceRefs": [
+                "donor",
+                "manual1990",
+                "textbook2006"
+              ],
+              "responses": {}
+            }
+          ]
+        }
+      },
+      "informationExtensions": [
+        {
+          "id": "vvk-interlock-fault-extension-1",
+          "version": "SHORT",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "Состояние штор и разрешение на токоприёмник",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, цепи управления, печ. стр. 215–216: ПБ1/ПБ2, контроль 232/235 и зависимость разрешения от секций",
+          "text": "Заводское историческое описание связывает закрытие штор ВВК с пневматическими блокировками и цепями управления. Отсутствие разрешения не доказывает неисправность отдельного аппарата.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vvk-interlock-fault-extension-2",
+          "version": "SHORT",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Пневматическая и электрическая границы",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7, печ. стр. 266–269: пневматические блокировки ПБ1/ПБ2 и вентиль защиты ВЗ-57-02",
+          "text": "Учебное описание разделяет механическое закрытие, пневматическое блокирование и электрический сигнал. Их противоречие требует STOP, а не попытки обхода блокировки.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vvk-interlock-fault-extension-3",
+          "version": "DETAILED",
+          "kind": "HISTORICAL_INFORMATION_ONLY",
+          "approachFocus": "БУ-01-02 как вариант, не универсальный аппарат",
+          "sourceRefs": [
+            "manual1990"
+          ],
+          "locator": "Раздел А, аппараты, печ. стр. 90–91: блокировочное устройство БУ-01-02 и взаимное блокирование штор и токоприёмника",
+          "text": "Устройство БУ-01-02 описано для определённого исторического исполнения. Наличие или отсутствие этого аппарата на конкретной секции должно подтверждаться документацией.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vvk-interlock-fault-extension-4",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Ключевая блокировка и ложная индикация",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7 §7.10, печ. стр. 275–276: БУ-01-02, ключевая блокировка и условие закрытия ВВК",
+          "text": "Учебный материал различает положение ключей и состояние блокировочного устройства. По индикации без подтверждения исполнения нельзя делать вывод о безопасном доступе в ВВК.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        },
+        {
+          "id": "vvk-interlock-fault-extension-5",
+          "version": "DETAILED",
+          "kind": "EDUCATIONAL_INFORMATION_ONLY",
+          "approachFocus": "Не смешивать ПБ1/ПБ2 с отдельным реле",
+          "sourceRefs": [
+            "textbook2006"
+          ],
+          "locator": "Глава 7, печ. стр. 266–269: пневматические блокировки ПБ1/ПБ2 и вентиль защиты ВЗ-57-02",
+          "text": "Пневматические блокировки и реле контроля относятся к связанным, но различным элементам защиты. Номер аппарата из исторической схемы не является доказательством установленной комплектации.",
+          "warningRequired": true,
+          "actionAuthorityGranted": false
+        }
+      ],
+      "extendedWarning": {
+        "default": "HIDDEN",
+        "requiresReadToEnd": true,
+        "requiresAcknowledgement": true,
+        "consentResetsOnClose": true,
+        "warningGrantsActionAuthority": false
+      },
+      "safety": {
+        "observationOnly": true,
+        "onlyPreviouslyRecorded": true,
+        "triState": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "unknownMustStop": true,
+        "operationsAllowed": [],
+        "prohibited": [
+          "HV_INTERVENTION",
+          "ROOF_ACCESS",
+          "PROTECTION_BYPASS",
+          "JUMPER",
+          "FORCED_ENERGIZATION",
+          "TEST_RESTART",
+          "LIVE_MEASUREMENT"
+        ],
+        "roleGate": "NOT_APPROVED",
+        "sourceGate": "NOT_APPROVED",
+        "safetyGate": "NOT_APPROVED"
+      },
+      "publicationStatus": "CANDIDATE",
+      "runtimeImport": false,
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "sourceAuthorityVerified": false,
+      "deviceQA": "NOT_RUN_DEFERRED",
+      "donorOriginalCategory": "Высоковольтные цепи",
+      "categoryNormalizationNote": "ORIGINAL_AND_MIGRATION_MATCH"
+    }
+  ]
+}

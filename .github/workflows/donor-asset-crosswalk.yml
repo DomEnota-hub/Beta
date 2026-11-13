@@ -1,0 +1,32 @@
+name: Pinned donor asset crosswalk
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'qa/validate_donor_asset_crosswalk.py'
+      - 'qa/test_donor_asset_crosswalk.py'
+      - '.github/workflows/donor-asset-crosswalk.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'qa/validate_donor_asset_crosswalk.py'
+      - 'qa/test_donor_asset_crosswalk.py'
+      - '.github/workflows/donor-asset-crosswalk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests for SHA and fail-closed runtime gates
+        run: python3 -m unittest discover -s qa -p 'test_donor_asset_crosswalk.py' -v
+      - name: Validate all 36 donor asset entries and exact raw copies
+        run: python3 qa/validate_donor_asset_crosswalk.py

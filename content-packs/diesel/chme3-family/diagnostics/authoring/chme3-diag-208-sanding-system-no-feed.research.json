@@ -1,0 +1,768 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 64,
+  "originalId": "CHME3-DIAG-208",
+  "scenarioId": "chme3.diagnostics.chme3-diag-208",
+  "title": "Песочная система не подаёт песок",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/7",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-208",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "NORMAL_DIAGNOSTIC",
+    "actionAuthority": "TRIAGE_ONLY_NO_REPAIR",
+    "evidenceStatus": "DOCUMENT_INDEX_PENDING_EXACT_SOURCE",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-SAND",
+      "CHME3-EQ-PNEUMATIC-CONTROL-RESERVOIR"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "valveMechanicalFixation": false,
+    "forcedFanOperation": false,
+    "forcedReverserOperation": false,
+    "sandingTest": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Pinned Test- blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/7",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/022.htm",
+      "revision": "З.Х. Нотик, 1996, §13; историческое пособие, не действующее РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-DOC-COLLECTION-DIAG",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Исключена ли по записям опасная потеря сцепления?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Подтверждено ли отсутствие песка при ранее записанной штатной команде?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть ли запись направления и затронутой группы форсунок?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без команды отсутствие песка не доказывает отказ.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §13 различает подачу по направлению.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Исключена ли по записям опасная потеря сцепления?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Подтверждено ли отсутствие песка при ранее записанной штатной команде?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Есть ли запись направления и затронутой группы форсунок?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Есть ли сведения о песке и воздухе без нового осмотра?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Подтверждена ли установленная схема песочниц?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без команды отсутствие песка не доказывает отказ.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исторический §13 различает подачу по направлению.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Песок, воздух и команда являются разными гипотезами.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нельзя назначать прочистку или разборку по одному симптому.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых наблюдений, безопасного состояния или схемы. UNKNOWN/BLOCKED; не выполнять новых включений, осмотров, продувок, регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "scope",
+      "title": "Направление подачи",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "scope-q",
+          "type": "QUESTION",
+          "text": "Есть ли запись направления движения и группы подающих форсунок?",
+          "responses": {
+            "YES": "scope-yes",
+            "NO": "scope-no",
+            "UNKNOWN": "scope-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "scope-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "В §13 исторически различается подача по направлению, но исполнение не подтверждено.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "scope-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без направления нельзя назначать отказ конкретной группы.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "scope-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "technical",
+      "title": "Песок и трубы",
+      "sourceId": "DOC",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "technical-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее зафиксированные сведения о наличии песка и состоянии подсыпных труб?",
+          "responses": {
+            "YES": "technical-yes",
+            "NO": "technical-no",
+            "UNKNOWN": "technical-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "technical-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Запись состояния материала информационная; прочистка и осмотр не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "technical-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствие сведений не доказывает засорение или пустой бункер.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "technical-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "source",
+      "title": "Пневматическое питание",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "source-q",
+          "type": "QUESTION",
+          "text": "Есть ли отдельная запись состояния пневматического питания песочниц?",
+          "responses": {
+            "YES": "source-yes",
+            "NO": "source-no",
+            "UNKNOWN": "source-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "source-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "§13 связывает воздух и подачу песка, но не устанавливает отказ клапана.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "source-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи нельзя считать пневмоконтур неисправным.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "source-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "variant",
+      "title": "Команда и педаль",
+      "sourceId": "FIELD",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "variant-q",
+          "type": "QUESTION",
+          "text": "Есть ли сохранённое подтверждение штатной команды педали?",
+          "responses": {
+            "YES": "variant-yes",
+            "NO": "variant-no",
+            "UNKNOWN": "variant-stop"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "variant-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Практический индекс не подтверждает действующую схему электрической команды.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не выполнять новое нажатие, продувку или принудительную подачу.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "variant-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Исполнение",
+      "sourceId": "PACK",
+      "sourceStatus": "UNVERIFIED_PROFILE",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "limits-q",
+          "type": "QUESTION",
+          "text": "Есть ли заводская схема песочниц с подтверждённой модернизацией?",
+          "responses": {
+            "YES": "limits-yes",
+            "NO": "limits-no",
+            "UNKNOWN": "limits-stop"
+          },
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "limits-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Каталог ЧМЭ3/Т/Э не подтверждает распределение форсунок на конкретной машине.",
+          "responses": {},
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Неизвестное исполнение блокирует выводы о группах и нормативах.",
+          "responses": {},
+          "sourceRefs": [
+            "PACK"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "limits-stop",
+          "type": "STOP",
+          "text": "STOP: UNKNOWN/BLOCKED, новые технические проверки запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-206",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    },
+    {
+      "originalId": "CHME3-DIAG-207",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    },
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный симптом, без переноса причин, профиля или разрешений."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RESEARCH",
+      "note": "Физические проверки исходника не переносить: только сохранённые наблюдения."
+    },
+    {
+      "source": "HISTORICAL_vs_CURRENT",
+      "note": "Нотик 1996 не является действующим РЭ и не подтверждает установленную схему."
+    },
+    {
+      "source": "GZIP_vs_INDEX",
+      "note": "Граф gzip не декодирован независимо, равенство не утверждается."
+    },
+    {
+      "source": "FIELD_vs_AUTHORITY",
+      "note": "Практический индекс не даёт полномочий."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ",
+    "Заводской номер и модернизация",
+    "Схема конкретной машины",
+    "Первичный источник и дата",
+    "Записи штатных наблюдений",
+    "Проверка исходного gzip",
+    "Ролевые полномочия",
+    "Независимая safety-проверка",
+    "Проверка профиля",
+    "Действующие ограничения",
+    "Ручная Android QA",
+    "Согласование применимости"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

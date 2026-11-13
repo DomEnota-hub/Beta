@@ -1,0 +1,760 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 51,
+  "originalId": "CHME3-DIAG-002",
+  "scenarioId": "chme3.diagnostics.chme3-diag-002",
+  "title": "Дизель запускается и через некоторое время глохнет",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json",
+    "documentPointer": "/scenarios/1",
+    "documentBlob": "63988703bb795e82f40335a756b8b9bd3cad8e0a",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-002",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "NORMAL_DIAGNOSTIC",
+    "evidenceStatus": "FIELD_PRACTICE_WITH_CASE_DATA",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM",
+      "CHME3-SRC-SCBIST-TROUBLE-2020",
+      "CHME3-SRC-SCBIST-FORUM-RCHO-2014"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-DIESEL",
+      "CHME3-EQ-FUEL-PRIME-PUMP",
+      "CHME3-EQ-FUEL-FILTER",
+      "CHME3-EQ-GOVERNOR",
+      "CHME3-EQ-OIL-PUMP"
+    ]
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED"
+  },
+  "deviceQA": "DEFERRED_TO_POST_RELEASE_DEVICE_QA",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "rotatingMachineryIntervention": false,
+    "fuelSystemIntervention": false,
+    "protectionReset": false,
+    "underLoadTesting": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_powerplant_pass3.json#/scenarios/1",
+      "revision": "Donor JSON updatedAt 2026-10-01; date of field observations unknown; Test@3176d6ee2",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Test@3176d6ee2; original gzip not independently decoded; graph equivalence not established",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N38",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/066.htm",
+      "revision": "Нотик З.Х., 2-е изд., Транспорт, 1996, §38: регулятор и дистанционная остановка; не действующее РЭ",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "N15",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://www.sinref.ru/000_uchebniki/05300_transport_jd_teplovozi/170_teplovozi_chme3_chme3t_chme3e_izdanie2_notik_1996/025.htm",
+      "revision": "Нотик З.Х., 1996, §15: устройство дизеля; исторический технический контекст",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "INFORMATION_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "PINNED_FIELD_PRACTICE_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM; CHME3-SRC-SCBIST-TROUBLE-2020; CHME3-SRC-SCBIST-FORUM-RCHO-2014",
+      "revision": "Donor FIELD_PRACTICE_WITH_CASE_DATA; первичные полевые записи и даты не перепроверены",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "authority": "HYPOTHESIS_ONLY",
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По уже имеющимся записям после пуска дизель некоторое время работал устойчиво?",
+          "responses": {
+            "YES": "s2",
+            "NO": "s3",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Остановка наблюдалась только при наборе нагрузки, а не на холостом ходу?",
+          "responses": {
+            "YES": "s4",
+            "NO": "s5",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Устойчивый пуск не подтверждён: отделить от CHME3-DIAG-001, не диагностировать самопроизвольную остановку.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s4",
+          "type": "OBSERVATION_REPORT",
+          "text": "Признак нагрузки требует отдельного CHME3-DIAG-006; по одной остановке не доказана топливная или регуляторная причина.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s5",
+          "type": "QUESTION",
+          "text": "В старой записи зафиксирован сигнал штатной защиты либо предупреждение непосредственно перед остановкой?",
+          "responses": {
+            "YES": "s6",
+            "NO": "s7",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s6",
+          "type": "OBSERVATION_REPORT",
+          "text": "Возможна защитная остановка. Без актуального РЭ, точной схемы и роли причина неизвестна; сброс и повторный пуск запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "s7",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без документированного срабатывания защиты сохраняются конкурирующие гипотезы: подача топлива, регулятор, измерение; причина не установлена.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop",
+          "type": "STOP",
+          "text": "STOP: недостаточно подтверждённых записей, неизвестно исполнение либо есть признаки опасности. Не повторять пуск, не создавать нагрузку, не отключать защиту и не вмешиваться в топливную систему.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Зафиксирована устойчивая работа после штатного пуска, а не только краткое схватывание?",
+          "responses": {
+            "YES": "d2",
+            "NO": "d3",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Остановка возникала исключительно при ранее зафиксированной нагрузке?",
+          "responses": {
+            "YES": "d4",
+            "NO": "d5",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "OBSERVATION_REPORT",
+          "text": "Граница CHME3-DIAG-001: нет доказанного периода устойчивой работы. Не создавать новую попытку пуска для уточнения.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d4",
+          "type": "OBSERVATION_REPORT",
+          "text": "Граница CHME3-DIAG-006: отдельный анализ просадки под нагрузкой, без пробного набора позиций.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Перед остановкой документирован сигнал защиты или ненормальная штатная индикация?",
+          "responses": {
+            "YES": "d6",
+            "NO": "d7",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d6",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое описание §38 допускает автоматическую остановку при нарушении масляного режима, но текущая причина и порог для машины НЕ подтверждены.",
+          "responses": {},
+          "sourceRefs": [
+            "N38",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d7",
+          "type": "QUESTION",
+          "text": "В имеющемся журнале до остановки отмечено падение штатного показания подачи топлива?",
+          "responses": {
+            "YES": "d8",
+            "NO": "d9",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d8",
+          "type": "OBSERVATION_REPORT",
+          "text": "Топливная гипотеза основана на старой записи; фильтры, насосы и завоздушивание не проверены. Вскрытие/прокачка запрещены.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD",
+            "N15"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d9",
+          "type": "QUESTION",
+          "text": "Есть ранее зарегистрированное отклонение давления масла или предупреждение по смазке?",
+          "responses": {
+            "YES": "d10",
+            "NO": "d11",
+            "UNKNOWN": "stop"
+          },
+          "sourceRefs": [
+            "DOC",
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d10",
+          "type": "OBSERVATION_REPORT",
+          "text": "Возможна защитная или регуляторная ветвь, но показание не устанавливает первопричину. Не сбрасывать защиту и не перезапускать.",
+          "responses": {},
+          "sourceRefs": [
+            "N38",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "d11",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без независимых данных о топливе, смазке и команде регулятора ветви не различимы; причина UNKNOWN.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD",
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop",
+          "type": "STOP",
+          "text": "STOP: недостаточно подтверждённых записей, неизвестно исполнение либо есть признаки опасности. Не повторять пуск, не создавать нагрузку, не отключать защиту и не вмешиваться в топливную систему.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "timing",
+      "title": "Время остановки и границы сценариев",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "timing-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных документах есть подтверждённое наблюдение по теме «Время остановки и границы сценариев»?",
+          "responses": {
+            "YES": "timing-yes",
+            "NO": "timing-no",
+            "UNKNOWN": "timing-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "timing-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Устойчивая работа после пуска отделяется от краткого схватывания; нагрузочный случай отделяется от CHME3-DIAG-006. Это информационный контекст, не диагноз и не процедура.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "timing-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельств этой ветви нет. Сохраняются альтернативные объяснения; не инициировать испытание.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "timing-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение или применимость наблюдения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "fuel",
+      "title": "Топливоподача: конкурирующая гипотеза",
+      "sourceId": "N15",
+      "sourceStatus": "HISTORICAL_OR_LEGACY_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "fuel-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных документах есть подтверждённое наблюдение по теме «Топливоподача: конкурирующая гипотеза»?",
+          "responses": {
+            "YES": "fuel-yes",
+            "NO": "fuel-no",
+            "UNKNOWN": "fuel-unknown"
+          },
+          "sourceRefs": [
+            "N15"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "fuel-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое устройство топливной системы не подтверждает загрязнение фильтра, завоздушивание или неисправность насоса без независимых данных. Это информационный контекст, не диагноз и не процедура.",
+          "responses": {},
+          "sourceRefs": [
+            "N15"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fuel-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельств этой ветви нет. Сохраняются альтернативные объяснения; не инициировать испытание.",
+          "responses": {},
+          "sourceRefs": [
+            "N15"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "fuel-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение или применимость наблюдения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "N15"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "governor",
+      "title": "Регулятор и дистанционная остановка",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_OR_LEGACY_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "governor-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных документах есть подтверждённое наблюдение по теме «Регулятор и дистанционная остановка»?",
+          "responses": {
+            "YES": "governor-yes",
+            "NO": "governor-no",
+            "UNKNOWN": "governor-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "governor-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нотик 1996 §38 описывает механизм управления подачей и остановки; схема и настройка конкретной машины не установлены. Это информационный контекст, не диагноз и не процедура.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "governor-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельств этой ветви нет. Сохраняются альтернативные объяснения; не инициировать испытание.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "governor-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение или применимость наблюдения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "oil",
+      "title": "Смазка, защита и ограничения интерпретации",
+      "sourceId": "N38",
+      "sourceStatus": "HISTORICAL_OR_LEGACY_NOT_CURRENT",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "oil-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных документах есть подтверждённое наблюдение по теме «Смазка, защита и ограничения интерпретации»?",
+          "responses": {
+            "YES": "oil-yes",
+            "NO": "oil-no",
+            "UNKNOWN": "oil-unknown"
+          },
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "oil-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Историческое описание защитного прекращения подачи топлива нельзя превращать в текущий нормативный порог или разрешение на повторный пуск. Это информационный контекст, не диагноз и не процедура.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельств этой ветви нет. Сохраняются альтернативные объяснения; не инициировать испытание.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "oil-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение или применимость наблюдения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "N38"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "title": "Полевые сообщения и альтернативы",
+      "sourceId": "FIELD",
+      "sourceStatus": "FIELD_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "field-q",
+          "type": "QUESTION",
+          "text": "В ранее собранных документах есть подтверждённое наблюдение по теме «Полевые сообщения и альтернативы»?",
+          "responses": {
+            "YES": "field-yes",
+            "NO": "field-no",
+            "UNKNOWN": "field-unknown"
+          },
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "field-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Донор содержит ссылки на практику, но исходные случаи и даты не проверены; разные причины могут давать одинаковый признак остановки. Это информационный контекст, не диагноз и не процедура.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Свидетельств этой ветви нет. Сохраняются альтернативные объяснения; не инициировать испытание.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "field-unknown",
+          "type": "STOP",
+          "text": "STOP: происхождение или применимость наблюдения не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "FIELD"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "openGaps": [
+    "current manufacturer manual",
+    "installed profile and scheme",
+    "independent gzip decoding",
+    "current normative/role/safety gates",
+    "final Android device QA"
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-001",
+      "rule": "Нет устойчивого режима после первого воспламенения: не считать остановкой после состоявшегося пуска"
+    },
+    {
+      "originalId": "CHME3-DIAG-003",
+      "rule": "Неконтролируемый рост оборотов или активная авария: немедленно прекратить исследовательский диалог, отдельный emergency source/role gate"
+    },
+    {
+      "originalId": "CHME3-DIAG-006",
+      "rule": "Остановка только под нагрузкой: отдельный сценарий просадки оборотов, не подменять им остановку на холостом ходу"
+    }
+  ]
+}

@@ -43,7 +43,7 @@ class ExecutableDiagnosticFlowTest {
               "title": "Первый сценарий",
               "summary": "Тестовый сценарий",
               "profileId": "vl80s",
-              "applicableVariantIds": ["vl80s-general"],
+              "applicableVariantIds": ["vl80s.first"],
               "informationConfidence": "MANUFACTURER_OR_MANUAL",
               "severity": "ATTENTION",
               "applicability": "ВЛ80С",
@@ -274,6 +274,10 @@ class ExecutableDiagnosticFlowTest {
     private fun registryFor(
         status: PublicationStatus,
         layer: ContentLayer = ContentLayer.STANDARD,
+        disposition: ActionDisposition = ActionDisposition.CONDITIONAL_ACTION,
+        provenance: ProvenanceClass = ProvenanceClass.CURRENT_OFFICIAL,
+        sourceStatus: SourceStatus = SourceStatus.CURRENT,
+        sourceRefs: Set<String> = setOf("verified-source-fixture"),
     ): ContentRegistry {
         val id = CanonicalId("vl80s.diag.one")
         val entry = ContentEntry(
@@ -286,9 +290,10 @@ class ExecutableDiagnosticFlowTest {
             ),
             layer = layer,
             publicationStatus = status,
-            provenance = ProvenanceClass.HISTORICAL_TRAINING,
-            sourceStatus = SourceStatus.ARCHIVED,
-            actionDisposition = ActionDisposition.INFORMATION_ONLY,
+            provenance = provenance,
+            sourceStatus = sourceStatus,
+            actionDisposition = disposition,
+            sourceRefs = sourceRefs,
             title = "Первый сценарий",
         )
         val manifest = ContentPackManifest(
@@ -323,6 +328,69 @@ class ExecutableDiagnosticFlowTest {
         assertNull(catalog.open("vl80s.diag.two"))
     }
 
+    private fun verifiedEvidence() = DiagnosticActionInputs(
+        publicationStatus = PublicationStatus.ACTIVE,
+        actionDisposition = ActionDisposition.CONDITIONAL_ACTION,
+        runtimeAvailability = DiagnosticRuntimeAvailability.EXECUTABLE_FLOW_AVAILABLE,
+        sourceAuthorityVerified = true,
+        exactProfileConfirmed = true,
+        installedEquipmentConfirmed = true,
+    )
+
+    private fun catalog(
+        registry: ContentRegistry,
+        context: RuntimeContext,
+        evidence: DiagnosticActionInputs? = verifiedEvidence(),
+    ) = PublishedDiagnosticCatalog(
+        ExecutableDiagnosticFlowJsonLoader().parse(fixture),
+        registry,
+        context,
+        if (evidence == null) emptyMap() else mapOf("vl80s.diag.one" to evidence),
+    )
+
+    @Test
+    fun activeRegistryEntryCannotPublishGraphWithoutIndependentCrewAuthorization() {
+        val context = RuntimeContext(
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = VariantId("vl80s.first"),
+        )
+        val good = registryFor(PublicationStatus.ACTIVE)
+        assertTrue(catalog(good, context, evidence = null).search("").isEmpty())
+        assertTrue(catalog(good, context, verifiedEvidence().copy(
+            exactProfileConfirmed = false,
+        )).search("").isEmpty())
+        assertTrue(catalog(good, context, verifiedEvidence().copy(
+            installedEquipmentConfirmed = false,
+        )).search("").isEmpty())
+        assertTrue(catalog(good, context, verifiedEvidence().copy(
+            sourceAuthorityVerified = false,
+        )).search("").isEmpty())
+        assertTrue(catalog(good, context, verifiedEvidence().copy(
+            actionDisposition = ActionDisposition.INFORMATION_ONLY,
+        )).search("").isEmpty())
+        assertTrue(catalog(registryFor(PublicationStatus.ACTIVE,
+            disposition = ActionDisposition.INFORMATION_ONLY), context).search("").isEmpty())
+        assertTrue(catalog(registryFor(PublicationStatus.ACTIVE,
+            sourceStatus = SourceStatus.ARCHIVED), context).search("").isEmpty())
+        assertTrue(catalog(registryFor(PublicationStatus.ACTIVE,
+            provenance = ProvenanceClass.HISTORICAL_TRAINING), context).search("").isEmpty())
+        assertTrue(catalog(registryFor(PublicationStatus.ACTIVE,
+            sourceRefs = emptySet()), context).search("").isEmpty())
+        assertEquals(listOf("vl80s.diag.one"), catalog(good, context).search("").map { it.id })
+    }
+
+    @Test
+    fun executableGraphRequiresExactRuntimeVariantEvenWhenRegistryIsBroad() {
+        val broadEntry = registryFor(PublicationStatus.ACTIVE)
+        val unknown = RuntimeContext(
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = VariantId("vl80s.unknown"),
+        )
+        assertTrue(catalog(broadEntry, unknown).search("").isEmpty())
+        assertTrue(catalog(broadEntry, RuntimeContext(viewedModelId = ModelId("vl80s")))
+            .search("").isEmpty())
+    }
+
     @Test
     fun catalogSearchShowsOnlyPublishedAndVariantApplicableScenarios() {
         val runtime = ExecutableDiagnosticFlowJsonLoader().parse(fixture)
@@ -331,24 +399,56 @@ class ExecutableDiagnosticFlowTest {
             viewedModelId = ModelId("vl80s"),
             activeVariantId = VariantId("vl80s.first"),
         )
-        val catalog = PublishedDiagnosticCatalog(runtime, registry, context)
+        val catalog = catalog(registry, context)
         assertEquals(listOf("vl80s.diag.one"), catalog.search("первый").map { it.id })
         assertEquals(listOf("vl80s.diag.one"), catalog.search("ТЕСТ").map { it.id })
         assertNull(catalog.open("vl80s.diag.two"))
         assertTrue(
-            PublishedDiagnosticCatalog(
-                runtime,
-                registry,
-                context.copy(activeVariantId = VariantId("vl80s.unknown")),
-            ).search("").isEmpty(),
+            catalog(registry, context.copy(activeVariantId = VariantId("vl80s.unknown")) ).search("").isEmpty(),
         )
         assertTrue(
-            PublishedDiagnosticCatalog(
-                runtime,
-                registry,
-                context.copy(viewedModelId = ModelId("ermak")),
-            ).search("").isEmpty(),
+            catalog(registry, context.copy(viewedModelId = ModelId("ermak")) ).search("").isEmpty(),
         )
+    }
+
+    @Test
+    fun publicationRequiresAllBranchesToTerminateAndAllQuestionsToBeReachable() {
+        val runtime = ExecutableDiagnosticFlowJsonLoader().parse(fixture)
+        val original = requireNotNull(runtime.scenario("vl80s.diag.one"))
+        val registry = registryFor(PublicationStatus.ACTIVE)
+        val context = RuntimeContext(
+            viewedModelId = ModelId("vl80s"),
+            activeVariantId = VariantId("vl80s.first"),
+        )
+        fun catalogFor(scenario: ExecutableDiagnosticScenario): PublishedDiagnosticCatalog {
+            val scenarios = listOf(scenario, runtime.scenarios.last())
+            return PublishedDiagnosticCatalog(
+                runtime.copy(
+                    scenarios = scenarios,
+                    questionCount = scenarios.sumOf { it.questions.size },
+                    responseEdgeCount = scenarios.sumOf { s -> s.questions.sumOf { it.responses.size } },
+                ),
+                registry, context, mapOf(scenario.id to verifiedEvidence()),
+            )
+        }
+        assertEquals(original, catalogFor(original).open(original.id))
+        val first = original.questions.first()
+        val second = original.questions.last()
+        val cycle = second.copy(responses = second.responses.mapValues { (response, branch) ->
+            if (response == ExecutableDiagnosticResponse.UNKNOWN) branch.copy(nextQuestionKey = first.key)
+            else branch
+        })
+        val cyclic = original.copy(questions = listOf(first, cycle))
+        assertNull(catalogFor(cyclic).open(original.id))
+        assertTrue(catalogFor(cyclic).search("").isEmpty())
+        val unreachable = original.copy(questions = original.questions + second.copy(key = "orphan"))
+        assertNull(catalogFor(unreachable).open(original.id))
+        val noQuestions = original.copy(startQuestionKey = null, questions = emptyList())
+        assertNull(catalogFor(noQuestions).open(original.id))
+        val selfLoop = first.copy(responses = first.responses.mapValues { (_, branch) ->
+            branch.copy(nextQuestionKey = first.key)
+        })
+        assertNull(catalogFor(original.copy(questions = listOf(selfLoop, second))).open(original.id))
     }
 
     @Test
@@ -362,13 +462,9 @@ class ExecutableDiagnosticFlowTest {
         assertTrue(
             PublishedDiagnosticCatalog(runtime, registry, context).search("").isEmpty()
         )
-        assertEquals(
-            1,
-            PublishedDiagnosticCatalog(
-                runtime,
-                registry,
-                context.copy(allowedLayers = setOf(ContentLayer.RESTRICTED)),
-            ).search("").size,
+        assertTrue(
+            catalog(registry, context.copy(allowedLayers = setOf(ContentLayer.RESTRICTED)))
+                .search("").isEmpty()
         )
     }
 

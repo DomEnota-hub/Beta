@@ -117,6 +117,17 @@ object BrakeCalculator {
             "Масса должна быть конечным числом больше нуля"
         }
 
+        // Both fields may be supplied by a caller other than the UI.
+        // Validate the entire input even when the manual load takes precedence.
+        input.axleCount?.let {
+            require(it > 0) { "Количество осей должно быть больше нуля" }
+        }
+        if (input.manualAxleLoadTons != null && input.axleCount != null) {
+            require(
+                abs(input.massTons / input.axleCount - input.manualAxleLoadTons) < 0.01
+            ) { "Масса, оси и нагрузка на ось противоречат друг другу" }
+        }
+
         val axleLoad = when {
             input.manualAxleLoadTons != null -> {
                 require(input.manualAxleLoadTons.isFinite() && input.manualAxleLoadTons > 0.0) {
@@ -133,6 +144,17 @@ object BrakeCalculator {
             }
 
             else -> error("Нужно указать количество осей или нагрузку на ось")
+        }
+
+        require(axleLoad.isFinite() && axleLoad > 0.0) {
+            "Расчётная нагрузка на ось должна быть больше нуля"
+        }
+        // A rounded manual value must not silently select a different coefficient category.
+        if (input.axleCount != null && input.manualAxleLoadTons != null) {
+            val derivedLoad = input.massTons / input.axleCount
+            require((derivedLoad >= 10.0) == (axleLoad >= 10.0)) {
+                "Расчётная и указанная нагрузки находятся по разные стороны границы 10 тс"
+            }
         }
 
         val slopeIndex = massSlopesPermille.indexOfFirst {
@@ -198,7 +220,14 @@ object BrakeCalculator {
         val units =
             if (additional == 0) 0
             else ceilToInt(additional.toDouble() / axlesPerHandBrakeUnit)
-        val actually = units * axlesPerHandBrakeUnit
+        val actually = checkedMultiply(units, axlesPerHandBrakeUnit)
+        // A hand-brake substitute cannot claim more braked axles than exist.
+        // Keep axle-load-only previews possible, but flag their unknown axle count in the UI.
+        massResult.axleCount?.let { totalAxles ->
+            require(totalAxles > 0 && actually <= totalAxles) {
+                "Ручное торможение требует больше осей, чем есть в составе"
+            }
+        }
 
         return MassSupplementResult(
             requiredShoes = massResult.requiredShoes,
@@ -274,11 +303,11 @@ object BrakeCalculator {
         }
         val windShoes =
             if (windCoefficient == 0) 0
-            else ceilToInt(input.axleCount * windCoefficient / 200.0)
-        val total = baseShoes + oppositeShoes + windShoes
+            else ceilToInt(input.axleCount.toDouble() * windCoefficient / 200.0)
+        val total = checkedAdd(checkedAdd(baseShoes, oppositeShoes), windShoes)
         val shortage = max(0, total - input.availableShoes)
 
-        val standardSubstituteAxles = shortage * 5
+        val standardSubstituteAxles = checkedMultiply(shortage, 5)
         val standardUnits =
             if (standardSubstituteAxles == 0) 0
             else ceilToInt(
@@ -295,13 +324,13 @@ object BrakeCalculator {
             val extraRequiredBeyondBasePair = max(0, total - 2)
             val extraShortage =
                 max(0, extraRequiredBeyondBasePair - input.availableShoes)
-            val extraSubstituteAxles = extraShortage * 5
+            val extraSubstituteAxles = checkedMultiply(extraShortage, 5)
             val extraUnits =
                 if (extraSubstituteAxles == 0) 0
                 else ceilToInt(
                     extraSubstituteAxles.toDouble() / input.axlesPerHandBrakeUnit
                 )
-            val specialUnits = 1 + extraUnits
+            val specialUnits = checkedAdd(1, extraUnits)
 
             if (specialUnits <= standardUnits || standardUnits == 0) {
                 specialUsed = true
@@ -312,12 +341,15 @@ object BrakeCalculator {
         }
 
         val actually =
-            if (units == 0) 0 else units * input.axlesPerHandBrakeUnit
+            if (units == 0) 0 else checkedMultiply(units, input.axlesPerHandBrakeUnit)
+        require(actually <= input.axleCount) {
+            "Ручное торможение требует больше осей, чем есть в составе"
+        }
         val reserve =
             if (specialUsed) {
                 max(
                     0,
-                    (units - 1) * input.axlesPerHandBrakeUnit - substituteAxles,
+                    checkedMultiply(units - 1, input.axlesPerHandBrakeUnit) - substituteAxles,
                 )
             } else {
                 max(0, actually - substituteAxles)
@@ -345,10 +377,23 @@ object BrakeCalculator {
         )
     }
 
+    // Never silently wrap a safety-relevant shoe or brake-axle count.
+    private fun checkedAdd(a: Int, b: Int): Int = try {
+        Math.addExact(a, b)
+    } catch (_: ArithmeticException) {
+        throw IllegalArgumentException("Расчётное значение выходит за допустимый диапазон")
+    }
+
+    private fun checkedMultiply(a: Int, b: Int): Int = try {
+        Math.multiplyExact(a, b)
+    } catch (_: ArithmeticException) {
+        throw IllegalArgumentException("Расчётное значение выходит за допустимый диапазон")
+    }
+
     private fun ceilToInt(value: Double): Int {
         require(value.isFinite() && value >= 0.0 && value <= Int.MAX_VALUE) {
             "Расчётное значение выходит за допустимый диапазон"
         }
-        return ceil(value - 1e-12).toInt()
+        return ceil(value).toInt()
     }
 }

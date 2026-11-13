@@ -39,14 +39,25 @@ def validate(root: Path, ledger_path: Path) -> int:
     assert "not a calculation record" in by_path[next(p for p in PINS if p.endswith("TechnicalRecentRepository.kt"))]["observedLegacyBehavior"]
     h = data["calculationHistoryStorage"]
     assert h["destinationContract"] == str(HISTORY)
-    assert h["migrationGate"] == "legacyFormatVerified=false"
-    assert h["status"] == "FORMAT_OBSERVED_MIGRATION_PENDING"
+    assert h["migrationGate"] == "legacyFormatVerified=true"
+    assert h["status"] == "FORMAT_VERIFIED_VERSIONED_MIGRATION_IMPLEMENTED"
     assert h["zipOnlySourcePath"] == "RailBrakeCalculator.zip!RailBrakeCalculator/app/src/main/java/ru/railbrake/calculator/data/HistoryRepository.kt"
     assert h["memberBlobSha"] == "d95a2ce465e2f09bb96d74b8318f36b16d21afd0"
     assert h["memberManifest"] == "docs/data-migration/legacy-zip-member-manifest.json"
-    assert h["storageMigrationImplemented"] is False
+    assert h["storageMigrationImplemented"] is True
+    assert h["signedInPlaceUpgradeVerified"] is False
+    adapter = (root / "app-shell/src/main/java/ru/railbrake/calculator/shell/AndroidHistoryStores.kt").read_text(encoding="utf-8")
+    codec = (root / "feature-history/src/main/kotlin/ru/railbrake/calculator/history/HistoryCodec.kt").read_text(encoding="utf-8")
+    assert 'getSharedPreferences("calculation_history"' in adapter
+    assert 'getSharedPreferences("railbrake_history_v2"' in adapter
+    assert 'getStringSet("records"' in adapter
+    assert 'putString(key, HistoryCodec.encodeV2(' in adapter
+    assert 'legacy.edit()' not in adapter and 'legacy.clear()' not in adapter
+    assert 'parseLegacy' in codec and 'decodeV2' in codec and 'URL_SAFE' in codec
+    assert (root / "feature-history/src/test/kotlin/ru/railbrake/calculator/history/HistoryCodecTest.kt").is_file()
     contract = (root / HISTORY).read_text(encoding="utf-8")
-    assert "const val legacyFormatVerified: Boolean = false" in contract
+    assert "const val legacyFormatVerified: Boolean = true" in contract
+    assert "const val signedUpgradeVerified: Boolean = false" in contract
     assert data["remainingScope"] == "OTHER_KOTLIN_AND_ZIP_OBJECTS_PENDING_REVIEW"
     return len(rows)
 

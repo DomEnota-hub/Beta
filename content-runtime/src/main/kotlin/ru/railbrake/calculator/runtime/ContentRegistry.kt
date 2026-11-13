@@ -79,6 +79,9 @@ class ContentRegistry {
         return emptyList()
     }
 
+    /** Read-only snapshot for policy-gated assistant indexing. */
+    fun allEntries(): List<ContentEntry> = entries.values.toList()
+
     fun find(id: CanonicalId): ContentEntry? {
         val canonical = when {
             id in entries -> id

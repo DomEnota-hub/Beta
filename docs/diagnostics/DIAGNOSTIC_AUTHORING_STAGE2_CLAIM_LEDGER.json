@@ -1,0 +1,728 @@
+{
+  "schemaVersion": "diagnostic-stage2-claim-review/1",
+  "reviewDate": "2026-10-21",
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "actionAuthorityGranted": false,
+  "donorCommit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+  "sourceSnapshots": {
+    "vl80sFramework": {
+      "betaPath": "content-packs/electric/vl80s/diagnostics/migration/framework-source.candidate.json",
+      "donorPath": "app/src/main/assets/technical/diagnostic_framework_v2.json",
+      "donorBlob": "ab2ecd3f58256a1d4d260dc17ec334ee8fe4d12d",
+      "betaBlob": "e67c101e57b7c2cc6e34fb1374be7d2b575a979a"
+    },
+    "vl80sReference": {
+      "betaPath": "content-packs/electric/vl80s/diagnostics/migration/pantograph-reference-source.candidate.json",
+      "donorPath": "app/src/main/assets/technical/vl80s_pantograph_reference_pack.json",
+      "donorBlob": "2256a734d3cd929012629ab1cfbeeddccef96933",
+      "betaBlob": "d4ae349487b06556d76e47b9801e74a5805e051e"
+    },
+    "chme3tRuntime": {
+      "betaPath": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "donorPath": "app/src/main/assets/technical/chme3_chme3t_diagnostics.json.gz",
+      "donorBlob": "41809c6464113f48ef032ed70d2cb4483f12c28e",
+      "betaBlob": "dcb5d49b3eae15cb1c245022ccd2d9b79cda001a"
+    },
+    "chme3tSupplement": {
+      "betaPath": "content-packs/diesel/chme3-family/diagnostics/extended/source-candidates.candidate.json",
+      "donorPath": "app/src/main/assets/technical/extended_emergency_runtime.json",
+      "donorBlob": "24e5415a4d4ec7f2a6c0613c2adb2ab25af1b03e",
+      "betaBlob": "bb8284c875b4f221538e38c4449ac0421c46afb6"
+    },
+    "chme3tStage3Doc": {
+      "donorPath": "docs/locomotives/chme3/diagnostics_electrical_control_pass3.json",
+      "donorBlob": "41d241cb0b58e5657ef0d6210e7b272d44df52d0"
+    }
+  },
+  "externalSourceChecks": [
+    {
+      "id": "external-2961-3.4.4-3.4.5",
+      "linkedRegistrySource": "VL80S-PANTO-S01",
+      "url": "https://legalacts.ru/doc/rasporjazhenie-oao-rzhd-ot-16112022-n-2961r-ob-utverzhdenii/",
+      "document": "ИОТ РЖД-4100612-ЦТ-273-2022 по распоряжению №2961/р",
+      "locatedRevision": "редакция от 23.12.2024 — последняя обнаруженная в открытой публикации",
+      "clauses": [
+        "2.2.3",
+        "3.4.4",
+        "3.4.5"
+      ],
+      "check": "PUBLIC_REPRINT_CLAUSES_LOCATED",
+      "limitation": "Нужна проверка действующей на дату использования редакции, местных инструкций и конкретной ситуации; сам текст не активирует действия."
+    },
+    {
+      "id": "external-roof-s12-document-mismatch",
+      "linkedRegistrySource": "VL80S-PANTO-S12",
+      "url": "https://www.consultant.ru/document/cons_doc_LAW_380854/25e2fcfc1df9468cd140f8bda275ab2284b46776/",
+      "document": "Распоряжение ОАО РЖД от 16.02.2021 №301/р: Инструкция по безопасности для электромонтеров контактной сети",
+      "clauses": [
+        "12.25"
+      ],
+      "check": "SOURCE_ROLE_MISMATCH",
+      "limitation": "Нельзя ссылаться как на инструкцию локомотивной бригады без отдельной проверки применимости."
+    },
+    {
+      "id": "external-chme3t-1997",
+      "linkedRegistrySource": "ST2-SRC-CHME3T-EDB-1997",
+      "url": "https://scbist.com/xx2/9161-reostatnyi-tormoz-dlya-teplovozov-chme3.html",
+      "document": "Реостатный тормоз для тепловозов ЧМЭ3; перепечатка статьи журнала Локомотив №7 (487), 1997",
+      "clauses": [
+        "РАБОТА СХЕМЫ ЭЛЕКТРИЧЕСКОГО ТОРМОЗА",
+        "ВОЗМОЖНЫЕ НЕИСПРАВНОСТИ И СПОСОБЫ ИХ УСТРАНЕНИЯ"
+      ],
+      "check": "PUBLIC_HISTORICAL_ARTICLE_REPRINT_LOCATED",
+      "limitation": "Не проверена аутентичность оригинального печатного экземпляра и актуальность для конкретной модернизации ЧМЭ3Т."
+    },
+    {
+      "id": "external-chme3t-schemes-index",
+      "linkedRegistrySource": "ST2-SRC-CHME3T-SCHEMES",
+      "url": "https://scbist.com/tyagovyi-podvizhnoi-sostav/9560-shemy-teplovoza-chme-3t.html",
+      "document": "Форумный перечень альбомов электрических схем ЧМЭ3Т",
+      "clauses": [],
+      "check": "INDEX_ONLY_NOT_PRIMARY_DRAWING",
+      "limitation": "Наличие ссылок на вложения не подтверждает ни чертёж, ни его редакцию, ни фактическую комплектацию."
+    }
+  ],
+  "trials": [
+    {
+      "scenarioId": "vl80s.diag.pantograph-no-rise",
+      "originalId": "pantograph-no-rise",
+      "modelId": "vl80s",
+      "exactProfile": "vl80s-general",
+      "sourceEntryCount": 19,
+      "donorGraphNodeCount": 8,
+      "anchors": [
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-danger",
+          "status": "PUBLIC_NORMATIVE_CLAUSE_LOCATED_NO_ACTION_AUTHORITY",
+          "evidence": [
+            "VL80S-PANTO-S01",
+            "external-2961-3.4.4-3.4.5"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Опасные внешние признаки: обнаружены разделы охраны труда. Конкретные формулировки ветвей ещё требуют построчной проверки."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-arc",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-permission",
+          "status": "SOURCE_AND_EXECUTION_GAP",
+          "evidence": [
+            "vl80s-panto-tech-003"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Обозначения цепей и разрешений сверять по схеме конкретной секции."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-door",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-pressure",
+          "status": "UNRESOLVED_SOURCE_CONFLICT",
+          "evidence": [
+            "vl80s-panto-tech-004",
+            "PANTO-PRESSURE-POINT-001"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Разные точки измерения/исполнения. Никакого универсального порога в короткой и детальной версии."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-scope",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-valve",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "FRAMEWORK_NODE",
+          "id": "pnr-leak",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-norm-001",
+          "status": "PUBLIC_NORMATIVE_CLAUSE_LOCATED_NO_ACTION_AUTHORITY",
+          "evidence": [
+            "VL80S-PANTO-S01",
+            "external-2961-3.4.4-3.4.5"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Онлайн-текст ИОТ найден; актуальность редакции после 23.12.2024 и применимость к процедуре требуют отдельного подтверждения.",
+          "sourceRefs": [
+            "VL80S-PANTO-S01",
+            "VL80S-PANTO-S12"
+          ],
+          "classification": "NORMATIVE",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-norm-002",
+          "status": "PUBLIC_NORMATIVE_CLAUSE_LOCATED_NO_ACTION_AUTHORITY",
+          "evidence": [
+            "VL80S-PANTO-S01"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Safety boundary остаётся, но содержательная публикация не допущена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S01"
+          ],
+          "classification": "NORMATIVE",
+          "donorQuality": "SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-tech-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S02",
+            "VL80S-PANTO-S04"
+          ],
+          "classification": "TECHNICAL_REFERENCE",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-tech-002",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S02",
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S06"
+          ],
+          "classification": "TECHNICAL_REFERENCE",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-tech-003",
+          "status": "UNVERIFIED_VARIANT_PRIMARY_SOURCE",
+          "evidence": [
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S09",
+            "PANTO-RELAY248-VARIANT-001"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Применимость реле 248 к конкретным номерным диапазонам не подтверждена первичной схемой.",
+          "sourceRefs": [
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S06",
+            "VL80S-PANTO-S09"
+          ],
+          "classification": "TECHNICAL_REFERENCE",
+          "donorQuality": "MULTI_SOURCE_WITH_VARIANT_GATE",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-tech-004",
+          "status": "UNRESOLVED_SOURCE_CONFLICT",
+          "evidence": [
+            "PANTO-PRESSURE-POINT-001"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Источники указывают разные значения давления для разных точек; запрещено выбирать/усреднять число.",
+          "sourceRefs": [
+            "VL80S-PANTO-S02",
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S07"
+          ],
+          "classification": "TECHNICAL_REFERENCE",
+          "donorQuality": "OPEN_CONFLICT",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-op-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S07",
+            "VL80S-PANTO-S08"
+          ],
+          "classification": "OPERATIONAL_EXPERIENCE",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-op-002",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S08"
+          ],
+          "classification": "OPERATIONAL_EXPERIENCE",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-op-003",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S08",
+            "VL80S-PANTO-S10"
+          ],
+          "classification": "OPERATIONAL_EXPERIENCE",
+          "donorQuality": "CROSSCHECKED_FIELD_OBSERVATION",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-maint-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S05"
+          ],
+          "classification": "MAINTENANCE_PRACTICE",
+          "donorQuality": "SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-maint-002",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S05"
+          ],
+          "classification": "MAINTENANCE_PRACTICE",
+          "donorQuality": "SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-hist-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S02",
+            "VL80S-PANTO-S04"
+          ],
+          "classification": "HISTORICAL",
+          "donorQuality": "MULTI_SOURCE_SUPPORTED",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-hist-002",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S03"
+          ],
+          "classification": "HISTORICAL",
+          "donorQuality": "EXPLICIT_SOURCE_SCOPE",
+          "requiresDonorHumanReview": false
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-archive-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S07"
+          ],
+          "classification": "ARCHIVE",
+          "donorQuality": "ARCHIVAL_CONTEXT_ONLY",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-case-001",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S03",
+            "VL80S-PANTO-S08"
+          ],
+          "classification": "CASE_STUDY",
+          "donorQuality": "SYNTHESIZED_FROM_MULTI_SOURCE_PATTERN",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-case-002",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена.",
+          "sourceRefs": [
+            "VL80S-PANTO-S08",
+            "VL80S-PANTO-S10"
+          ],
+          "classification": "CASE_STUDY",
+          "donorQuality": "FIELD_CASE_CROSSCHECKED",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-field-001",
+          "status": "RESTRICTED_HISTORICAL_CONTEXT_ONLY",
+          "evidence": [
+            "VL80S-PANTO-S07",
+            "VL80S-PANTO-S08"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Историческая полевая практика не должна становиться исполняемой командой.",
+          "sourceRefs": [
+            "VL80S-PANTO-S07",
+            "VL80S-PANTO-S08"
+          ],
+          "classification": "FIELD_PRACTICE",
+          "donorQuality": "RESTRICTED_MULTI_SOURCE_EXISTENCE",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-unsafe-001",
+          "status": "RESTRICTED_HISTORICAL_CONTEXT_ONLY",
+          "evidence": [
+            "VL80S-PANTO-S01",
+            "VL80S-PANTO-S07"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Описание опасного нештатного метода остаётся в ограниченном корпусе; без процедурных деталей.",
+          "sourceRefs": [
+            "VL80S-PANTO-S07",
+            "VL80S-PANTO-S08",
+            "VL80S-PANTO-S01"
+          ],
+          "classification": "UNSAFE_METHOD",
+          "donorQuality": "RESTRICTED_CONFLICT_WITH_SAFETY_CONTRACT",
+          "requiresDonorHumanReview": true
+        },
+        {
+          "kind": "REFERENCE_ENTRY",
+          "id": "vl80s-panto-unverified-001",
+          "status": "UNVERIFIED_VARIANT_PRIMARY_SOURCE",
+          "evidence": [
+            "VL80S-PANTO-S09"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Предполагаемая серийная граница около №631 не подтверждена первичной ведомостью изменений.",
+          "sourceRefs": [
+            "VL80S-PANTO-S09"
+          ],
+          "classification": "UNVERIFIED",
+          "donorQuality": "SINGLE_SECONDARY_SOURCE",
+          "requiresDonorHumanReview": true
+        }
+      ],
+      "sourceGaps": [
+        "Подтверждение актуальной редакции ИОТ/локальных правил",
+        "Первичные схемы токоприёмника и цепей для точного исполнения",
+        "Конфликт давления: точка измерения и условие",
+        "Реле 248: серийная граница модернизации",
+        "Некорректная роль внешнего источника VL80S-PANTO-S12"
+      ],
+      "versions": {
+        "short": "NOT_AUTHORED",
+        "detailed": "NOT_AUTHORED",
+        "shortExtended": "UNBOUND",
+        "detailedExtended": "UNBOUND"
+      }
+    },
+    {
+      "scenarioId": "chme3.diagnostics.chme3-diag-110",
+      "originalId": "CHME3-DIAG-110",
+      "modelId": "chme3-family",
+      "exactProfile": "chme3t-rheostatic",
+      "sourceEntryCount": 1,
+      "donorGraphNodeCount": 24,
+      "anchors": [
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "q-profile",
+          "status": "DONOR_VARIANT_GATE_ONLY",
+          "evidence": [
+            "CHME3-DIAG-110",
+            "chme3t-rheostatic"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Структурное различение ЧМЭ3Т от ЧМЭ3/ЧМЭ3Э подтверждено; фактическая комплектация машины неизвестна."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "q-symptom",
+          "status": "DONOR_TRIAGE_ONLY",
+          "evidence": [
+            "CHME3-DIAG-110"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Три вида симптома существуют в графе, но полезность и полнота вопросов ещё не подтверждены."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "c-permissives",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "q-permissives",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "c-current-path",
+          "status": "PRIMARY_SCHEME_REQUIRED_AUTHORIZED_ONLY",
+          "evidence": [
+            "CHME3-DIAG-110"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Узел исходного графа требует допуска персонала и точной схемы; машинисту как действие не публиковать."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "q-current-path",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "c-cooling",
+          "status": "HISTORICAL_REPRINT_LOCATED_PRIMARY_UNVERIFIED",
+          "evidence": [
+            "EXT2-CHME3-DIAG-110",
+            "external-chme3t-1997"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Статья 1997 года в перепечатке обсуждает перегрев/защиты; заводская схема конкретного исполнения не проверена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "q-cooling",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-inapplicable",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-control",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-apparatus",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-power",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-source-gap",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-cooling",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "f-protection",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-inapplicable",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-control",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-apparatus",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-power",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-source-gap",
+          "status": "PRIMARY_SCHEME_REQUIRED_AUTHORIZED_ONLY",
+          "evidence": [
+            "CHME3-DIAG-110"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Терминальный узел честно обозначает нехватку первичного документа для ремонтного решения."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-cooling",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-protection",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-profile-unknown",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "DONOR_GRAPH_NODE",
+          "id": "t-unknown",
+          "status": "NOT_CLAIM_REVIEWED",
+          "evidence": [],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Перенесён источник/узел. Построчная привязка к применимому первичному тексту не выполнена."
+        },
+        {
+          "kind": "EXTENDED_SOURCE_CANDIDATE",
+          "id": "EXT2-CHME3-DIAG-110",
+          "status": "HISTORICAL_REPRINT_LOCATED_PRIMARY_UNVERIFIED",
+          "evidence": [
+            "ST2-SRC-CHME3T-EDB-1997",
+            "ST2-SRC-CHME3T-SCHEMES"
+          ],
+          "decision": "RESEARCH_ONLY_NO_EXECUTABLE_AUTHORITY",
+          "comment": "Узел только INFORMATION_ONLY. Онлайн-статья и форумный список схем не доказывают установку/действующую инструкцию.",
+          "sourceRefs": [
+            "ST2-SRC-CHME3T-EDB-1997",
+            "ST2-SRC-CHME3T-SCHEMES"
+          ],
+          "donorActionDisposition": "INFORMATION_ONLY"
+        }
+      ],
+      "sourceGaps": [
+        "Подтверждение штатного оборудования ЭДТ на конкретном ЧМЭ3Т",
+        "Первичный альбом электрических схем и редакция по установленной модернизации",
+        "Верификация текста статьи журнала по оригиналу",
+        "Сопоставление конкретных неисправностей с пунктами схемы/РЭ и правом действий"
+      ],
+      "versions": {
+        "short": "NOT_AUTHORED",
+        "detailed": "NOT_AUTHORED",
+        "shortExtended": "UNBOUND",
+        "detailedExtended": "UNBOUND"
+      }
+    }
+  ]
+}

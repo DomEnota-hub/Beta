@@ -1,0 +1,39 @@
+name: Pinned donor asset structure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/information-block-gaps-20261014
+    paths:
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'qa/audit_donor_asset_structure.py'
+      - 'qa/test_donor_asset_structure.py'
+      - '.github/workflows/donor-asset-structure.yml'
+  pull_request:
+    paths:
+      - 'docs/migration/donor-asset-crosswalk.json'
+      - 'qa/audit_donor_asset_structure.py'
+      - 'qa/test_donor_asset_structure.py'
+      - '.github/workflows/donor-asset-structure.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GZIP parsing, Git blob verification and tamper rejection
+        run: python3 -m unittest discover -s qa -p 'test_donor_asset_structure.py' -v
+      - name: Download and verify all 36 pinned donor assets
+        run: python3 qa/audit_donor_asset_structure.py --output build/donor-asset-structure.json
+      - name: Preserve structural inventory (discovery only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: donor-asset-structure-3176d6ee
+          path: build/donor-asset-structure.json
+          if-no-files-found: error
+          retention-days: 14

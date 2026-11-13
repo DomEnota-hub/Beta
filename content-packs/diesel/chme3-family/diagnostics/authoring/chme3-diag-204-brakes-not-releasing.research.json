@@ -1,0 +1,774 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 63,
+  "originalId": "CHME3-DIAG-204",
+  "scenarioId": "chme3.diagnostics.chme3-diag-204",
+  "title": "Тормоза не отпускают",
+  "createdAt": "2026-11-08",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+    "documentPointer": "/scenarios/3",
+    "documentBlob": "1094688cc2e633fab21b6f989cc902f7a34d19d2",
+    "canonicalPack": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+    "canonicalId": "chme3.diagnostics.chme3-diag-204",
+    "gzipBlob": "6a6068ad1ea54cb964b65a10ecf5c2425b2276e8",
+    "gzipIndependentlyDecoded": false,
+    "relation": "ID_TITLE_PROFILE_ONLY_NOT_GRAPH_EQUIVALENCE",
+    "riskClass": "BRAKE_SAFETY",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "evidenceStatus": "LEGACY_FIELD",
+    "evidenceRefs": [
+      "CHME3-SRC-SCBIST-PAM"
+    ],
+    "equipmentIds": [
+      "CHME3-EQ-DRIVER-BRAKE-VALVE",
+      "CHME3-EQ-AIR-DISTRIBUTOR",
+      "CHME3-EQ-BRAKE-CYLINDERS",
+      "CHME3-EQ-BRAKE-RIGGING"
+    ],
+    "profileGate": null
+  },
+  "applicability": {
+    "possibleVariants": [
+      "chme3",
+      "chme3t",
+      "chme3e"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "profileGateVerified": false
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "SAFETY_GATE_REQUIRED",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "locomotiveMovement": false,
+    "forcedBrakeRelease": false,
+    "forcedCompressorOperation": false,
+    "pressureSystemOpening": false,
+    "airLineIsolation": false,
+    "brakeValveAdjustment": false,
+    "livePressureMeasurements": false,
+    "protectionBypass": false,
+    "epkBypass": false,
+    "protectionReset": false,
+    "emergencyBrakeSuppression": false,
+    "compressorRegulatorAdjustment": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/chme3/diagnostics_brake_aux_pass3.json",
+      "revision": "Test-@3176d6ee, blob 1094688cc2e633fab21b6f989cc902f7a34d19d2; /scenarios/3",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "LEGACY_GZIP_DERIVED",
+      "ref": "content-packs/diesel/chme3-family/diagnostics/recommended/diagnostics-02.pack.json",
+      "revision": "Canonical ID/title/variant only; gzip not independently decoded",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "HIST",
+      "kind": "HISTORICAL_TRAINING",
+      "ref": "https://ru.djvu.online/file/oXEuzzRuTvcRd",
+      "revision": "З.Х. Нотик, 1996, §§14, 58, 60; archival description, not current РЭ",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "RULE2026",
+      "kind": "CURRENT_NORMATIVE_EXISTENCE_VERIFIED_CLAUSE_PENDING",
+      "ref": "https://base.garant.ru/413231681/850c9b8f5271cc2c815bc04e52704941/",
+      "revision": "Приложение 65 к протоколу 83-го заседания, ввод с 01.07.2026; конкретные пункты и применение не сверены",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "LEGACY_FIELD_UNVERIFIED",
+      "ref": "CHME3-SRC-SCBIST-PAM",
+      "revision": "Исходные практические материалы и подборка 2020 года, без подтверждения текущего РЭ",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "chme3",
+        "chme3t",
+        "chme3e"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду локомотив безопасно закреплён, движение не продолжается?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "После штатной команды отпуска зафиксировано сохранение торможения?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Есть уже сохранённые раздельные показания ТМ и ТЦ после команды отпуска?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Сохранение торможения после команды отпуска не подтверждено; не делать вывод о неисправности.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "По одним показаниям нельзя отличить воздухораспределитель, вспомогательный тормоз и механику.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: давление ТЦ сохраняется или восстановление ТМ не подтверждено. Движение не начинать; не отпускать механизмы вручную и не вмешиваться в пневматику.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "По документированному эпизоду локомотив безопасно закреплён, движение не продолжается?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "После команды отпуска торможение действительно сохранялось?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "По штатным записям ТМ восстановилась до состояния отпуска?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "При восстановленной ТМ давление в ТЦ снято?",
+          "responses": {
+            "YES": "d5",
+            "NO": "stop-specific",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "При отсутствии давления ТЦ сохранились признаки механического неотпускания?",
+          "responses": {
+            "YES": "obs-c",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отсутствует подтверждение неотпуска; без данных причина UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Если ТМ не восстановилась, сначала разделить питание и команду отпуска, а не назначать воздухораспределитель.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "При нулевом ТЦ и сохранившемся торможении возможна механическая ветвь, но неисправность узла не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "При снятом давлении ТЦ без признаков механического удержания текущий неотпуск не подтверждён.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP: опасное состояние или его отсутствие не подтверждено. Прекратить исследовательскую диагностику; не выполнять новых включений, движения, измерений, разборки и обходов защит. Следовать действующим правилам и полномочиям.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP: наблюдение или профиль неизвестны. UNKNOWN/BLOCKED; причина не установлена, действия не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-specific",
+          "type": "STOP",
+          "text": "STOP: давление ТЦ сохраняется или восстановление ТМ не подтверждено. Движение не начинать; не отпускать механизмы вручную и не вмешиваться в пневматику.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "pipe",
+      "title": "Восстановление ТМ",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "pipe-q",
+          "type": "QUESTION",
+          "text": "Есть ли штатная запись восстановления давления ТМ?",
+          "responses": {
+            "YES": "pipe-yes",
+            "NO": "pipe-no",
+            "UNKNOWN": "pipe-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "pipe-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без неё нельзя диагностировать отказ воздухораспределителя.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pipe-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Проверка давления требует действующих правил, не нового эксперимента.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "pipe-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "cylinders",
+      "title": "Остаточное давление ТЦ",
+      "sourceId": "DOC",
+      "sourceStatus": "PINNED_DONOR_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "cylinders-q",
+          "type": "QUESTION",
+          "text": "Зафиксировано ли давление ТЦ после команды отпуска?",
+          "responses": {
+            "YES": "cylinders-yes",
+            "NO": "cylinders-no",
+            "UNKNOWN": "cylinders-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "cylinders-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Остаточное давление не равно доказанному дефекту воздухораспределителя.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cylinders-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без показаний нельзя исключить вспомогательный тормоз.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "cylinders-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "aux",
+      "title": "Вспомогательный тормоз",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "aux-q",
+          "type": "QUESTION",
+          "text": "Есть ли запись состояния крана вспомогательного тормоза?",
+          "responses": {
+            "YES": "aux-yes",
+            "NO": "aux-no",
+            "UNKNOWN": "aux-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "aux-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Команда вспомогательного тормоза и отказ отпуска автоматического тормоза различаются.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "aux-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Без записи нельзя обвинять кран или воздухораспределитель.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "aux-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "rigging",
+      "title": "Тормозная рычажная передача",
+      "sourceId": "HIST",
+      "sourceStatus": "HISTORICAL_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "rigging-q",
+          "type": "QUESTION",
+          "text": "Есть ли ранее записанное состояние механики при нулевом ТЦ?",
+          "responses": {
+            "YES": "rigging-yes",
+            "NO": "rigging-no",
+            "UNKNOWN": "rigging-stop"
+          },
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "rigging-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Механическая ветвь рассматривается отдельно; осмотр и вмешательство не разрешены.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "rigging-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нулевой ТЦ без данных механики не подтверждает полный отпуск.",
+          "responses": {},
+          "sourceRefs": [
+            "HIST"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "rigging-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "movement",
+      "title": "Запрет движения",
+      "sourceId": "RULE2026",
+      "sourceStatus": "CURRENT_RULE_EXISTS_EXACT_CLAUSE_UNVERIFIED",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "movement-q",
+          "type": "QUESTION",
+          "text": "Подтверждён ли полный отпуск по действующим правилам и профилю?",
+          "responses": {
+            "YES": "movement-yes",
+            "NO": "movement-no",
+            "UNKNOWN": "movement-stop"
+          },
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "movement-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Исследовательская карточка не выдаёт разрешение на движение.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "movement-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "При неизвестном отпуске эксплуатационный допуск BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "RULE2026"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "movement-stop",
+          "type": "STOP",
+          "text": "STOP: нет подтверждённых сведений. Не выполнять новых проверок или воздействий; UNKNOWN/BLOCKED.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "crossScenarioBoundaries": [
+    {
+      "originalId": "CHME3-DIAG-203",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-205",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    },
+    {
+      "originalId": "CHME3-DIAG-201",
+      "distinction": "Отдельный исходный симптом и самостоятельные наблюдения; перенос вывода между сценариями без подтверждения запрещён."
+    }
+  ],
+  "sourceDiscrepancies": [
+    {
+      "source": "DONOR_vs_RUNTIME",
+      "note": "Донорские check/action-пункты требуют физических проверок; исследовательская карточка использует только ранее сохранённые штатные наблюдения."
+    },
+    {
+      "source": "1996_vs_2026",
+      "note": "Учебное пособие 1996 года не является действующей нормой; с 01.07.2026 действуют новые правила тормозов, точные пункты и пороги не подтверждены."
+    },
+    {
+      "source": "GZIP_vs_DOCUMENT",
+      "note": "Миграционный индекс связывает ID и название, но gzip не декодирован независимо: равенство исходных графов не утверждается."
+    }
+  ],
+  "openGaps": [
+    "Действующее заводское РЭ по конкретному номеру машины",
+    "Точное исполнение и модернизация пневмосхемы",
+    "Схема и номера аппаратов конкретной машины",
+    "Точные пункты новых Правил тормозов 2026",
+    "Нормативные значения давления для данного исполнения",
+    "Состояние приборов и штатная хронология эпизода",
+    "Право работника на конкретные операции",
+    "Независимая проверка исходного gzip-графа",
+    "Результат отдельной safety-проверки",
+    "Ручная Android-приёмка после тестового APK"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md"
+  }
+}

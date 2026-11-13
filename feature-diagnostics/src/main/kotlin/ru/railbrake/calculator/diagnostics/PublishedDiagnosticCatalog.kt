@@ -1,7 +1,11 @@
 package ru.railbrake.calculator.diagnostics
 
 import java.util.Locale
+import ru.railbrake.calculator.domain.ActionDisposition
 import ru.railbrake.calculator.domain.CanonicalId
+import ru.railbrake.calculator.domain.ContentLayer
+import ru.railbrake.calculator.domain.ProvenanceClass
+import ru.railbrake.calculator.domain.SourceStatus
 import ru.railbrake.calculator.domain.ContentOwner
 import ru.railbrake.calculator.domain.ContentTarget
 import ru.railbrake.calculator.domain.ContentType
@@ -20,6 +24,8 @@ class PublishedDiagnosticCatalog(
     private val runtime: ExecutableDiagnosticRuntime,
     private val registry: ContentRegistry,
     private val context: RuntimeContext,
+    // Per-scenario evidence must be independently established; never inferred from ACTIVE.
+    private val actionEvidence: Map<String, DiagnosticActionInputs> = emptyMap(),
 ) {
     private val owner = ContentOwner.Model(ModelId(runtime.modelId))
 
@@ -32,9 +38,25 @@ class PublishedDiagnosticCatalog(
                 expectedType = ContentType.DIAGNOSTIC_SCENARIO,
             )
             val resolved = registry.resolve(target, context)
-            resolved is ResolveResult.Found &&
-                resolved.entry.owner == owner &&
-                resolved.entry.id == target.id
+            if (resolved !is ResolveResult.Found) return@filter false
+            val entry = resolved.entry
+            val evidence = actionEvidence[scenario.id] ?: return@filter false
+            entry.owner == owner &&
+                entry.id == target.id &&
+                entry.layer == ContentLayer.STANDARD &&
+                entry.actionDisposition == ActionDisposition.CONDITIONAL_ACTION &&
+                entry.sourceStatus == SourceStatus.CURRENT &&
+                entry.provenance in setOf(
+                    ProvenanceClass.CURRENT_OFFICIAL,
+                    ProvenanceClass.MANUFACTURER,
+                ) &&
+                entry.sourceRefs.isNotEmpty() &&
+                scenario.profileId == runtime.modelId &&
+                context.activeVariantId?.value in scenario.applicableVariantIds &&
+                evidence.publicationStatus == entry.publicationStatus &&
+                evidence.actionDisposition == entry.actionDisposition &&
+                scenario.hasCompleteTerminatingGraph() &&
+                DiagnosticActionGate.permits(evidence)
         }
     }
 
@@ -57,4 +79,25 @@ class PublishedDiagnosticCatalog(
     /** Never provide a candidate graph to an interactive end-user screen. */
     fun open(canonicalId: String): ExecutableDiagnosticScenario? =
         approvedScenarios().firstOrNull { it.id == canonicalId }
+}
+
+/** All response paths must terminate and all questions must be reachable.
+ * Malformed donor graphs remain available to the separate read-only pipeline.
+ */
+internal fun ExecutableDiagnosticScenario.hasCompleteTerminatingGraph(): Boolean {
+    val start = startQuestionKey ?: return false
+    val visiting = mutableSetOf<String>()
+    val finished = mutableSetOf<String>()
+    fun visit(key: String): Boolean {
+        if (key == DIAGNOSTIC_END_OF_FLOW) return true
+        if (key in finished) return true
+        if (!visiting.add(key)) return false
+        val node = question(key) ?: return false
+        if (node.responses.keys != ExecutableDiagnosticResponse.entries.toSet()) return false
+        if (!node.responses.values.all { visit(it.nextQuestionKey) }) return false
+        visiting.remove(key)
+        finished.add(key)
+        return true
+    }
+    return visit(start) && finished.size == questions.size
 }

@@ -1,0 +1,886 @@
+{
+  "schemaVersion": "diagnostic-research-candidate/1",
+  "batch": 75,
+  "originalId": "TEM2-DIAG-005",
+  "title": "Дизель не останавливается по штатной команде или уходит в неуправляемый рост оборотов",
+  "createdAt": "2026-11-09",
+  "donor": {
+    "repository": "DomEnota-hub/Test-",
+    "commit": "3176d6ee228f0ed4b78371f45209e10c1c724eff",
+    "documentPath": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+    "documentPointer": "/scenarios/4",
+    "documentBlob": "4234e401eb9d6ec03802669d0f74962cb23ea5c4",
+    "canonicalPack": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+    "targetMap": {
+      "tem2": "tem2.diagnostics.tem2-diag-005.tem2",
+      "tem2u": "tem2.diagnostics.tem2-diag-005.tem2u"
+    },
+    "sourceBlobShas": {
+      "tem2.diagnostics.tem2-diag-005.tem2": "93b3e9b79ab5f3a7847a3090b316969ae0b88226",
+      "tem2.diagnostics.tem2-diag-005.tem2u": "360ced5392b4cd19b819ad8c11b148f0651959d2"
+    },
+    "originalGraphEquivalenceVerified": false,
+    "riskClass": "EMERGENCY_MECHANICAL",
+    "actionAuthority": "SAFETY_GATE_REQUIRED",
+    "equipmentIds": [
+      "TEM2-EQ-DIESEL",
+      "TEM2U-EQ-DIESEL",
+      "TEM2-EQ-CONTROLLER"
+    ],
+    "evidenceRefs": [
+      "TEM2-SRC-BMZ-MANUAL-1983",
+      "TEM2U-SRC-BMZ-MANUAL-1988",
+      "TEM2-ST3-KOVALEV-1980",
+      "TEM2-SRC-POT-RZD-342-2025"
+    ],
+    "schemeRefs": [
+      "TEM2-SCH-CONTROL"
+    ],
+    "lineageBlob": "24e617c3d5599cb96169f79d660200d6cd684fac"
+  },
+  "applicability": {
+    "possibleVariants": [
+      "tem2",
+      "tem2u"
+    ],
+    "profileIds": [
+      "tem2-base",
+      "tem2u-improved"
+    ],
+    "confirmedVariant": null,
+    "installedSchemeVerified": false,
+    "unknownProfile": "BLOCKED",
+    "excludedVariants": [
+      "tem2t",
+      "tem2um",
+      "tem2a",
+      "tem2um-1pd4a"
+    ]
+  },
+  "publicationStatus": "CANDIDATE",
+  "runtimeImport": false,
+  "executable": false,
+  "actionAuthorityGranted": false,
+  "sourceAuthorityVerified": false,
+  "humanSafetyReviewPassed": false,
+  "actionDisposition": "TRIAGE_ONLY_NO_REPAIR",
+  "warning": {
+    "extendedHiddenByDefault": true,
+    "readToEndRequired": true,
+    "separateAcknowledgmentRequired": true,
+    "grantsActionAuthority": false
+  },
+  "safety": {
+    "newStartAttempts": false,
+    "forcedOperations": false,
+    "bypassProtection": false,
+    "highVoltageIntervention": false,
+    "underLoadTesting": false,
+    "protectionReset": false,
+    "electricalCabinetAccess": false,
+    "liveElectricalMeasurements": false,
+    "contactBridging": false,
+    "temporaryJumper": false,
+    "relayForcedEnergization": false,
+    "tractionCommands": false,
+    "motorIsolation": false,
+    "manualProtectionLatch": false,
+    "mechanicalFixation": false,
+    "manualContactorOperation": false,
+    "coolingOverride": false
+  },
+  "sources": [
+    {
+      "id": "DOC",
+      "kind": "PINNED_DONOR",
+      "ref": "docs/locomotives/diesel/tem2-family/common/stage3_model.json",
+      "revision": "Pinned blob 4234e401eb9d6ec03802669d0f74962cb23ea5c4, 2026-10-01",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "PACK",
+      "kind": "DONOR_PROJECTION",
+      "ref": "content-packs/diesel/tem2-family/diagnostics/recommended/diagnostics-01.pack.json",
+      "revision": "Canonical profile projections, not runtime authority",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "ARCHIVE",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/TvLMZYqQ8uvMb",
+      "revision": "Ковалёв и др., ТЭМ2, 1980, с. 105, историческая цепь остановки В27/КТН/БМ.",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FACTORY_U",
+      "kind": "HISTORICAL_FACTORY_REFERENCE",
+      "ref": "https://djvu.online/file/5U8PupJfXSGXv",
+      "revision": "Мельников и др., ТЭМ2У, 1988, §§2.10, 2.11.3, 7.1",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "FIELD",
+      "kind": "FIELD_PRACTICE_UNVERIFIED",
+      "ref": "No independent case evidence",
+      "revision": "Unverified hypothesis only",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "CURRENT_GAP",
+      "kind": "CURRENT_PRIMARY_UNAVAILABLE",
+      "ref": "Current RE/IDMB and installed machine schematic",
+      "revision": "No current execution-specific approval",
+      "authority": "HYPOTHESIS_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    },
+    {
+      "id": "SAFETY_2025",
+      "kind": "CURRENT_MAINTENANCE_SAFETY_CONTEXT_ONLY",
+      "ref": "https://legalacts.ru/doc/rasporjazhenie-oao-rzhd-ot-22092025-n-2013r-ob-utverzhdenii/",
+      "revision": "22.09.2025 №2013/р; действует с 10.11.2025; только ТО/ТР, не аварийный порядок бригады",
+      "authority": "INFORMATION_ONLY",
+      "profiles": [
+        "tem2",
+        "tem2u"
+      ],
+      "currentVerified": false,
+      "installedProfileVerified": false
+    }
+  ],
+  "versions": {
+    "SHORT": {
+      "startNodeId": "s1",
+      "nodes": [
+        {
+          "id": "s1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого эпизода без продолжающегося разгона либо отказа остановки?",
+          "responses": {
+            "YES": "s2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s2",
+          "type": "QUESTION",
+          "text": "Сохранённые записи подтверждают отказ штатной остановки или неуправляемый рост оборотов?",
+          "responses": {
+            "YES": "s3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "s3",
+          "type": "QUESTION",
+          "text": "Записи различают рост оборотов и отсутствие реакции на команду остановки?",
+          "responses": {
+            "YES": "obs-b",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ остановки или рост оборотов не подтверждён; самопроизвольная остановка относится к TEM2-DIAG-006.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записан рост оборотов, но причина в регуляторе или рейках не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не подтверждён именно рост оборотов; отказ остановки остаётся отдельным проявлением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: при текущем неуправляемом росте оборотов или отказе остановки не продолжать диагностический опрос. Применяется только действующий аварийный порядок конкретного исполнения, без регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "SAFETY_2025"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: неизвестный характер текущей опасности запрещает продолжать опрос и новые проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    "DETAILED": {
+      "startNodeId": "d1",
+      "nodes": [
+        {
+          "id": "d1",
+          "type": "QUESTION",
+          "text": "Это ретроспективный разбор завершённого эпизода без продолжающегося разгона либо отказа остановки?",
+          "responses": {
+            "YES": "d2",
+            "NO": "stop-safety",
+            "UNKNOWN": "stop-safety"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d2",
+          "type": "QUESTION",
+          "text": "Сохранённые записи подтверждают отказ штатной остановки или неуправляемый рост оборотов?",
+          "responses": {
+            "YES": "d3",
+            "NO": "obs-a",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d3",
+          "type": "QUESTION",
+          "text": "Записи различают рост оборотов и отсутствие реакции на команду остановки?",
+          "responses": {
+            "YES": "d4",
+            "NO": "obs-b",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d4",
+          "type": "QUESTION",
+          "text": "Сохранился отдельный момент штатной команды остановки без повторного испытания?",
+          "responses": {
+            "YES": "d5",
+            "NO": "obs-c",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "d5",
+          "type": "QUESTION",
+          "text": "Есть независимые записи наблюдавшихся показаний без нового доступа к дизелю?",
+          "responses": {
+            "YES": "obs-e",
+            "NO": "obs-d",
+            "UNKNOWN": "stop-unknown"
+          },
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "obs-a",
+          "type": "OBSERVATION_REPORT",
+          "text": "Отказ остановки или рост оборотов не подтверждён; самопроизвольная остановка относится к TEM2-DIAG-006.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-b",
+          "type": "OBSERVATION_REPORT",
+          "text": "Записан рост оборотов, но причина в регуляторе или рейках не доказана.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-c",
+          "type": "OBSERVATION_REPORT",
+          "text": "Не подтверждён именно рост оборотов; отказ остановки остаётся отдельным проявлением.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-d",
+          "type": "OBSERVATION_REPORT",
+          "text": "Нет записи момента штатной команды; не делать вывод об её неисполнении.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "obs-e",
+          "type": "OBSERVATION_REPORT",
+          "text": "Симптомы описаны, но независимых данных для установления причины недостаточно.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-safety",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: при текущем неуправляемом росте оборотов или отказе остановки не продолжать диагностический опрос. Применяется только действующий аварийный порядок конкретного исполнения, без регулировок и обходов.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "SAFETY_2025"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "stop-unknown",
+          "type": "STOP",
+          "text": "STOP / EMERGENCY: неизвестный характер текущей опасности запрещает продолжать опрос и новые проверки.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC",
+            "CURRENT_GAP"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  },
+  "extensions": [
+    {
+      "id": "info-1",
+      "title": "Отказ остановки и самопроизвольная остановка",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e1-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые архивные сведения: Отказ остановки и самопроизвольная остановка?",
+          "responses": {
+            "YES": "e1-yes",
+            "NO": "e1-no",
+            "UNKNOWN": "e1-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e1-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "TEM2-DIAG-005 и TEM2-DIAG-006 имеют противоположные симптомы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достоверных сведений нет, причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e1-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-2",
+      "title": "Рост оборотов и отказ команды",
+      "sourceId": "DOC",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e2-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые архивные сведения: Рост оборотов и отказ команды?",
+          "responses": {
+            "YES": "e2-yes",
+            "NO": "e2-no",
+            "UNKNOWN": "e2-stop"
+          },
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e2-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Два опасных проявления одного исходного ID нельзя считать одной причиной.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достоверных сведений нет, причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e2-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "DOC"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-3",
+      "title": "Историческая остановка В27/КТН/БМ",
+      "sourceId": "ARCHIVE",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e3-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые архивные сведения: Историческая остановка В27/КТН/БМ?",
+          "responses": {
+            "YES": "e3-yes",
+            "NO": "e3-no",
+            "UNKNOWN": "e3-stop"
+          },
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e3-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Ковалёв и др. 1980 описывают историческую связь В27, КТН и БМ при остановке, не разрешая вмешательства.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достоверных сведений нет, причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e3-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "ARCHIVE"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-4",
+      "title": "Дизель и регулятор ТЭМ2/ТЭМ2У",
+      "sourceId": "FACTORY_U",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e4-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые архивные сведения: Дизель и регулятор ТЭМ2/ТЭМ2У?",
+          "responses": {
+            "YES": "e4-yes",
+            "NO": "e4-no",
+            "UNKNOWN": "e4-stop"
+          },
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e4-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "Установленный регулятор и исполнение требуют отдельного заводского источника.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достоверных сведений нет, причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e4-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "FACTORY_U"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    },
+    {
+      "id": "info-5",
+      "title": "Аварийная безопасность",
+      "sourceId": "SAFETY_2025",
+      "sourceStatus": "HISTORICAL_OR_INFORMATION_ONLY",
+      "displayMode": "EXTENDED_ONLY",
+      "visibility": {
+        "hiddenByDefault": true,
+        "warningReadToEndRequired": true,
+        "warningAcknowledgedRequired": true
+      },
+      "actionDisposition": "INFORMATION_ONLY",
+      "executable": false,
+      "actionAuthorityGranted": false,
+      "procedureSteps": [],
+      "nodes": [
+        {
+          "id": "e5-q",
+          "type": "QUESTION",
+          "text": "Есть сохранённые архивные сведения: Аварийная безопасность?",
+          "responses": {
+            "YES": "e5-yes",
+            "NO": "e5-no",
+            "UNKNOWN": "e5-stop"
+          },
+          "sourceRefs": [
+            "SAFETY_2025"
+          ],
+          "permittedAction": false
+        },
+        {
+          "id": "e5-yes",
+          "type": "OBSERVATION_REPORT",
+          "text": "ПОТ ТО/ТР 2025 не определяет порядок действий бригады при разносе конкретного дизеля.",
+          "responses": {},
+          "sourceRefs": [
+            "SAFETY_2025"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-no",
+          "type": "OBSERVATION_REPORT",
+          "text": "Достоверных сведений нет, причина и применимость не установлены.",
+          "responses": {},
+          "sourceRefs": [
+            "SAFETY_2025"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        },
+        {
+          "id": "e5-stop",
+          "type": "STOP",
+          "text": "STOP: новые действия недопустимы.",
+          "responses": {},
+          "sourceRefs": [
+            "SAFETY_2025"
+          ],
+          "permittedAction": false,
+          "causeConfirmed": false
+        }
+      ]
+    }
+  ],
+  "branchContracts": {
+    "SHORT": {
+      "s1": {
+        "YES": "s2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "s2": {
+        "YES": "s3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "s3": {
+        "YES": "obs-b",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      }
+    },
+    "DETAILED": {
+      "d1": {
+        "YES": "d2",
+        "NO": "stop-safety",
+        "UNKNOWN": "stop-safety"
+      },
+      "d2": {
+        "YES": "d3",
+        "NO": "obs-a",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d3": {
+        "YES": "d4",
+        "NO": "obs-b",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d4": {
+        "YES": "d5",
+        "NO": "obs-c",
+        "UNKNOWN": "stop-unknown"
+      },
+      "d5": {
+        "YES": "obs-e",
+        "NO": "obs-d",
+        "UNKNOWN": "stop-unknown"
+      }
+    }
+  },
+  "crossScenarioBoundaries": [
+    "TEM2-DIAG-006: самопроизвольная остановка, противоположный симптом",
+    "TEM2-DIAG-004: удержание пусковой цепи после запуска",
+    "TEM2-DIAG-003: остановка при разборе пуска"
+  ],
+  "sourceDiscrepancies": [
+    {
+      "status": "DONOR_VS_RESEARCH",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "TEM2_VS_TEM2U",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "FACTORY_1980_VS_1988",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "HISTORICAL_VS_CURRENT",
+      "detail": "Историческое РЭ 1980 и правила ТО/ТР 2025 имеют разные сферы и не подтверждают аварийную инструкцию."
+    },
+    {
+      "status": "GRAPH_EQUIVALENCE_NOT_CHECKED",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "FIELD_HYPOTHESIS_ONLY",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    },
+    {
+      "status": "SOURCE_ROLE_SAFETY_GATES_BLOCKED",
+      "detail": "Исходное происхождение сохранено, применение и полномочия не подтверждены."
+    }
+  ],
+  "openGaps": [
+    "Текущее РЭ/ИДМБ",
+    "Схема установленного исполнения",
+    "Независимое сравнение графов",
+    "Source gate",
+    "Role gate",
+    "Safety gate",
+    "Подтверждение исторических наблюдений",
+    "Финальная device QA",
+    "Действующий аварийный порядок установленного исполнения",
+    "Сверка исторической последовательности без переноса действий"
+  ],
+  "deviceQA": {
+    "status": "NOT_RUN_DEFERRED",
+    "registry": "docs/diagnostics/DIAGNOSTIC_FINAL_DEVICE_QA_DEFERRED_2026-11-04.md",
+    "emergencyInteractionRequired": true
+  }
+}

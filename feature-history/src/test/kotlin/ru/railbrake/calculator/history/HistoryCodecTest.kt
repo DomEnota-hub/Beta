@@ -1,0 +1,156 @@
+package ru.railbrake.calculator.history
+
+import org.junit.Assert.*
+import org.junit.Test
+import java.util.Base64
+
+class HistoryCodecTest {
+    private fun record(ts: Long = 1700000000000L, title: String = "Поезд") =
+        HistoryRecord(ts, "По массе", title, "12 башмаков", "Проверка: НЕ допуск")
+
+    @Test fun parsesPinnedAndroidUrlSafeBase64FormatWithRussianAndPipe() {
+        val b64 = Base64.getUrlEncoder()
+        fun enc(s: String) = b64.encodeToString(s.toByteArray(Charsets.UTF_8))
+        val raw = "1700000000000|"+enc("По массе")+"|"+enc("Состав | 42")+
+            "|"+enc("12 башмаков")+"|"+enc("НЕ допуск")
+        assertEquals("Состав | 42", HistoryCodec.parseLegacy(raw)?.title)
+        assertEquals("НЕ допуск", HistoryCodec.parseLegacy(raw)?.details)
+    }
+
+    @Test fun malformedLegacyIsIgnoredWithoutChangingSource() {
+        val original = setOf("bad", HistoryCodec.encodeLegacy(record()))
+        assertEquals(1, HistoryCodec.readLegacy(original).size)
+        assertEquals(2, original.size)
+        assertNull(HistoryCodec.parseLegacy("1|@@@|AA==|AA==|AA=="))
+    }
+
+    @Test fun migrationRoundTripPreservesUnicodeAndTimestampCollisions() {
+        val a = record(title = "Состав А")
+        val b = record(title = "Состав Б")
+        val migrated = HistoryCodec.decodeV2(HistoryCodec.encodeV2(listOf(a, b)))
+        assertEquals(2, migrated.size)
+        assertTrue(migrated.containsAll(listOf(a, b)))
+    }
+
+    @Test fun versionedFormatRejectsCorruptionInsteadOfDestroyingHistory() {
+        try {
+            HistoryCodec.decodeV2("v2|broken")
+            fail("Corruption must not be accepted")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun capsAtThirtyAndDeduplicatesExactCopies() {
+        val records = (0L..40L).map { record(ts = it) } + record(ts = 40L)
+        val decoded = HistoryCodec.decodeV2(HistoryCodec.encodeV2(records))
+        assertEquals(30, decoded.size)
+        assertEquals(40L, decoded.first().timestampMillis)
+        assertEquals(11L, decoded.last().timestampMillis)
+    }
+
+    @Test fun noteLimitFailsClosedWithoutSilentTruncation() {
+        val notes = (1..201).map {
+            WorkNote(it.toString(), "vl80s", it.toLong(), "Запись", "Текст")
+        }
+        try {
+            WorkNotesCodec.encodeV1(notes)
+            fail("Notes must not be silently discarded")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesRoundTripAndModelIsolation() {
+        val notes = listOf(
+            WorkNote("a", "vl80s", 2L, "Замечание | №1", "Текст\nвторая строка"),
+            WorkNote("b", "chme3", 1L, "Заметка", "Без инструкции"),
+        )
+        val restored = WorkNotesCodec.decodeV1(WorkNotesCodec.encodeV1(notes))
+        assertEquals(notes, restored)
+        assertEquals(1, restored.count { it.modelId == "vl80s" })
+    }
+    @Test fun versionedHistoryRejectsExcessOrDuplicateRecordsWithoutTruncation() {
+        val over = (1L..31L).joinToString("\n") { "v2|" + HistoryCodec.encodeLegacy(record(ts = it)) }
+        try { HistoryCodec.decodeV2(over); fail("Must not truncate corrupted v2") }
+        catch (_: IllegalArgumentException) {}
+        val line = "v2|" + HistoryCodec.encodeLegacy(record())
+        try { HistoryCodec.decodeV2(line + "\n" + line); fail("Must not erase duplicates") }
+        catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesRejectInvalidDataBeforeWrite() {
+        val bad = listOf(WorkNote("a", "vl80s", -1L, "Title", "Body"))
+        try { WorkNotesCodec.encodeV1(bad); fail("Invalid note should fail") }
+        catch (_: IllegalArgumentException) {}
+    }
+    @Test fun recoveryPreviewCountsMalformedAndUnshownWithoutChangingSource() {
+        val source = (1L..31L).map { HistoryCodec.encodeLegacy(record(ts = it)) }.toSet() + "bad"
+        val original = source.toSet()
+        val preview = HistoryCodec.inspectLegacy(source)
+        assertEquals(30, preview.records.size)
+        assertEquals(1, preview.malformedCount)
+        assertEquals(1, preview.omittedCount)
+        assertEquals(31L, preview.records.first().timestampMillis)
+        assertEquals(original, source)
+    }
+
+    @Test fun recoveryPreviewRetainsDistinctSameTimestampRecords() {
+        val source = setOf(
+            HistoryCodec.encodeLegacy(record(title = "Первый")),
+            HistoryCodec.encodeLegacy(record(title = "Второй")),
+        )
+        val preview = HistoryCodec.inspectLegacy(source)
+        assertEquals(2, preview.records.size)
+        assertEquals(0, preview.malformedCount)
+        assertEquals(0, preview.omittedCount)
+    }
+
+    @Test fun notesRejectOversizedDecodedFieldWithoutOverwritingStore() {
+        val oversized = "x".repeat(65 * 1024)
+        val encoded = Base64.getUrlEncoder().encodeToString(oversized.toByteArray())
+        val raw = "n1|1|YQ==|dmw4MHM=|VGl0bGU=|" + encoded
+        try { WorkNotesCodec.decodeV1(raw); fail("Oversized decoded note must fail") }
+        catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesRejectTooManyRowsBeforeDecoding() {
+        val row = "n1|1|YQ==|dmw4MHM=|VGl0bGU=|VGV4dA=="
+        try { WorkNotesCodec.decodeV1(List(201) { row }.joinToString("\n")); fail("Oversized collection must fail") }
+        catch (_: IllegalArgumentException) {}
+    }
+    @Test fun historyWriterRejectsOversizedUtf8BeforePersisting() {
+        try {
+            HistoryCodec.encodeV2(listOf(record(title = "я".repeat(32769))))
+            fail("Writer must reject fields that reader cannot decode")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun notesWriterRejectsOversizedIdentityBeforePersisting() {
+        try {
+            WorkNotesCodec.encodeV1(listOf(WorkNote("x".repeat(65537), "vl80s", 1L, "Title", "Body")))
+            fail("Writer must reject fields that reader cannot decode")
+        } catch (_: IllegalArgumentException) {}
+    }
+
+    @Test fun historyWriterAcceptsExactUtf8Boundary() {
+        val value = record(title = "я".repeat(32768))
+        assertEquals(listOf(value), HistoryCodec.decodeV2(HistoryCodec.encodeV2(listOf(value))))
+    }
+    @Test fun legacyCapacityTieIsIndependentOfSetIterationOrder() {
+        val rows = (1..31).map { record(title = "Train %02d".format(java.util.Locale.ROOT, it)) }
+        val forward = rows.map(HistoryCodec::encodeLegacy).toSet() + "bad"
+        val backward = rows.reversed().map(HistoryCodec::encodeLegacy).toSet() + "bad"
+        val a = HistoryCodec.inspectLegacy(forward)
+        val b = HistoryCodec.inspectLegacy(backward)
+        assertEquals(a.records, b.records)
+        assertEquals(30, a.records.size)
+        assertEquals(1, a.omittedCount)
+        assertEquals(1, a.malformedCount)
+        assertEquals("Train 30", a.records.last().title)
+        assertEquals(a.records, HistoryCodec.decodeV2(HistoryCodec.encodeV2(a.records)))
+    }
+
+    @Test fun writerRejectsNegativeTimestampBeforePersisting() {
+        try {
+            HistoryCodec.encodeV2(listOf(record(ts = -1L)))
+            fail("Writer must not create unreadable history")
+        } catch (_: IllegalArgumentException) {}
+    }
+}
