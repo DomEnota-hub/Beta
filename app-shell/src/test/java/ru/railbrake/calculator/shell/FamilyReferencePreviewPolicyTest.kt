@@ -212,4 +212,23 @@ class FamilyReferencePreviewPolicyTest {
             assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(modelId = "tem2")))
         }
     }
+
+    @Test fun remainingBaseErmakEquipmentHasReferenceOnlyDetails() {
+        val ids = listOf("ER-EQ-TR-011", "ER-EQ-TR-012", "ER-EQ-AU-001", "ER-EQ-AU-002", "ER-EQ-AU-003", "ER-EQ-AU-004", "ER-EQ-AU-005", "ER-EQ-AU-006", "ER-EQ-AU-007", "ER-EQ-AU-008", "ER-EQ-AU-009", "ER-EQ-CT-001", "ER-EQ-CT-002", "ER-EQ-CT-003", "ER-EQ-CT-004", "ER-EQ-CT-005", "ER-EQ-CT-006", "ER-EQ-CT-007", "ER-EQ-CT-008", "ER-EQ-CT-010", "ER-EQ-CT-011", "ER-EQ-CT-012", "ER-EQ-CT-013", "ER-EQ-PN-001", "ER-EQ-PN-002", "ER-EQ-PN-003", "ER-EQ-PN-004", "ER-EQ-PN-005", "ER-EQ-PN-006", "ER-EQ-PN-007", "ER-EQ-PN-008", "ER-EQ-PN-009", "ER-EQ-PN-010", "ER-EQ-PN-011", "ER-EQ-PN-012", "ER-EQ-BR-001", "ER-EQ-BR-002", "ER-EQ-BR-004", "ER-EQ-BR-005", "ER-EQ-BR-006", "ER-EQ-BR-007", "ER-EQ-BR-011", "ER-EQ-BR-012", "ER-EQ-BR-013", "ER-EQ-SF-001", "ER-EQ-SF-002", "ER-EQ-SF-003", "ER-EQ-SF-004", "ER-EQ-SF-005", "ER-EQ-SF-006", "ER-EQ-SF-008", "ER-EQ-SF-009", "ER-EQ-PR-001", "ER-EQ-PR-002", "ER-EQ-PR-003", "ER-EQ-PR-004", "ER-EQ-PR-005", "ER-EQ-PR-006", "ER-EQ-PR-007", "ER-EQ-FR-001", "ER-EQ-FR-002", "ER-EQ-FR-003", "ER-EQ-FR-004", "ER-EQ-MC-001", "ER-EQ-MC-002", "ER-EQ-MC-003", "ER-EQ-MC-004", "ER-EQ-MC-006", "ER-EQ-MC-007", "ER-EQ-MC-008", "ER-EQ-MC-009", "ER-EQ-MC-010", "ER-EQ-MC-012", "ER-EQ-CB-001", "ER-EQ-CB-002", "ER-EQ-CB-003", "ER-EQ-CB-004", "ER-EQ-CB-005", "ER-EQ-CB-006")
+        val excluded = listOf("ER-EQ-TR-013", "ER-EQ-CT-009", "ER-EQ-BR-003", "ER-EQ-BR-008", "ER-EQ-BR-009", "ER-EQ-BR-010", "ER-EQ-BR-014", "ER-EQ-BR-015", "ER-EQ-SF-007", "ER-EQ-SF-010", "ER-EQ-MC-005", "ER-EQ-MC-011")
+        for (model in listOf("2es5k", "3es5k")) {
+            val profile = FamilyProfiles.forModel(ModelId(model))!!
+            fun entry(id: String) = base.copy(id = "$model-$id", modelId = model,
+                executionId = null, scope = ReferenceScope.EXECUTION_UNVERIFIED,
+                donorPath = "app/src/main/assets/technical/ermak_equipment.json.gz",
+                donorBlobSha = "47a8d2424d69943fba9747746aa6ad8c8f4e2e98", donorId = id)
+            val entries = ids.map { entry(it) }
+            assertEquals(79, entries.count { FamilyReferenceDetails.forEntry(it)?.sourceIds?.isNotEmpty() == true })
+            assertEquals(79, FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.ATLAS, "").size)
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.DIAGNOSTICS, "").isEmpty())
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile, ShellHomeDestination.ACCEPTANCE, "").isEmpty())
+            assertTrue(excluded.all { FamilyReferenceDetails.forEntry(entry(it)) == null })
+            assertTrue(FamilyReferenceDetails.forEntry(entry("ER-EQ-CB-001"))!!.description.contains("не к бустерной"))
+        }
+    }
 }

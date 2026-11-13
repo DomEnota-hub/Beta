@@ -74,10 +74,18 @@ print("STAGE13_DONOR_SUMMARY_PARITY_PASS entries=84 models=7 executable=0")
 # Separately authored equipment references: no raw donor descriptions, parameters or actions.
 equipment = json.loads((root / "content-packs/crew-reference/ermak-equipment.json").read_text(encoding="utf-8"))
 assert equipment["schemaVersion"] == 1 and equipment["donorCommit"] == data["donorCommit"]
-equipment_pack = json.loads((root / "content-packs/electric/ermak/atlas/equipment/equipment-01.pack.json").read_text(encoding="utf-8"))
-by_id = {e["id"]: e for e in equipment_pack["entries"]}
-assert len(by_id) == 20
-assert len(equipment["entries"]) == 40
+equipment_sources = {}
+for number in range(1, 7):
+    pack_path = f"content-packs/electric/ermak/atlas/equipment/equipment-{number:02d}.pack.json"
+    pack = json.loads((root / pack_path).read_text(encoding="utf-8"))
+    for entry in pack["entries"]:
+        assert entry["id"] not in equipment_sources
+        equipment_sources[entry["id"]] = (pack_path, entry)
+assert len(equipment_sources) == 111
+by_id = {key: (path, entry) for key, (path, entry) in equipment_sources.items()
+         if entry["sourceObject"]["object"]["applicability"]["profiles"] == ["base_early"]}
+assert len(by_id) == 99
+assert len(equipment["entries"]) == 198
 assert {(e["modelId"], e["donorId"]) for e in equipment["entries"]} == {
     (model, donor_id) for model in ("2es5k", "3es5k") for donor_id in by_id
 }
@@ -85,8 +93,9 @@ for item in equipment["entries"]:
     assert set(item) == allowed_keys and item["id"] not in seen
     seen.add(item["id"])
     assert item["scope"] == "EXECUTION_UNVERIFIED" and item["executionId"] is None
-    assert item["targetPack"] == "content-packs/electric/ermak/atlas/equipment/equipment-01.pack.json" and item["targetId"] == item["donorId"]
-    source = by_id[item["donorId"]]
+    pack_path, source = by_id[item["donorId"]]
+    assert item["targetPack"] == pack_path and item["targetId"] == item["donorId"]
+    assert set(source["sourceObject"]["object"]["applicability"]["exclusions"]) <= {"booster_only"}
     assert source["title"] == item["title"] and source["summary"] != item["summary"]
     assert source["publicationStatus"] == "CANDIDATE" and source["actionDisposition"] == "INFORMATION_ONLY"
     assert item["donorPath"] == source["sourceObject"]["sourcePath"] == "app/src/main/assets/technical/ermak_equipment.json.gz"
@@ -95,4 +104,4 @@ for item in equipment["entries"]:
     assert source["sourceObject"]["object"]["applicability"]["profiles"] == ["base_early"]
     assert set(source["sourceObject"]["object"]["applicability"]["models"]) == {"2ES5K", "3ES5K"}
     assert 0 < len(item["summary"]) <= 240 and "\n" not in item["summary"]
-print("ERMAK_EQUIPMENT_REFERENCE_PASS objects=20 model_entries=40 executable=0")
+print("ERMAK_EQUIPMENT_REFERENCE_PASS objects=99 model_entries=198 executable=0")

@@ -51,7 +51,7 @@ with ZipFile(apks[0]) as apk:
         raise SystemExit("Ermak equipment reference missing from APK")
     equipment_data = loads(apk.read(equipment).decode("utf-8"))
     expected_equipment = loads(Path("content-packs/crew-reference/ermak-equipment.json").read_text(encoding="utf-8"))
-    if equipment_data != expected_equipment or len(equipment_data.get("entries", [])) != 40:
+    if equipment_data != expected_equipment or len(equipment_data.get("entries", [])) != 198:
         raise SystemExit("Ermak equipment reference APK parity failed")
 
     # Regression guard: this must not accidentally strip the VL80S published runtime.
