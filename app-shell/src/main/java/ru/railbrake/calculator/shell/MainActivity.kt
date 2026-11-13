@@ -120,8 +120,13 @@ class MainActivity : ComponentActivity() {
                 var assistantOpenedTarget by remember(selectedModelId) {
                     mutableStateOf<ContentTarget?>(null)
                 }
-                var assistantCommonTarget by remember(selectedModelId) {
-                    mutableStateOf<Pair<ShellHomeDestination, String>?>(null)
+                var assistantCommonSection by rememberSaveable(selectedModelId) { mutableStateOf<String?>(null) }
+                var assistantCommonCardId by rememberSaveable(selectedModelId) { mutableStateOf<String?>(null) }
+                val assistantCommonTarget = assistantCommonSection?.let { name ->
+                    ShellHomeDestination.entries.firstOrNull { it.name == name }
+                        ?.takeIf { it in setOf(ShellHomeDestination.KNOWLEDGE, ShellHomeDestination.TRAFFIC_SAFETY,
+                            ShellHomeDestination.OCCUPATIONAL_SAFETY, ShellHomeDestination.FIRST_AID) }
+                        ?.let { section -> assistantCommonCardId?.let { section to it } }
                 }
                 var assistantFamilyTarget by remember(selectedModelId) {
                     mutableStateOf<Triple<ModelId, VariantId?, String>?>(null)
@@ -193,7 +198,10 @@ class MainActivity : ComponentActivity() {
                             destination = section,
                             assets = assets,
                             initialCardId = cardId,
-                            onBack = { assistantCommonTarget = null },
+                            onBack = {
+                                assistantCommonSection = null
+                                assistantCommonCardId = null
+                            },
                         )
                     } else if (opened == null) {
                         BackHandler { shellDestinationName = ShellHomeDestination.HOME.name }
@@ -245,7 +253,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onOpenCommon = { section, cardId ->
-                                assistantCommonTarget = section to cardId
+                                assistantCommonSection = section.name
+                                assistantCommonCardId = cardId
                                 assistantNotice = null
                             },
                             onOpenFamily = { model, execution, cardId ->
