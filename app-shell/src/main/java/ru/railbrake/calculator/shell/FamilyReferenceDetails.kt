@@ -5,11 +5,99 @@ package ru.railbrake.calculator.shell
 internal data class FamilyReferenceDetail(val description: String, val sourceIds: List<String>)
 
 internal object FamilyReferenceDetails {
+    // Independently authored general principles; no apparatus parameters or operating steps.
+    private val equipment = mapOf(
+        "ER-EQ-HV-001" to FamilyReferenceDetail(
+            "Подвижная рама несёт контактные элементы; ток от них поступает в первичную цепь секции. Конструкция привода и контактной системы определяется типом аппарата.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-005", "ER-SRC-039"),
+        ),
+        "ER-EQ-HV-002" to FamilyReferenceDetail(
+            "Катушка пропускает рабочий ток и препятствует быстрым изменениям тока, возникающим при нарушении контакта с проводом.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-041", "ER-SRC-042", "ER-SRC-047", "ER-SRC-048"),
+        ),
+        "ER-EQ-HV-003" to FamilyReferenceDetail(
+            "Разъединитель образует изоляционный промежуток. В отличие от выключателя, он не предназначен для отключения рабочего тока.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-040"),
+        ),
+        "ER-EQ-HV-004" to FamilyReferenceDetail(
+            "Главный выключатель соединяет первичную цепь с источником питания или разрывает её. Защитное отключение ограничивает последствия электрических повреждений; конструкция зависит от исполнения.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-005", "ER-SRC-032", "ER-SRC-038", "ER-SRC-039"),
+        ),
+        "ER-EQ-HV-005" to FamilyReferenceDetail(
+            "Сочетание индуктивности и ёмкости образует частотно-зависимую цепь, уменьшающую помехи в первичном тракте.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-046"),
+        ),
+        "ER-EQ-HV-006" to FamilyReferenceDetail(
+            "Магнитная связь первичной и вторичной цепей позволяет получить измерительный сигнал, используемый аппаратурой токовой защиты.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-043", "ER-SRC-044"),
+        ),
+        "ER-EQ-HV-007" to FamilyReferenceDetail(
+            "При повышении напряжения ограничитель уменьшает воздействие импульса на изоляцию. Это не аппарат управления тягой.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-045"),
+        ),
+        "ER-EQ-HV-008" to FamilyReferenceDetail(
+            "Магнитная связь обмоток обеспечивает передачу энергии между первичной цепью и цепями тяги, возбуждения и собственных нужд.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-005", "ER-SRC-033", "ER-SRC-037"),
+        ),
+        "ER-EQ-HV-009" to FamilyReferenceDetail(
+            "Измерительный трансформатор формирует сигнал для индикации и связанных защитных цепей; конкретная схема зависит от комплектации.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-076", "ER-SRC-077"),
+        ),
+        "ER-EQ-HV-010" to FamilyReferenceDetail(
+            "Измерительные каналы тока и напряжения позволяют учитывать обмен энергией между локомотивом и контактной сетью.",
+            listOf("ER-SRC-002"),
+        ),
+        "ER-EQ-TR-001" to FamilyReferenceDetail(
+            "В тяговом режиме преобразователь регулирует питание двигателей; в режиме рекуперации участвует в обратной передаче энергии.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-006", "ER-SRC-034"),
+        ),
+        "ER-EQ-TR-002" to FamilyReferenceDetail(
+            "Ограничитель уменьшает воздействие импульсного напряжения на изоляцию вторичных обмоток и связанных аппаратов.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-053", "ER-SRC-054"),
+        ),
+        "ER-EQ-TR-003" to FamilyReferenceDetail(
+            "Индуктивность уменьшает пульсации тока и скорость его изменения, влияя на условия работы двигателя.",
+            listOf("ER-SRC-002", "ER-SRC-003", "ER-SRC-005", "ER-SRC-051", "ER-SRC-055", "ER-SRC-056", "ER-SRC-057"),
+        ),
+        "ER-EQ-TR-004" to FamilyReferenceDetail(
+            "Быстродействующий выключатель предназначен для разрыва силовой цепи, в том числе при аварийных токах.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-058", "ER-SRC-059", "ER-SRC-060", "ER-SRC-061"),
+        ),
+        "ER-EQ-TR-005" to FamilyReferenceDetail(
+            "Электромагнитное взаимодействие якоря и поля создаёт вращающий момент. При электрическом торможении машина преобразует механическую энергию в электрическую.",
+            listOf("ER-SRC-002", "ER-SRC-004", "ER-SRC-035", "ER-SRC-036"),
+        ),
+        "ER-EQ-TR-006" to FamilyReferenceDetail(
+            "Изменение направления поля относительно тока якоря меняет направление электромагнитного момента. Схема коммутации зависит от исполнения.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-062", "ER-SRC-063", "ER-SRC-064", "ER-SRC-065", "ER-SRC-066"),
+        ),
+        "ER-EQ-TR-007" to FamilyReferenceDetail(
+            "Переключатель связывает силовые цепи с конфигурацией, предусмотренной для тяги либо электрического торможения.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-063", "ER-SRC-064", "ER-SRC-065", "ER-SRC-066", "ER-SRC-067"),
+        ),
+        "ER-EQ-TR-008" to FamilyReferenceDetail(
+            "Выпрямительная установка формирует регулируемый ток поля тяговых машин при электрическом торможении.",
+            listOf("ER-SRC-002", "ER-SRC-006", "ER-SRC-068", "ER-SRC-069", "ER-SRC-072"),
+        ),
+        "ER-EQ-TR-009" to FamilyReferenceDetail(
+            "Резистивные и индуктивные элементы участвуют в изменении тока возбуждения и переходных процессах тяговой машины.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-049", "ER-SRC-050", "ER-SRC-051", "ER-SRC-052"),
+        ),
+        "ER-EQ-TR-010" to FamilyReferenceDetail(
+            "Балластные сопротивления участвуют в распределении токов между параллельными ветвями и повышают устойчивость электрического торможения.",
+            listOf("ER-SRC-002", "ER-SRC-005", "ER-SRC-070", "ER-SRC-071", "ER-SRC-072"),
+        )
+    )
+
     fun forEntry(entry: FamilyReferencePreview): FamilyReferenceDetail? {
         if (entry.modelId !in setOf("2es5k", "3es5k") ||
             entry.scope != ReferenceScope.EXECUTION_UNVERIFIED ||
-            entry.executionId != null ||
-            entry.donorPath != "app/src/main/assets/technical/ermak_knowledge.json.gz" ||
+            entry.executionId != null) return null
+        if (entry.donorPath == "app/src/main/assets/technical/ermak_equipment.json.gz" &&
+            entry.donorBlobSha == "47a8d2424d69943fba9747746aa6ad8c8f4e2e98") {
+            return equipment[entry.donorId]
+        }
+        if (entry.donorPath != "app/src/main/assets/technical/ermak_knowledge.json.gz" ||
             entry.donorBlobSha != "08d164fc11c33c241d04ad6ad60c13a3aec996c8") return null
         return when (entry.donorId) {
             "ER-KB-SYS-20" -> FamilyReferenceDetail(

@@ -70,3 +70,29 @@ for item in items:
         # Generic Ermak, or CHME3T without verified pre/post-6245 split.
         assert not variants or variants == ["chme3t"]
 print("STAGE13_DONOR_SUMMARY_PARITY_PASS entries=84 models=7 executable=0")
+
+# Separately authored equipment references: no raw donor descriptions, parameters or actions.
+equipment = json.loads((root / "content-packs/crew-reference/ermak-equipment.json").read_text(encoding="utf-8"))
+assert equipment["schemaVersion"] == 1 and equipment["donorCommit"] == data["donorCommit"]
+equipment_pack = json.loads((root / "content-packs/electric/ermak/atlas/equipment/equipment-01.pack.json").read_text(encoding="utf-8"))
+by_id = {e["id"]: e for e in equipment_pack["entries"]}
+assert len(by_id) == 20
+assert len(equipment["entries"]) == 40
+assert {(e["modelId"], e["donorId"]) for e in equipment["entries"]} == {
+    (model, donor_id) for model in ("2es5k", "3es5k") for donor_id in by_id
+}
+for item in equipment["entries"]:
+    assert set(item) == allowed_keys and item["id"] not in seen
+    seen.add(item["id"])
+    assert item["scope"] == "EXECUTION_UNVERIFIED" and item["executionId"] is None
+    assert item["targetPack"] == "content-packs/electric/ermak/atlas/equipment/equipment-01.pack.json" and item["targetId"] == item["donorId"]
+    source = by_id[item["donorId"]]
+    assert source["title"] == item["title"] and source["summary"] != item["summary"]
+    assert source["publicationStatus"] == "CANDIDATE" and source["actionDisposition"] == "INFORMATION_ONLY"
+    assert item["donorPath"] == source["sourceObject"]["sourcePath"] == "app/src/main/assets/technical/ermak_equipment.json.gz"
+    assert item["donorBlobSha"] == source["sourceObject"]["sourceBlobSha"] == "47a8d2424d69943fba9747746aa6ad8c8f4e2e98"
+    assert source["sourceObject"]["object"]["id"] == item["donorId"]
+    assert source["sourceObject"]["object"]["applicability"]["profiles"] == ["base_early"]
+    assert set(source["sourceObject"]["object"]["applicability"]["models"]) == {"2ES5K", "3ES5K"}
+    assert 0 < len(item["summary"]) <= 240 and "\n" not in item["summary"]
+print("ERMAK_EQUIPMENT_REFERENCE_PASS objects=20 model_entries=40 executable=0")

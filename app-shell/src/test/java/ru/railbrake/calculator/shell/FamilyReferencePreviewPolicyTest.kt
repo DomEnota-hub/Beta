@@ -190,4 +190,26 @@ class FamilyReferencePreviewPolicyTest {
             assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(donorPath = "other")))
         }
     }
+    @Test fun ermakEquipmentPrinciplesAreSearchableAndNeverExecutionApproved() {
+        val ids = (1..10).flatMap { n -> listOf("ER-EQ-HV-%03d".format(n), "ER-EQ-TR-%03d".format(n)) }
+        for (model in listOf("2es5k", "3es5k")) {
+            val profile = FamilyProfiles.forModel(ModelId(model))!!
+            val entries = ids.map { id -> base.copy(id = "$model-$id", modelId = model,
+                executionId = null, scope = ReferenceScope.EXECUTION_UNVERIFIED,
+                donorPath = "app/src/main/assets/technical/ermak_equipment.json.gz",
+                donorBlobSha = "47a8d2424d69943fba9747746aa6ad8c8f4e2e98", donorId = id) }
+            assertEquals(20, entries.count { FamilyReferenceDetails.forEntry(it)?.sourceIds?.isNotEmpty() == true })
+            assertEquals(20, FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile,
+                ShellHomeDestination.ATLAS, "").size)
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile,
+                ShellHomeDestination.DIAGNOSTICS, "").isEmpty())
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(entries, profile,
+                ShellHomeDestination.ACCEPTANCE, "").isEmpty())
+            assertEquals(listOf("$model-ER-EQ-HV-002"), FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, ShellHomeDestination.ATLAS, "катушка").map { it.id })
+            assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(donorBlobSha = "wrong")))
+            assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(executionId = "${model}_msud_n")))
+            assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(modelId = "tem2")))
+        }
+    }
 }

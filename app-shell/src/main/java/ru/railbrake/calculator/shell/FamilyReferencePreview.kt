@@ -118,12 +118,17 @@ internal object FamilyReferencePreviewPolicy {
 /** Small curated asset; deliberately separate from unpublished family packs. */
 internal class FamilyReferencePreviewCatalog(private val assets: AssetManager) {
     fun load(): List<FamilyReferencePreview> {
-        val json = assets.open("crew-reference/summaries.json").bufferedReader().use { it.readText() }
+        val seen = mutableSetOf<String>()
+        return listOf("crew-reference/summaries.json", "crew-reference/ermak-equipment.json")
+            .flatMap { loadFile(it, seen) }
+    }
+
+    private fun loadFile(path: String, seen: MutableSet<String>): List<FamilyReferencePreview> {
+        val json = assets.open(path).bufferedReader().use { it.readText() }
         val root = JSONObject(json)
         require(root.getInt("schemaVersion") == 1)
         require(root.getString("donorCommit") == "3176d6ee228f0ed4b78371f45209e10c1c724eff")
         val entries = root.getJSONArray("entries")
-        val seen = mutableSetOf<String>()
         val allowedKeys = setOf("id", "modelId", "executionId", "scope", "title",
             "summary", "donorPath", "donorBlobSha", "donorId", "targetPack", "targetId")
         return (0 until entries.length()).map { index ->

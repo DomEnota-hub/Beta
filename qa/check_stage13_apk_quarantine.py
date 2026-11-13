@@ -46,6 +46,14 @@ with ZipFile(apks[0]) as apk:
     if data.get("schemaVersion") != 1 or len(data.get("entries", [])) != 84:
         raise SystemExit("Curated donor reference has unexpected schema/count")
 
+    equipment = "assets/crew-reference/ermak-equipment.json"
+    if equipment not in paths:
+        raise SystemExit("Ermak equipment reference missing from APK")
+    equipment_data = loads(apk.read(equipment).decode("utf-8"))
+    expected_equipment = loads(Path("content-packs/crew-reference/ermak-equipment.json").read_text(encoding="utf-8"))
+    if equipment_data != expected_equipment or len(equipment_data.get("entries", [])) != 40:
+        raise SystemExit("Ermak equipment reference APK parity failed")
+
     # Regression guard: this must not accidentally strip the VL80S published runtime.
     required = "assets/electric/vl80s/runtime-index.json"
     if required not in paths:
