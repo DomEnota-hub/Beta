@@ -45,6 +45,27 @@ class AssistantNavigationInstrumentationTest {
             .assertDoesNotExist()
     }
 
+    @Test fun commonReferenceCardSurvivesActivityRecreation() {
+        compose.onNodeWithText("ВЛ80С").performClick()
+        compose.onNodeWithText("Помощник").performClick()
+        compose.onNodeWithText("Что нужно найти?").performTextInput("слр")
+        compose.onNodeWithText("Найти").performClick()
+        compose.waitUntil(15_000) {
+            compose.onAllNodesWithText("Читать справочную карточку").fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.onNodeWithText("Читать справочную карточку").performScrollTo().performClick()
+        compose.waitUntil(15_000) {
+            compose.onAllNodesWithText("Не используйте эту карточку как разрешение на действия.",
+                substring = true).fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.activityRule.scenario.recreate()
+        compose.waitUntil(15_000) {
+            compose.onAllNodesWithText("Не используйте эту карточку как разрешение на действия.",
+                substring = true).fetchSemanticsNodes().isNotEmpty()
+        }
+        compose.onNodeWithText("Исходный справочный текст · требует проверки").assertDoesNotExist()
+    }
+
     @Test fun explicitVl80sSearchFromTem2KeepsWorkingModel() {
         compose.onNodeWithText("ТЭМ2").performClick()
         compose.onNodeWithText("Помощник").performClick()
