@@ -164,4 +164,30 @@ class FamilyReferencePreviewPolicyTest {
         assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(
             listOf(entry), profile, ShellHomeDestination.DIAGNOSTICS, "реакторы").isEmpty())
     }
+
+    @Test fun allErmakSystemPrinciplesAreAvailableForBothModelsOnly() {
+        val ids = listOf("10", "20", "21", "30", "40", "50", "60", "70", "71", "80", "90", "91")
+        for (model in listOf("2es5k", "3es5k")) {
+            val profile = FamilyProfiles.forModel(ModelId(model))!!
+            val entries = ids.map { id ->
+                base.copy(id = "$model-$id", modelId = model, executionId = null,
+                    scope = ReferenceScope.EXECUTION_UNVERIFIED,
+                    donorPath = "app/src/main/assets/technical/ermak_knowledge.json.gz",
+                    donorBlobSha = "08d164fc11c33c241d04ad6ad60c13a3aec996c8",
+                    donorId = "ER-KB-SYS-$id")
+            }
+            assertEquals(12, entries.count { FamilyReferenceDetails.forEntry(it)?.description?.isNotBlank() == true })
+            assertTrue(entries.all { FamilyReferenceDetails.forEntry(it)!!.sourceIds.isNotEmpty() })
+            assertEquals(12, FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, ShellHomeDestination.ATLAS, "").size)
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, ShellHomeDestination.ACCEPTANCE, "").isEmpty())
+            assertTrue(FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, ShellHomeDestination.DIAGNOSTICS, "").isEmpty())
+            assertEquals(listOf("$model-70"), FamilyReferencePreviewPolicy.searchBeforeExecution(
+                entries, profile, ShellHomeDestination.ATLAS, "программное обеспечение").map { it.id })
+            assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(donorId = "unknown")))
+            assertEquals(null, FamilyReferenceDetails.forEntry(entries.first().copy(donorPath = "other")))
+        }
+    }
 }
